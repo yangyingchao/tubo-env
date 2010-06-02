@@ -1,0 +1,5 @@
+char cwd[${1:length}] = {'\0'};
+if (getcwd(cwd, $1) == NULL){
+    fprintf(stderr, "ERROR: failed to get current working directory.\n");
+    return -1;
+}

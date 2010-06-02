@@ -1,0 +1,1 @@
+#define oops(ch) {perror(ch); return -1;}

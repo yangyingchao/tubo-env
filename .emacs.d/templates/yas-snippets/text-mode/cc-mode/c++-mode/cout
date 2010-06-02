@@ -1,0 +1,1 @@
+cout << "${1:Variable} = " << $1 << endl;

@@ -1,0 +1,6 @@
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[angle=0,width=.90\textwidth]{image/${1:name}}
+  \caption{$0}
+  \label{fig:$1}
+\end{figure}

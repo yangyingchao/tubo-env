@@ -1,0 +1,5 @@
+#name : #+begin_...#+end_
+# --
+#+BEGIN_EXAMPLE
+$0
+#+END_EXAMPLE
