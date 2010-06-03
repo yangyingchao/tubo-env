@@ -48,6 +48,12 @@
 
 (global-set-key [(control f1)] 'open-mylist)
 
+(defun insert-instead ()
+  "description"
+(interactive)
+(insert "\\_")
+  )
+
 (defun yyc/org-mode-hooks ()
   "Functions will run when entering org-mode"
   (interactive)
@@ -56,6 +62,7 @@
   (org-defkey org-mode-map "\C-ca" 'org-agenda)
   (org-defkey org-mode-map "\C-cb" 'org-iswitchb)
   (org-defkey org-mode-map [(control ?,)]     'backward-page)
+  (org-defkey org-mode-map (kbd "_") 'insert-instead)
   )
 
 (add-hook 'org-mode-hook 'yyc/org-mode-hooks)
