@@ -161,6 +161,6 @@
 
 ;;;; Start Emacs as server.
 (server-start)
-(require 'emacs-rc-chrome)
+;;(require 'emacs-rc-chrome)
 
 (recentf-open-files)
