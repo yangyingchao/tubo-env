@@ -71,12 +71,6 @@
 (put 'set-goal-column 'disabled nil)
 
 
-;;; Font
-(if (eq system-type 'windows-nt)
-    (set-frame-font
-     " -outline-Monaco-normal-normal-normal-mono-14-*-*-*-c-*-iso8859-1")
-  )
-
 ;;;; 语言设置
 (set-language-environment 'Chinese-GBK)
 (prefer-coding-system 'utf-8)
@@ -125,8 +119,9 @@
 
 
 ;;;; Load plugins
+(require 'emacs-rc-platform)
 (require 'emacs-rc-global)
-(require 'emacs-rc-cscope)
+;; (require 'emacs-rc-cscope)
 (require 'emacs-rc-dired)
 (require 'emacs-rc-auto-complete)
 (require 'emacs-rc-auto-header)
