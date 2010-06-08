@@ -72,7 +72,7 @@
 
 
 ;;;; 语言设置
-(set-language-environment 'Chinese-GBK)
+;;(set-language-environment 'Chinese-GBK)
 (prefer-coding-system 'utf-8)
 
 (setq font-lock-maximum-decoration t)

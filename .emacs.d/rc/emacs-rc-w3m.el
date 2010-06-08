@@ -6,6 +6,9 @@
 (autoload 'w3m-browse-url "w3m" "w3m interface function for browse-url.el." t)
 (autoload 'w3m-find-file "w3m" "w3m Interface function for local file." t)
 
+(defvar w3m-arrived-file-coding-system nil "nil")
+
+
 (setq  w3m-arrived-file-coding-system 'utf-8
        w3m-async-exec t
        w3m-coding-system 'utf-8

@@ -5,7 +5,7 @@
 (setq-default ispell-program-name "aspell")
 (setq-default ispell-extra-args '("--reverse"))
 (set-default 'ispell-skip-html t)
-;(setq ispell-dictionary "english")
+(setq ispell-dictionary "english")
 (setq ispell-local-dictionary "english")
 
 (autoload 'flyspell-mode "flyspell" "On-the-fly spelling checker." t)
