@@ -338,27 +338,6 @@ Uses `current-date-time-format' for the formatting the date/time."
 (add-hook 'shell-script-mode-hook 'my-program-hook)
 
 ;;;; functions to setup platform depadent settings.
-(defvar shellpath nil
-  "Path of which shell will be used by emacs.")
-
-(defun setup-windows()
-  (setq shellpath "d:/cygwin/bin/bash.exe")
-
-  )
-
-(defun setup-posix()
-  (setq shellpath "/bin/bash")
-
-  )
-
-(defun platform-settings ()
-  ;;; Shell
-  (if (eq system-type 'windows-nt)
-      (setup-windows) (setup-posix))
-  (setq shell-file-name shellpath)
-  (setq-default explicit-shell-file-name shellpath)
-  (setenv "SHELL" shell-file-name)
-  )
 
 (defun skeleton-c-mode-left-brace (arg)
   (interactive "P")

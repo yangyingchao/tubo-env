@@ -22,10 +22,7 @@
 (setq get-rfc-wget-program "aria2c")
 (setq get-rfc-remote-rfc-directory "http://www.rfc-editor.org/rfc/")
 
-(if (eq system-type 'windows-nt)
-    (setq  get-rfc-local-rfc-directory "e:/Techbooks/rfcs/")
-  (setq  get-rfc-local-rfc-directory "~/Documents/rfcs/")
-  )
+(setq  get-rfc-local-rfc-directory platform-rfc-dir)
 (custom-set-faces
  '(rfcview-title-face ((t (:foreground "darkgreen" :weight bold)))))
 

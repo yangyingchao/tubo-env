@@ -52,29 +52,29 @@ the mru bookmark stack."
 (defconst cedet-user-include-dirs
   (list ".." "../include" "../inc" "../common" "../public"
         "../.." "../../include" "../../inc" "../../common" "../../public"))
-(defvar cedet-sys-include-dirs nil "" )
-(if (eq system-type 'windows-nt)
-    (setq cedet-sys-include-dirs (list
-                    "d:/gnu/lib/gcc/mingw32/3.4.5/include"
-                    "d:/gnu/include/c++/4.1.1"
-                    "d:/gnu/include"
-                    "d:/gnu/include/gtk-2.0"
-                    "d:/gnu/include/gnu"
-                    "d:/gnu/include/gtk-2.0/gtk"
-                    "d:/gnu/include/gtk-2.0/gdk-pixbuf"
-                    "d:/gnu/include/gtk-2.0/gtk"
-                    "c:/Program Files/Microsoft Visual Studio 9.0/VC/include"
-                    ))
-  (setq cedet-sys-include-dirs (list "/usr/include/c++"
-                       "/usr/local/include"
-                       "/usr/include"
-                       "/usr/include/bits"
-                       "/usr/include/glib-2.0"
-                       "/usr/include/gtk-2.0"
-                       "/usr/include/gnu"
-                       "/usr/include/gtk-2.0/gtk"
-                       "/usr/include/gtk-2.0/gdk-pixbuf"
-                       )))
+;; (defvar cedet-sys-include-dirs nil "" )
+;; (if (eq system-type 'windows-nt)
+;;     (setq cedet-sys-include-dirs (list
+;;                     "d:/gnu/lib/gcc/mingw32/3.4.5/include"
+;;                     "d:/gnu/include/c++/4.1.1"
+;;                     "d:/gnu/include"
+;;                     "d:/gnu/include/gtk-2.0"
+;;                     "d:/gnu/include/gnu"
+;;                     "d:/gnu/include/gtk-2.0/gtk"
+;;                     "d:/gnu/include/gtk-2.0/gdk-pixbuf"
+;;                     "d:/gnu/include/gtk-2.0/gtk"
+;;                     "c:/Program Files/Microsoft Visual Studio 9.0/VC/include"
+;;                     ))
+;;   (setq cedet-sys-include-dirs (list "/usr/include/c++"
+;;                        "/usr/local/include"
+;;                        "/usr/include"
+;;                        "/usr/include/bits"
+;;                        "/usr/include/glib-2.0"
+;;                        "/usr/include/gtk-2.0"
+;;                        "/usr/include/gnu"
+;;                        "/usr/include/gtk-2.0/gtk"
+;;                        "/usr/include/gtk-2.0/gdk-pixbuf"
+;;                        )))
 
 (require 'semantic-c nil 'noerror)
 
