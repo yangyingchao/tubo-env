@@ -465,7 +465,6 @@ Uses `current-date-time-format' for the formatting the date/time."
 (global-set-key (kbd "<C-f8>") 'yyc/load-w3m)
 
 ;;;; Following functions are from Taylor, And this is the license.
-;;; uniq.el --- Remove duplicate lines
 
 ;; Copyright (C) 2003 Art Taylor
 
