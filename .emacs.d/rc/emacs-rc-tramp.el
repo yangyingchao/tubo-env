@@ -1,10 +1,7 @@
 ;;; emacs-rc-tramp.el begins ---
 (require 'tramp)
 
-(if (eq system-type 'windows-nt)
-    (setq tramp-default-method "plink" tramp-default-user "itc208024")
-  (setq tramp-default-method "ssh" tramp-default-user "yyc")
-  )
+(setq tramp-default-method "ssh" tramp-default-user "yyc")
 
 (nconc  (cadr (assq 'tramp-login-args (assoc "ssh" tramp-methods))) '("/bin/sh" "-i"))
 (setcdr       (assq 'tramp-remote-sh  (assoc "ssh" tramp-methods))  '("/bin/sh -i"))
