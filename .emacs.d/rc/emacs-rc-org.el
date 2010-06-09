@@ -34,6 +34,9 @@
 
 (setq org-todo-keywords
       '((sequence "TODO" "DOING" "HANGUP" "|" "DONE" "CANCEL")))
+(setq org-export-author-info nil)
+(setq org-export-creator-info nil)
+(setq org-export-time-stamp-file nil)
 
 (defun process-underline ()
   "Process Underline, replace them with \_"
