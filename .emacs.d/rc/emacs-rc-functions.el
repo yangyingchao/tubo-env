@@ -219,9 +219,7 @@ Uses `current-date-time-format' for the formatting the date/time."
 (defvar skeleton-pair t)
 (setq skeleton-pair-alist
       '(
-        (?\( ?  _ ")")
         (?\< ?  _ ">")
-        (?\[ ?  _ "]")
         (?\{ ?  _ "}")
         (?\（ ?  _ "）")
         (?\“ ?  _ "”")
@@ -234,22 +232,25 @@ Uses `current-date-time-format' for the formatting the date/time."
   (setq skeleton-pair t)
   (local-set-key (kbd "(") 'skeleton-pair-insert-maybe)
   (local-set-key (kbd "[") 'skeleton-pair-insert-maybe)
-  (local-set-key (kbd "£¨") 'skeleton-pair-insert-maybe)
+  (local-set-key (kbd "'") 'skeleton-pair-insert-maybe)
+  (local-set-key (kbd "\"") 'skeleton-pair-insert-maybe)
   (local-set-key (kbd "{") 'skeleton-c-mode-left-brace)
   )
 
-(defun text-mode-auto-pair ()
+(defun base-auto-pair ()
   (interactive)
   (make-local-variable 'skeleton-pair-alist)
   (setq skeleton-pair t)
   (local-set-key (kbd "(") 'skeleton-pair-insert-maybe)
   (local-set-key (kbd "[") 'skeleton-pair-insert-maybe)
-  (local-set-key (kbd "£¨") 'skeleton-pair-insert-maybe)
+  (local-set-key (kbd "'") 'skeleton-pair-insert-maybe)
+  (local-set-key (kbd "\"") 'skeleton-pair-insert-maybe)
+  (local-set-key (kbd "<") 'skeleton-pair-insert-maybe)
+  (local-set-key (kbd "“") 'skeleton-pair-insert-maybe)
   (local-set-key (kbd "{") 'skeleton-pair-insert-maybe)
-  (local-set-key (kbd "¡°") 'skeleton-pair-insert-maybe)
+  (local-set-key (kbd "（") 'skeleton-pair-insert-maybe)
   )
-
-(add-hook 'text-mode-hook 'text-mode-auto-pair)
+(add-hook 'text-mode-hook 'base-auto-pair)
 
 
 (defun setup-program-keybindings()

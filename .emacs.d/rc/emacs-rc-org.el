@@ -60,12 +60,12 @@
 (defun yyc/org-mode-hooks ()
   "Functions will run when entering org-mode"
   (interactive)
-  (text-mode-auto-pair)
   (org-defkey org-mode-map "\C-cl" 'org-store-link)
   (org-defkey org-mode-map "\C-ca" 'org-agenda)
   (org-defkey org-mode-map "\C-cb" 'org-iswitchb)
   (org-defkey org-mode-map [(control ?,)]     'backward-page)
   (org-defkey org-mode-map (kbd "_") 'insert-instead)
+  (base-auto-pair)
   )
 
 (add-hook 'org-mode-hook 'yyc/org-mode-hooks)
