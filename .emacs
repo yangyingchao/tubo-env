@@ -73,7 +73,7 @@
 
 ;;;; 语言设置
 ;;(set-language-environment 'Chinese-GBK)
-(prefer-coding-system 'utf-8)
+(prefer-coding-system 'utf-8-unix)
 
 (setq font-lock-maximum-decoration t)
 (setq warning-suppress-types (quote (nil)))

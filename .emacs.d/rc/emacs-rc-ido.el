@@ -1,3 +1,4 @@
+;; -*- emacs-lisp -*- -*- coding: utf-8; -*-
 ;;; emacs-rc-ido.el begins ---
 (require 'ido)
 (ido-mode t)

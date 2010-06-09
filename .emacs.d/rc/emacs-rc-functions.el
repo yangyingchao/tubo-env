@@ -56,7 +56,7 @@
   (while (search-forward "\n" nil t) (replace-match "\r\n")))
 
 
-;;;;·Ç½»»¥Ê½±àÒë
+;;;; è‡ªåŠ¨ç¼–è¯‘
 
 (setq compilation-window-height 16)
 (setq compilation-scroll-output t)
@@ -134,7 +134,7 @@
   (list-bookmarks))
 
 
-;;;;   Ëõ½ø²ßÂÔ
+;;;;   Ã‹ÃµÂ½Ã¸Â²ÃŸÃ‚Ã”
 (defun indent-or-complete ()
   "Complete if point is at end of a word, otherwise indent line."
   (interactive)
@@ -143,13 +143,13 @@
     (indent-for-tab-command)
     ))
 
-;;;;Êó±ê¹öÂÖ£¬Ä¬ÈÏµÄ¹ö¶¯Ì«¿ì£¬ÕâÀï¸ÄÎª3ĞĞ
+;;;;ÃŠÃ³Â±ÃªÂ¹Ã¶Ã‚Ã–Â£Â¬Ã„Â¬ÃˆÃÂµÃ„Â¹Ã¶Â¶Â¯ÃŒÂ«Â¿Ã¬Â£Â¬Ã•Ã¢Ã€Ã¯Â¸Ã„ÃÂª3ÃÃ
 (defun up-slightly ()
   (interactive) (scroll-up 3))
 (defun down-slightly ()
   (interactive) (scroll-down 3))
 
-;;;;shell,gdbÍË³öºó£¬×Ô¶¯¹Ø±Õ¸Ãbuffer
+;;;;shell,gdbÃÃ‹Â³Ã¶ÂºÃ³Â£Â¬Ã—Ã”Â¶Â¯Â¹Ã˜Â±Ã•Â¸Ãƒbuffer
 (defun mode-hook-func  ()
   (set-process-sentinel (get-buffer-process (current-buffer))
                         #'kill-buffer-on-exit)
@@ -223,8 +223,8 @@ Uses `current-date-time-format' for the formatting the date/time."
         (?\< ?  _ ">")
         (?\[ ?  _ "]")
         (?\{ ?  _ "}")
-        (?\£¨ ?  _ "£©")
-        (?\¡° ?  _ "¡±")
+        (?\ï¼ˆ ?  _ "ï¼‰")
+        (?\â€œ ?  _ "â€")
         (?\$ ?  _ "$")
         ))
 
@@ -234,7 +234,7 @@ Uses `current-date-time-format' for the formatting the date/time."
   (setq skeleton-pair t)
   (local-set-key (kbd "(") 'skeleton-pair-insert-maybe)
   (local-set-key (kbd "[") 'skeleton-pair-insert-maybe)
-  (local-set-key (kbd "£¨") 'skeleton-pair-insert-maybe)
+  (local-set-key (kbd "Â£Â¨") 'skeleton-pair-insert-maybe)
   (local-set-key (kbd "{") 'skeleton-c-mode-left-brace)
   )
 
@@ -244,9 +244,9 @@ Uses `current-date-time-format' for the formatting the date/time."
   (setq skeleton-pair t)
   (local-set-key (kbd "(") 'skeleton-pair-insert-maybe)
   (local-set-key (kbd "[") 'skeleton-pair-insert-maybe)
-  (local-set-key (kbd "£¨") 'skeleton-pair-insert-maybe)
+  (local-set-key (kbd "Â£Â¨") 'skeleton-pair-insert-maybe)
   (local-set-key (kbd "{") 'skeleton-pair-insert-maybe)
-  (local-set-key (kbd "¡°") 'skeleton-pair-insert-maybe)
+  (local-set-key (kbd "Â¡Â°") 'skeleton-pair-insert-maybe)
   )
 
 (add-hook 'text-mode-hook 'text-mode-auto-pair)
@@ -458,11 +458,25 @@ Uses `current-date-time-format' for the formatting the date/time."
 (defun yyc/load-w3m ()
   "Load configurations about w3m"
   (interactive)
-  (load-file "~/.emacs.d/rc/emacs-rc-w3m.elc")
+  (require 'emacs-rc-w3m)
   (w3m)
   )
 
+(defvar bn nil "nil")
+(defun yyc/w3m-open-this-page ()
+  "Call w3m to open this html file"
+  (interactive)
+  (setq bn (buffer-file-name))
+  (if (string= (file-name-extension bn) "org")
+      (setq fname (concat (file-name-sans-extension bn) ".html"
+                          ))
+    (setq fname bn))
+  (require 'emacs-rc-w3m)
+  (w3m fname)
+  )
+
 (global-set-key (kbd "<C-f8>") 'yyc/load-w3m)
+(global-set-key (kbd "<C-S-f8>") 'yyc/w3m-open-this-page)
 
 ;;;; Following functions are from Taylor, And this is the license.
 

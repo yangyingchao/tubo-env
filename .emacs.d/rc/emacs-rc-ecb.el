@@ -19,8 +19,8 @@
 (defun update-method
   (ecb-select-source)
   (if (ecb--semantic-active-p)
-  	  (ecb-update-methods-buffer--internal nil nil t)
-  	(ecb-rebuild-methods-buffer-for-non-semantic)))
+      (ecb-update-methods-buffer--internal nil nil t)
+    (ecb-rebuild-methods-buffer-for-non-semantic)))
 
 (defun toggle-ecb ()
   "Toggles ECB"

@@ -1,3 +1,4 @@
+;; -*- emacs-lisp -*- -*- coding: utf-8; -*-
 ;;; emacs-rc-dired.el begins ---
 
 (require 'dired)
