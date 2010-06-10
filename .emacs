@@ -133,7 +133,6 @@
 (require 'emacs-rc-ido)
 (require 'emacs-rc-ispell)
 (require 'emacs-rc-makefile-mode)
-(require 'emacs-rc-org)
 (require 'emacs-rc-psvn)
 (require 'emacs-rc-python)
 (require 'emacs-rc-recentf)
@@ -150,6 +149,7 @@
 (require 'emacs-rc-cedet)
 (require 'emacs-rc-ecb)
 (require 'emacs-rc-functions)
+(require 'emacs-rc-org)
 (require 'emacs-rc-auctex)
 (require 'emacs-rc-keybindings)
 
