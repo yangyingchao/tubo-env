@@ -15,10 +15,7 @@
   "Setup variables for windows."
   (set-frame-font
    " -outline-Monaco-normal-normal-normal-mono-14-*-*-*-c-*-iso8859-1")
-  (require 'cygwin-mount)
-  (cygwin-mount-activate)
-
-  (setq shellpath "d:/cygwin/bin/bash.exe")
+  (setq shellpath "d:/gnu/bin/bash.exe")
   (setq cedet-c-dependency-system-include-path "d:/gnu/include/")
   (setq cedet-sys-include-dirs (list
                                 "d:/gnu/lib/gcc/mingw32/3.4.5/include"
