@@ -28,6 +28,8 @@
        w3m-use-form t
        w3m-use-mule-ucs t
        w3m-use-favicon nil
+       w3m-display-inline-image nil
+       w3m-use-filter t
        w3m-command-arguments '("-cookie" "-F"))
 
 (standard-display-ascii ?\212 "-")
@@ -35,8 +37,6 @@
 (standard-display-ascii ?\227 [?-])
 (standard-display-ascii ?\222 [?'])
 (standard-display-ascii ?\225 [?+])
-(setq w3m-display-inline-image nil)
-(setq w3m-use-filter t)
 
 ;; send all pages through one filter
 (setq w3m-filter-rules `(("\\`.+" w3m-filter-all)))
