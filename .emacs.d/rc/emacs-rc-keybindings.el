@@ -1,6 +1,7 @@
+;;;; -*- emacs-lisp -*- -*- coding: utf-8; -*-
 ;;; emacs-rc-keybindings.el begins ---
 ;; (global-set-key [(control f1)] 'open-mylist)
-;; (global-set-key [(f1)] (lambda()        ;;Éè¶¨F1Îªwoman¿ì½İ¼ü
+;; (global-set-key [(f1)] (lambda()        ;;è®¾å®šF1ä¸ºwomanå¿«æ·é”®
 ;;           (interactive)
 ;;           (let ((woman-topic-at-point t))
 ;;             (woman))))
@@ -19,7 +20,7 @@
 (global-set-key [f5] 'eshell)
 (setq compile-command "make -f makefile")
 ;(global-set-key [f6] 'make)
-;(global-set-key [f7] 'sr-speedbar-toggle);f7´ò¿ª/¹Ø±Õspeedbar
+;(global-set-key [f7] 'sr-speedbar-toggle);f7æ‰“å¼€/å…³é—­speedbar
 
 (global-set-key (kbd "<C-f9>") 'bookmark-jump)
 (global-set-key [f9] 'bookmark-set)
@@ -28,9 +29,9 @@
 (autoload 'smerge-mode "smerge-mode" nil t)
 (global-set-key [f12] 'smerge-ediff)
 
-;;;; ³£ÓÃµÄ¼¸¸öÈÈ¼ü
-(global-set-key (kbd "C-,") 'backward-page); ÎÄ¼şÍ·
-(global-set-key (kbd "C-.") 'forward-page); ÎÄ¼şÎ²
+;;;; å¸¸ç”¨çš„å‡ ä¸ªçƒ­é”®
+(global-set-key (kbd "C-,") 'backward-page); æ–‡ä»¶å¤´
+(global-set-key (kbd "C-.") 'forward-page); æ–‡ä»¶å°¾
 (global-set-key (kbd "C-w") 'kill-region); For Windows OS.
 (global-set-key [(meta ?/)] 'hippie-expand)
 (global-set-key "\C-x\C-k" 'kill-region)
@@ -42,6 +43,7 @@
 (global-set-key "\C-xT" 'tabify)
 (global-set-key "\C-xt" 'untabify)
 (global-set-key "\C-x\M-l" 'fill-region)
+(global-set-key "\C-c\C-w" 'kill-buffer)
 (require 'rect-mark)
 (global-set-key (kbd "<C-S-SPC>") 'rm-set-mark)
 

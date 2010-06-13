@@ -119,10 +119,10 @@
 
 
 ;;;; Simple lisps needed to be enabled
-;;; Minibuffer的补齐功能（输入命令时候很有帮助）
+
 (require 'icomplete)
 (icomplete-mode t)
-;;; IOD Mode， 打开、搜索文件
+
 (require 'ido)
 (ido-mode t)
 (setq ido-enable-flex-matching t) ;; enable fuzzy matching

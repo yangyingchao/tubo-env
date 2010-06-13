@@ -134,7 +134,7 @@
   (list-bookmarks))
 
 
-;;;;   Ëõ½ø²ßÂÔ
+;;;;  缩进或者补齐
 (defun indent-or-complete ()
   "Complete if point is at end of a word, otherwise indent line."
   (interactive)
@@ -322,19 +322,11 @@ Uses `current-date-time-format' for the formatting the date/time."
   ;; highlight too long lines
   (font-lock-add-keywords nil '(("^[^\n]\\{120\\}\\(.*\\)$" 1 font-lock-warning-face t))))
 
-(defun enable-which-func ()
-  "Enable which-func-mode."
-  (require 'which-func)
-  (which-func-mode 1)
-  (setq which-func-unknown "unknown")
-  )
-
 (defun my-program-hook ()
   ;; Enable hide-ifdef-mode
   (yyc/show-prog-keywords)
   (setup-program-keybindings)
   (program-mode-auto-pair)
-  (enable-which-func)
   )
 
 (add-hook 'c-mode-common-hook 'my-program-hook)

@@ -19,19 +19,6 @@
                           text-mode xml-mode
                           ))
 
-;; The sources for common all mode.
-(custom-set-variables
- '(ac-sources
-   '(
-     ac-source-yasnippet
-     ac-source-semantic
-     ac-source-imenu
-     ac-source-abbrev
-     ac-source-words-in-buffer
-     ac-source-files-in-current-dir
-     ac-source-filename
-     )))
-
 ;;; Lisp mode
 (dolist (hook (list
                'emacs-lisp-mode-hook
@@ -62,6 +49,17 @@
                 '(eshell-mode))
         )
   )
+
+;; The sources for common all mode.
+(defun yyc/common-ac-source-setup ()
+  (setq ac-sources
+        '(
+          ac-source-yasnippet
+          ac-source-gtags
+          ac-source-semantic
+          ac-source-words-in-buffer
+          ac-source-filename
+          )))
 
 (provide 'emacs-rc-auto-complete)
 ;;; emacs-rc-auto-complete.el ends here
