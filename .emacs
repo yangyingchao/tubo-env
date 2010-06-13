@@ -118,30 +118,49 @@
 (setq version-control t)
 
 
+;;;; Simple lisps needed to be enabled
+;;; Minibuffer的补齐功能（输入命令时候很有帮助）
+(require 'icomplete)
+(icomplete-mode t)
+;;; IOD Mode， 打开、搜索文件
+(require 'ido)
+(ido-mode t)
+(setq ido-enable-flex-matching t) ;; enable fuzzy matching
+
+(require 'make-mode)
+(autoload 'makefile-mode "makefile-mode" nil t)
+(add-to-list 'auto-mode-alist
+             '("Makefile.*" . makefile-mode))
+(add-to-list 'auto-mode-alist
+             '("makefile.*" . makefile-mode))
+
+(require 'recentf)
+(setq recentf-auto-cleanup 'never)
+(recentf-mode 1)
+(setq recentf-max-menu-items 10)
+(setq recentf-max-saved-items 99)
+(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+
+(require 'session)
+(add-hook 'after-init-hook 'session-initialize)
+
+
+
 ;;;; Load plugins
 (require 'emacs-rc-platform)
 (require 'emacs-rc-global)
-;; (require 'emacs-rc-cscope)
 (require 'emacs-rc-dired)
 (require 'emacs-rc-auto-complete)
 (require 'emacs-rc-auto-header)
 (require 'emacs-rc-auto-insert)
 (require 'emacs-rc-highlight-utility)
 (require 'emacs-rc-browse-kill-ring)
-(require 'emacs-rc-cmake)
-(require 'emacs-rc-icomplete)
-(require 'emacs-rc-ido)
 (require 'emacs-rc-ispell)
-(require 'emacs-rc-makefile-mode)
 (require 'emacs-rc-psvn)
 (require 'emacs-rc-python)
-(require 'emacs-rc-recentf)
-(require 'emacs-rc-session)
 (require 'emacs-rc-speedbar)
 (require 'emacs-rc-rfc)
 (require 'emacs-rc-tramp)
-(require 'emacs-rc-which-func)
-(require 'emacs-rc-wiki)
 (require 'emacs-rc-woman)
 (require 'emacs-rc-xml)
 (require 'emacs-rc-yasnippet)
