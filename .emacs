@@ -102,8 +102,8 @@
   (set-face-attribute 'font-lock-variable-name-face  nil
                       :bold t)
   (set-face-attribute 'font-lock-warning-face  nil
-                      :foreground "#a40000"
-                      :background "#204a87"
+                      :foreground "#d14a14"
+                      :background "#1248d1"
                       :bold t)
   (set-face-attribute 'font-lock-function-name-face nil
                       :bold t)
