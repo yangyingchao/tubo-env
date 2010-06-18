@@ -252,7 +252,6 @@ Uses `current-date-time-format' for the formatting the date/time."
   )
 (add-hook 'text-mode-hook 'base-auto-pair)
 
-
 (defun setup-program-keybindings()
   (interactive)
 
@@ -260,35 +259,8 @@ Uses `current-date-time-format' for the formatting the date/time."
   (local-set-key  [(tab)] 'indent-or-complete)
   (local-set-key  [(return)] 'newline-and-indent)
 
-  (xgtags-mode 1)
-
-  ;; ;;;;   "Setup key-binding for cscope"
-  ;; (local-set-key "\C-css" 'cscope-find-this-symbol)
-  ;; (local-set-key "\C-csd" 'cscope-find-global-definition)
-  ;; (local-set-key "\C-csG" 'cscope-find-global-definition-no-prompting)
-  ;; (local-set-key "\C-csc" 'cscope-find-functions-calling-this-function)
-  ;; (local-set-key "\C-csC" 'cscope-find-called-functions)
-  ;; (local-set-key "\C-cst" 'cscope-find-this-text-string)
-  ;; (local-set-key "\C-cse" 'cscope-find-egrep-pattern)
-  ;; (local-set-key "\C-csf" 'cscope-find-this-file)
-  ;; (local-set-key "\C-csi" 'cscope-find-files-including-file)
-  ;; (local-set-key "\C-csb" 'cscope-display-buffer)
-  ;; (local-set-key "\C-csB" 'cscope-display-buffer-toggle)
-  ;; (local-set-key "\C-csn" 'cscope-next-symbol)
-  ;; (local-set-key "\C-csN" 'cscope-next-file)
-  ;; (local-set-key "\C-csp" 'cscope-prev-symbol)
-  ;; (local-set-key "\C-csP" 'cscope-prev-file)
-  ;; (local-set-key "\C-csu" 'cscope-pop-mark)
-  ;; (local-set-key "\C-csa" 'cscope-set-initial-directory)
-  ;; (local-set-key "\C-csA" 'cscope-unset-initial-directory)
-  ;; (local-set-key "\C-csL" 'cscope-create-list-of-files-to-index)
-  ;; (local-set-key "\C-csI" 'cscope-index-files)
-  ;; (local-set-key "\C-csE" 'cscope-edit-list-of-files-to-index)
-  ;; (local-set-key "\C-csW" 'cscope-tell-user-about-directory)
-  ;; (local-set-key "\C-csS" 'cscope-tell-user-about-directory)
-  ;; (local-set-key "\C-csT" 'cscope-tell-user-about-directory)
-  ;; (local-set-key "\C-csD" 'cscope-dired-directory)
-  ;; (local-set-key "\C-csU" 'cscope-update-db)
+  (xgtags-mode 1) ;; keybindings for xgtags.
+  (local-set-key (kbd "C-M-|") 'align)
 
   ;;;; "keybindings for sematic"
   (semantic-default-c-setup)
