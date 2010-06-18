@@ -261,6 +261,9 @@ Uses `current-date-time-format' for the formatting the date/time."
 
   (xgtags-mode 1) ;; keybindings for xgtags.
   (local-set-key (kbd "M-|") 'align)
+  (global-set-key (kbd "<C-tab>") (lambda()   (interactive)
+                                    (align (line-beginning-position) (line-end-position))
+                                    ))
 
   ;;;; "keybindings for sematic"
   (semantic-default-c-setup)

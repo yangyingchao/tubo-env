@@ -41,6 +41,7 @@
   (tex-mode-auto-pair)
   (LaTeX-math-mode)
   (turn-on-reftex)
+  (flyspell-mode)
   )
 
 (add-hook 'LaTeX-mode-hook 'yyc/latex-mode-hook)

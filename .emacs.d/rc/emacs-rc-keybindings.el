@@ -58,8 +58,5 @@
 (global-set-key [end]  'home-end-end)
 (global-set-key [home] 'home-end-home)
 
-(global-set-key (kbd "<C-tab>") 'align-current)
-
-
 (provide 'emacs-rc-keybindings)
 ;;; emacs-rc-keybindings.el ends here
