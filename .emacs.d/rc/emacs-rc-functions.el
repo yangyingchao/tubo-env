@@ -260,7 +260,7 @@ Uses `current-date-time-format' for the formatting the date/time."
   (local-set-key  [(return)] 'newline-and-indent)
 
   (xgtags-mode 1) ;; keybindings for xgtags.
-  (local-set-key (kbd "C-M-|") 'align)
+  (local-set-key (kbd "M-|") 'align)
 
   ;;;; "keybindings for sematic"
   (semantic-default-c-setup)

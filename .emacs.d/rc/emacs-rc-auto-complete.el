@@ -60,6 +60,8 @@
           ac-source-words-in-buffer
           ac-source-filename
           )))
+(add-hook 'auto-complete-mode-hook 'yyc/common-ac-source-setup)
+
 
 (provide 'emacs-rc-auto-complete)
 ;;; emacs-rc-auto-complete.el ends here
