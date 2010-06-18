@@ -4,7 +4,7 @@
 (require 'auto-complete-config)
 
 (ac-config-default) ; 调用默认设置, defined in auto-complete-config.el。
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/templates/dic")
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/templates/ac-dict")
 
 ;;; Autofill Keybinding.
 (when (require 'auto-complete nil t)
