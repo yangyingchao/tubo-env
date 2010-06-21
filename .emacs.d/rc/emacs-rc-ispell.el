@@ -26,7 +26,7 @@
 (global-set-key [f11] 'ispell-buffer)
 (global-set-key (kbd "<C-f11>") 'flyspell-mode)
 (global-set-key (kbd "<C-S-f11>") 'flyspell-prog-mode)
-(global-set-key (kbd "<C-M-f11>") 'ispell-word)
+(global-set-key (kbd "<S-f11>") 'ispell-word)
 
 (provide 'emacs-rc-ispell)
 
