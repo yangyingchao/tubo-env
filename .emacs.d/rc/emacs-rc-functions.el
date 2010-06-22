@@ -177,9 +177,18 @@
   (byte-compile-file fname))
 
 ;;;; Make current-buffer 10 lines higher.
-(defun my-adjust-window()
+(defun my-adjust-window ()
+  "Adjust window quickly."
   (interactive)
   (enlarge-window 10))
+
+(defun my-adjust-window-horizontal ()
+  "Adjust window quickly."
+  (interactive)
+  (enlarge-window 20 t))
+
+(global-set-key (kbd"C-M-^") 'my-adjust-window)
+(global-set-key (kbd "C-M->") 'my-adjust-window-horizontal)
 
 ;; date and time
 (defvar current-date-time-format "%a %b %d %H:%M:%S %Z %Y"
