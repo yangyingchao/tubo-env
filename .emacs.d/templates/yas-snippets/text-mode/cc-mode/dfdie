@@ -1,0 +1,5 @@
+inline die(int ret, char * Reason)
+{
+       perror(Reason) ;
+       return ret;
+}
