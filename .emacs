@@ -172,11 +172,11 @@
 (require 'emacs-rc-functions)
 (require 'emacs-rc-org)
 (require 'emacs-rc-auctex)
+(require 'emacs-rc-html)
 (require 'emacs-rc-keybindings)
 
-
 ;;;; Start Emacs as server.
-(server-start)
 (require 'emacs-rc-chrome)
+(server-start)
 
 (recentf-open-files)

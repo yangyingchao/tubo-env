@@ -2,15 +2,6 @@
 #define _@@@_
 
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-
-#ifdef __cplusplus
-}
-#endif /* cplusplus */
-
 #endif /* _@@@_ */
 /*
  * Editor modelines
