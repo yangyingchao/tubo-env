@@ -224,6 +224,12 @@ Uses `current-date-time-format' for the formatting the date/time."
   (interactive)
   (insert (format-time-string current-date-format (current-time))))
 
+(defun insert-current-buffername ()
+  "insert the current time (1-week scope) into the current buffer."
+  (interactive)
+  (insert (buffer-file-name (current-buffer)))
+  )
+
 (defvar skeleton-pair-alist nil)
 (defvar skeleton-pair t)
 (setq skeleton-pair-alist
@@ -254,7 +260,6 @@ Uses `current-date-time-format' for the formatting the date/time."
   (local-set-key (kbd "[") 'skeleton-pair-insert-maybe)
   (local-set-key (kbd "'") 'skeleton-pair-insert-maybe)
   (local-set-key (kbd "\"") 'skeleton-pair-insert-maybe)
-  (local-set-key (kbd "<") 'skeleton-pair-insert-maybe)
   (local-set-key (kbd "“") 'skeleton-pair-insert-maybe)
   (local-set-key (kbd "{") 'skeleton-pair-insert-maybe)
   (local-set-key (kbd "（") 'skeleton-pair-insert-maybe)
@@ -276,8 +281,6 @@ Uses `current-date-time-format' for the formatting the date/time."
 
   ;;;; "keybindings for sematic"
   (semantic-default-c-setup)
-  (local-set-key "." 'semantic-complete-self-insert)
-  (local-set-key ">" 'semantic-complete-self-insert)
   (local-set-key "\C-c?" 'semantic-ia-complete-symbol-menu)
   (local-set-key "\C-cb" 'semantic-mrub-switch-tags)
   (local-set-key "\C-cR" 'semantic-symref)
@@ -288,11 +291,9 @@ Uses `current-date-time-format' for the formatting the date/time."
   (local-set-key "\C-c/" 'semantic-ia-complete-symbol)
   (local-set-key [(control return)] 'semantic-ia-complete-symbol)
   ;;;; Others
-  (local-set-key "\C-ch" 'sourcepair-load)
-  (local-set-key "\C-xh" 'sourcepair-load)
+  (local-set-key "\C-c\C-h" 'sourcepair-load)
+  (local-set-key "\C-x\C-h" 'sourcepair-load)
   (local-set-key "\C-c\C-r" 'semantic-symref)
-  (local-set-key "\C-c;" 'comment-region)
-  (local-set-key "\C-c:" 'uncomment-region)
   )
 
 (defun yyc/show-prog-keywords ()
@@ -308,6 +309,7 @@ Uses `current-date-time-format' for the formatting the date/time."
 
 (defun my-program-hook ()
   ;; Enable hide-ifdef-mode
+  (require 'emacs-rc-doxgen)
   (yyc/show-prog-keywords)
   (setup-program-keybindings)
   (program-mode-auto-pair)
@@ -370,8 +372,6 @@ Uses `current-date-time-format' for the formatting the date/time."
 
 ;;;; Untabify
 (setq yyc/untabify-modes '(haskell-mode
-                           emacs-lisp-mode
-                           lisp-mode
                            scheme-mode
                            erlang-mode
                            python-mode

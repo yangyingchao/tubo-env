@@ -20,6 +20,7 @@
         ("\\.py$" . ["insert.py" auto-update-defaults])
         ("\\.tex$" . ["insert.tex" auto-update-defaults])
         ("\\.html$" . ["insert.html" auto-update-defaults])
+        ("\\.devhelp2$" . ["insert.devhelp2" auto-update-defaults])
         ))
 
 ;; function replaces the string '@@@' by the current file
@@ -39,7 +40,7 @@
 (defun insert-today ()
   "Insert today's date into buffer"
   (interactive)
-  (insert (format-time-string "%A, %B %e %Y" (current-time))))
+  (insert (format-time-string "%m-%e-%Y" (current-time))))
 
 (defun auto-update-c-source-file ()
   (save-excursion

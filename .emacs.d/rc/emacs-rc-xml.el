@@ -7,7 +7,7 @@
   (unify-8859-on-decoding-mode)
   (setq ispell-skip-html t)
   (hs-minor-mode 1)
-  (text-mode-auto-pair)
+  (base-auto-pair)
   )
 
 (add-hook 'nxml-mode-hook 'my-nxml-mode-hook)

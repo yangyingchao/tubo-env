@@ -1,7 +1,7 @@
 ;;; emacs-rc-auctex.el begins ---
 ;;;; -*- emacs-lisp -*- -*- coding: utf-8; -*-
 
-(load "auctex.elc" nil t t)
+(load "auctex.el" nil t t)
 
 (require 'tex)
 
@@ -10,6 +10,18 @@
 (setq TeX-parse-self t)
 (setq reftex-plug-into-AUCTeX t)
 ;(setq-default TeX-master nil)
+
+(defun yyc/insert-tex-paper ()
+  "Insert latex template for writing paper"
+  (interactive)
+  (insert-file "~/.emacs.d/templates/auto-insert/article.tex")
+  )
+
+(defun yyc/insert-tex-beamer ()
+  "Insert latex template for writing paper"
+  (interactive)
+  (insert-file "~/.emacs.d/templates/auto-insert/beamer.tex")
+  )
 
 (defun tex-mode-auto-pair ()
   (interactive)

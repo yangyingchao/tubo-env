@@ -57,5 +57,11 @@
 (global-set-key [end]  'home-end-end)
 (global-set-key [home] 'home-end-home)
 
+(global-set-key "\C-c;" 'comment-region)
+(global-set-key "\C-c:" 'uncomment-region)
+(global-set-key "\C-cc" 'comment-region)
+(global-set-key "\C-cu" 'uncomment-region)
+
+
 (provide 'emacs-rc-keybindings)
 ;;; emacs-rc-keybindings.el ends here

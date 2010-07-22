@@ -38,6 +38,10 @@
 (setq org-export-creator-info nil)
 (setq org-export-time-stamp-file nil)
 
+(font-lock-add-keywords nil
+  '(("\\<\\(FIX\\|FIXME\\|BUG\\|XXX\\|HACK\\):" 1
+     font-lock-warning-face t)))
+
 (defun process-underline ()
   "Process Underline, replace them with \_"
   (interactive)

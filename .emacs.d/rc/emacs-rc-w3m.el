@@ -30,7 +30,8 @@
        w3m-use-favicon nil
        w3m-display-inline-image nil
        w3m-use-filter t
-       w3m-command-arguments '("-cookie" "-F"))
+       w3m-command-arguments '("-cookie" "-F"
+                               "-o http_proxy=127.0.0.1:5866"))
 
 (standard-display-ascii ?\212 "-")
 (standard-display-ascii ?\226 "-")
