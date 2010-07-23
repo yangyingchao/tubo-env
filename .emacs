@@ -86,7 +86,8 @@
   (set-face-background 'modeline-inactive "DarkSlateGray2")
   (set-face-background 'fringe "#eeeeec")
   (set-face-background 'region "#fce94f")
-  (set-face-background 'default "#f8f8d8")
+  ;; (set-face-background 'default "#f8f8d8")
+  (set-face-background 'default "#fefdeb")
   (set-face-background 'header-line "lemonchiffon1")
   (set-face-background 'trailing-whitespace "#f57900")
   ;; Settings for Font faces.
