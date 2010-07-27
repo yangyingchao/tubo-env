@@ -181,3 +181,38 @@
 (server-start)
 
 (recentf-open-files)
+(custom-set-variables
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(calendar-mark-diary-entries-flag t)
+ '(column-number-mode t)
+ '(diary-file "~/Work/Orgs/diary")
+ '(display-time-mode t)
+ '(org-agenda-dim-blocked-tasks (quote invisible))
+ '(org-agenda-files (quote ("~/Work/Orgs/work.org" "~/Work/Orgs/mics.org")))
+ '(org-agenda-include-all-todo t)
+ '(org-agenda-include-diary t)
+ '(org-agenda-skip-deadline-if-done t)
+ '(org-agenda-skip-scheduled-if-done t)
+ '(org-blank-before-new-entry (quote ((heading . auto) (plain-list-item))))
+ '(org-enforce-todo-checkbox-dependencies t)
+ '(org-hide-leading-stars t)
+ '(org-log-done t)
+ '(org-special-ctrl-a/e t)
+ '(org-special-ctrl-k t)
+ '(org-startup-folded nil)
+ '(org-todo-keywords (quote ((sequence "TODO(t)" "WAITING(w)" "STARTED(s)" "|" "DONE(d)" "CANCELED(c)"))))
+ '(org-use-property-inheritance t)
+ '(semantic-default-submodes (quote (global-semantic-decoration-mode global-semantic-idle-completions-mode global-semantic-idle-scheduler-mode global-semanticdb-minor-mode global-semantic-idle-summary-mode global-semantic-mru-bookmark-mode)))
+ '(semantic-idle-scheduler-idle-time 3)
+ '(show-paren-mode t)
+ '(speedbar-supported-extension-expressions (append speedbar-supported-extension-expressions (quote ("rfc[0-9]+\\.txt")))))
+(custom-set-faces
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :stipple nil :background "#fefdeb" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 113 :width normal :foundry "unknown" :family "文泉驿等宽微米黑"))))
+ '(rfcview-title-face ((t (:foreground "darkgreen" :weight bold)))))

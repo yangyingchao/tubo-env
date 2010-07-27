@@ -6,7 +6,7 @@
 
 (defun open-mylist ()
   (interactive)
-  (find-file "~/Work/Orgs/work.org"))
+  (find-file "~/Work/Orgs/to_do_today.org"))
 
 (defun reload-file ()
   (interactive)

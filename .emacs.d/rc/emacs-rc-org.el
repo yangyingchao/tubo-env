@@ -27,7 +27,7 @@
  '(diary-file "~/Work/Orgs/diary")
  '(mark-diary-entries-in-calendar t)
  '(org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "STARTED(s)"
-                                 "|" "DONE(d)" "CANCELED(c)")))
+                                 "DOING(G)" "DONE(d)" "CANCELED(c)")))
  '(org-agenda-files (quote (
                             "~/Work/Orgs/work.org"
                             "~/Work/Orgs/mics.org"))))
@@ -37,10 +37,6 @@
 (setq org-export-author-info nil)
 (setq org-export-creator-info nil)
 (setq org-export-time-stamp-file nil)
-
-(font-lock-add-keywords nil
-  '(("\\<\\(FIX\\|FIXME\\|BUG\\|XXX\\|HACK\\):" 1
-     font-lock-warning-face t)))
 
 (defun process-underline ()
   "Process Underline, replace them with \_"
@@ -61,6 +57,17 @@
 (insert "\\_")
   )
 
+(defun yyc/show-pomodoro-keywords ()
+  "Pomodoro Keywords, used by pomodoro technique "
+  (interactive)
+  ;; highlight additional keywords
+  (font-lock-add-keywords nil '(("\\<\\(TODO \\)" 1 font-lock-comment-face t)))
+  (font-lock-add-keywords nil '(("\\<\\(DONE \\):" 1 font-lock-builtin-face t)))
+  (font-lock-add-keywords nil '(("\\<\\(DOING \\):" 1 font-lock-function-name-face t)))
+  ;; highlight too long lines
+  (font-lock-add-keywords nil '(("^[^\n]\\{120\\}\\(.*\\)$" 1
+  font-lock-warning-face t))))
+
 (defun yyc/org-mode-hooks ()
   "Functions will run when entering org-mode"
   (interactive)
@@ -70,6 +77,7 @@
   (org-defkey org-mode-map [(control ?,)]     'backward-page)
   (org-defkey org-mode-map (kbd "_") 'insert-instead)
   (base-auto-pair)
+  (yyc/show-pomodoro-keywords)
   )
 
 (add-hook 'org-mode-hook 'yyc/org-mode-hooks)

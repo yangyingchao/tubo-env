@@ -51,6 +51,15 @@
   (local-set-key "." 'semantic-complete-self-insert)
   (local-set-key ">" 'semantic-complete-self-insert)
   )
+
+(defun yyc/change-tab-mode ()
+  "Function to change tabs quickly"
+  (interactive)
+  (setq-default tab-width 8)
+  (setq-default c-basic-offset 8)
+  (setq-default indent-tabs-mode nil)
+  )
+
 (add-hook 'c-mode-common-hook 'yyc/c-mode-keys)
 
 
