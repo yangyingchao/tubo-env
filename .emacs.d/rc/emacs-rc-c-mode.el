@@ -57,7 +57,7 @@
   (interactive)
   (setq-default tab-width 8)
   (setq-default c-basic-offset 8)
-  (setq-default indent-tabs-mode nil)
+  (setq-default indent-tabs-mode t)
   )
 
 (add-hook 'c-mode-common-hook 'yyc/c-mode-keys)
