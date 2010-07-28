@@ -32,8 +32,11 @@
 
 (defun setup-linux ()
   "Setup variables for linux"
+(if (string-equal system-name "ITC-208024")
   (set-frame-font
   "-unknown-文泉驿等宽微米黑-normal-normal-normal-*-14-*-*-*-*-0-iso10646-1")
+  (set-frame-font
+  "-unknown-文泉驿等宽微米黑-normal-normal-normal-*-15-*-*-*-*-0-iso10646-1"))
   (setq shellpath "/bin/bash")
   (setq cedet-c-dependency-system-include-path "/usr/include/")
   (setq cedet-sys-include-dirs (list

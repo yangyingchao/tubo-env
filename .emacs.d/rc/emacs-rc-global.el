@@ -8,7 +8,7 @@
   (if xgtags-mode
       (progn
         (message "start to global -uv")
-        (start-process "yp-xgtags-append" "*scratch*" "global" "-u"))))
+        (start-process "yp-xgtags-append" "*scratch*" "global" "-uv"))))
 
   ;;;; "Setup key-binding for xgtags"
 (defun yyc/xgtags-hook-func ()
