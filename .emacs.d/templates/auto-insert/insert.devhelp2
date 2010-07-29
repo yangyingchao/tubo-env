@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE book
+  PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN'
+  ''>
+<book author="" language="c" link="XXX.html" name="" title="XXX" version="2" xmlns="http://www.devhelp.net/book">
+  <chapters>
+    <sub link="XXX.html" name="XXX">
+    </sub>
+  </chapters>
+  <functions>
+    <keyword link="XXX" name="XXX" type="function"/>
+  </functions>
+</book>

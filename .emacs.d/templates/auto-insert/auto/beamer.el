@@ -1,0 +1,27 @@
+(TeX-add-style-hook "beamer"
+ (lambda ()
+    (TeX-run-style-hooks
+     "fontenc"
+     "T1"
+     "xcolor"
+     "times"
+     "textcomp"
+     "pxfonts"
+     "listings"
+     "latexsym"
+     "indentfirst"
+     "flafter"
+     "fancybox"
+     "enumerate"
+     "cmap"
+     "longtable"
+     "booktabs"
+     "amsmath"
+     "CJKutf8"
+     "latex2e"
+     "beamer10"
+     "red"
+     "slidestop"
+     "compress"
+     "mathserif")))
+
