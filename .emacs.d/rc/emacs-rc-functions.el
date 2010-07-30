@@ -143,13 +143,13 @@
     (indent-for-tab-command)
     ))
 
-;;;;Êó±ê¹öÂÖ£¬Ä¬ÈÏµÄ¹ö¶¯Ì«¿ì£¬ÕâÀï¸ÄÎª3ÐÐ
+(global-set-key  [(tab)] 'indent-or-complete)
+
 (defun up-slightly ()
   (interactive) (scroll-up 3))
 (defun down-slightly ()
   (interactive) (scroll-down 3))
 
-;;;;shell,gdbÍË³öºó£¬×Ô¶¯¹Ø±Õ¸Ãbuffer
 (defun mode-hook-func  ()
   (set-process-sentinel (get-buffer-process (current-buffer))
                         #'kill-buffer-on-exit)
@@ -270,7 +270,6 @@ Uses `current-date-time-format' for the formatting the date/time."
   (interactive)
 
   ;;;; Common program-keybindings
-  (local-set-key  [(tab)] 'indent-or-complete)
   (local-set-key  [(return)] 'newline-and-indent)
 
   (xgtags-mode 1) ;; keybindings for xgtags.
