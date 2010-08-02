@@ -309,6 +309,8 @@ Uses `current-date-time-format' for the formatting the date/time."
   (local-set-key "\C-cr" 'semantic-symref-symbol)
   (local-set-key "\C-c/" 'semantic-ia-complete-symbol)
   (local-set-key [(control return)] 'semantic-ia-complete-symbol)
+
+  (local-set-key "\C-cdf" 'srecode-document-insert-function-comment)
   ;;;; Others
   (local-set-key "\C-c\C-h" 'sourcepair-load)
   (local-set-key "\C-x\C-h" 'sourcepair-load)
@@ -328,7 +330,6 @@ Uses `current-date-time-format' for the formatting the date/time."
 
 (defun my-program-hook ()
   ;; Enable hide-ifdef-mode
-  (require 'emacs-rc-doxgen)
   (yyc/show-prog-keywords)
   (setup-program-keybindings)
   (program-mode-auto-pair)

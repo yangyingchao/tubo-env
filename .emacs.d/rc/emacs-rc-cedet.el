@@ -5,14 +5,8 @@
 
 ;;;; gcc setup
 (require 'eldoc)
-(require 'srecode)
 (require 'semantic/analyze/refs)
 
-
-
-
-;; (global-semantic-mru-bookmark-mode 1)
-(global-srecode-minor-mode 1)
 (setq semantic-imenu-auto-rebuild-directory-indexes nil)
 (setq semanticdb-search-system-databases t)
 (setq senator-minor-mode-name "SN")
@@ -104,6 +98,10 @@ the mru bookmark stack."
 (require 'my-project)
 
 ;;;; Custom template for srecode
+(require 'srecode)
+(setq srecode-minor-menu t)
+(srecode-minor-mode 1)
+
 (setq srecode-map-load-path
   (list (srecode-map-base-template-dir)
 	(expand-file-name "~/.emacs.d/templates/srecode")

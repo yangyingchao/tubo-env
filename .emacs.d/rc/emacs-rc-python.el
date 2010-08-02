@@ -15,5 +15,21 @@
             interpreter-mode-alist))
 (autoload 'python-mode "python-mode" "Python editing mode." t)
 
+(defun yyc/setup-hippie-list ()
+  "description"
+  (setq hippie-expand-try-functions-list
+        '(
+          yas/hippie-try-expand
+          try-expand-dabbrev
+          try-expand-dabbrev-visible
+          try-expand-dabbrev-all-buffers
+          try-expand-dabbrev-from-kill
+          try-complete-file-name-partially
+          try-complete-file-name
+          try-expand-all-abbrevs))
+  )
+
+(add-hook 'python-mode-hook 'yyc/setup-hippie-list)
+
 (provide 'emacs-rc-python)
 ;;; emacs-rc-pyton.el ends here
