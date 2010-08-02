@@ -4,11 +4,8 @@
 
 (defvar shellpath nil
   "Path of which shell will be used by emacs.")
-(defvar cedet-sys-include-dirs nil "system include dir for cedet" )
 
 (defvar platform-rfc-dir nil "rfc dir for rfc-view")
-
-(defvar cedet-c-dependency-system-include-path nil )
 
 (defun setup-font ()
   (if (string-equal system-name "ITC-208024")
@@ -20,17 +17,7 @@
 
 (setup-font)
 (setq shellpath "/bin/bash")
-(setq cedet-c-dependency-system-include-path "/usr/include/")
-(setq cedet-sys-include-dirs (list
-                              "/usr/include"
-                              "/usr/include/bits"
-                              "/usr/include/glib-2.0"
-                              "/usr/include/gnu"
-                              "/usr/include/gtk-2.0"
-                              "/usr/include/gtk-2.0/gdk-pixbuf"
-                              "/usr/include/gtk-2.0/gtk"
-                              "/usr/local/include"
-                              "/usr/local/include"))
+
 (setq  platform-rfc-dir "~/Documents/rfcs/")
 (setq shell-file-name shellpath)
 (setq-default explicit-shell-file-name shellpath)

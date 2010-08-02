@@ -36,6 +36,7 @@
 ;; The sources for common all mode.
 (setq-default ac-sources
       '(
+        ac-source-semantic
         ac-source-yasnippet
         ac-source-words-in-buffer
         ac-source-filename

@@ -135,6 +135,19 @@
 
 
 ;;;;  缩进或者补齐
+;;; hippie-try-expand settings
+(setq hippie-expand-try-functions-list
+      '(
+        yas/hippie-try-expand
+        semantic-ia-complete-symbol
+        try-expand-dabbrev
+        try-expand-dabbrev-visible
+        try-expand-dabbrev-all-buffers
+        try-expand-dabbrev-from-kill
+        try-complete-file-name-partially
+        try-complete-file-name
+        try-expand-all-abbrevs))
+
 (defun indent-or-complete ()
   "Complete if point is at end of a word, otherwise indent line."
   (interactive)
@@ -143,7 +156,14 @@
     (indent-for-tab-command)
     ))
 
-(global-set-key  [(tab)] 'indent-or-complete)
+
+(defun yyc/indent-key-setup ()
+  "Set tab as key for indent-or-complete"
+  (local-set-key  [(tab)] 'indent-or-complete)
+  )
+
+(add-hook 'html-mode-common-hook 'yyc/indent-key-setup)
+(add-hook 'LaTeX-mode-hook 'yyc/indent-key-setup)
 
 (defun up-slightly ()
   (interactive) (scroll-up 3))
@@ -285,7 +305,7 @@ Uses `current-date-time-format' for the formatting the date/time."
   (local-set-key "\C-cR" 'semantic-symref)
   (local-set-key "\C-cj" 'semantic-ia-fast-jump)
   (local-set-key "\C-cp" 'semantic-ia-show-summary)
-  (local-set-key "\C-cd" 'semantic-ia-show-doc)
+  (local-set-key "\C-cl" 'semantic-ia-show-doc)
   (local-set-key "\C-cr" 'semantic-symref-symbol)
   (local-set-key "\C-c/" 'semantic-ia-complete-symbol)
   (local-set-key [(control return)] 'semantic-ia-complete-symbol)
@@ -312,6 +332,7 @@ Uses `current-date-time-format' for the formatting the date/time."
   (yyc/show-prog-keywords)
   (setup-program-keybindings)
   (program-mode-auto-pair)
+  (local-set-key  [(tab)] 'indent-or-complete)
   )
 
 (add-hook 'c-mode-common-hook 'my-program-hook)

@@ -4,13 +4,14 @@
 (require 'semantic/senator)
 
 ;;;; gcc setup
-(require 'semantic/bovine/gcc)
-(require 'semantic/bovine/c)
 (require 'eldoc)
 (require 'srecode)
 (require 'semantic/analyze/refs)
 
-(global-semantic-mru-bookmark-mode 1)
+
+
+
+;; (global-semantic-mru-bookmark-mode 1)
 (global-srecode-minor-mode 1)
 (setq semantic-imenu-auto-rebuild-directory-indexes nil)
 (setq semanticdb-search-system-databases t)
@@ -34,13 +35,16 @@ the mru bookmark stack."
                  '(project unloaded system recursive))
 (setq-mode-local c++-mode semanticdb-find-default-throttle
                  '(project unloaded system recursive))
-(setq-mode-local erlang-mode semanticdb-find-default-throttle
-                 '(project unloaded system recursive))
 
-
-;;;; Semantic DataBase存储位置
+;;;; Semanticdb 定制
+;; Semantic DataBase存储位置
 (setq semanticdb-default-save-directory
       (expand-file-name "~/.emacs.d/semanticdb"))
+;; 使用 gnu global 的TAGS。
+(require 'semantic/db-global)
+(semanticdb-enable-gnu-global-databases 'c-mode)
+(semanticdb-enable-gnu-global-databases 'c++-mode)
+
 
 (define-key-after (lookup-key global-map [menu-bar tools])
   [speedbar]
@@ -49,11 +53,23 @@ the mru bookmark stack."
   [calendar])
 
 ;;;; Include settings
+(require 'semantic/bovine/gcc)
+(require 'semantic/bovine/c)
+
 (defconst cedet-user-include-dirs
-  (list ".." "../include" "../inc" "../common" "../public"
+  (list ".." "../include" "../inc" "../common" "../public" "."
         "../.." "../../include" "../../inc" "../../common" "../../public"))
 
-(require 'semantic-c nil 'noerror)
+(setq cedet-sys-include-dirs (list
+                              "/usr/include"
+                              "/usr/include/bits"
+                              "/usr/include/glib-2.0"
+                              "/usr/include/gnu"
+                              "/usr/include/gtk-2.0"
+                              "/usr/include/gtk-2.0/gdk-pixbuf"
+                              "/usr/include/gtk-2.0/gtk"
+                              "/usr/local/include"
+                              "/usr/local/include"))
 
 (let ((include-dirs cedet-user-include-dirs))
   (setq include-dirs (append include-dirs cedet-sys-include-dirs))
@@ -62,7 +78,13 @@ the mru bookmark stack."
           (semantic-add-system-include dir 'c-mode))
         include-dirs))
 
-(setq semantic-c-dependency-system-include-path cedet-c-dependency-system-include-path)
+(setq semantic-c-dependency-system-include-path "/usr/include/")
+
+;;;; TAGS Menu
+(defun my-semantic-hook ()
+  (imenu-add-to-menubar "TAGS"))
+
+(add-hook 'semantic-init-hooks 'my-semantic-hook)
 
 
 ;;;;  Helper tools.
@@ -77,9 +99,15 @@ the mru bookmark stack."
 (global-semantic-show-parser-state-mode 1)
 
 ;;;; Enable Ede
-;; (require 'ede)
-;; (global-ede-mode 1)
-;; (require 'my-project)
+(require 'ede)
+(global-ede-mode 1)
+(require 'my-project)
+
+;;;; Custom template for srecode
+(setq srecode-map-load-path
+  (list (srecode-map-base-template-dir)
+	(expand-file-name "~/.emacs.d/templates/srecode")
+	))
 
 (provide 'emacs-rc-cedet)
 ;;; emacs-rc-cedet.el.el ends here

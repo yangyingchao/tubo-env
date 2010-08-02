@@ -48,6 +48,16 @@
 ;;;; C-mode-hooks .
 (defun yyc/c-mode-keys ()
   "description"
+  (semantic-default-c-setup)
+  (local-set-key "\C-c?" 'semantic-ia-complete-symbol-menu)
+  (local-set-key "\C-cb" 'semantic-mrub-switch-tags)
+  (local-set-key "\C-cR" 'semantic-symref)
+  (local-set-key "\C-cj" 'semantic-ia-fast-jump)
+  (local-set-key "\C-cp" 'semantic-ia-show-summary)
+  (local-set-key "\C-cl" 'semantic-ia-show-doc)
+  (local-set-key "\C-cr" 'semantic-symref-symbol)
+  (local-set-key "\C-c/" 'semantic-ia-complete-symbol)
+  (local-set-key [(control return)] 'semantic-ia-complete-symbol)
   (local-set-key "." 'semantic-complete-self-insert)
   (local-set-key ">" 'semantic-complete-self-insert)
   )

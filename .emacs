@@ -53,19 +53,6 @@
 (setq indent-line-function 'indent-relative-maybe)
 
 
-;;; hippie-try-expand settings
-(autoload 'senator-try-expand-semantic "senator")
-(setq hippie-expand-try-functions-list
-      '(yas/hippie-try-expand
-;;        senator-try-expand-sematic
-        try-expand-dabbrev
-        try-expand-dabbrev-visible
-        try-expand-dabbrev-all-buffers
-        try-expand-dabbrev-from-kill
-        try-complete-file-name-partially
-        try-complete-file-name
-        try-expand-all-abbrevs))
-
 (put 'upcase-region 'disabled nil) ;;  Enable upcase-region
 (put 'downcase-region 'disabled nil);; Enable downcase-region
 (put 'set-goal-column 'disabled nil)
