@@ -50,14 +50,17 @@ template copyright
 
 template filecomment :file :user :time
 ----
-{{comment_start}} {{FILENAME}} --- {{^}}
+{{comment_start}} {{FILENAME}} {{^}}
 {{comment_prefix}}
-{{comment_prefix}} Copyright (C) {{YEAR}} {{?AUTHOR}}
+{{comment_prefix}} INVENTEC corporation (c) {{YEAR}} all rights reserved.
+{{comment_prefix}} Description:
+{{comment_prefix}} Update:
+{{comment_prefix}} Date         Name            Reason
+{{comment_prefix}} ========== ================= =====================================
+{{comment_prefix}} {{DATE}}    {{AUTHOR}}       Create
 {{comment_prefix}}
-{{comment_prefix}} Author: {{AUTHOR}} <{{EMAIL}}>{{#RCS}}
-{{comment_prefix}} X-RCS: {{DOLLAR}}Id{{DOLLAR}}{{/RCS}}
-{{comment_prefix}}
-{{>:copyright}}
+{{comment_prefix}} Known issues:
+{{comment_prefix}} None.
 {{comment_end}}
 ----
 

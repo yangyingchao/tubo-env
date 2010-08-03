@@ -223,6 +223,10 @@ Note the weekly scope of the command's precision.")
   "Format of date to insert with `insert-current-date' func.
 Note the weekly scope of the command's precision.")
 
+(defvar current-year-format "%Y"
+  "Format of date to insert with `insert-current-date' func.
+Note the weekly scope of the command's precision.")
+
 (defun insert-current-date-time ()
   "insert the current date and time into current buffer.
 Uses `current-date-time-format' for the formatting the date/time."
@@ -243,6 +247,11 @@ Uses `current-date-time-format' for the formatting the date/time."
   "insert the current time (1-week scope) into the current buffer."
   (interactive)
   (insert (format-time-string current-date-format (current-time))))
+
+(defun insert-current-year ()
+  "insert the current time (1-week scope) into the current buffer."
+  (interactive)
+  (insert (format-time-string current-year-format (current-time))))
 
 (defun insert-current-buffername ()
   "insert the current time (1-week scope) into the current buffer."
@@ -310,7 +319,9 @@ Uses `current-date-time-format' for the formatting the date/time."
   (local-set-key "\C-c/" 'semantic-ia-complete-symbol)
   (local-set-key [(control return)] 'semantic-ia-complete-symbol)
 
+  ;;;; Keybindings for srecode
   (local-set-key "\C-cdf" 'srecode-document-insert-function-comment)
+  (local-set-key "\C-cdh" 'yyc/insert-file-header)
   ;;;; Others
   (local-set-key "\C-c\C-h" 'sourcepair-load)
   (local-set-key "\C-x\C-h" 'sourcepair-load)

@@ -107,5 +107,17 @@ the mru bookmark stack."
 	(expand-file-name "~/.emacs.d/templates/srecode")
 	))
 
+;;;; Customized functions to generate code quickly.
+(defun yyc/insert-file-header ()
+  "Insert file comment using srecode"
+  (interactive)
+  (srecode-insert "file:filecomment")
+  )
+
+(defun yyc/insert-function-comment ()
+  "Insert file comment using srecode"
+  (interactive)
+  (srecode-insert "file:filecomment")
+  )
 (provide 'emacs-rc-cedet)
 ;;; emacs-rc-cedet.el.el ends here
