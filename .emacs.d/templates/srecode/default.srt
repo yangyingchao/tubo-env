@@ -57,7 +57,7 @@ template filecomment :file :user :time
 {{comment_prefix}} Update:
 {{comment_prefix}} Date         Name            Reason
 {{comment_prefix}} ========== ================= =====================================
-{{comment_prefix}} {{DATE}}    {{AUTHOR}}       Create
+{{comment_prefix}} {{DATE}}    {{AUTHOR}}     Create
 {{comment_prefix}}
 {{comment_prefix}} Known issues:
 {{comment_prefix}} None.
