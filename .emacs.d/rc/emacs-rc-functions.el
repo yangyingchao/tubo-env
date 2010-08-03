@@ -322,6 +322,7 @@ Uses `current-date-time-format' for the formatting the date/time."
   ;;;; Keybindings for srecode
   (local-set-key "\C-cdf" 'srecode-document-insert-function-comment)
   (local-set-key "\C-cdh" 'yyc/insert-file-header)
+  (local-set-key "\C-cds" 'yyc/insert-single-comment)
   ;;;; Others
   (local-set-key "\C-c\C-h" 'sourcepair-load)
   (local-set-key "\C-x\C-h" 'sourcepair-load)

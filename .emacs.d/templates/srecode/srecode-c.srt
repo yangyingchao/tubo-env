@@ -208,6 +208,14 @@ Override this with your own preference to avoid using doxygen"
 {{>A:declaration:doxygen-function}}
 ----
 
+template comment-single :indent :blank
+"Used to put a nice comment in front of a function.
+Override this with your own preference to avoid using doxygen"
+----
+{{>A:declaration:doxygen-single}}
+----
+
+
 ;;; DOXYGEN FEATURES
 ;;
 ;;
@@ -237,10 +245,25 @@ context declaration
 template doxygen-function :indent :blank
 ----
 /**
- * @name: {{NAME}} - {{DOC}}{{^}}{{#ARGS}}
- * @param: {{NAME}} - {{DOC}}{{/ARGS}}
- * @return: {{TYPE}}
+ * {{NAME}} - {{^}}{{#ARGS}}
+ * @{{NAME}} - {{DOC}}{{/ARGS}}
+ *
+ * Return: {{TYPE}}
  */
+----
+
+;; template doxygen-function :indent :blank
+;; ----
+;; /**
+;;  * @name: {{NAME}} - {{DOC}}{{^}}{{#ARGS}}
+;;  * @param: {{NAME}} - {{DOC}}{{/ARGS}}
+;;  * @return: {{TYPE}}
+;;  */
+;; ----
+
+template doxygen-single :indent :blank
+----
+/* */
 ----
 
 template doxygen-variable-same-line

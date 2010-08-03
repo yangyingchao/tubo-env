@@ -28,7 +28,7 @@ context declaration
 ;;; Notes on the DOCUMENT templates.
 ;;
 ;; These templates recycle existing templates for doxygen in the
-;; more general C++ template set.
+;; more general c template set.
 
 template section-comment :indent :blank
 "A comment separating major sections of a file."

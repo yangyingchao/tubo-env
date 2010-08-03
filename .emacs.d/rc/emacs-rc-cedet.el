@@ -114,10 +114,10 @@ the mru bookmark stack."
   (srecode-insert "file:filecomment")
   )
 
-(defun yyc/insert-function-comment ()
-  "Insert file comment using srecode"
+(defun yyc/insert-single-comment ()
+  "Insert signle line of comment using srecode"
   (interactive)
-  (srecode-insert "file:filecomment")
+  (srecode-insert "declaration:comment-single")
   )
 (provide 'emacs-rc-cedet)
 ;;; emacs-rc-cedet.el.el ends here
