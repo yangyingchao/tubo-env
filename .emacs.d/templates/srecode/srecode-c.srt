@@ -237,9 +237,9 @@ context declaration
 template doxygen-function :indent :blank
 ----
 /**
- * @name {{NAME}} - {{DOC}}{{^}}{{#ARGS}}
- * @param {{NAME}} - {{DOC}}{{/ARGS}}
- * @return {{TYPE}}
+ * @name: {{NAME}} - {{DOC}}{{^}}{{#ARGS}}
+ * @param: {{NAME}} - {{DOC}}{{/ARGS}}
+ * @return: {{TYPE}}
  */
 ----
 
