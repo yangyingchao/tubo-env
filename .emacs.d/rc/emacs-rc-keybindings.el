@@ -71,6 +71,8 @@
 
 ;;; ### Doc-view ###
 ;;; --- 文档阅读器
+(require 'doc-view)
+(setq doc-view-continuous t)
 (lazy-unset-key
  '(".")
  doc-view-mode-map)                     ;卸载按键
