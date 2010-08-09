@@ -8,6 +8,11 @@
   (newline-and-indent)
   )
 
+(defun yyc/html-ws ()
+  "White Space."
+  (interactive)
+  (insert "&nbsp; ")
+  )
 
 (defun yyc/remove-hrefs ()
   "Funtion to remove hyperlinks quickly"
@@ -19,6 +24,7 @@
 (defun my-html-mode-hooks ()
   "description"
   (local-set-key (kbd "<C-return>") 'yyc/html-newline)
+  (local-set-key (kbd "C-x <SPC>") 'yyc/html-ws)
   )
 
 (add-hook 'html-mode-hook 'my-html-mode-hooks)
