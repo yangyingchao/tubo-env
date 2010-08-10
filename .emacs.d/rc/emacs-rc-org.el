@@ -29,8 +29,9 @@
  '(org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "STARTED(s)"
                                  "DOING(G)" "DONE(d)" "CANCELED(c)")))
  '(org-agenda-files (quote (
-                            "~/Work/Orgs/work.org"
-                            "~/Work/Orgs/mics.org"))))
+                            "~/Work/Orgs/activity_inventory.org"
+                            ))))
+
 
 (setq org-todo-keywords
       '((sequence "TODO" "DOING" "HANGUP" "|" "DONE" "CANCEL")))

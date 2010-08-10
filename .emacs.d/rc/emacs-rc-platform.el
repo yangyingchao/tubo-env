@@ -18,7 +18,6 @@
 (setup-font)
 (setq shellpath "/bin/bash")
 
-(setq  platform-rfc-dir "~/Documents/rfcs/")
 (setq shell-file-name shellpath)
 (setq-default explicit-shell-file-name shellpath)
 (setenv "SHELL" shell-file-name)

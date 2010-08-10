@@ -519,6 +519,7 @@ Uses `current-date-time-format' for the formatting the date/time."
       (setq fname (concat (file-name-sans-extension bn) ".html"
                           ))
     (setq fname bn))
+  (setq fname (concat "file://" fname))
   (require 'emacs-rc-w3m)
   (w3m fname)
   )

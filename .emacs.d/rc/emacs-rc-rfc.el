@@ -1,6 +1,8 @@
 ;;; emacs-rc-rfc.el begins ---
 
 (autoload 'rfcview-mode "rfcview" nil t)
+
+(setq  platform-rfc-dir "~/Documents/TechBooks/RFCs/")
 (setq auto-mode-alist
       (cons '("/rfc[0-9]+\\.txt\\(\\.gz\\)?\\'" . rfcview-mode)
             auto-mode-alist))
@@ -19,7 +21,7 @@
 (autoload 'get-rfc-view-rfc-at-point "get-rfc" "View the RFC at point" t nil)
 (autoload 'get-rfc-grep-rfc-index "get-rfc" "Grep rfc-index.txt" t nil)
 
-(setq get-rfc-wget-program "aria2c")
+(setq get-rfc-wget-program "wget")
 (setq get-rfc-remote-rfc-directory "http://www.rfc-editor.org/rfc/")
 
 (setq  get-rfc-local-rfc-directory platform-rfc-dir)
