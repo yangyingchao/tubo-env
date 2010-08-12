@@ -110,6 +110,9 @@
 ;;;; User Info 用户信息
 (setq user-full-name "Yang, Ying-chao")
 
+;;;; 最大化窗口
+(setq initial-frame-alist '((top . 0) (left . 0) (width . 175) (height . 70)))
+
 
 ;;;; Simple lisps needed to be enabled
 
