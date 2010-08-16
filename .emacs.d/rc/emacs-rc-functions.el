@@ -26,11 +26,21 @@
   (interactive)
   (find-file "~/.emacs.d/rc/")  )
 
+(defun edit-functions ()
+  "Jump to directory where rc files located"
+  (interactive)
+  (find-file "~/.emacs.d/rc/emacs-rc-functions.el")  )
 
 (defun edit-template ()
   "Dired into template."
   (interactive)
   (find-file "~/.emacs.d/templates/yas-snippets/text-mode"))
+
+(defun edit-devbooks ()
+  "Jump to the dir where I stored my devhelp books."
+  (interactive)
+  (find-file "~/Documents/DevHelp" )
+  )
 
 (defun load-this-file ()
   (interactive)
@@ -169,7 +179,7 @@
 (setq hippie-expand-try-functions-list
       '(
         yas/hippie-try-expand
-        semantic-ia-complete-symbol
+        ;; semantic-ia-complete-symbol
         try-expand-dabbrev
         try-expand-dabbrev-visible
         try-expand-dabbrev-all-buffers

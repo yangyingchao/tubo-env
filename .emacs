@@ -170,7 +170,6 @@
 (require 'emacs-rc-keybindings)
 
 ;;;; Start Emacs as server.
-(require 'emacs-rc-chrome)
 (server-start)
 
 (recentf-open-files)
