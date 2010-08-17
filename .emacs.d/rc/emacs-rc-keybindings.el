@@ -119,5 +119,7 @@
  doc-view-mode-map
  )
 
+(setq doc-view-cache-directory "~/.emacs.d/docview")
+
 (provide 'emacs-rc-keybindings)
 ;;; emacs-rc-keybindings.el ends here

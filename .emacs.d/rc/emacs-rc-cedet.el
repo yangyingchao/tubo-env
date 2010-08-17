@@ -117,7 +117,8 @@ the mru bookmark stack."
 (defun yyc/insert-single-comment ()
   "Insert signle line of comment using srecode"
   (interactive)
-  (srecode-insert "declaration:comment-single")
+  (insert "	/* */")
+  ;; (srecode-insert "declaration:comment-single")
   )
 (provide 'emacs-rc-cedet)
 ;;; emacs-rc-cedet.el.el ends here
