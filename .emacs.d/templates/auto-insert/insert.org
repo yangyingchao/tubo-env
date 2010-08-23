@@ -1,3 +1,4 @@
+#+TITLE: (>>FILE_NO_EXT<<)
 #+AUTHOR: Yang, Ying-chao
 #+OPTIONS: ^:nil num:nil f:nil
 
