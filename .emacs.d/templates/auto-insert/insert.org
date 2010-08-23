@@ -1,1 +1,3 @@
-#+OPTIONS: ^:nil
+#+AUTHOR: Yang, Ying-chao
+#+OPTIONS: ^:nil num:nil f:nil
+
