@@ -132,9 +132,9 @@
         (format "%s -o %s %s %s %s %s"
                 (or (getenv "CC") "gcc")
                 (file-name-sans-extension file)
-                (or (getenv "GTKFLAGS") "")
-                (or (getenv "CPPFLAGS")"-DDEBUG=9")
-                (or (getenv "CFLAGS") "")
+                (or (getenv "GTKFLAGS") "-Wall -g")
+                (or (getenv "CPPFLAGS")"-DDEBUG=9 ")
+                (or (getenv "CFLAGS") "-Wall -g")
                 file)
         ))))
 
