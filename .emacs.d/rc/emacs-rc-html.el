@@ -27,6 +27,9 @@
   (local-set-key (kbd "C-x <SPC>") 'yyc/html-ws)
   )
 
+(add-to-list 'auto-mode-alist
+             '("blog.*\\.txt" . html-mode))
+
 (add-hook 'html-mode-hook 'my-html-mode-hooks)
 (provide 'emacs-rc-html)
 ;;;;; emacs-rc-html.el ends here

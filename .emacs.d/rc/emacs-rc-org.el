@@ -76,7 +76,6 @@
   (org-defkey org-mode-map "\C-ca" 'org-agenda)
   (org-defkey org-mode-map "\C-cb" 'org-iswitchb)
   (org-defkey org-mode-map [(control ?,)]     'backward-page)
-  (org-defkey org-mode-map (kbd "_") 'insert-instead)
   (base-auto-pair)
   (yyc/show-pomodoro-keywords)
   )
