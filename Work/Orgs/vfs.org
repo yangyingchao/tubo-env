@@ -1,0 +1,1143 @@
+#+TITLE: VFS 学习笔记
+#+OPTIONS: ^:nil
+
+
+Unix讲究一切都是文件，系统本身也是由成千上万的文件系统组成。文件存放于文件系统中，
+而Linux可以支持多种文件系统，每个文件系统中文件的文件操作的具体实现不同。
+而 Virtual Filesystem (VFS) 是这些文件系统的一个抽象，用做文件系统和文件具体操作的一个中间层，
+为文件操作提供了统一的接口。
+
+* 文件系统类型
+
+  VFS 支持的文件系统可以分为三组:
+
+  * *基于Disk的文件系统：*
+
+    主要是一些本地磁盘，或者一些移动存储设备（优盘，光盘等等），主要有：
+
+    + Linux 文件系统：
+
+      如 EXT2, EXT3, Reiserfs, 以及更新的 EXT4, BTRFS等等。
+
+    + Unix 及其变种的文件系统：
+
+      如 sysv, UFS, ZFS 等；
+
+    + 微软的文件系统：
+
+      如 FAT， NTFS。
+
+    + 光盘文件系统：
+
+      ISO9660, UDF等。
+
+    + 其他的一些私有的文件系统：
+
+      HPFS(IBM), HFS, HFS+ (Apple) 等；
+
+  * *特殊文件系统：*\\
+
+    如 Linux 中的 procfs 和 sysfs 。这些文件系统并不在硬盘上，用户可以通过他们来获取内核的一些信息。
+
+  * *网络文件系统:*\\
+
+    通过网络文件系统，计算机可以访问读写其他联网的计算机的磁盘。
+    网络文件系统的特殊性，在于本机无需知道对方的磁盘采用的是什么文件系统，本机只需按照一定的协议要求，将带读写的信息发送到网络上即可。
+    比较著名的网络文件系统包括： NFS, AFS, CIFS 等等。
+
+* 通用文件模型
+
+  VFS 通过一个“通用文件模型”来表示其所能支持的所有文件系统，该通用模型是严格按照传统的Unix文件系统来定义的，
+  其他的文件系统必须将各自的物理组织结构转换成为 VFS 的通用模型。此外，该模型中定义了通用的一些操作函数指针，例如 open, ioctl，
+  这些指针在系统对实际文件系统进行操作的时候，将会指向实际文件系统中负责相关操作的函数。
+  不同的文件系统，调用的函数也不同，这有些类似于“面向对象”，尽管Linux内核用C编写的，但他用指针实现了这种类似的”面向对象“ 。
+
+** Inode 对象
+
+   黑客帝国中的一个掌控全局的人对别人说：While you see coincidence, I see sequence 。
+   内核对用户态进程说说： While you see filedescriptors, I see inodes.
+
+   用户态使用文件描述符来代表一个文件，而内核中，则使用 inode 来表示一个文件。
+
+   Inode 中存放了文件的一般信息。对于 基于disk的文件系统来讲，Inode 和磁盘中存放文件控制块 (file control block) 相对应。
+   每一个 inode 对象都有一个 inode number 用于在这个文件系统中唯一的标识这个文件。
+
+   一个 inode 中存储的元素可以分为两类：
+
+   + Metadata
+
+     Metadata (元数据)用于描述文件状态，例如文件的权限，更改日期等等。
+
+   + Data Segment
+
+     Data Segment (数据段)文件的实际内存的存放位置，例如文本文件中的文本。
+
+   下面是一个例子，讲述了内核如何搜索 /usr/bin/emacs 这个 inode.
+
+   搜索从根目录 / 开始。
+
+   根目录是一个目录，这个 inode 中没有用于存储数据的数据段，只有跟目录的 entries ，这些 entries 代表了跟目录下面的文件或者文件夹。
+   每一个 Entry 都有两个元素构成：
+
+   1. 下一个 entry 的 inode number 。
+
+   2. 文件或者文件夹的名字。
+
+   搜索开始的时候，首先从根目录下面找 usr 子目录，这可以通过遍历根目录下面的 entries ，并比较各个 Entry 的模子来实现。
+   找到 usr 后，按照同样的方法来在 user 中寻找 bin 子目录；最后，再去从 bin 中寻找名为 emacs 的 inode 。
+   但这一次，找到的是一个文件，而非文件夹。上述过程中，任何一个没有找到，都会返回 ”File not found“。 如下图所示：
+
+#+CAPTION: /usr/bin/emacs 的搜索过程
+   [[./images/emacs_search.png]]
+
+
+   搜索文件这一操作在 VFS 的实现中，与之类似，但有些优化，例如通过 Cache 来加速搜索等等，
+   此外，VFS 还需要负责和提供文件真实信息的底层文件系统交互信息。
+
+
+*** Links (链接)
+
+    链接可以用来在文件系统对象间建立关联，链接可以分为两中：符号链接（又叫软链接）和硬链接。
+
+    * 符号链接
+
+      符号链接，顾名思义，仅仅是一个符号，它表明了在某个特定位置有一个文件，但这个文件的真实内容却在文件系统的其他地方。
+      换句话说，这个“链接”和“链接的对象”没有特别紧密的耦合在一起，因此又称为软链接。
+      从这个角度上看，软链接和文件夹有点类似，都不能保存任何的数据，近能保存一个文件名。
+      当符号链接的对象（链接指向的真正内容）被删除之后，这个链接会依然存在于文件系统中，成为一个 "broken link" 。
+
+      符号链接在文件系统中被单独的存放到一个 inode 上，这个 inode 的 Data Segment 上则存放了链接对象的 Fullpath 。
+
+    * 硬链接
+
+      前面提到符号链接在文件系统中被单独的存放到一个 inode 上， 而硬链接则和源文件一起存放到同一个 inode 上。
+      inode 中提供了计数器，用于表示这个 inode 有多少个引用，当硬链接在删除时候，要检查一下计数器的值，
+      如果大于一，则将计数器值减一；而如果该值为1， 则删除该 inode 。
+
+      关于硬链接还有一点需要注意： 创建一个硬链接的时候，会为这个链接生成一个 directory entry,
+      且这个 directory entry 使用的 inode 为源文件的 inode.
+
+
+** 文件对象
+
+    文件对象，描述了一个打开的文件和进程的信息。文件对象尽在进程有打开着的文件的时候才在内核内存中存在。
+
+    对于 Linux 来讲，绝大多数的设备都可以通过 VFS 来表示成为文件， 对于用户态程序来讲，他们就是抽象的文件，可以使用通用的文件操作来操作。
+    这些设备包括：
+
+    * 字符设备和块设备
+
+    * 进程间的管道
+
+    * 网络协议中的 sockets
+
+    * 交互式书如何输出中的终端（terminals）
+
+** The superblock 对象
+
+     Superblock object (超块对象) 中保存了已挂载的文件系统信息。
+     对于基于磁盘的文件系统， Superblock object 与文件系统的 Control Block 相对应。
+
+** The dentry 对象
+
+     存储了文件夹与文件夹中相关文件的链接关系。
+
+  下面的例子解释了进程如何和上述的基本对象交互：
+
+#+CAPTION: 进程和VFS 对象的交互
+[[./images/understandlk_1202.jpg]]
+
+   三个不同的进程打开了同一个文件，其中有一个进程打开的是文件的硬链接，而另外两个文件打开的是硬链接的源文件。
+   此时，对这三个进程来讲，每个进程都有自己的的 File Object, 因此共有 *三个 File Object*
+   前面提到， 创建硬链接的时候会自动为硬链接创建 directory entry ，因此，共有两个 *Dentry Object* ，
+   且这两个 Dentry Object 都指引用了 *同一个 Inode Object* ； 由这个 Inode Object 结合 *Superblock Object* ，
+   就可以找到真正的磁盘文件了。
+
+
+* VFS 数据结构
+
+** Superblock Object
+
+*** 定义和变量解释
+
+   Superblock Object 由结构 super_block 来声明， 其定义和重要变量解释如下：
+
+   #+BEGIN_SRC c
+     struct super_block {
+         struct list_head s_list;        /* 指向超块链表的指针*/
+         dev_t s_dev;                    /* 设备标识符 */
+         unsigned char s_dirt;           /* flag， 表示该块是否为 dirty */
+         unsigned char s_blocksize_bits; /* 块大小，单位 bits */
+         unsigned long s_blocksize;      /* 块大小，单位 bytes */
+         loff_t s_maxbytes;              /* 文件的最大大小 */
+         struct file_system_type *s_type; /* 文件系统的类型 */
+         const struct super_operations *s_op; /* 超块相关操作 */
+         const struct dquot_operations *dq_op; /* 磁盘配额处理函数 */
+         const struct quotactl_ops *s_qcop; /* 磁盘配额管理函数 */
+         const struct export_operations *s_export_op; /* 网络文件系统中用到的 export 操作函数 */
+         unsigned long s_flags;          /* 挂载选项（参数） */
+         unsigned long s_magic;          /* 文件系统 magic number */
+         struct dentry *s_root;          /* 文件系统中根目录的Dentry对象*/
+         struct rw_semaphore s_umount;   /* unmounting 时用到的 Semaphore */
+         struct mutex s_lock;            /* 挂载文件系统时候N的锁 */
+         int s_count;                    /* 引用计数器 */
+         atomic_t s_active;              /* 第二引用计数器*/
+         void *s_security;               /* 超块的security 结构指针*/
+         const struct xattr_handler **s_xattr; /* 超块的拓展属性结构*/
+         struct list_head s_inodes;      /* 所有 inode 的链表 */
+         struct hlist_head s_anon;       /* 网络文件系统中匿名的 dentry */
+         struct list_head s_files;       /* 所有打开的文件链表 */
+         struct list_head s_dentry_lru;  /* unused dentry lru */
+         int s_nr_dentry_unused;         /* # of dentry on lru */
+         struct block_device *s_bdev;    /* 块设备驱动描述符的指针 */
+         struct backing_dev_info *s_bdi;
+         struct mtd_info *s_mtd;
+         struct list_head s_instances;   /* 指向指定文件系统中超块对象链表 */
+         struct quota_info s_dquot;      /* Diskquota specific options */
+         int s_frozen;                   /* Freezing这个文件系统时候用到的Flag*/
+         wait_queue_head_t s_wait_unfrozen; /* 当文件系统被冻结Frozen的时候，需要等待文件系统解冻的进程列队*/
+         char s_id[32];                  /* 包含了这个超块的块设备的名字 */
+         void *s_fs_info;                /* 指向指定文件系统的超块信息的指针 */
+         fmode_t s_mode;
+         u32 s_time_gran;				 /* 时间戳的粒度 */
+         struct mutex s_vfs_rename_mutex; /* Kludge */
+         char *s_subtype;
+         char *s_options;
+     };
+#+END_SRC
+
+  所有的 Superblock Object 对通过表头 s_list 链接到了一起， sb_lock 用来保护这个双向链表。
+
+  数据结构中的 s_fs_info 中所存储的超块信息，文件系统的超块信息，具体内容和文件系统有关。
+  例如，如果这个 superblock object 引用了了一个 EXT2 的文件系统，则 s_fs_info 指向数据结构 ext2_sb_info，
+  而后者中，包含了磁盘的bit mask 以及 VFS 通用文件模型中其他所找不到的其他数据信息。
+
+  一般来讲，s_fs_info 所指向的内容，是为了提高效率而将磁盘中部分信息在内存中的生成的一个拷贝。
+  任何一个基于磁盘的文件系统，为了分配和释放磁盘block，都需要访问和更新磁盘的分配位图（allocation bitmap），
+  而 VFS ，可以让文件系统直接操作内存中的这个 s_fs_info ，而不必去访问磁盘。
+
+  但真的这样做的话，一个新的问题又出来了：如何保证 VFS superblock 和磁盘的 superblock 同步？
+  s_dirt 在这里起了重要作用， 它表示了这个超块是否dirty，或者说，表示这个磁盘上的信息是否必须要更新。
+
+*** 超块操作
+
+    superblock object 中， s_op 声明了这个超块的操作所用到的函数。
+    例如，当 VFS 需要执行 read_indode() 的时候，他将会执行： sb->s_op->read_inode()，
+    其中， sb 中存储了 superblock 的地址。
+
+    s_op 是一个 super_operations 结构指针，其定义为：
+    #+BEGIN_SRC c
+struct super_operations {
+   	struct inode *(*alloc_inode)(struct super_block *sb);
+	void (*destroy_inode)(struct inode *);
+
+   	void (*dirty_inode) (struct inode *);
+	int (*write_inode) (struct inode *, struct writeback_control *wbc);
+	void (*drop_inode) (struct inode *);
+	void (*delete_inode) (struct inode *);
+	void (*put_super) (struct super_block *);
+	void (*write_super) (struct super_block *);
+	int (*sync_fs)(struct super_block *sb, int wait);
+	int (*freeze_fs) (struct super_block *);
+	int (*unfreeze_fs) (struct super_block *);
+	int (*statfs) (struct dentry *, struct kstatfs *);
+	int (*remount_fs) (struct super_block *, int *, char *);
+	void (*clear_inode) (struct inode *);
+	void (*umount_begin) (struct super_block *);
+
+	int (*show_options)(struct seq_file *, struct vfsmount *);
+	int (*show_stats)(struct seq_file *, struct vfsmount *);
+#ifdef CONFIG_QUOTA
+	ssize_t (*quota_read)(struct super_block *, int, char *, size_t, loff_t);
+	ssize_t (*quota_write)(struct super_block *, int, const char *, size_t, loff_t);
+#endif
+	int (*bdev_try_to_free_page)(struct super_block*, struct page*, gfp_t);
+};
+#+END_SRC
+
+   其中大部分的函数的作用可以从函数名字中猜出，几个特殊的，如下：
+
+**** dirty_inode(inode)
+
+     当 inode 状态为 dirty 的时候调用， 一些文件系统利用他来更西磁盘的日志。
+
+**** put_inode(inode)
+
+     当 inode 被释放的时候调用，用于减少引用计数。
+
+
+** Inode Object
+
+   文件系统处理文件时候所需的所有信息都保存在 inode 中
+
+*** 定义和变量解释
+
+   inode 的定义如下：
+
+#+BEGIN_SRC c
+  struct inode {
+      struct hlist_node   i_hash;     /* 指向哈希表的指针 */
+      struct list_head    i_list;     /* backing dev IO list */
+      struct list_head    i_sb_list;  /* 超块中的 inode 列表*/
+      struct list_head    i_dentry;   /* 引用该inode 的 dentry 对象列表*/
+      unsigned long       i_ino;      /* 该inode 的 inode number */
+      atomic_t        i_count;        /* 引用技术 */
+      unsigned int        i_nlink;    /* 硬链接个数 */
+      uid_t           i_uid;          /* Owner 标识 */
+      gid_t           i_gid;          /* Group 标识 */
+      dev_t           i_rdev;         /* Real device 标识 */
+      unsigned int        i_blkbits;  /* 块大小， 单位 bits */
+      u64         i_version;          /* 版本号 */
+      loff_t          i_size;         /* 文件大小， 单位 byte */
+  #ifdef __NEED_I_SIZE_ORDERED
+      seqcount_t      i_size_seqcount;
+  #endif
+      struct timespec     i_atime;    /* 上次访问时间 */
+      struct timespec     i_mtime;    /* 上次修改时间 */
+      struct timespec     i_ctime;
+      blkcnt_t        i_blocks;       /* 大小， 单位：block数量 */
+      unsigned short          i_bytes; /* 该文件的最后一个Block中数据大小 */
+      umode_t         i_mode;         /* 文件类型和权限 */
+      spinlock_t      i_lock;         /* 用于保护这个 inode 内容的自旋锁 */
+      struct mutex        i_mutex;    /* */
+      struct rw_semaphore i_alloc_sem;
+      const struct inode_operations   *i_op; /*inode operation*/
+      const struct file_operations    *i_fop; /* 默认的 file operation */
+      struct super_block  *i_sb;      /* 指向 superblock object 的指针 */
+      struct file_lock    *i_flock;
+      struct address_space    *i_mapping;
+      struct address_space    i_data;
+  #ifdef CONFIG_QUOTA
+      struct dquot        *i_dquot[MAXQUOTAS];
+  #endif
+      struct list_head    i_devices;
+      union {
+          struct pipe_inode_info  *i_pipe;
+          struct block_device *i_bdev;
+          struct cdev     *i_cdev;
+      };
+
+      __u32           i_generation;
+
+  #ifdef CONFIG_FSNOTIFY
+      __u32           i_fsnotify_mask; /* all events this inode cares about */
+      struct hlist_head   i_fsnotify_mark_entries; /* fsnotify mark entries */
+  #endif
+
+  #ifdef CONFIG_INOTIFY
+      struct list_head    inotify_watches; /* watches on this inode */
+      struct mutex        inotify_mutex;  /* protects the watches list */
+  #endif
+
+      unsigned long       i_state;
+      unsigned long       dirtied_when;   /* jiffies of first dirtying */
+
+      unsigned int        i_flags;
+
+      atomic_t        i_writecount;
+  #ifdef CONFIG_SECURITY
+      void            *i_security;
+  #endif
+  #ifdef CONFIG_FS_POSIX_ACL
+      struct posix_acl    *i_acl;
+      struct posix_acl    *i_default_acl;
+  #endif
+      void            *i_private; /* fs or device private pointer */
+  };
+#+END_SRC
+
+  该数据结构中包含了几个链表头，用于根据不同的分类来管理 inode 实例。
+
+    重要的成员变量如下：
+
+**** 时间相关变量
+
+***** i_atime
+
+      上一次的访问时间 （access time）
+
+***** i_mtime
+
+      上一次的修改时间，（Inode 的 Data 发生改变）
+
+***** i_ctime
+
+      上一次的发生改变的时间 （改变包括内容的修改或者metadata的改变）
+
+**** 大小相关
+
+     每一个文件对应一个 inode ，因此每一个 inode 中有表示文件大小的变量。
+
+     * i_size
+
+      表示文件的大小，单位 Byte.
+
+     * i_blocks
+
+      表示文件的大小，以blocks数量表示。
+
+**** inode 标识相关
+
+     * i_no
+
+       指定文件系统的 inode 的唯一标识。
+
+     * i_count
+
+       计数器，表示了该 inode 正在被多少进程进程访问。
+
+**** 权限相关
+
+     * i_mode
+
+       文件类型和访问权限
+
+     * i_uid, i_gid
+
+       文件的 uid 和 gid.
+
+**** 设备类型
+
+     * i_rdev
+
+       表明该文件是一个设备。
+
+     * UNION:
+
+       + i_bdev
+
+         设备为块设备 block device
+
+       + i_pipi
+
+         管道
+
+       + i_cdev
+
+         设备为字符设备
+
+**** inode 操作函数
+
+     i_op 和 i_fop 分别为针对 inode 和 file 的操作函数。
+
+*** Inode 操作
+
+    数据结构 inode_operations 中包含内核为 inode 提供的操作函数接口。
+    前面的 inode 数据结构中包含了这个结构。
+
+#+BEGIN_SRC c
+struct inode_operations {
+	int (*create) (struct inode *,struct dentry *,int, struct nameidata *);
+	struct dentry * (*lookup) (struct inode *,struct dentry *, struct nameidata *);
+	int (*link) (struct dentry *,struct inode *,struct dentry *);
+	int (*unlink) (struct inode *,struct dentry *);
+	int (*symlink) (struct inode *,struct dentry *,const char *);
+	int (*mkdir) (struct inode *,struct dentry *,int);
+	int (*rmdir) (struct inode *,struct dentry *);
+	int (*mknod) (struct inode *,struct dentry *,int,dev_t);
+	int (*rename) (struct inode *, struct dentry *,
+			struct inode *, struct dentry *);
+	int (*readlink) (struct dentry *, char __user *,int);
+	void * (*follow_link) (struct dentry *, struct nameidata *);
+	void (*put_link) (struct dentry *, struct nameidata *, void *);
+	void (*truncate) (struct inode *);
+	int (*permission) (struct inode *, int);
+	int (*check_acl)(struct inode *, int);
+	int (*setattr) (struct dentry *, struct iattr *);
+	int (*getattr) (struct vfsmount *mnt, struct dentry *, struct kstat *);
+	int (*setxattr) (struct dentry *, const char *,const void *,size_t,int);
+	ssize_t (*getxattr) (struct dentry *, const char *, void *, size_t);
+	ssize_t (*listxattr) (struct dentry *, char *, size_t);
+	int (*removexattr) (struct dentry *, const char *);
+	void (*truncate_range)(struct inode *, loff_t, loff_t);
+	long (*fallocate)(struct inode *inode, int mode, loff_t offset,
+			  loff_t len);
+	int (*fiemap)(struct inode *, struct fiemap_extent_info *, u64 start,
+		      u64 len);
+};
+#+END_SRC
+
+  其中，大多数的函数名都能很好的表现出其作用，例如 mkdir, rmdir 等等。几个不太明显的，如下：
+
+**** lookup:
+
+     从文件系统中根据名字来搜索 inode 。
+
+**** xattr:
+
+     用于管理 extended attributes ，因为传统的 Unix 模型里面不支持拓展属性，所以加入了这个东西。
+
+**** truncate:
+
+     修改指定 inode 的大小。
+
+*** Inode Lists
+
+    每一个 inode 都有一个 i_list 表头， 用于将 inode 挂到链表上。
+
+    inode 可能有三种状态：
+
+    1. inode 存在于内存中，但未使用。
+
+    2. inode 存在于内存中，且正在被一个或者多个任务使用，但是 inode 中的内容和磁盘中存储的相同，未发生改变。
+
+    3. inode 处于 active use 。 这种情况下， inode 中的内容和磁盘中存储并不相同 (It is dirty)。
+
+    三种不同状态的 inode 分别存放在不同的 list 中，其中，第一种存放于 inode_unused ，
+    第二种存放于 inode_in_use， inode_unused 和 inode_in_use 均在 fs/inode.c 中定义。
+    而第三种， 则存放在有gie和 superblock 相关的列表中。
+
+    每一个 inode 除了出现在上述的三个列表中外，还出现在一个全局的哈希表中，该哈希表也定义在 fs/inode.c 中，
+    在系统启动初始化时候由函数 inode_init 负责初始化。
+
+** 文件对象
+
+   文件对象描述了一个进程如何和打开的文件交互，该对象在文件被打开的时候创建，并由数据结构 file 来表示。
+   需要注意的是，不同于前面的 superblock object 和 inode object ， 前面两者在磁盘上都有真实的映像与之对应，
+   而文件对象，则没有。因此， file 这个数据结构中没有用于表示数据结构是否 dirty 的变量。
+
+*** 定义和变量解释
+
+    file 结构的定义和解释如下：
+
+#+BEGIN_SRC c
+  struct file {
+      union {
+          struct list_head    fu_list;
+          struct rcu_head     fu_rcuhead;
+      } f_u;
+      struct path     f_path;
+  #define f_dentry    f_path.dentry   /* File 相关的 dentry 对象 */
+  #define f_vfsmnt    f_path.mnt      /* 包含了这个文件的文件系统 */
+      const struct file_operations    *f_op;  /* 文件操作符表 */
+      spinlock_t      f_lock;         /* f_ep_links, f_flags, no IRQ */
+      atomic_long_t       f_count;    /* 文件对象的引用计数 */
+      unsigned int        f_flags;    /* 打开文件时候使用的Flags */
+      fmode_t         f_mode;         /* 进程的访问模式 */
+      loff_t          f_pos;          /* 当前的文件偏移量 */
+      struct fown_struct  f_owner;    /* */
+      const struct cred   *f_cred;
+      struct file_ra_state    f_ra;
+
+      u64         f_version;          /* 版本号， 每次使用后加1 */
+  #ifdef CONFIG_SECURITY
+      void            *f_security;    /* 指向对象的 security 结构 */
+  #endif
+      /* needed for tty driver, and maybe others */
+      void            *private_data;  /* 私有数据指针，指向文件系统或者驱动相关的数据 */
+
+  #ifdef CONFIG_EPOLL
+      /* Used by fs/eventpoll.c to link all the hooks to this file */
+      struct list_head    f_ep_links;
+  #endif /* #ifdef CONFIG_EPOLL */
+      struct address_space    *f_mapping;
+  #ifdef CONFIG_DEBUG_WRITECOUNT
+      unsigned long f_mnt_write_state;
+  #endif
+  };
+#+END_SRC
+
+  file struct 中保存的最重要的信息是 f_pos， 表明了当前的文件指针的位置， 下次的文件操作将从这个位置开始。
+  因为一个 inode 可能会被多个进程同时访问，因此这个指针必须放在 file object 中，而不是 inode object 中
+  （每个进程都有自己的 file object ， 而 inode object 则只有一份）。
+
+  file object 是从一个名为 filep 的 Cache 中分配出来的，因为这个 Cache 是预先分配好的，空间有限，
+  因此一个能够同时存在的文件对象的数量也是有限的。
+
+*** 文件对象的操作
+
+    f_op 是 file_operations 的实例， file_operations 中包含了文件对象的操作符指针，定义如下：
+
+    #+BEGIN_SRC c
+struct file_operations {
+	struct module *owner;
+	loff_t (*llseek) (struct file *, loff_t, int);
+	ssize_t (*read) (struct file *, char __user *, size_t, loff_t *);
+	ssize_t (*write) (struct file *, const char __user *, size_t, loff_t *);
+	ssize_t (*aio_read) (struct kiocb *, const struct iovec *, unsigned long, loff_t);
+	ssize_t (*aio_write) (struct kiocb *, const struct iovec *, unsigned long, loff_t);
+	int (*readdir) (struct file *, void *, filldir_t);
+	unsigned int (*poll) (struct file *, struct poll_table_struct *);
+	int (*ioctl) (struct inode *, struct file *, unsigned int, unsigned long);
+	long (*unlocked_ioctl) (struct file *, unsigned int, unsigned long);
+	long (*compat_ioctl) (struct file *, unsigned int, unsigned long);
+	int (*mmap) (struct file *, struct vm_area_struct *);
+	int (*open) (struct inode *, struct file *);
+	int (*flush) (struct file *, fl_owner_t id);
+	int (*release) (struct inode *, struct file *);
+	int (*fsync) (struct file *, int datasync);
+	int (*aio_fsync) (struct kiocb *, int datasync);
+	int (*fasync) (int, struct file *, int);
+	int (*lock) (struct file *, int, struct file_lock *);
+	ssize_t (*sendpage) (struct file *, struct page *, int, size_t, loff_t *, int);
+	unsigned long (*get_unmapped_area)(struct file *, unsigned long, unsigned long, unsigned long, unsigned long);
+	int (*check_flags)(int);
+	int (*flock) (struct file *, int, struct file_lock *);
+	ssize_t (*splice_write)(struct pipe_inode_info *, struct file *, loff_t *, size_t, unsigned int);
+	ssize_t (*splice_read)(struct file *, loff_t *, struct pipe_inode_info *, size_t, unsigned int);
+	int (*setlease)(struct file *, long, struct file_lock **);
+};
+    #+END_SRC
+
+    其中， owner 尽在文件系统被编译成模块而没编译进内核的时候才其作用，
+    这种情况下， owner 指向在内存中表示这个文件系统的数据结构。
+    其他的函数指针，意如其名。
+
+
+
+**  Dentry 对象
+
+    VFS 将文件夹认为是一个特殊的文件，在这个文件中包含了文件或者其他文件夹列表。
+    文件夹的 Entry 在内核中用 dentry 来表示，和 file object 一样，该数据结构在磁盘上没有相应的映像，且从 Cache 中分配。
+
+*** 定义和变量解释
+
+#+BEGIN_SRC c
+  struct dentry {
+      atomic_t d_count;           /* 对象的引用计数 */
+      unsigned int d_flags;       /* Dentry 缓存 Flag */
+      spinlock_t d_lock;          /* 用于保护这个对象的自旋锁 */
+      int d_mounted;
+      struct inode *d_inode;      /* 与该Dentry关联的inode */
+      struct hlist_node d_hash;   /* lookup hash list */
+      struct dentry *d_parent;    /* 父目录的 Dentry 对象 */
+      struct qstr d_name;         /* File Name */
+
+      struct list_head d_lru;     /* list of unused dentries */
+      union {
+          struct list_head d_child;/* 同级目录的List */
+          struct rcu_head d_rcu;
+      } d_u;
+      struct list_head d_subdirs; /* 子目录List */
+      struct list_head d_alias;   /* inode alias list */
+      unsigned long d_time;       /* used by d_revalidate */
+      const struct dentry_operations *d_op;   /* dentry 对象操作符 */
+      struct super_block *d_sb;   /* The root of the dentry tree */
+      void *d_fsdata;         /* fs-specific data */
+
+      unsigned char d_iname[DNAME_INLINE_LEN_MIN];    /* small names */
+  };
+#+END_SRC
+
+  每一个 Dentry Object 有四种可能的状态：
+
+   * *Free*
+
+     dentry Object 中不包含可用的信息，目前没有被 VFS 使用。此时这个 object 的内存区域由 slab allocator 负责。
+
+   * *Unused*
+
+     该 Dentry Object 目前没有被内核使用， d_count 为 0 ，但是 d_inode 仍然指向了相应的 inode .
+     此时，这个 Dentry Object 中包含了可用的信息，但其内容可以忽略。
+
+   * *In use*
+
+     该 Dentry Object 目前正在被内核使用。d_count 为正数， d_inode 指向相应的 inode ，
+     Dentry Object 中包含了可用信息，且内容不能忽略。
+
+   * *Negative*
+
+     Dentry Object 相应的 inode 不存在。造成这种现象的原因可能有两个：
+
+     + 磁盘上原有的 inode 被删除了，或者
+     + 该 Object 是在解析一个不存在的文件时候产生的。
+
+     这个情况下， Dentry Object 中的 d_inode 为 NULL， 但他仍然存在于 Cache 中，以便以后有对这个Path的其他操作时候可以迅速完成。
+
+*** 对象操作
+
+    对于 Dentry Object 的操作，封装在结构 dentry_operations 中， 定义和解释如下：
+
+#+BEGIN_SRC c
+  struct dentry_operations {
+      /* 验证这个 dentry Object 是否仍然可用, VFS 默认无操作 */
+      int (*d_revalidate)(struct dentry *, struct nameidata *);
+      /* 创建哈希表 */
+      int (*d_hash) (struct dentry *, struct qstr *);
+      /* 比较两个路径 */
+      int (*d_compare) (struct dentry *, struct qstr *, struct qstr *);
+      /* d_count = 0 时候调用的函数， VFS 默认无操作 */
+      int (*d_delete)(struct dentry *);
+      /* 当释放一个 dentry Object 时候调用的函数， VFS 默认无操作 */
+      void (*d_release)(struct dentry *);
+      /* 当一个 Dentry object 状态变为 Negative 时候调用的函数
+       * VFS 默认操作是调用 input() 来释放这个 inode object */
+      void (*d_iput)(struct dentry *, struct inode *);
+      char *(*d_dname)(struct dentry *, char *, int);
+  };
+#+END_SRC
+
+*** Dentry Cache
+
+    很多时候人们会重复的访问一个文件， 例如， 编辑源文件并编译，编辑一个文件并打印等等。
+    而从磁盘中读取文件夹信息并创建 dentry 相对来说比较耗时，因此内核使用 Dentry Cache 来保存创建好并且以后可能用到的 dentry object.
+    Dentry Cache 由两中数据结构构成：
+
+    * 状态为 in-use, unused, 或者 negative 的 dentry Object 集合。
+    * 一个哈希表，从该表中可以根据指定的文件名和文件夹来快速找到 dentry object.
+
+    所有状态为 unused 的 dentriy 根据最近使用的时间为序存储在一个双向链表中，队头为最近使用的。
+    dentry Object 中的 d_lru 为一个指针，指向了在这个 List 中与本 object 相邻的 unused Dentry Object 。
+
+    状态为 in_use 的对象也存储在一个双向链表中，该 List 位于 inode object 的 i_dentry.
+
+** 进程和文件
+
+   用户空间中使用文件描述在一个进程中唯一的标识一个打开的文件，这要求内核可以在用户进程的文件描述符和内核内部使用的数据结构之间建立相应的关联。
+   内核中表示进程的文件的数据结构可以在 task_struct 中找到：
+
+#+BEGIN_SRC c
+struct task_struct {
+...
+/* file system info */
+	int link_count, total_link_count;
+...
+/* filesystem information */
+	struct fs_struct *fs;
+/* open file information */
+	struct files_struct *files;
+/* namespaces */
+	struct nsproxy *nsproxy;
+...
+};
+#+END_SRC
+
+*** 进程中的文件系统信息
+
+    进程中的文件系统信息存储在 task_struct->fs , fs 为一个指针， 指向 fs_struct 结构， 该结构的定义和重要变量如下：
+
+#+BEGIN_SRC c
+  struct fs_struct {
+      int users;
+      rwlock_t lock;
+      int umask;
+      int in_exec;
+      struct path root, pwd;
+  };
+#+END_SRC
+
+  其中：
+
+  * umask
+
+    新建文件设置权限时候使用的标准 mask。该值可用 umask 命令来读取和设置。
+
+  * root
+
+    跟目录 “/”
+
+  * pwd
+
+    当前目录（present working directory）。
+
+***  进程相关的文件
+     在 task_struct 中， 进程的打开的文件的数据存放在 task_struct->files 中， 该 Field 为一个 files_struct 结构， 定义和解释如下：
+
+#+BEGIN_SRC c
+  /*
+   * Open file table structure
+   */
+  struct files_struct {
+    /*
+     * read mostly part
+     */
+      atomic_t count;         /* 共享这个数据结构的进程数量 */
+      struct fdtable *fdt;
+      struct fdtable fdtab;
+    /*
+     * written part on a separate cache line in SMP
+     */
+      spinlock_t file_lock ____cacheline_aligned_in_smp;  /* 读写自旋锁 */
+      int next_fd;            /* 将要分配的下一个fd， 也就是现有的最大的fd+1 */
+      struct embedded_fd_set close_on_exec_init;
+      struct embedded_fd_set open_fds_init;       /* 文件描述符的初始集合 */
+      struct file * fd_array[NR_OPEN_DEFAULT];    /* 文件对象的初始化数组 */
+  };
+#+END_SRC
+
+  其中:
+
+  * next_fd
+
+    指明了如果这个进程要打开一个新的文件，新的文件的描述符的值。
+
+  * close_on_exec_init 和 open_fds_init:
+
+    是两个 bitmap
+
+    + 前者声明了哪些 fd 将会被关闭
+
+    + 而后者则是 fd 的初始集合。
+
+  * fd_array:
+
+    包含了打开的文件的 struct file 结构。
+    默认情况下， 内核允许每个进程打开 NT_OPEN_DEFAULT 个文件。
+
+  * fdtab
+
+    fdtab 是 files_struct 中最重要的一个数据结构，定义如下：
+
+    #+BEGIN_SRC c
+      struct fdtable {
+          unsigned int max_fds;
+          struct file ** fd;      /* current fd array */
+          fd_set *close_on_exec;
+          fd_set *open_fds;
+          struct rcu_head rcu;
+          struct fdtable *next;
+      };
+    #+END_SRC
+
+  	其中:
+
+     + max_fds:
+
+       当前进程可以处理的文件对象和文件描述符的最大数目
+
+     + fd:
+
+       指向 file 结构数组的指针，file 结构用于管理打开文件的信息。File
+       descriptor 可以作为这个 Array 的索引，数组的大小由 max_fds 定义。
+
+     + open_fds:
+
+       fd 的 bitmap， 设置为1， 则表示相应的 fd 为 in_use，否则为 unuse 。
+
+     + close_on_exec
+
+       也是 bitmap， 设置为1，则表示相应的 fd 在执行 exec 系统调用的时候将会被关闭。
+
+* Working with VFS Objects
+
+  前面介绍了 VFS 的基本数据结构，下面介绍 VFS 的基本操作，如文件系统操作，文件操作等等。
+
+** 文件系统操作
+
+*** 文件系统的注册
+
+    Linux 内核支持很多类型的文件系统，我们首先了解一些在 Linux 内核设计中起了很重要作用的一些文件系统，
+    然后在来看一下文件系统的注册过程。
+
+**** 特殊的文件系统
+
+     网络文件系统和基于磁盘的文件系统使用户可以处理存储于内核之外的数据，
+     而一些特殊的文件系统，则为对内核实现某些操作系统特性提供了便利。
+     下面的表格中列出了Linux中这些特殊文件系统，并指明了为这些特殊文件系统推荐的挂载点以及简介。
+
+     注意，下表中的一些文件系统没有固定的挂载点(any)，这些文件系统可以被用户挂载到任何地点。
+     而另外的一些文件系统，则根本没有挂载点(none)，这些文件系统并不是用来和用户交互的，但内核却可以用他们来重用 VFS 的代码。
+
+     | Name        | Mount Point   | Description                                  |
+     | bdev        | none          | 块设备                                       |
+     | binfm_misc  | any           | 其他的一些可执行格式                         |
+     | devpts      | /dev/pts      | 虚拟终端支持                                 |
+     | eventpollfs | none          | polling 机制使用                             |
+     | futexfs     | none          | Fast userspace Locking 机制使用              |
+     | pipefs      | none          | 管道                                         |
+     | proc        | /proc         | procfs, 内核数据结构的通用访问点             |
+     | shm         | none          | 进程间通讯使用的共享内存                     |
+     | sockfs      | none          | Sockets                                      |
+     | sysfs       | /sys          | sysfs, 内核数据结构的访问点                  |
+     | tmpfs       | any           | 临时文件， 如果没有swap， 则始终存放于内存中 |
+     | usbfs       | /proc/bus/usb | USB 设备                                     |
+
+     上述的这些特殊文件系统没有绑定到物理块设备上，但是他们在挂载之后，内核将他们视为一个虚假的块设备，
+     并将其主设备号设置0， 次设备号设置为任意值。函数 set_anaon_super() 用于初始化特殊设备的 superblocks ，
+     而函数 kill_anon_super() 用于移除特殊设备的 Superblock 。
+
+**** 文件系统类型的表示
+
+     内核对一个文件系统的的支持，可能编译进了内核，也可能编译成了模块，
+     无论哪一种情况， VFS 都需要知道：当前系统能够支持哪些类型的文件系统，已经支持的（注册过的）文件系统类型，被放到了一个静态的 file_systems 里面。
+
+     函数 register_filesystem 用于向内核注册文件系统，而已经注册了的文件系统，在内核中以数据结构 file_system_type 表示。
+
+     file_system_type 的定义和重要变量如下：
+
+     #+BEGIN_SRC c
+       struct file_system_type {
+           const char *name;       /* 文件系统的名字, 如 ext3, reiserfs 等 */
+           int fs_flags;           /* FileSystem type Flag，表示挂载选项，如 read only 等等 */
+           int (*get_sb) (struct file_system_type *, int,
+                      const char *, void *, struct vfsmount *);
+                                   /* 用于获取 Superblock 的函数 */
+           void (*kill_sb) (struct super_block *);
+                                   /* 用于移除 Superblock 的函数 */
+           struct module *owner;   /* 内存中用于表示该文件系统的数据结构 */
+           struct file_system_type * next; /* 内核filesystem types 链表中， 指向下一个元素的指针 */
+           struct list_head fs_supers;     /* 相同文件系统的超块链表 */
+
+           struct lock_class_key s_lock_key;
+           struct lock_class_key s_umount_key;
+           struct lock_class_key s_vfs_rename_key;
+
+           struct lock_class_key i_lock_key;
+           struct lock_class_key i_mutex_key;
+           struct lock_class_key i_mutex_dir_key;
+           struct lock_class_key i_alloc_sem_key;
+       };
+	 #+END_SRC
+
+**** 文件系统的注册
+
+     文件系统类型的注册由函数 register_filesystem 来完成。
+
+     前面提到，注册过的文件系统类型被统一放到了一个静态的 file_system 里面。
+     register_filesystem 的作用，就是遍历这个 file_system 来察看待注册的这个文件系统的名字是否已经在 file_system 中，
+     如果已经存在，则返回 -EBUSY ； 如果不存在，则将其加入到 file_system 的尾部， 完成注册。
+
+*** 文件系统的挂载 (Mount)
+
+    文件系统的挂载由命令 mount 发起，在进入 mount 流程之前， 首先还需要再了解一下用于表示挂载点的数据结构，
+    还要再明确一下，在已有的目录下挂载一个新的文件系统需要哪些具体步骤。
+
+**** VFS Mount 结构
+
+     Unix 文件系统如下图所示：
+
+     #+CAPTION: Unix 文件系统构成
+     [[./images/unix_filesystem.png]]
+
+     上图中，根目录使用 ext2 文件系统， /mnt 使用 Reiserfs ， 而 /mnt/cdrom 则使用 ISO 9660 文件系统。
+     其中，/mnt 和 /mnt/cdrom 由称为 “挂载点” (mount point)。
+
+     挂载是可以嵌套的。在上面的图中， CD-ROM 被挂载到了 /mnt/cdrom ，换句话说， ISO9660 格式的文件系统的跟目录挂载到了 Reiser 文件系统中，
+     而和系统的根目录（ext2 文件系统）没有直接关系。
+
+     内核中常见的父子关系在文件系统中同样适用。在上面的图中， Ext2 是Reiserfs 的父文件系统，而 /mnt/cdrom 是 /mnt 的子文件系统。
+
+
+     每一个挂载好的文件系统在内核中都由一个vfsmount对象来表示，所有的vfsmount通过一个散列表来管理。
+     vfsmount 定义和重要的成员变量如下：
+
+     #+BEGIN_SRC c
+       struct vfsmount {
+           struct list_head mnt_hash;      /* 指向 hash table 的指针 */
+           struct vfsmount *mnt_parent;    /* 指向父文件系统的指针 */
+           struct dentry *mnt_mountpoint;  /* 挂载点的 dentry */
+           struct dentry *mnt_root;        /* 此文件系统本身的 root */
+           struct super_block *mnt_sb;     /* 指向文件系统的 superblock 对象指针 */
+           struct list_head mnt_mounts;    /* 该文件系统上挂载的子文件系统List的起点 */
+           struct list_head mnt_child;     /* 单个的子文件系统 */
+           int mnt_flags;                  /* Flags */
+           /* 4 bytes hole on 64bits arches */
+           const char *mnt_devname;        /* 设备名字，如 /dev/dsk/hda1 */
+           struct list_head mnt_list;      /* 挂载的文件系统的 namespace list */
+           struct list_head mnt_expire;    /* link in fs-specific expiry list */
+           struct list_head mnt_share;     /* circular list of shared mounts */
+           struct list_head mnt_slave_list;/* list of slave mounts */
+           struct list_head mnt_slave;     /* slave list entry */
+           struct vfsmount *mnt_master;    /* slave is on master->mnt_slave_list */
+           struct mnt_namespace *mnt_ns;   /* containing namespace */
+           int mnt_id;         /* mount identifier */
+           int mnt_group_id;       /* peer group identifier */
+           /*
+            * We put mnt_count & mnt_expiry_mark at the end of struct vfsmount
+            * to let these frequently modified fields in a separate cache line
+            * (so that reads of mnt_flags wont ping-pong on SMP machines)
+            */
+           atomic_t mnt_count;         /* 引用计数 */
+           int mnt_expiry_mark;        /* true if marked for expiry */
+           int mnt_pinned;
+           int mnt_ghosts;
+       #ifdef CONFIG_SMP
+           int __percpu *mnt_writers;
+       #else
+           int mnt_writers;
+       #endif
+       };
+     #+END_SRC
+
+    vfsmount 数据结构在内核中，被保存在以下几个双向循环链表中：
+
+***** mount_hashtable (fs/namespace.c)
+
+      该表可由用于描述父文件系统的 vfsmount 地址和挂载点的 Dentry Object 来索引。
+
+***** *一些变量没有看懂！！*
+
+      \\
+
+**** *sys_mount*
+
+     所谓的挂载， 实际上就是读取文件系统信息，建立 vfsmount 数据结构，并将其加入到系统中。
+
+     mount 系统调用使用 sys_mount 来完成， sys_mount 位于 fs/namespace.c ，原型如下：
+     #+BEGIN_SRC c
+SYSCALL_DEFINE5(mount, char __user *, dev_name, char __user *, dir_name,
+		char __user *, type, unsigned long, flags, void __user *, data)
+     #+END_SRC
+     其参数含义为：
+
+     * *dev_name:*
+
+       包含了文件系统的设备路径，如果不需要该参数，则将其设置为 NULL 。
+
+     * *dir_name:*
+
+       挂载点，指明了文件系统将要被挂载到的位置。
+
+     * *type:*
+
+       文件系统类型，必须是已经注册过的类型。
+
+     * *flags:*
+
+       挂载选项。
+
+     * *data:*
+
+       与文件系统有关的数据结构的指针。
+
+
+     sys_mount 本身的流程并不复杂，首先拷贝用户空间的参数到内核空间，然后就将剩余的任务交给了 do_mount，
+     do_mount 返回之后， sys_mount 负责解锁并释放挂载过程中分配的 buffers 。
+     流程如下图：
+     #+CAPTION: sys_mount 流程
+     [[./images/sys_mount.png]]
+
+     \\
+
+     *do_mount* 负责真正的挂载动作，包括：
+
+     * 搜索挂载点的路径
+
+       该动作通过 path_lookup() 来完成。
+
+     * flag 处理设置挂载中使用的 mnt_flag 和 传入参数的 flag
+
+       通过检查传入参数的 flag ，修改 mnt_flag, mnt_flag 将最终传给真正的挂载函数。
+
+       #+BEGIN_SRC c
+	/* Default to relatime unless overriden */
+	if (!(flags & MS_NOATIME))
+		mnt_flags |= MNT_RELATIME;
+
+	/* Separate the per-mountpoint flags */
+	if (flags & MS_NOSUID)
+		mnt_flags |= MNT_NOSUID;
+	if (flags & MS_NODEV)
+		mnt_flags |= MNT_NODEV;
+	if (flags & MS_NOEXEC)
+		mnt_flags |= MNT_NOEXEC;
+	if (flags & MS_NOATIME)
+		mnt_flags |= MNT_NOATIME;
+	if (flags & MS_NODIRATIME)
+		mnt_flags |= MNT_NODIRATIME;
+	if (flags & MS_STRICTATIME)
+		mnt_flags &= ~(MNT_RELATIME | MNT_NOATIME);
+	if (flags & MS_RDONLY)
+		mnt_flags |= MNT_READONLY;
+
+	flags &= ~(MS_NOSUID | MS_NOEXEC | MS_NODEV | MS_ACTIVE |
+		   MS_NOATIME | MS_NODIRATIME | MS_RELATIME| MS_KERNMOUNT |
+		   MS_STRICTATIME);
+    #+END_SRC
+
+     * 根据处理过的 flags 来判断使用哪种挂载方式，具体如下：
+
+       + *flags & MS_REMOUNT*
+
+         表明 MS_REMOUNT 在 flags 中被设置，挂载的目的是为了重新挂载这个已经挂载了的文件系统，
+         重新挂载的时候，需要修改 Superblock Object 中的 s_flags 和 vfsmount 中的 mnt_flags 。
+
+         函数 *do_remount( )* 完成这一任务。
+
+       + *flags & MS_BIND*
+
+         表明用户要求在文件系统目录树的其他挂载点创建可见的文件或者文件夹，
+         函数 *do_loopback()* 完成这一任务。
+
+       + *flags & (MS_SHARED | MS_PRIVATE | MS_SLAVE | MS_UNBINDABLE)*
+
+         调用 *dO_change_type()* 来处理 mount flag
+
+       + *flags & MS_MOVE*
+
+         调用 *do_move_mount()* 来处理。
+
+       + *默认操作*
+
+         如果在 flags 中没有找到上述的 Flag ，则使用默认的 *do_new_mount()* 来处理。
+
+
+**** *do_new_mount 流程*
+
+     do_new_mount() 用于挂载一个新的文件系统，它内部调用了 do_kern_mount() 和 do_add_mount()。
+     其中， do_kern_mount() 负责挂载文件系统，并返回作为挂载的文件系统描述符的 vfsmount 的地址。
+     而 do_add)mount() 则负责向指定的一个命名空间的 mount tree 中添加 mount 。
+
+     整体流程如下图所示：
+     #+CAPTION: do_new_mount 流程
+     [[./images/do_new_mount.png]]
+
+
+***** *do_kern_mount()*
+
+      do_kern_mount() 是挂载过程中的核心，用于检查文件系统类型并挂载文件系统，返回 vfsmount 。
+
+      该函数接收四个参数：
+
+      * fstype:	待挂载的文件系统的类型名字。
+      * flags: 	挂载的flags
+      * name: 	存放文件系统的设备名字
+      * data: 	传给 get_sb() 方法的附加数据的指针。
+
+      首先、调用get_fs_type()在文件系统类型链表中搜索并确定名字为存放在fstype参数中的值的文件系统类型的位置；
+      局部变量type中对应file_system_type描述符的地址。
+
+      其次、调用vfs_kern_mount()来完成挂载操作，
+      将获取的文件系统类型结构file_system_type，
+      以及传递进来的其他参数传递给vfs_kern_mount()。
+
+****** *vfs_kern_mount()*
+
+       vfs_kern_mount()的主要操作如下：
+
+       1) 调用alloc_vfsmnt()分配一个新的vfsmount描述符，并将它的地址存放在mnt局部变量中。
+
+       2) 调用type->get_sb()函数分配，并初始化一个新的超级块结构。\\
+          初始化好的超块结构位于 vfsmount *mnt->mnt_sb 中。
+
+       3) 设置mnt->mnt_mountpoint 和 mnt_root。
+
+       4) 用mnt的值初始化mnt->mnt_parent字段（对于普通文件系统，后面讲到的graft_tree()
+          把vfsmount描述符插入到合适的链表中时，要把mnt_parent字段置为合适的值）。
+          到此为止，仅仅形成了一个安装点，但还没有把这个安装点挂接在目录树上。
+
+       5) 返回vfsmount对象的地址。
+
+***** *do_add_mount()*
+
+      do_add_mount()本质上执行下列操作：
+
+      1) 获得当前进程的写信号量namespace_sem，因为函数要更改mnt_namespace结构。
+
+      2) do_kern_mount()函数可能让当前进程睡眠；
+         同时，另一个进程可能在完全相同的安装点上安装文件系统或者甚至更改根文件系统
+         （current-> nsproxy-> mnt_ns->root）。
+         验证在该安装点上最近安装的文件系统是否仍指向当前的namespace；
+         mountpoint（）函数就是检查是否发生了这种情况。
+         如果确实发生了这种情况，其对策就是调用follow_down（）
+         前进到已安装设备的根节点，并且通过while循环进一步检测新的安装点，
+         直到找到一个空安装点为止。
+
+      3) 如果要安装的文件系统已经被安装在由系统调用的参数所指定的安装点上，
+         或该安装点是一个符号链接，则释放读/写信号量并返回一个错误码。
+
+      4) 初始化由do_kern_mount()分配的新安装文件系统对象的mnt_flags字段的标志。
+
+      5) 调用graft_tree()把新安装的文件系统对象插入到namespace链表、
+         散列表中（在graft_tree()函数中调用attach_recursive_mnt函数实现）。
+
+      6) 把新安装的文件系统对象插入到父文件系统的子链表中
+
+      7) 释放namespace_sem读/写信号量并返回。
+
+
+*** Umount
+
+    待补。
+
+** 文件操作
