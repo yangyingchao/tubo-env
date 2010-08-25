@@ -23,7 +23,8 @@
 (global-set-key (kbd "<C-f4>") 'kmacro-start-macro-or-insert-counter)
 (global-set-key (kbd "<S-f4>") ' kmacro-end-or-call-macro)
 (global-set-key (kbd "<C-S-f4>") 'kmacro-end-and-call-macro)
-(global-set-key [f5] 'eshell)
+(global-set-key [f5] 'ansi-term)
+(global-set-key (kbd "<S-f5>") 'eshell)
 (setq compile-command "make -f makefile")
 ;(global-set-key [f6] 'make)
 ;(global-set-key [f7] 'sr-speedbar-toggle);f7打开/关闭speedbar
