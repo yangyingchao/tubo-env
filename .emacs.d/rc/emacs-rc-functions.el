@@ -2,7 +2,7 @@
 ;;; emacs-rc-functions.el begins ---
 
 (defvar fname nil "File name string")
-(defvar txt2png_cmd "java -jar ~/.emacs.d/tools/ditaa.jar " "nil")
+(defvar txt2png_args " -jar ~/.emacs.d/tools/ditaa.jar " "nil")
 
 (require 'sourcepair)
 
@@ -591,5 +591,34 @@ Uses `current-date-time-format' for the formatting the date/time."
                      plain-tex-mode))
            (let ((mark-even-if-inactive transient-mark-mode))
              (indent-region (region-beginning) (region-end) nil))))))
+
+(defvar png_file nil "nil")
+
+(defun txt-to-png ()
+  "Change a txt file into png file using ditaa"
+  (interactive)
+  (setq fname (buffer-file-name))
+  (setq png_file (concat (file-name-sans-extension fname) ".png"
+                         ))
+  (if (file-exists-p png_file)
+      (progn
+        (message "Delete old png file ...")
+        (delete-file png_file)
+        )
+      )
+  (message "Generate new png file ... ")
+  (start-process "txt-to-png" "*Messages*" "java" "-jar"
+                 (expand-file-name "~/.emacs.d/tools/ditaa.jar") fname)
+  (message "Finished, refer to Message buffer to see the result.")
+  )
+
+(defvar test_var nil "nil")
+
+(defun test111 ()
+  "description"
+  (interactive)
+  (setq test_var (expand-file-name "~/.emacs.d/tools/ditaa.jar"))
+  (message test_var)
+  )
 (provide 'emacs-rc-functions)
 ;;; emacs-rc-functions.el ends here
