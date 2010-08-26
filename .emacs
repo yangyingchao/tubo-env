@@ -113,61 +113,76 @@
 ;;;; 最大化窗口
 (setq initial-frame-alist '((top . 0) (left . 0) (width . 175) (height . 70)))
 
+(defmacro require-maybe (feature &optional file)
+  "*Try to require FEATURE, but don't signal an error if `require' fails."
+  `(let ((require-result (require ,feature ,file 'noerror)))
+     (with-current-buffer (get-buffer-create "*Startup Log*")
+       (let* ((startup-log-format-string-prefix "%-20s--------[")
+              (startup-log-format-string-postfix "%s")
+              (startup-status (if require-result "LOADED" "FAILED"))
+              (startup-status-face `(face (:foreground
+                                           ,(if require-result "green" "red")))))
+         (insert (format startup-log-format-string-prefix ,feature))
+         (let ((start-pos (point)))
+           (insert (format startup-log-format-string-postfix startup-status))
+           (add-text-properties start-pos (point) startup-status-face)
+           (insert "]\n"))))
+     require-result))
 
 ;;;; Simple lisps needed to be enabled
 
-(require 'icomplete)
+(require-maybe 'icomplete)
 (icomplete-mode t)
 
-(require 'ido)
+(require-maybe 'ido)
 (ido-mode t)
 (setq ido-enable-flex-matching t) ;; enable fuzzy matching
 
-(require 'make-mode)
+(require-maybe 'make-mode)
 (autoload 'makefile-mode "makefile-mode" nil t)
 (add-to-list 'auto-mode-alist
              '("Makefile.*" . makefile-mode))
 (add-to-list 'auto-mode-alist
              '("makefile.*" . makefile-mode))
 
-(require 'recentf)
+(require-maybe 'recentf)
 (setq recentf-auto-cleanup 'never)
 (recentf-mode 1)
 (setq recentf-max-menu-items 10)
 (setq recentf-max-saved-items 99)
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
-(require 'session)
+(require-maybe 'session)
 (add-hook 'after-init-hook 'session-initialize)
 
 
 
 ;;;; Load plugins
-(require 'emacs-rc-platform)
-(require 'emacs-rc-global)
-(require 'emacs-rc-dired)
-(require 'emacs-rc-auto-complete)
-(require 'emacs-rc-auto-header)
-(require 'emacs-rc-auto-insert)
-(require 'emacs-rc-highlight-utility)
-(require 'emacs-rc-browse-kill-ring)
-(require 'emacs-rc-ispell)
-(require 'emacs-rc-psvn)
-(require 'emacs-rc-python)
-(require 'emacs-rc-speedbar)
-(require 'emacs-rc-rfc)
-(require 'emacs-rc-tramp)
-(require 'emacs-rc-woman)
-(require 'emacs-rc-xml)
-(require 'emacs-rc-yasnippet)
-(require 'emacs-rc-c-mode)
-(require 'emacs-rc-cedet)
-(require 'emacs-rc-ecb)
-(require 'emacs-rc-functions)
-(require 'emacs-rc-org)
-(require 'emacs-rc-auctex)
-(require 'emacs-rc-html)
-(require 'emacs-rc-keybindings)
+(require-maybe 'emacs-rc-platform)
+(require-maybe 'emacs-rc-global)
+(require-maybe 'emacs-rc-dired)
+(require-maybe 'emacs-rc-auto-complete)
+(require-maybe 'emacs-rc-auto-header)
+(require-maybe 'emacs-rc-auto-insert)
+(require-maybe 'emacs-rc-highlight-utility)
+(require-maybe 'emacs-rc-browse-kill-ring)
+(require-maybe 'emacs-rc-ispell)
+(require-maybe 'emacs-rc-psvn)
+(require-maybe 'emacs-rc-python)
+(require-maybe 'emacs-rc-speedbar)
+(require-maybe 'emacs-rc-rfc)
+(require-maybe 'emacs-rc-tramp)
+(require-maybe 'emacs-rc-woman)
+(require-maybe 'emacs-rc-xml)
+(require-maybe 'emacs-rc-yasnippet)
+(require-maybe 'emacs-rc-c-mode)
+(require-maybe 'emacs-rc-cedet)
+(require-maybe 'emacs-rc-ecb)
+(require-maybe 'emacs-rc-functions)
+(require-maybe 'emacs-rc-org)
+(require-maybe 'emacs-rc-auctex)
+(require-maybe 'emacs-rc-html)
+(require-maybe 'emacs-rc-keybindings)
 
 ;;;; Start Emacs as server.
 (server-start)
