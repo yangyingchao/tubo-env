@@ -1,4 +1,8 @@
-;;; emacs-rc-auto-insert.el ---
+;;;; -*- emacs-lisp -*- -*- coding: utf-8; -*-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; $Id: emacs-rc-complete.el, 08-27-2010
+
+ ;; ************** Autoinsert templates *****************
 (require 'autoinsert)
 (auto-insert-mode)  ;;; Adds hook to find-files-hook
 (setq auto-insert-directory "~/.emacs.d/templates/auto-insert/")
@@ -108,5 +112,78 @@
         (insert-today)
         ))))
 
-(provide 'emacs-rc-auto-insert)
-;;; emacs-rc-auto-insert.el ends here
+;; ******************** Yasnippet ****************************
+
+(require 'yasnippet)
+(yas/initialize)
+(setq my-yasnippet-dir "~/.emacs.d/templates/yas-snippets")
+(yas/load-directory my-yasnippet-dir)
+;; hook for automatic reloading of changed snippets
+(defun update-yasnippets-on-save ()
+  (when (string-match "yas-snippets" buffer-file-name)
+    (yas/load-directory my-yasnippet-dir)))
+(add-hook 'after-save-hook 'update-yasnippets-on-save)
+
+
+;;  *********************** Autocomplete ***********************
+
+(require 'auto-complete)
+(require 'auto-complete-config)
+
+(ac-config-default) ; 调用默认设置, defined in auto-complete-config.el。
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/templates/ac-dict")
+
+;;; Autofill Keybinding.
+(when (require 'auto-complete nil t)
+  (global-auto-complete-mode t)
+  (set-face-background 'ac-selection-face "steelblue")
+  (set-face-background 'ac-candidate-face "lightgray")
+  (set-face-underline-p 'ac-candidate-face "darkgray")
+  (define-key ac-complete-mode-map (kbd "<C-tab>") 'ac-expand)
+  (define-key ac-complete-mode-map "\M-\r" 'ac-complete)
+  (define-key ac-complete-mode-map [(tab)] 'ac-complete)
+  (define-key ac-complete-mode-map "\M-n" 'ac-next)
+  (define-key ac-complete-mode-map "\M-p" 'ac-previous)
+  (setq ac-auto-start 3)
+  (setq ac-dwim t)
+  (setq ac-override-local-map nil)  ;don't override local map
+  (setq ac-modes '(
+                   ada-mode
+                   asm-mode c++-mode c-mode cc-mode cperl-mode css-mode
+                   ecmascript-mode emacs-lisp-mode emms-tag-editor-mode f90-mode
+                   fortran-mode haskell-mode java-mode javascript-mode
+                   latex-mode lisp-interaction-mode lisp-mode
+                   literate-haskell-mode makefile-mode org-mode perl-mode
+                   php-mode python-mode ruby-mode scheme-mode sgml-mode sh-mode
+                   text-mode xml-mode  eshell-mode
+                   ))
+  )
+
+
+;; The sources for common all mode.
+(setq-default ac-sources
+              '(
+                ac-source-semantic
+                ac-source-yasnippet
+                ac-source-words-in-buffer
+                ac-source-filename
+                ))
+
+;;; Lisp mode
+(defun yyc/ac-source-lisp ()
+  "Sources for lisp mode"
+  (setq ac-sources (append '(ac-source-symbols) ac-sources))
+  )
+
+(defun yyc/ac-source-python ()
+  "sources for python mode"
+  (setq ac-sources (append '(ac-source-semantic) ac-sources))
+  )
+
+(add-hook 'emacs-lisp-mode-hook 'yyc/ac-source-lisp)
+(add-hook 'python-mode-hook 'yyc/ac-source-python)
+(global-auto-complete-mode t) ;enable global-mode
+
+
+(provide 'emacs-rc-complete)
+;;;;; emacs-rc-complete.el ends here
