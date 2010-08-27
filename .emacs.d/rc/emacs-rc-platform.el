@@ -4,20 +4,9 @@
 
 (defvar shellpath nil
   "Path of which shell will be used by emacs.")
-
 (defvar platform-rfc-dir nil "rfc dir for rfc-view")
-
-(defun setup-font ()
-  (if (string-equal system-name "ITC-208024")
-      (set-frame-font
-       "-unknown-文泉驿等宽微米黑-normal-normal-normal-*-14-*-*-*-*-0-iso10646-1")
-    (set-frame-font
-     "-unknown-文泉驿等宽微米黑-normal-normal-normal-*-15-*-*-*-*-0-iso10646-1"))
-  )
-
 (setup-font)
 (setq shellpath "/bin/bash")
-
 (setq shell-file-name shellpath)
 (setq-default explicit-shell-file-name shellpath)
 (setenv "SHELL" shell-file-name)

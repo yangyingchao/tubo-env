@@ -337,68 +337,6 @@ Uses `current-date-time-format' for the formatting the date/time."
   )
 (add-hook 'text-mode-hook 'base-auto-pair)
 
-(defun setup-program-keybindings()
-  (interactive)
-
-  ;;;; Common program-keybindings
-  (local-set-key  [(return)] 'newline-and-indent)
-
-  (xgtags-mode 1) ;; keybindings for xgtags.
-  (local-set-key (kbd "M-|") 'align)
-  (global-set-key (kbd "<C-tab>") (lambda()   (interactive)
-                                    (align (line-beginning-position) (line-end-position))
-                                    ))
-
-  ;;;; "keybindings for sematic"
-  (semantic-default-c-setup)
-  (local-set-key "\C-c?" 'semantic-ia-complete-symbol-menu)
-  (local-set-key "\C-cb" 'semantic-mrub-switch-tags)
-  (local-set-key "\C-cR" 'semantic-symref)
-  (local-set-key "\C-cj" 'semantic-ia-fast-jump)
-  (local-set-key "\C-cp" 'semantic-ia-show-summary)
-  (local-set-key "\C-cl" 'semantic-ia-show-doc)
-  (local-set-key "\C-cr" 'semantic-symref-symbol)
-  (local-set-key "\C-c/" 'semantic-ia-complete-symbol)
-  (local-set-key [(control return)] 'semantic-ia-complete-symbol)
-
-  ;;;; Keybindings for srecode
-  (local-set-key "\C-cdf" 'srecode-document-insert-function-comment)
-  (local-set-key "\C-cdh" 'yyc/insert-file-header)
-  (local-set-key "\C-cds" 'yyc/insert-single-comment)
-  ;;;; Others
-  (local-set-key "\C-c\C-h" 'sourcepair-load)
-  (local-set-key "\C-x\C-h" 'sourcepair-load)
-  (local-set-key "\C-c\C-r" 'semantic-symref)
-  )
-
-(defun yyc/show-prog-keywords ()
-  (interactive)
-  ;; highlight additional keywords
-  (font-lock-add-keywords nil
-  '(("\\<\\(FIX\\|FIXME\\|TODO\\|BUG\\|XXX\\|HACK\\):" 1
-     font-lock-warning-face t)))
-  (font-lock-add-keywords nil '(("\\<\\(FIX \\|FIXME \\|TODO \\|BUG \\|XXX \\|HACK \\)" 1 font-lock-warning-face t)))
-  (font-lock-add-keywords nil '(("\\<\\(DONE\\):" 1 font-lock-doc-face t)))
-  ;; highlight too long lines
-  (font-lock-add-keywords nil '(("^[^\n]\\{120\\}\\(.*\\)$" 1 font-lock-warning-face t))))
-
-(defun my-program-hook ()
-  ;; Enable hide-ifdef-mode
-  (yyc/show-prog-keywords)
-  (setup-program-keybindings)
-  (program-mode-auto-pair)
-  (local-set-key  [(tab)] 'indent-or-complete)
-  )
-
-(add-hook 'c-mode-common-hook 'my-program-hook)
-(add-hook 'c-mode-hook 'my-program-hook)
-(add-hook 'c++-mode-hook 'my-program-hook)
-(add-hook 'python-mode-hook 'my-program-hook)
-(add-hook 'java-mode-hook 'my-program-hook)
-(add-hook 'lisp-mode-hook 'my-program-hook)
-(add-hook 'emacs-lisp-mode-hook 'my-program-hook)
-(add-hook 'shell-script-mode-hook 'my-program-hook)
-
 ;;;; functions to setup platform depadent settings.
 
 (defun skeleton-c-mode-left-brace (arg)
@@ -611,6 +549,16 @@ Uses `current-date-time-format' for the formatting the date/time."
                  (expand-file-name "~/.emacs.d/tools/ditaa.jar") fname)
   (message "Finished, refer to Message buffer to see the result.")
   )
+
+
+(defun setup-font ()
+  (if (string-equal system-name "ITC-208024")
+      (set-frame-font
+       "-unknown-文泉驿等宽微米黑-normal-normal-normal-*-14-*-*-*-*-0-iso10646-1")
+    (set-frame-font
+     "-unknown-文泉驿等宽微米黑-normal-normal-normal-*-15-*-*-*-*-0-iso10646-1"))
+  )
+
 
 (defvar test_var nil "nil")
 
