@@ -94,5 +94,65 @@
 (setq dired-recursive-copies 'top)
 (setq dired-recursive-deletes 'top)
 
+;; ************************** highlight utils ****************************
+(require 'highlight-utility)
+(global-set-key [(control f3)] 'highlight-symbol-at-point)
+(global-set-key [f3] 'highlight-symbol-next)
+(global-set-key [(shift f3)] 'highlight-symbol-remove-all)
+(global-set-key [(meta f3)] 'highlight-symbol-prev)
+(global-set-key [(control meta f3)] 'highlight-symbol-query-replace)
+
+;; ************************** SVN Settings *****************************
+(require 'psvn)
+(global-set-key "\C-xvv" 'svn-status-commit)
+(global-set-key "\C-xvl" 'svn-status-show-svn-log)
+(global-set-key "\C-xvu" 'svn-status-update-cmd)
+(global-set-key "\C-xvs" 'svn-status-curdir)
+(global-set-key "\C-xvS" 'svn-status)
+
+(defun svn-status-curdir()
+  (interactive)
+  (svn-status (file-name-directory (buffer-file-name))))
+
+
+ ;; ********************** Browse Killing Ring *************************
+
+(require 'browse-kill-ring)
+
+(browse-kill-ring-default-keybindings)
+
+(global-set-key (kbd "C-c k") 'browse-kill-ring)
+
+(setq kill-ring-max 100)
+
+;;; browse-kill-ring に関する設定
+(when (locate-library "browse-kill-ring")
+  ;; elisp の呼び出しと key-bind
+  (autoload 'browse-kill-ring "browse-kill-ring" "interactively insert items from kill-ring" t)
+  (define-key ctl-x-map "\C-y" 'browse-kill-ring)
+  (defadvice yank-pop (around kill-ring-browse-maybe (arg))
+    "If last action was not a yank, run `browse-kill-ring' instead."
+    (interactive "p")
+    (if (not (eq last-command 'yank))
+        (browse-kill-ring)
+      (barf-if-buffer-read-only)
+      ad-do-it))
+  (ad-activate 'yank-pop)
+  ;; 各種動作
+  (setq browse-kill-ring-quit-action 'kill-and-delete-window)
+  ;; 見た目の調整
+  (if (not window-system)
+      (setq browse-kill-ring-display-style 'one-line
+            browse-kill-ring-resize-window nil)
+    (defface separator '((t (:foreground "slate gray" :bold t))) nil)
+    (setq browse-kill-ring-separator "\n--separator------------------------------"
+          browse-kill-ring-separator-face 'separator
+          browse-kill-ring-highlight-current-entry t
+          browse-kill-ring-highlight-inserted-item t
+          browse-kill-ring-resize-window
+          )))
+
+
+
 (provide 'emacs-rc-misc)
 ;;;;; emacs-rc-misc.el ends here
