@@ -54,8 +54,6 @@
   (byte-compile (buffer-name))
   )
 
-
-
 (defun lazy-set-key (key-alist &optional keymap key-prefix)
   "This function is to little type when define key binding.
 `KEYMAP' is a add keymap for some binding, default is `current-global-map'.
@@ -156,6 +154,7 @@
 
 (global-set-key (kbd "<C-f5>")  (lambda()(interactive)(do-compile)))
 (global-set-key (kbd "<C-S-f5>")  (lambda()(interactive)(open-makefile)))
+
 ;;;; Add new line before or after current line.
 (defun zl-newline nil
   (interactive)
@@ -181,7 +180,6 @@
 (setq hippie-expand-try-functions-list
       '(
         yas/hippie-try-expand
-        ;; semantic-ia-complete-symbol
         try-expand-dabbrev
         try-expand-dabbrev-visible
         try-expand-dabbrev-all-buffers
@@ -558,7 +556,6 @@ Uses `current-date-time-format' for the formatting the date/time."
     (set-frame-font
      "-unknown-文泉驿等宽微米黑-normal-normal-normal-*-15-*-*-*-*-0-iso10646-1"))
   )
-
 
 (defvar test_var nil "nil")
 
