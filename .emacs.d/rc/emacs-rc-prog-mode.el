@@ -202,7 +202,6 @@ the mru bookmark stack."
          ("\\.c$"    . c-mode)
          ("\\.h$"    . c-mode)
          ("\\.m$"    . objc-mode)
-         ("\\.java$" . java-mode)
          ) auto-mode-alist))
 
 (mapc
@@ -252,12 +251,22 @@ the mru bookmark stack."
   (local-set-key ">" 'semantic-complete-self-insert)
   )
 
-(defun yyc/change-tab-mode ()
+;;;; Function to change settings for tab.
+(defun yyc/toggle-tab-mode ()
   "Function to change tabs quickly"
   (interactive)
-  (setq-default tab-width 8)
-  (setq-default c-basic-offset 8)
-  (setq-default indent-tabs-mode t)
+  (if indent-tabs-mode
+      (progn
+        (setq-default tab-width 4)
+        (setq-default c-basic-offset 4)
+        (setq-default indent-tabs-mode nil)
+        )
+    (progn
+      (setq-default tab-width 8)
+      (setq-default c-basic-offset 8)
+      (setq-default indent-tabs-mode t)
+      )
+    )
   )
 
 (add-hook 'c-mode-common-hook 'yyc/c-mode-keys)
@@ -304,10 +313,9 @@ the mru bookmark stack."
   (interactive)
   ;; highlight additional keywords
   (font-lock-add-keywords nil
-                          '(("\\<\\(FIX\\|FIXME\\|TODO\\|BUG\\|XXX\\|HACK\\):" 1
+                          '(("\\<\\(FIX\\|FIXME\\|TODO\\|BUG\\|XXX\\|HACK\\)\\(:\\|!\\| \\)" 1
                              font-lock-warning-face t)))
-  (font-lock-add-keywords nil '(("\\<\\(FIX \\|FIXME \\|TODO \\|BUG \\|XXX \\|HACK \\)" 1 font-lock-warning-face t)))
-  (font-lock-add-keywords nil '(("\\<\\(DONE\\):" 1 font-lock-doc-face t)))
+    (font-lock-add-keywords nil '(("\\<\\(DONE\\):" 1 font-lock-doc-face t)))
   ;; highlight too long lines
   (font-lock-add-keywords nil '(("^[^\n]\\{120\\}\\(.*\\)$" 1
   font-lock-warning-face t))))

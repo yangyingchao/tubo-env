@@ -15,6 +15,8 @@
   (find-file (buffer-name)))
 
 
+ ;; *********** Fuctions for edit special rc-files quickly ************
+
 (defun edit-emacs ()
   (interactive)
   (find-file "~/.emacs"))
@@ -26,17 +28,29 @@
 (defun edit-rcs ()
   "Jump to directory where rc files located"
   (interactive)
-  (find-file "~/.emacs.d/rc/")  )
+  (find-file "~/.emacs.d/rc/"))
 
 (defun edit-functions ()
   "Jump to directory where rc files located"
   (interactive)
-  (find-file "~/.emacs.d/rc/emacs-rc-functions.el")  )
+  (find-file "~/.emacs.d/rc/emacs-rc-functions.el"))
+
+(defun edit-prog-mode ()
+  "Jump to directory where rc files located"
+  (interactive)
+  (find-file "~/.emacs.d/rc/emacs-rc-prog-mode.el"))
+
+(defun edit-modes ()
+  "Jump to directory where rc files located"
+  (interactive)
+  (find-file "~/.emacs.d/rc/emacs-rc-modes.el"))
 
 (defun edit-template ()
   "Dired into template."
   (interactive)
   (find-file "~/.emacs.d/templates/yas-snippets/text-mode"))
+
+ ;; ******************** Others ***************************************
 
 (defun edit-devbooks ()
   "Jump to the dir where I stored my devhelp books."
