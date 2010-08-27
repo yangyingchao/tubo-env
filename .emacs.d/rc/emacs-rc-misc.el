@@ -103,12 +103,15 @@
 (global-set-key [(control meta f3)] 'highlight-symbol-query-replace)
 
 ;; ************************** SVN Settings *****************************
+
 (require 'psvn)
+
 (global-set-key "\C-xvv" 'svn-status-commit)
 (global-set-key "\C-xvl" 'svn-status-show-svn-log)
 (global-set-key "\C-xvu" 'svn-status-update-cmd)
 (global-set-key "\C-xvs" 'svn-status-curdir)
 (global-set-key "\C-xvS" 'svn-status)
+(define-key svn-status-mode-map (kbd "d") 'svn-status-rm)
 
 (defun svn-status-curdir()
   (interactive)
@@ -145,14 +148,61 @@
       (setq browse-kill-ring-display-style 'one-line
             browse-kill-ring-resize-window nil)
     (defface separator '((t (:foreground "slate gray" :bold t))) nil)
-    (setq browse-kill-ring-separator "\n--separator------------------------------"
+    (setq browse-kill-ring-separator "\n--separator--------------------------"
           browse-kill-ring-separator-face 'separator
           browse-kill-ring-highlight-current-entry t
           browse-kill-ring-highlight-inserted-item t
           browse-kill-ring-resize-window
           )))
 
+ ;; **************************** RFCs ******************************
 
+(autoload 'rfcview-mode "rfcview" nil t)
+
+(setq  platform-rfc-dir "~/Documents/TechBooks/RFCs/")
+(setq auto-mode-alist
+      (cons '("/rfc[0-9]+\\.txt\\(\\.gz\\)?\\'" . rfcview-mode)
+            auto-mode-alist))
+(eval-after-load "speedbar" '(load-library "sb-rfcview"))
+(custom-set-variables
+ '(speedbar-supported-extension-expressions
+   (append
+    speedbar-supported-extension-expressions
+    '("rfc[0-9]+\\.txt"))))
+;; Customized face of rfc.
+(custom-set-faces
+ '(rfcview-title-face ((t (:foreground "darkgreen" :weight bold)))))
+
+;;;; get-rfc
+(autoload 'get-rfc-view-rfc "get-rfc" "Get and view an RFC" t nil)
+(autoload 'get-rfc-view-rfc-at-point "get-rfc" "View the RFC at point" t nil)
+(autoload 'get-rfc-grep-rfc-index "get-rfc" "Grep rfc-index.txt" t nil)
+
+(setq get-rfc-wget-program "wget")
+(setq get-rfc-remote-rfc-directory "http://www.rfc-editor.org/rfc/")
+
+(setq  get-rfc-local-rfc-directory platform-rfc-dir)
+(custom-set-faces
+ '(rfcview-title-face ((t (:foreground "darkgreen" :weight bold)))))
+
+
+ ;; ********************* tramp *******************************
+
+(require 'tramp)
+
+(setq tramp-default-method "scp" tramp-default-user "yyc")
+
+;; (nconc  (cadr (assq 'tramp-login-args (assoc "ssh" tramp-methods))) '("/bin/sh" "-i"))
+;; (setcdr       (assq 'tramp-remote-sh  (assoc "ssh" tramp-methods))  '("/bin/sh -i"))
+
+(setq tramp-completion-without-shell-p t)
+
+;; (setq tramp-shell-prompt-pattern "^[ $]+")
+(setq tramp-auto-save-directory "~/.emacs.d/auto-save-list")
+
+(tramp-set-completion-function "ssh"
+                               '((tramp-parse-sconfig "/etc/ssh_config")
+                                 (tramp-parse-sconfig "~/.ssh/config")))
 
 (provide 'emacs-rc-misc)
 ;;;;; emacs-rc-misc.el ends here
