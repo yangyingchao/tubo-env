@@ -154,8 +154,6 @@ the mru bookmark stack."
 (defun yyc/xgtags-hook-func ()
   "My keybingdings for xgtag mode"
   ;;;; Commonly keybingdings, etags style.
-  (define-key xgtags-mode-map "\M-;" 'xgtags-select-next-tag)
-  (define-key xgtags-mode-map "\M-." 'xgtags-find-tag)
   (global-set-key (kbd "<C-M-.>") 'xgtags-find-with-grep)
   (global-set-key (kbd "<C-M-;>") 'xgtags-find-rtag)
   ;;;; Cscope style

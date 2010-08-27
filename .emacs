@@ -115,30 +115,29 @@
 ;;;; Load plugins
 (require 'emacs-rc-misc)
 (require 'emacs-rc-prog-mode)
-(require 'emacs-rc-dired)
-(require 'emacs-rc-auto-complete)
-(require 'emacs-rc-auto-header)
-(require 'emacs-rc-auto-insert)
-(require 'emacs-rc-highlight-utility)
-(require 'emacs-rc-browse-kill-ring)
-(require 'emacs-rc-ispell)
-(require 'emacs-rc-psvn)
-(require 'emacs-rc-speedbar)
-(require 'emacs-rc-rfc)
-(require 'emacs-rc-tramp)
-(require 'emacs-rc-woman)
-(require 'emacs-rc-xml)
-(require 'emacs-rc-yasnippet)
+(require 'emacs-rc-complete)
 (require 'emacs-rc-ecb)
 (require 'emacs-rc-functions)
 (require 'emacs-rc-org)
-(require 'emacs-rc-auctex)
-(require 'emacs-rc-html)
+(require 'emacs-rc-modes)
 (require 'emacs-rc-keybindings)
-(require 'emacs-rc-platform)
+
+ ;;;; Fonts Settings
+
+(defvar shellpath nil
+  "Path of which shell will be used by emacs.")
+(defvar platform-rfc-dir nil "rfc dir for rfc-view")
+(setup-font)
+(setq shellpath "/bin/bash")
+(setq shell-file-name shellpath)
+(setq-default explicit-shell-file-name shellpath)
+(setenv "SHELL" shell-file-name)
+
 
 ;;;; Start Emacs as server.
 (server-start)
 
 (recentf-open-files)
+
+
 
