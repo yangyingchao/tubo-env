@@ -192,6 +192,7 @@
 (setq company-minimum-prefix-length 3)
 (add-hook 'c-mode-hook '(lambda () (company-mode)))
 (add-hook 'c++-mode-hook '(lambda () (company-mode)))
+(add-hook 'python-mode-hook '(lambda () (company-mode)))
 
 
 ;; ********************** Common Settings **************************
