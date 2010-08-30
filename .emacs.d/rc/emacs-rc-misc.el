@@ -96,6 +96,14 @@
 
 ;; ************************** highlight utils ****************************
 (require 'highlight-utility)
+(setq highlight-tail-colors
+      '(("#c1e156" . 0)
+        ("#b8ff07" . 25)
+        ("#00c377" . 60)))
+(setq highlight-tail-steps 14
+      highlight-tail-timer 1)
+(setq highlight-tail-posterior-type 'const)
+
 (global-set-key [(control f3)] 'highlight-symbol-at-point)
 (global-set-key [f3] 'highlight-symbol-next)
 (global-set-key [(shift f3)] 'highlight-symbol-remove-all)

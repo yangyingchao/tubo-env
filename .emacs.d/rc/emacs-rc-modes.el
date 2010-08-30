@@ -136,15 +136,6 @@
 (setq org-export-creator-info nil)
 (setq org-export-time-stamp-file nil)
 
-(defun process-underline ()
-  "Process Underline, replace them with \_"
-  (interactive)
-  (goto-char (point-min))
-  (while (search-forward "_" nil t) (replace-match "\_" nil t))
-  (goto-char (point-min))
-  (while (search-forward "\\_" nil t) (replace-match "\_" nil t))
-  )
-
 ;;; Key bingdings
 
 (global-set-key [(control f1)] 'open-mylist)
@@ -175,6 +166,7 @@
   (org-defkey org-mode-map [(control ?,)]     'backward-page)
   (base-auto-pair)
   (yyc/show-pomodoro-keywords)
+  (setq fill-column 200)
   )
 
 (add-hook 'org-mode-hook 'yyc/org-mode-hooks)

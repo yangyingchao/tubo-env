@@ -64,11 +64,8 @@
 (global-set-key [end]  'home-end-end)
 (global-set-key [home] 'home-end-home)
 
-(global-set-key "\C-c;" 'comment-region)
-(global-set-key "\C-c:" 'uncomment-region)
-(global-set-key "\C-cc" 'comment-region)
-(global-set-key "\C-cu" 'uncomment-region)
-
+(global-set-key "\C-c;" 'yyc/comment-dwim-line)
+(global-set-key "\C-c:" 'yyc/comment-dwim-line)
 
 ;;; ### Doc-view ###
 ;;; --- 文档阅读器

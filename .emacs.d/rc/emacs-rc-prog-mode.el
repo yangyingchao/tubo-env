@@ -325,7 +325,7 @@ the mru bookmark stack."
   (yyc/show-prog-keywords)
   (setup-program-keybindings)
   (program-mode-auto-pair)
-  (local-set-key  [(tab)] 'indent-or-complete)
+  ;; (local-set-key  [(tab)] 'indent-or-complete)
   )
 
 (add-hook 'c-mode-common-hook 'my-program-hook)
