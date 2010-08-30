@@ -184,6 +184,74 @@
 (add-hook 'python-mode-hook 'yyc/ac-source-python)
 (global-auto-complete-mode t) ;enable global-mode
 
+ ;; *********************** Company Mode ******************************
+
+(require 'company)
+
+(setq company-idle-delay t)
+(setq company-minimum-prefix-length 3)
+(add-hook 'c-mode-hook '(lambda () (company-mode)))
+(add-hook 'c++-mode-hook '(lambda () (company-mode)))
+
+
+;; ********************** Common Settings **************************
+
+;;;;  缩进或者补齐
+;;; hippie-try-expand settings
+(setq hippie-expand-try-functions-list
+      '(
+        yas/hippie-try-expand
+;        company-complete-selection
+        try-expand-dabbrev
+        try-expand-dabbrev-visible
+        try-expand-dabbrev-all-buffers
+        try-expand-dabbrev-from-kill
+        try-complete-file-name-partially
+        try-complete-file-name
+        try-expand-all-abbrevs))
+
+(defun complete-or-indent ()
+  (interactive)
+  (if (company-manual-begin)
+      (company-complete-common)
+    (indent-according-to-mode)))
+
+(defun indent-or-complete ()
+  (interactive)
+  (if (looking-at "\\_>")
+      (company-complete-common)
+    (indent-according-to-mode)))
+
+;; (defun indent-or-complete ()
+;;   "Complete if point is at end of a word, otherwise indent line."
+;;   (interactive)
+;;   (if (looking-at "\\>")
+;;       (hippie-expand nil)
+;;     (indent-for-tab-command)
+;;     ))
+
+
+(defun tab-indent-or-complete ()
+  (interactive)
+  (defun check-expansion ()
+    (save-excursion
+      (if (looking-at "\\_>") t
+        (progn (backward-char 1)
+               (if (looking-at "\\.") t
+                 (progn (backward-char 1)
+                        (if (looking-at "->") t nil)))))))
+  (defun do-yas-expand ()
+    (let ((yas/fallback-behavior 'return-nil))
+      (yas/expand)))
+  (if (minibufferp)
+      (minibuffer-complete)
+    (if (or (not yas/minor-mode)
+            (null (do-yas-expand)))
+        (if (check-expansion)
+            (company-complete-selection)
+          (indent-for-tab-command)))))
+
+(global-set-key [tab] 'tab-indent-or-complete)
 
 (provide 'emacs-rc-complete)
 ;;;;; emacs-rc-complete.el ends here
