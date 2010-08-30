@@ -1,4 +1,0 @@
-(let ((n 0))
-  (while (< n 10000)
-    (message "ahei-test")
-    (setq n (1+ n))))

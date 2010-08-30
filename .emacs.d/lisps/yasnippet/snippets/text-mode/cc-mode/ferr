@@ -1,1 +1,0 @@
-fprintf(stderr, "ERROR: $0\n");

@@ -1,4 +1,0 @@
-(defadvice $0 activate)
-  $0
-  ad-do-it
-  $0)
