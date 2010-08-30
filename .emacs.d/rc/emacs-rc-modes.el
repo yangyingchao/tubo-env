@@ -185,8 +185,6 @@
              '("\\.wiki\\'" . wikipedia-mode))
 (add-to-list 'auto-mode-alist
              '("en\\.wikipedia\\.org" . wikipedia-mode))
-(add-to-list 'auto-mode-alist
-			 '("itsalltext.*\\.txt$" . wikipedia-mode))
 (add-hook 'wikipedia-mode-hook 'turn-on-flyspell)
 
  ;; *************************** nxml mode for XML *******************
