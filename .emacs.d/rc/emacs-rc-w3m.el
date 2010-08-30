@@ -1,10 +1,10 @@
 ;; -*- emacs-lisp -*- -*- coding: utf-8; -*-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; $Id: emacs-rc-w3m.el, 星期四, 四月 22 2010
-(require 'w3m)
-(autoload 'w3m "w3m" "Interface for w3m on Emacs." t)
-(autoload 'w3m-browse-url "w3m" "w3m interface function for browse-url.el." t)
-(autoload 'w3m-find-file "w3m" "w3m Interface function for local file." t)
+
+(require 'w3m-load)
+(require 'w3m-e21)
+(provide 'w3m-e23)
 
 (defvar w3m-arrived-file-coding-system nil "nil")
 
@@ -28,10 +28,11 @@
        w3m-use-form t
        w3m-use-mule-ucs t
        w3m-use-favicon nil
-       w3m-display-inline-image nil
+       w3m-display-inline-image t
        w3m-use-filter t
-       w3m-command-arguments '("-cookie" "-F"
-                               "-o http_proxy=127.0.0.1:5866"))
+       w3m-command-arguments '("-cookie" "-F" )
+       w3m-home-page "http://www.google.com"
+       )
 
 (standard-display-ascii ?\212 "-")
 (standard-display-ascii ?\226 "-")

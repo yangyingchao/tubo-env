@@ -1,0 +1,6 @@
+# name: SUB
+# --
+SUB  ${1:name}
+    $0
+
+ENDSUB
