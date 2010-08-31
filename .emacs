@@ -114,8 +114,8 @@
 
 ;;;; Load plugins
 (require 'emacs-rc-misc)
-(require 'emacs-rc-prog-mode)
 (require 'emacs-rc-complete)
+(require 'emacs-rc-prog-mode)
 (require 'emacs-rc-ecb)
 (require 'emacs-rc-functions)
 (require 'emacs-rc-org)

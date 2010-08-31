@@ -2,6 +2,20 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; $Id: emacs-rc-complete.el, 08-27-2010
 
+
+ ;; *********************** Company Mode ******************************
+
+(require 'company)
+
+(setq company-idle-delay nil)
+(setq company-minimum-prefix-length 3)
+(setq company-begin-commands '(self-insert-command))
+
+(add-hook 'c-mode-hook '(lambda () (company-mode)))
+(add-hook 'c++-mode-hook '(lambda () (company-mode)))
+(add-hook 'python-mode-hook '(lambda () (company-mode)))
+(global-set-key (kbd "<S-iso-lefttab>") 'company-complete-common)
+
  ;; ************** Autoinsert templates *****************
 (require 'autoinsert)
 (auto-insert-mode)  ;;; Adds hook to find-files-hook
@@ -150,15 +164,13 @@
   (setq ac-modes '(
                    ada-mode
                    asm-mode c++-mode c-mode cc-mode cperl-mode css-mode
-                   ecmascript-mode emacs-lisp-mode emms-tag-editor-mode f90-mode
-                   fortran-mode haskell-mode java-mode javascript-mode
-                   latex-mode lisp-interaction-mode lisp-mode
+                   ecmascript-mode emacs-lisp-mode emms-tag-editor-mode
+                   f90-mode fortran-mode haskell-mode java-mode
+                   javascript-mode latex-mode lisp-interaction-mode lisp-mode
                    literate-haskell-mode makefile-mode org-mode perl-mode
-                   php-mode python-mode ruby-mode scheme-mode sgml-mode sh-mode
-                   text-mode xml-mode  eshell-mode
-                   ))
-  )
-
+                   php-mode python-mode ruby-mode scheme-mode sgml-mode
+                   sh-mode text-mode xml-mode  eshell-mode
+                   )))
 
 ;; The sources for common all mode.
 (setq-default ac-sources
@@ -169,32 +181,53 @@
                 ac-source-filename
                 ))
 
+(defmacro ac-company-define-source (name backend &rest overrides)
+  "Define auto-complete source NAME from company BACKEND.
+When OVERRIDES is specified, OVERRIDES is prepend to original source."
+  `(defvar ,name
+     '(,@overrides
+       (candidates . (ac-company-candidates ',backend))
+       (prefix . (ac-company-prefix ',backend))
+       (document . (lambda (item) (ac-company-document ',backend item))))))
+
+(defun ac-company-prefix (backend)
+  (require backend nil t)
+  (when (fboundp backend)
+    (let ((prefix (funcall backend 'prefix)))
+      (when (stringp prefix)
+        (- (point) (length prefix))))))
+
+(defun ac-company-candidates (backend)
+  (funcall backend 'candidates ac-prefix))
+
+(defun ac-company-meta-as-document (backend item)
+  (funcall backend 'meta item))
+
+(defun ac-company-doc-buffer-as-document (backend item)
+  (with-current-buffer (funcall backend 'doc-buffer item)
+    (buffer-string)))
+
+(defun ac-company-document (backend item)
+  (or (ac-company-doc-buffer-as-document backend item)
+      (ac-company-meta-as-document backend item)))
+
 ;;; Lisp mode
-(defun yyc/ac-source-lisp ()
-  "Sources for lisp mode"
-  (setq ac-sources (append '(ac-source-symbols) ac-sources))
-  )
+(ac-company-define-source ac-source-company-elisp company-elisp)
+(add-hook 'emacs-lisp-mode-hook
+       (lambda ()
+         (progn
+           (add-to-list 'ac-sources 'ac-source-company-elisp)
+           (add-to-list 'ac-sources 'ac-source-symbols)
+           )))
 
-(defun yyc/ac-source-python ()
-  "sources for python mode"
-  (setq ac-sources (append '(ac-source-semantic) ac-sources))
-  )
+(ac-company-define-source ac-source-company-c-lang company-clang)
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (progn
+              (add-to-list 'ac-sources 'ac-source-company-c-lang)
+              )))
 
-(add-hook 'emacs-lisp-mode-hook 'yyc/ac-source-lisp)
-(add-hook 'python-mode-hook 'yyc/ac-source-python)
 (global-auto-complete-mode t) ;enable global-mode
-
- ;; *********************** Company Mode ******************************
-
-(require 'company)
-
-(setq company-idle-delay t)
-(setq company-minimum-prefix-length 3)
-(setq company-begin-commands '(self-insert-command))
-
-(add-hook 'c-mode-hook '(lambda () (company-mode)))
-(add-hook 'c++-mode-hook '(lambda () (company-mode)))
-(add-hook 'python-mode-hook '(lambda () (company-mode)))
 
 
 ;; ********************** Common Settings **************************

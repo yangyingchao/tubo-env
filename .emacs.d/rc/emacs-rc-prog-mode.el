@@ -38,7 +38,7 @@ the mru bookmark stack."
 ;;;; Semanticdb 定制
 ;; Semantic DataBase存储位置
 (setq semanticdb-default-save-directory
-      (expand-file-name "~/.emacs.d/semanticdb"))
+      (expand-file-name "~/.emacs.d/database/semanticdb"))
 ;; 使用 gnu global 的TAGS。
 (require 'semantic/db-global)
 (semanticdb-enable-gnu-global-databases 'c-mode)
@@ -170,7 +170,7 @@ the mru bookmark stack."
 
 (add-hook 'xgtags-mode-hook 'yyc/xgtags-hook-func)
 
-
+ ;; *************************** Python Settings ****************************
 
 ;;;; Python Settings
 (autoload 'python-mode "python-mode" "Python editing mode." t)
@@ -188,9 +188,79 @@ the mru bookmark stack."
             interpreter-mode-alist))
 (autoload 'python-mode "python-mode" "Python editing mode." t)
 
-
+(require 'python)
+(require 'auto-complete)
 
-;;;; c-mode specific.
+(autoload 'python-mode "python-mode" "Python Mode." t)
+(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+(add-to-list 'interpreter-mode-alist '("python" . python-mode))
+
+;; Initialize Pymacs
+(autoload 'pymacs-apply "pymacs")
+(autoload 'pymacs-call "pymacs")
+(autoload 'pymacs-eval "pymacs" nil t)
+(autoload 'pymacs-exec "pymacs" nil t)
+(autoload 'pymacs-load "pymacs" nil t)
+;; Initialize Rope
+(pymacs-load "ropemacs" "rope-")
+(setq ropemacs-enable-autoimport t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Auto-completion
+;;;  Integrates:
+;;;   1) Rope
+;;;   2) Yasnippet
+;;;   all with AutoComplete.el
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun prefix-list-elements (list prefix)
+  (let (value)
+    (nreverse
+     (dolist (element list value)
+       (setq value (cons (format "%s%s" prefix element) value))))))
+(defvar ac-source-rope
+  '((candidates
+     . (lambda ()
+         (prefix-list-elements (rope-completions) ac-target))))
+  "Source for Rope")
+(defun ac-python-find ()
+  "Python `ac-find-function'."
+  (require 'thingatpt)
+  (let ((symbol (car-safe (bounds-of-thing-at-point 'symbol))))
+    (if (null symbol)
+        (if (string= "." (buffer-substring (- (point) 1) (point)))
+            (point)
+          nil)
+      symbol)))
+(defun ac-python-candidate ()
+  "Python `ac-candidates-function'"
+  (let (candidates)
+    (dolist (source ac-sources)
+      (if (symbolp source)
+          (setq source (symbol-value source)))
+      (let* ((ac-limit (or (cdr-safe (assq 'limit source)) ac-limit))
+             (requires (cdr-safe (assq 'requires source)))
+             cand)
+        (if (or (null requires)
+                (>= (length ac-target) requires))
+            (setq cand
+                  (delq nil
+                        (mapcar (lambda (candidate)
+                                  (propertize candidate 'source source))
+                                (funcall (cdr (assq 'candidates source)))))))
+        (if (and (> ac-limit 1)
+                 (> (length cand) ac-limit))
+            (setcdr (nthcdr (1- ac-limit) cand) nil))
+        (setq candidates (append candidates cand))))
+    (delete-dups candidates)))
+
+(add-hook 'python-mode-hook
+          (lambda ()
+            (set (make-local-variable 'ac-sources)
+                 (append ac-sources '(ac-source-rope) '(ac-source-yasnippet)))
+            (rope-open-project "~/.emacs.d/database/python/")
+            ))
+
+ ;;;; c-mode specific.
 
 (setq auto-mode-alist
       (append
@@ -325,7 +395,15 @@ the mru bookmark stack."
   (yyc/show-prog-keywords)
   (setup-program-keybindings)
   (program-mode-auto-pair)
+  (local-set-key (kbd "'") 'skeleton-pair-insert-maybe)
   ;; (local-set-key  [(tab)] 'indent-or-complete)
+  )
+
+(defun my-lisp-hook ()
+  ;; Enable hide-ifdef-mode
+  (yyc/show-prog-keywords)
+  (setup-program-keybindings)
+  (program-mode-auto-pair)
   )
 
 (add-hook 'c-mode-common-hook 'my-program-hook)
@@ -333,10 +411,9 @@ the mru bookmark stack."
 (add-hook 'c++-mode-hook 'my-program-hook)
 (add-hook 'python-mode-hook 'my-program-hook)
 (add-hook 'java-mode-hook 'my-program-hook)
-(add-hook 'lisp-mode-hook 'my-program-hook)
-(add-hook 'emacs-lisp-mode-hook 'my-program-hook)
+(add-hook 'lisp-mode-hook 'my-lisp-hook)
+(add-hook 'emacs-lisp-mode-hook 'my-lisp-hook)
 (add-hook 'shell-script-mode-hook 'my-program-hook)
-
 
 
 (provide 'emacs-rc-prog-mode)

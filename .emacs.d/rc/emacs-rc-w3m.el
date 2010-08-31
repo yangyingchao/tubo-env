@@ -5,6 +5,7 @@
 (require 'w3m-load)
 (require 'w3m-e21)
 (provide 'w3m-e23)
+(require 'w3m)
 
 (defvar w3m-arrived-file-coding-system nil "nil")
 
@@ -124,8 +125,10 @@
   (interactive)
   (browse-url-firefox (or (w3m-anchor)
                           (w3m-image))))
-(local-set-key "\C-co" 'w3m-open-current-page-in-firefox)
-(local-set-key "\C-c\C-o" 'w3m-open-current-page-in-firefox)
+(define-key w3m-mode-map "\C-co" 'w3m-open-current-page-in-firefox)
+(define-key w3m-mode-map  "\C-c\C-o" 'w3m-open-current-page-in-firefox)
+(define-key w3m-mode-map (kbd "j") 'next-line)
+(define-key w3m-mode-map (kbd "k") 'previous-line)
 
 (provide 'emacs-rc-w3m)
 ;;; emacs-rc-w3m.el ends here
