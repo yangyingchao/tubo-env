@@ -87,6 +87,7 @@
   "description"
   (local-set-key (kbd "<C-return>") 'yyc/html-newline)
   (local-set-key (kbd "C-x <SPC>") 'yyc/html-ws)
+  (setq fill-column 200)
   )
 
 (add-to-list 'auto-mode-alist

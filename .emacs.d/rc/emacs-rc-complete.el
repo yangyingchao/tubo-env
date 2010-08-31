@@ -190,6 +190,8 @@
 
 (setq company-idle-delay t)
 (setq company-minimum-prefix-length 3)
+(setq company-begin-commands '(self-insert-command))
+
 (add-hook 'c-mode-hook '(lambda () (company-mode)))
 (add-hook 'c++-mode-hook '(lambda () (company-mode)))
 (add-hook 'python-mode-hook '(lambda () (company-mode)))

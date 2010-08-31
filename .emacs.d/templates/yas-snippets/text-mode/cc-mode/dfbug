@@ -1,7 +1,9 @@
 #define DEBUG
 
 #ifdef DEBUG
-#define PRINT_DEBUG(format, args...) printf("\033[31m"format"\033[0m", ##args);
+#define PRINT_DEBUG(format, args...)\\
+        printf("%s(%d)-%s:\t",__FILE__,__LINE__,__FUNCTION__);\\
+         printf("\033[31m"format"\033[0m", ##args);
 #else
 #define PRINT_DEBUG(format, args...)
 #endif

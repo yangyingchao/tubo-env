@@ -28,11 +28,19 @@
        w3m-use-form t
        w3m-use-mule-ucs t
        w3m-use-favicon nil
-       w3m-display-inline-image t
+       w3m-default-display-inline-images t
        w3m-use-filter t
        w3m-command-arguments '("-cookie" "-F" )
        w3m-home-page "http://www.google.com"
        )
+
+(setq w3m-command-arguments-alist
+      '(;; Don't use the proxy server to visit local web pages.
+        ("^http://\\([^/]*\\.\\)*your-company\\.com\\(/\\|$\\)"
+         "-no-proxy")
+        ;; Use the proxy server to visit any foreign urls.
+        (""
+         "-o" "http_proxy=http://127.0.0.1:5866/")))
 
 (standard-display-ascii ?\212 "-")
 (standard-display-ascii ?\226 "-")
