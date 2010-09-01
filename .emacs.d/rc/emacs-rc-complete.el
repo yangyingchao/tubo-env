@@ -246,25 +246,14 @@ When OVERRIDES is specified, OVERRIDES is prepend to original source."
         try-complete-file-name
         try-expand-all-abbrevs))
 
-(defun complete-or-indent ()
-  (interactive)
-  (if (company-manual-begin)
-      (company-complete-common)
-    (indent-according-to-mode)))
 
 (defun indent-or-complete ()
+  "Complete if point is at end of a word, otherwise indent line."
   (interactive)
-  (if (looking-at "\\_>")
-      (company-complete-common)
-    (indent-according-to-mode)))
-
-;; (defun indent-or-complete ()
-;;   "Complete if point is at end of a word, otherwise indent line."
-;;   (interactive)
-;;   (if (looking-at "\\>")
-;;       (hippie-expand nil)
-;;     (indent-for-tab-command)
-;;     ))
+  (if (looking-at "\\>")
+      (hippie-expand nil)
+    (indent-for-tab-command)
+    ))
 
 
 (defun do-yas-expand ()
@@ -279,6 +268,7 @@ When OVERRIDES is specified, OVERRIDES is prepend to original source."
                (progn (backward-char 1)
                       (if (looking-at "->") t nil)))))))
 
+;;;; This Function should bind to
 (defun tab-indent-or-complete ()
   (interactive)
   (if (minibufferp)
@@ -289,7 +279,8 @@ When OVERRIDES is specified, OVERRIDES is prepend to original source."
             (company-complete-selection)
           (indent-for-tab-command)))))
 
-(global-set-key [tab] 'tab-indent-or-complete)
+;;; This should be set locally.
+;;(global-set-key [tab] 'tab-indent-or-complete)
 
 (provide 'emacs-rc-complete)
 ;;;;; emacs-rc-complete.el ends here

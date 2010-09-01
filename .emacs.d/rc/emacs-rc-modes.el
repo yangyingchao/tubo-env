@@ -165,6 +165,7 @@
   (org-defkey org-mode-map "\C-ca" 'org-agenda)
   (org-defkey org-mode-map "\C-cb" 'org-iswitchb)
   (org-defkey org-mode-map [(control ?,)]     'backward-page)
+  (local-set-key  [(tab)] 'tab-indent-or-complete)
   (base-auto-pair)
   (yyc/show-pomodoro-keywords)
   (setq fill-column 200)

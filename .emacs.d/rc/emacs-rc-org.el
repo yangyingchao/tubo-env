@@ -77,6 +77,7 @@
   (org-defkey org-mode-map "\C-cb" 'org-iswitchb)
   (org-defkey org-mode-map [(control ?,)]     'backward-page)
   (base-auto-pair)
+  (local-set-key  [(tab)] 'tab-indent-or-complete)
   (yyc/show-pomodoro-keywords)
   )
 
