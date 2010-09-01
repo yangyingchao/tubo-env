@@ -215,6 +215,20 @@
                ""
                nil))
 
+ ;; **************************** Text Mode ***************************
+
+(defun yyc/txt-mode-hook ()
+  "My hooks for txt-mode."
+  (interactive)
+  (define-key text-mode-map "\C-c\C-e" 'txt-to-png)
+  (setq fill-column 120)
+  )
+
+(add-hook 'text-mode-hook 'yyc/txt-mode-hook)
+(add-hook  'artist-mode-init 'yyc/txt-mode-hook)
+
+
+ ;; ****************************** Over ********************************
 
 (provide 'emacs-rc-modes)
 ;;;;; emacs-rc-modes.el ends here

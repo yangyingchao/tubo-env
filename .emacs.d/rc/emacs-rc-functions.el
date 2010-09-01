@@ -367,7 +367,8 @@ Uses `current-date-time-format' for the formatting the date/time."
                            scheme-mode
                            erlang-mode
                            python-mode
-                           clojure-mode))
+                           clojure-mode
+                           text-mode))
 
 (defun yyc/untabify-hook ()
   (when (member major-mode yyc/untabify-modes)
@@ -526,7 +527,6 @@ Uses `current-date-time-format' for the formatting the date/time."
                  (expand-file-name "~/.emacs.d/tools/ditaa.jar") fname)
   (message "Finished, refer to Message buffer to see the result.")
   )
-
 
 (defun setup-font ()
   (if (string-equal system-name "ITC-208024")
