@@ -118,7 +118,6 @@
 (require 'emacs-rc-prog-mode)
 (require 'emacs-rc-ecb)
 (require 'emacs-rc-functions)
-(require 'emacs-rc-org)
 (require 'emacs-rc-modes)
 (require 'emacs-rc-keybindings)
 

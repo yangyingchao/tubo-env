@@ -396,7 +396,7 @@ the mru bookmark stack."
   (setup-program-keybindings)
   (program-mode-auto-pair)
   (local-set-key (kbd "'") 'skeleton-pair-insert-maybe)
-  (local-set-key  [(tab)] 'tab-indent-or-complete)
+  (local-set-key  [(tab)] 'indent-or-complete)
   )
 
 (defun my-lisp-hook ()
@@ -404,7 +404,7 @@ the mru bookmark stack."
   (yyc/show-prog-keywords)
   (setup-program-keybindings)
   (program-mode-auto-pair)
-  (local-set-key  [(tab)] 'tab-indent-or-complete)
+  (local-set-key  [(tab)] 'indent-or-complete)
   )
 
 (add-hook 'c-mode-common-hook 'my-program-hook)

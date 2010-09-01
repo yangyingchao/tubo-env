@@ -87,7 +87,7 @@
   "description"
   (local-set-key (kbd "<C-return>") 'yyc/html-newline)
   (local-set-key (kbd "C-x <SPC>") 'yyc/html-ws)
-  (setq fill-column 200)
+  (setq fill-column 120)
   )
 
 (add-to-list 'auto-mode-alist
@@ -165,10 +165,10 @@
   (org-defkey org-mode-map "\C-ca" 'org-agenda)
   (org-defkey org-mode-map "\C-cb" 'org-iswitchb)
   (org-defkey org-mode-map [(control ?,)]     'backward-page)
-  (local-set-key  [(tab)] 'tab-indent-or-complete)
+  (local-set-key  [(tab)] 'indent-or-complete)
   (base-auto-pair)
   (yyc/show-pomodoro-keywords)
-  (setq fill-column 200)
+  (setq fill-column 120)
   )
 
 (add-hook 'org-mode-hook 'yyc/org-mode-hooks)

@@ -435,7 +435,6 @@ Uses `current-date-time-format' for the formatting the date/time."
 (defun yyc/load-w3m ()
   "Load configurations about w3m"
   (interactive)
-  (require 'emacs-rc-w3m)
   (w3m)
   )
 
@@ -448,9 +447,8 @@ Uses `current-date-time-format' for the formatting the date/time."
       (setq fname (concat (file-name-sans-extension bn) ".html"
                           ))
     (setq fname bn))
-  (setq fname (concat "file://" fname))
-  (require 'emacs-rc-w3m)
-  (w3m fname)
+  (setq fname (concat "file://" fname) )
+  (w3m fname t)
   )
 
 (global-set-key (kbd "<C-f8>") 'yyc/load-w3m)

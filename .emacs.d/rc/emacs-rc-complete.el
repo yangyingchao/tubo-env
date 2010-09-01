@@ -147,30 +147,6 @@
 (ac-config-default) ; 调用默认设置, defined in auto-complete-config.el。
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/templates/ac-dict")
 
-;;; Autofill Keybinding.
-(when (require 'auto-complete nil t)
-  (global-auto-complete-mode t)
-  (set-face-background 'ac-selection-face "steelblue")
-  (set-face-background 'ac-candidate-face "lightgray")
-  (set-face-underline-p 'ac-candidate-face "darkgray")
-  (define-key ac-complete-mode-map (kbd "<C-tab>") 'ac-expand)
-  (define-key ac-complete-mode-map "\M-\r" 'ac-complete)
-  (define-key ac-complete-mode-map [(tab)] 'ac-complete)
-  (define-key ac-complete-mode-map "\M-n" 'ac-next)
-  (define-key ac-complete-mode-map "\M-p" 'ac-previous)
-  (setq ac-auto-start 3)
-  (setq ac-dwim t)
-  (setq ac-override-local-map nil)  ;don't override local map
-  (setq ac-modes '(
-                   ada-mode
-                   asm-mode c++-mode c-mode cc-mode cperl-mode css-mode
-                   ecmascript-mode emacs-lisp-mode emms-tag-editor-mode
-                   f90-mode fortran-mode haskell-mode java-mode
-                   javascript-mode latex-mode lisp-interaction-mode lisp-mode
-                   literate-haskell-mode makefile-mode org-mode perl-mode
-                   php-mode python-mode ruby-mode scheme-mode sgml-mode
-                   sh-mode text-mode xml-mode  eshell-mode
-                   )))
 
 ;; The sources for common all mode.
 (setq-default ac-sources
@@ -227,6 +203,31 @@ When OVERRIDES is specified, OVERRIDES is prepend to original source."
               (add-to-list 'ac-sources 'ac-source-company-c-lang)
               )))
 
+;;; Autofill Keybinding.
+(when (require 'auto-complete nil t)
+  (global-auto-complete-mode t)
+  (set-face-background 'ac-selection-face "steelblue")
+  (set-face-background 'ac-candidate-face "lightgray")
+  (set-face-underline-p 'ac-candidate-face "darkgray")
+  (define-key ac-complete-mode-map (kbd "<C-tab>") 'ac-expand)
+  (define-key ac-complete-mode-map "\M-\r" 'ac-complete)
+  (define-key ac-complete-mode-map [(tab)] 'ac-complete)
+  (define-key ac-complete-mode-map "\M-n" 'ac-next)
+  (define-key ac-complete-mode-map "\M-p" 'ac-previous)
+  (setq ac-auto-start 3)
+  (setq ac-dwim t)
+  (setq ac-override-local-map nil)  ;don't override local map
+  (setq ac-modes '(
+                   ada-mode
+                   asm-mode c++-mode c-mode cc-mode cperl-mode css-mode
+                   ecmascript-mode emacs-lisp-mode emms-tag-editor-mode
+                   f90-mode fortran-mode haskell-mode java-mode
+                   javascript-mode latex-mode lisp-interaction-mode lisp-mode
+                   literate-haskell-mode makefile-mode org-mode perl-mode
+                   php-mode python-mode ruby-mode scheme-mode sgml-mode
+                   sh-mode text-mode xml-mode  eshell-mode
+                   )))
+
 (global-auto-complete-mode t) ;enable global-mode
 
 
@@ -237,14 +238,15 @@ When OVERRIDES is specified, OVERRIDES is prepend to original source."
 (setq hippie-expand-try-functions-list
       '(
         yas/hippie-try-expand
-;        company-complete-selection
+        semantic-ia-complete-symbol
         try-expand-dabbrev
         try-expand-dabbrev-visible
         try-expand-dabbrev-all-buffers
         try-expand-dabbrev-from-kill
         try-complete-file-name-partially
         try-complete-file-name
-        try-expand-all-abbrevs))
+        try-expand-all-abbrevs
+        ))
 
 
 (defun indent-or-complete ()
@@ -255,32 +257,6 @@ When OVERRIDES is specified, OVERRIDES is prepend to original source."
     (indent-for-tab-command)
     ))
 
-
-(defun do-yas-expand ()
-  (let ((yas/fallback-behavior 'return-nil))
-    (yas/expand)))
-
-(defun check-expansion ()
-  (save-excursion
-    (if (looking-at "\\_>") t
-      (progn (backward-char 1)
-             (if (looking-at "\\.") t
-               (progn (backward-char 1)
-                      (if (looking-at "->") t nil)))))))
-
-;;;; This Function should bind to
-(defun tab-indent-or-complete ()
-  (interactive)
-  (if (minibufferp)
-      (minibuffer-complete)
-    (if (or (not yas/minor-mode)
-            (null (do-yas-expand)))
-        (if (check-expansion)
-            (company-complete-selection)
-          (indent-for-tab-command)))))
-
-;;; This should be set locally.
-;;(global-set-key [tab] 'tab-indent-or-complete)
 
 (provide 'emacs-rc-complete)
 ;;;;; emacs-rc-complete.el ends here
