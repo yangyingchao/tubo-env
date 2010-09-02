@@ -91,7 +91,7 @@
   )
 
 (add-to-list 'auto-mode-alist
-             '("blog.*\\.txt" . html-mode))
+             '("itsalltext*\\.txt" . html-mode))
 
 (add-hook 'html-mode-hook 'my-html-mode-hooks)
 
