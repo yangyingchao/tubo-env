@@ -232,7 +232,7 @@
        w3m-use-form t
        w3m-use-mule-ucs t
        w3m-use-favicon nil
-       w3m-default-display-inline-images t
+       w3m-default-display-inline-images nil
        w3m-use-filter t
        w3m-command-arguments '("-cookie" "-F" )
        w3m-home-page "http://www.google.com"
