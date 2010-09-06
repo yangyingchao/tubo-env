@@ -50,13 +50,36 @@
   (interactive)
   (find-file "~/.emacs.d/templates/yas-snippets/text-mode"))
 
- ;; ******************** Others ***************************************
+ ;; ****************************** Copy Functions **************************
 
-(defun edit-devbooks ()
-  "Jump to the dir where I stored my devhelp books."
-  (interactive)
-  (find-file "~/Documents/DevHelp" )
+(defun copy-line (&optional arg)
+  "Save current line into Kill-Ring without mark the line"
+  (interactive "P")
+  (let ((beg (line-beginning-position))
+        (end (line-end-position arg)))
+    (copy-region-as-kill beg end))
   )
+
+(global-set-key (kbd "<M-S-SPC>") 'copy-line)
+
+(defun copy-word (&optional arg)
+  "Copy words at point"
+  (interactive "P")
+  (let ((beg (progn (if (looking-back "[a-zA-Z0-9]" 1) (backward-word 1)) (point)))
+        (end (progn (forward-word arg) (point))))
+    (copy-region-as-kill beg end))
+  )
+
+
+(defun copy-paragraph (&optional arg)
+  "Copy paragraphes at point"
+  (interactive "P")
+  (let ((beg (progn (backward-paragraph 1) (point)))
+        (end (progn (forward-paragraph arg) (point))))
+    (copy-region-as-kill beg end))
+  )
+
+ ;; ******************** Others ***************************************
 
 (defun load-this-file ()
   (interactive)
@@ -528,7 +551,26 @@ Uses `current-date-time-format' for the formatting the date/time."
   (message "Finished, refer to Message buffer to see the result.")
   )
 
+(defun increase-font-size ()
+  (interactive)
+  (set-face-attribute 'default
+                      nil
+                      :height
+                      (ceiling (* 1.10
+                                  (face-attribute 'default :height)))))
+(defun decrease-font-size ()
+  (interactive)
+  (set-face-attribute 'default
+                      nil
+                      :height
+                      (floor (* 0.9
+                                (face-attribute 'default :height)))))
+
+(global-set-key (kbd "C-+") 'increase-font-size)
+(global-set-key (kbd "C--") 'decrease-font-size)
+
 (defun setup-font ()
+  (interactive)
   (if (string-equal system-name "ITC-208024")
       (progn
         ;; Setting English Font
