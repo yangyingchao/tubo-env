@@ -164,13 +164,22 @@
                     (or (getenv "CPPFLAGS")"-Wall -g") "*.cc"
                     (file-name-sans-extension file)
                     ))
-        (format "%s -o %s %s %s %s %s"
-                (or (getenv "CC") "gcc")
-                (file-name-sans-extension file)
-                (or (getenv "GTKFLAGS") "-Wall -g")
-                (or (getenv "CPPFLAGS")"-DDEBUG=9 ")
-                (or (getenv "CFLAGS") "-Wall -g")
-                file)
+        (if (or (equal (file-name-extension buffer-file-name) "c")
+                (equal (file-name-extension buffer-file-name) "C")
+                )
+            (format "%s -o %s %s %s %s %s"
+                    (or (getenv "CC") "gcc")
+                    (file-name-sans-extension file)
+                    (or (getenv "GTKFLAGS") "-Wall -g")
+                    (or (getenv "CPPFLAGS")"-DDEBUG=9 ")
+                    (or (getenv "CFLAGS") "-Wall -g")
+                    file)
+          (if (or (equal (file-name-extension buffer-file-name) "tex")
+                   (equal (file-name-extension buffer-file-name) "TEX"))
+               (format "latex %s && latex %s && latex %s && pdflatex %s"
+                       file file file file)
+               )
+          )
         ))))
 
 (defun do-compile ()

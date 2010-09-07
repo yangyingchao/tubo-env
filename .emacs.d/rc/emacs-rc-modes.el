@@ -5,26 +5,38 @@
  ;; *********************** auctex for LaTeX Mode ************************
 
 (load "auctex.el" nil t t)
+(load "preview-latex.el" nil t t)
 
+(load "auctex.el" nil t t)
+(load "preview-latex.el" nil t t)
+
+(require 'tex-site)
 (require 'tex)
+
 
 (setq TeX-auto-save t)
 (setq TeX-global-PDF-mode t)
+(setq TeX-master nil)  ;; 编辑多文档，在子文档中调用主文档
+(setq TeX-output-view-style (quote (("^pdf$" "." "evince %o %(outpage)"))))
 (setq TeX-parse-self t)
+(setq outline-minor-mode-prefix [(control o)])
 (setq reftex-plug-into-AUCTeX t)
-                                        ;(setq-default TeX-master nil)
+(setq-default TeX-master nil)
 
-(defun yyc/insert-tex-paper ()
-  "Insert latex template for writing paper"
-  (interactive)
-  (insert-file "~/.emacs.d/templates/auto-insert/article.tex")
-  )
+(add-hook 'LaTeX-mode-hook (lambda()
+                             (TeX-PDF-mode t)
+                             (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t))
+                             (setq TeX-command-default "XeLaTeX")
+                             (setq TeX-save-query  nil )
+                             (setq TeX-show-compilation nil)
+                             (LaTeX-math-mode)
+                             (turn-on-reftex)
+                             ))
 
-(defun yyc/insert-tex-beamer ()
-  "Insert latex template for writing paper"
-  (interactive)
-  (insert-file "~/.emacs.d/templates/auto-insert/beamer.tex")
-  )
+;; (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+;; (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+
+(setq reftex-plug-into-AUCTeX t)
 
 (defun tex-mode-auto-pair ()
   (interactive)

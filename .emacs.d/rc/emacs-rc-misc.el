@@ -318,18 +318,19 @@
              (format "*w3m: %s*" (or w3m-current-title
                                      w3m-current-url)) t)))
 
-(defun w3m-open-current-page-in-firefox ()
+(setq browse-url-generic-program "/usr/bin/midori" )
+(defun w3m-open-current-page-in-gui ()
   "Opens the current URL in Mozilla Firefox."
   (interactive)
-  (browse-url-firefox w3m-current-url))
+  (browse-url-generic w3m-current-url))
 
-(defun w3m-open-link-or-image-in-firefox ()
+(defun w3m-open-link-or-image-in-gui ()
   "Opens the current link or image in Firefox."
   (interactive)
-  (browse-url-firefox (or (w3m-anchor)
+  (browse-url-generic (or (w3m-anchor)
                           (w3m-image))))
-(define-key w3m-mode-map "\C-co" 'w3m-open-current-page-in-firefox)
-(define-key w3m-mode-map  "\C-c\C-o" 'w3m-open-current-page-in-firefox)
+(define-key w3m-mode-map "\C-co" 'w3m-open-current-page-in-gui)
+(define-key w3m-mode-map  "\C-c\C-o" 'w3m-open-current-page-in-gui)
 (define-key w3m-mode-map (kbd "j") 'next-line)
 (define-key w3m-mode-map (kbd "k") 'previous-line)
 
