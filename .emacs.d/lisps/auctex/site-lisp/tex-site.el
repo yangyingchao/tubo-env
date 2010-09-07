@@ -285,7 +285,7 @@ runs the hooks in `docTeX-mode-hook'.
 ;;; Generated autoloads from multi-prompt.el
 
 (autoload 'multi-prompt "multi-prompt" "\
-Completing prompt for a list of strings.  
+Completing prompt for a list of strings.
 The first argument SEPARATOR should be the string (of length 1) to
 separate the elements in the list.  The second argument UNIQUE should
 be non-nil, if each element must be unique.  The remaining elements
