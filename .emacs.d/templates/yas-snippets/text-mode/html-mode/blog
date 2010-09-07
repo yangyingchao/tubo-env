@@ -1,0 +1,30 @@
+<font size="4"> <strong>简介：</strong><br></font>
+<font size=3>
+  ${1:填写简介}<br>
+</font>
+<br>
+<table style="border-collapse: collapse;" border="0"
+       cellpadding="1" cellspacing="1" width="100%">
+  <tbody>
+    <tr>
+      <td>
+        <div style="margin: 15px;">
+          <span style="line-height: 18px;" class="Apple-style-span">
+            <font size="3">
+              <p>
+                ${正文}
+              </p>
+            </font>
+          </span>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<font size="3" color="#CC9966">
+  <a href="http://blog.163.com/vic_kk">
+    Author:yangyingchao,
+  `(insert-current-date)`
+  </a>
+</font>
