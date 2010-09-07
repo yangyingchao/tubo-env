@@ -1,17 +1,114 @@
-\documentclass{article}
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{soul}
+\usepackage{amssymb}
+\usepackage{CJKutf8}
+\usepackage{amsmath}
+\usepackage{booktabs, longtable}
+\usepackage{caption2}
+\usepackage{cite}
+\usepackage{cmap}
+\usepackage{enumerate}
+\usepackage{fancybox}
+\usepackage{flafter}
+\usepackage{indentfirst}
+\usepackage{latexsym}
+\usepackage{listings}
+\usepackage{pxfonts}
+\usepackage{textcomp}
+\usepackage{times}
+\usepackage{xcolor}
+\usepackage[T1]{fontenc}
+\usepackage[dvips]{graphicx}
+\usepackage{titlesec,titletoc}
+\usepackage[unicode=true]{hyperref}
+\usepackage[top=1in, bottom=1in, left=1.25in, right=1.25in]{geometry}
+\DeclareGraphicsExtensions{.eps,.ps,.eps.gz,.ps.gz,.eps.Z}
 
-%%\setcounter{secnumdepth}{-1} %gets rid of section numbers
+\lstset{                        %Settings for listings package.
+  language=[ANSI]{C},
+  backgroundcolor=\color{lightgray},
+  basicstyle=\footnotesize,
+  breakatwhitespace=false,
+  breaklines=true,
+  captionpos=b,
+  commentstyle=\color{olive},
+  directivestyle=\color{blue},
+  extendedchars=false,
+  % frame=single,%shadowbox
+  framerule=0pt,
+  keywordstyle=\color{blue}\bfseries,
+  morekeywords={*,define,*,include...},
+  numbersep=5pt,
+  rulesepcolor=\color{red!20!green!20!blue!20},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  stepnumber=2,
+  stringstyle=\color{purple},
+  tabsize=4,
+  title=\lstname
+}
 
-%% use larger page layout
-%% \usepackage{fullpage}
-\usepackage{graphicx}
+
+%------------中文设置 --------------------------
+\makeatletter %Show the references as superior and add square brackets to them 将文献引用作为上标出现,增加括号
+\def\@cite#1#2{\textsuperscript{[{#1\if@tempswa , #2\fi}]}}
+\makeatother
+\renewcommand{\refname}{\centerline{参考文献}}
+\renewcommand{\tablename}{表}
+\renewcommand{\captionlabeldelim}{\quad}
+%===================Image settings========================%
+\renewcommand{\figurename}{图}
+\renewcommand{\captionlabeldelim}{\quad} %Need caption2 macro package
+%===============End image settings========================%
+%-----------中文设置--------------------------
+
+\titleformat{\section}%对节的定义
+{\Large\filcenter\CJKfamily{kai}\sf}
+{\thesection\makebox[1ex][l]{}}{0.75em}{}%在节上显示*号
+  \titlecontents{section}[6.5em]{}%节号前面的距离和节上方的距离
+  {\contentslabel[\thecontentslabel]{2.5em}}{}%节号与节的题目之间的距离,%在节上显示*号
+              {\titlerule*[0.5pc]{.}\hspace*{.1em}\contentspage}%可以改小数字以缩小"."之间的距离
+\titleformat{\subsection}%对小节的定义
+{\normalfont\large\CJKfamily{you}\sf}
+{\thesubsection\makebox[1ex][l]{}}{0.75em}{}
+  \titlecontents{subsection}[9.75em]{}
+  {\contentslabel[\thecontentslabel]{3.25em}}{}
+              {\titlerule*[0.5pc]{.}\hspace*{.1em}\contentspage}
+\titleformat{\subsubsection}%对小小节的定义
+{\normalfont\normalsize\CJKfamily{fs}\sf}
+{\hspace*{2em}\thesubsubsection\makebox[1ex][l]{}}{0.75em}{}
+  \titlecontents{subsubsection}[13em]{}
+  {\contentslabel[\thecontentslabel]{3.5em}}{}
+              {\titlerule*[0.5pc]{.}\hspace*{.1em}\contentspage}
+%=============== End Package Area ==================%
 
 \begin{document}
+\begin{CJK}{UTF8}{gbsn}
+\CJKindent
 
-%% \title{}
-%% \author{<VARLOOKUP "user-full-name">}
-%% \maketitle
+%=================== 标题 ======================%
+\title{${1:title}}
+\author{杨英超}
+\maketitle
 
-<cursor>
+%=================== 目录 ======================%
+\newpage
+\tableofcontents
+\newpage
 
+%=================== 正文 ======================%
+
+
+%================= 参考文件 ======================%
+\newpage
+% \bibliographystyle{unsrt}
+% \bibliography{refs}
+\newpage
+\end{CJK}
 \end{document}
