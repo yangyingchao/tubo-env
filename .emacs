@@ -109,7 +109,7 @@
 (setq user-full-name "Yang, Ying-chao")
 
 ;;;; 最大化窗口
-(setq initial-frame-alist '((top . 0) (left . 0) (width . 175) (height . 70)))
+(setq initial-frame-alist '((top . 0) (left . 0) (width . 160) (height . 60)))
 
 
 ;;;; Load plugins

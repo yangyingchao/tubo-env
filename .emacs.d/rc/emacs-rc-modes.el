@@ -23,14 +23,23 @@
 (setq reftex-plug-into-AUCTeX t)
 (setq-default TeX-master nil)
 
+(defun yyc/insert-new-item ()
+  "description"
+  (interactive)
+  (move-end-of-line 1)
+  (LaTeX-insert-item)
+  )
 (add-hook 'LaTeX-mode-hook (lambda()
                              (TeX-PDF-mode t)
                              (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t))
                              (setq TeX-command-default "XeLaTeX")
                              (setq TeX-save-query  nil )
                              (setq TeX-show-compilation nil)
+                             (setq fill-column 78)
                              (LaTeX-math-mode)
                              (turn-on-reftex)
+                             (local-set-key (kbd "<C-return>")
+                                            'yyc/insert-new-item)
                              ))
 
 ;; (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
