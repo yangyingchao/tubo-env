@@ -128,9 +128,7 @@
 
 (setq kill-ring-max 100)
 
-;;; browse-kill-ring に関する設定
 (when (locate-library "browse-kill-ring")
-  ;; elisp の呼び出しと key-bind
   (autoload 'browse-kill-ring "browse-kill-ring" "interactively insert items from kill-ring" t)
   (define-key ctl-x-map "\C-y" 'browse-kill-ring)
   (defadvice yank-pop (around kill-ring-browse-maybe (arg))
@@ -141,19 +139,12 @@
       (barf-if-buffer-read-only)
       ad-do-it))
   (ad-activate 'yank-pop)
-  ;; 各種動作
   (setq browse-kill-ring-quit-action 'kill-and-delete-window)
-  ;; 見た目の調整
-  (if (not window-system)
-      (setq browse-kill-ring-display-style 'one-line
-            browse-kill-ring-resize-window nil)
-    (defface separator '((t (:foreground "slate gray" :bold t))) nil)
-    (setq browse-kill-ring-separator "\n--separator--------------------------"
-          browse-kill-ring-separator-face 'separator
-          browse-kill-ring-highlight-current-entry t
-          browse-kill-ring-highlight-inserted-item t
-          browse-kill-ring-resize-window
-          )))
+  (setq browse-kill-ring-separator "\n--separator--------------------------"
+        browse-kill-ring-highlight-current-entry t
+        browse-kill-ring-highlight-inserted-item t
+        browse-kill-ring-resize-window
+        ))
 
  ;; **************************** RFCs ******************************
 

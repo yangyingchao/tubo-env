@@ -11,6 +11,7 @@
 (load "preview-latex.el" nil t t)
 
 (require 'tex-site)
+(require 'tex-buf)
 (require 'tex)
 
 
