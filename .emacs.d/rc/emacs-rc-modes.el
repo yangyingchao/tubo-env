@@ -91,6 +91,53 @@
   (newline-and-indent)
   )
 
+(defun yyc/html-newph ()
+  "New line, add <br> into the end of line."
+  (interactive)
+  (newline-and-indent)
+  (insert "<p>\n\n</p>")
+  (backward-char 4)
+  (indent-or-complete)
+  (previous-line)
+  (indent-or-complete)
+  )
+
+(defvar fmt nil "nil")
+(defvar fmt_len nil "nil")
+
+(defun yyc/html-txt-format (fmt)
+  "Format a text string (from start to end )into some format definded as fmt."
+  (message "AAA")
+  (setq fmt_len (length fmt))
+  (message "%d" fmt_len)
+  (if (= fmt_len 0)
+      (error "Unknown format!"))
+  (insert (format "<%s></%s>" fmt fmt))
+  (backward-char (+ fmt_len 3))
+  (yank)
+  )
+
+(defun yyc/html-txt-bd (start end)
+  "<strong></strong>"
+  (interactive "rp")
+  (kill-region start end)
+  (yyc/html-txt-format "strong")
+  )
+
+(defun yyc/html-txt-pre (start end)
+  "<pre></pre>"
+  (interactive "rp")
+  (kill-region start end)
+  (yyc/html-txt-format "pre")
+  )
+
+(defun yyc/html-txt-pha (start end)
+  "<p></p>"
+  (interactive "rp")
+  (kill-region start end)
+  (yyc/html-txt-format "p")
+  )
+
 (defun yyc/html-ws ()
   "White Space."
   (interactive)
@@ -105,9 +152,13 @@
   )
 
 (defun my-html-mode-hooks ()
-  "description"
+  "html mode hooks."
   (local-set-key (kbd "<C-return>") 'yyc/html-newline)
-  (local-set-key (kbd "C-x <SPC>") 'yyc/html-ws)
+  (local-set-key (kbd "<C-M-return>") 'yyc/html-newph)
+  (local-set-key (kbd "C-c <SPC>") 'yyc/html-ws)
+  (local-set-key (kbd "C-c b") 'yyc/html-txt-bd)
+  (local-set-key (kbd "C-c p") 'yyc/html-txt-pre)
+  (local-set-key (kbd "C-c P") 'yyc/html-txt-pha)
   (setq fill-column 120)
   )
 
