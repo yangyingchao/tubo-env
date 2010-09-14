@@ -137,6 +137,3 @@
 (server-start)
 
 (recentf-open-files)
-
-
-
