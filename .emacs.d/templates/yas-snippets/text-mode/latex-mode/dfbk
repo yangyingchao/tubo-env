@@ -1,0 +1,11 @@
+% Define a backgound.
+\usepackage{eso-pic}
+\newcommand\BackgroundPic{
+  \put(0,0){
+    \parbox[b][\paperheight]{\paperwidth}{%
+      \vfill
+      \centering
+      \incl?graphics[width=\paperwidth,height=\paperheight,
+      keepaspectratio]{${1:background.png}}%
+      \vfill
+    }}}

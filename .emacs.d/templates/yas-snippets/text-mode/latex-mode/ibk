@@ -1,0 +1,2 @@
+%inser background
+\AddToShipoutPicture*{\BackgroundPic}
