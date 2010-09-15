@@ -179,7 +179,7 @@
 
  ;; ********************* tramp *******************************
 
-(require 'tramp)
+(require 'tramp) 
 
 (setq tramp-default-method "scp" tramp-default-user "yyc")
 
@@ -196,7 +196,7 @@
                                  (tramp-parse-sconfig "~/.ssh/config")))
 
  ;; ********************* W3m ***********************************
-(require 'w3m-load)
+(require 'w3m-load) 
 (require 'w3m-e21)
 (provide 'w3m-e23)
 (require 'w3m)
@@ -320,10 +320,34 @@
   (interactive)
   (browse-url-generic (or (w3m-anchor)
                           (w3m-image))))
+
+(defun yyc/load-w3m ()
+  "Load configurations about w3m"
+  (interactive)
+  (w3m)
+  )
+
+(defvar bn nil "nil")
+(defun yyc/w3m-open-this-page ()
+  "Call w3m to open this html file"
+  (interactive)
+  (setq bn (buffer-file-name))
+  (if (string= (file-name-extension bn) "org")
+      (setq fname (concat (file-name-sans-extension bn) ".html"
+                          ))
+    (setq fname bn))
+  (setq fname (concat "file://" fname) )
+  (w3m fname t)
+  )
+
 (define-key w3m-mode-map "\C-co" 'w3m-open-current-page-in-gui)
 (define-key w3m-mode-map  "\C-c\C-o" 'w3m-open-current-page-in-gui)
 (define-key w3m-mode-map (kbd "j") 'next-line)
 (define-key w3m-mode-map (kbd "k") 'previous-line)
+(global-set-key (kbd "<C-f8>") 'yyc/load-w3m)
+(global-set-key (kbd "<C-S-f8>") 'yyc/w3m-open-this-page)
+
+
 
 
 (provide 'emacs-rc-misc)

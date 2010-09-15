@@ -88,10 +88,14 @@ the mru bookmark stack."
 
 ;;;;  Helper tools.
 (custom-set-variables
- '(semantic-default-submodes (quote (;; global-semantic-highlight-func-mode
-                                     global-semantic-decoration-mode global-semantic-idle-completions-mode
-                                                                     global-semantic-idle-scheduler-mode global-semanticdb-minor-mode
-                                                                     global-semantic-idle-summary-mode global-semantic-mru-bookmark-mode)))
+ '(semantic-default-submodes (quote (
+                                     ;; global-semantic-highlight-func-mode
+                                     global-semantic-decoration-mode
+                                     global-semantic-idle-completions-mode
+                                     global-semantic-idle-scheduler-mode
+                                     global-semanticdb-minor-mode
+                                     global-semantic-idle-summary-mode
+                                     global-semantic-mru-bookmark-mode)))
  '(semantic-idle-scheduler-idle-time 3))
 
 (semantic-mode)

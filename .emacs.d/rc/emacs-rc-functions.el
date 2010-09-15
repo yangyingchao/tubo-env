@@ -465,28 +465,6 @@ Uses `current-date-time-format' for the formatting the date/time."
 (add-hook 'shell-mode-hook 'mode-hook-func)
 (add-hook 'gdb-mode-hook 'mode-hook-func)
 
-(defun yyc/load-w3m ()
-  "Load configurations about w3m"
-  (interactive)
-  (w3m)
-  )
-
-(defvar bn nil "nil")
-(defun yyc/w3m-open-this-page ()
-  "Call w3m to open this html file"
-  (interactive)
-  (setq bn (buffer-file-name))
-  (if (string= (file-name-extension bn) "org")
-      (setq fname (concat (file-name-sans-extension bn) ".html"
-                          ))
-    (setq fname bn))
-  (setq fname (concat "file://" fname) )
-  (w3m fname t)
-  )
-
-(global-set-key (kbd "<C-f8>") 'yyc/load-w3m)
-(global-set-key (kbd "<C-S-f8>") 'yyc/w3m-open-this-page)
-
 (defun uniq-region (beg end)
   "Remove duplicate lines, a` la Unix uniq.
    If tempted, you can just do <<C-x h C-u M-| uniq RET>> on Unix."
