@@ -1,0 +1,1 @@
+signal(${1:SIGNAL}, $1_handler)
