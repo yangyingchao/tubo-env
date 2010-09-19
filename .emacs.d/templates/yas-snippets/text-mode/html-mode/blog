@@ -1,6 +1,6 @@
-<font size="4"> <strong>简介：</strong><br></font>
+<font size="4"> <strong>简介：</strong><br /></font>
 <font size=3>
-  ${1:填写简介}<br>
+  ${1:填写简介}<br />
 </font>
 <br>
 <table style="border-collapse: collapse;" border="0"
