@@ -1,1 +1,2 @@
-oops("${1:Reason}");
+oops ("${1:%s}\\n"${1:$(if (string-match "%" text) "," "\);")
+}$2${1:$(if (string-match "%" text) "\);" "")}
