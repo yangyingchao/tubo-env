@@ -33,17 +33,17 @@
 (defun edit-functions ()
   "Jump to directory where rc files located"
   (interactive)
-  (find-file "~/.emacs.d/rc/emacs-rc-functions.el.gz"))
+  (find-file "~/.emacs.d/rc/emacs-rc-functions.el"))
 
 (defun edit-prog-mode ()
   "Jump to directory where rc files located"
   (interactive)
-  (find-file "~/.emacs.d/rc/emacs-rc-prog-mode.el.gz"))
+  (find-file "~/.emacs.d/rc/emacs-rc-prog-mode.el"))
 
 (defun edit-modes ()
   "Jump to directory where rc files located"
   (interactive)
-  (find-file "~/.emacs.d/rc/emacs-rc-modes.el.gz"))
+  (find-file "~/.emacs.d/rc/emacs-rc-modes.el"))
 
 (defun edit-template ()
   "Dired into template."
