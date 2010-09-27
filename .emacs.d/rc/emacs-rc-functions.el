@@ -241,7 +241,7 @@
 (defun autocompile nil
   (interactive)
   (setq fname (buffer-file-name))
-  (if (or (string= fname (concat default-directory ".emacs.gz"))
+  (if (or (string= fname (concat default-directory ".emacs"))
           (or (string= (file-name-extension fname) "el")
               (and (string= (file-name-extension fname) "gz")
                    (string= (file-name-extension (file-name-sans-extension fname)) "el"))
@@ -251,8 +251,11 @@
 (defun try-compile-file(fname)
   (interactive)
   (message "Compliling ...")
-  (if (string= fname (concat default-directory ".emacs.gz"))
-      nil (load-file fname))
+  (if (string= fname (concat default-directory ".emacs"))
+      (progn ;; Load it twice.
+        (load-file fname)
+        (load-file fname))
+    (load-file fname))
   (byte-compile-file fname))
 
 ;;;; Make current-buffer 10 lines higher.
