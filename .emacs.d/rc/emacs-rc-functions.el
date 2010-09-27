@@ -19,7 +19,7 @@
 
 (defun edit-emacs ()
   (interactive)
-  (find-file "~/.emacs.gz"))
+  (find-file "~/.emacs"))
 
 (defun edit-project ()
   (interactive)

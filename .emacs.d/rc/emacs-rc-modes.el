@@ -163,6 +163,7 @@
   (local-set-key (kbd "C-c p") 'yyc/html-txt-pre)
   (local-set-key (kbd "C-c P") 'yyc/html-txt-pha)
   (local-set-key (kbd "C-c t") 'yyc/html-txt-tt)
+  (auto-complete-mode)
   (setq fill-column 120)
   )
 
