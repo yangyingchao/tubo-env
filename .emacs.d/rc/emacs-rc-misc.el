@@ -44,11 +44,6 @@
 (set-face-foreground 'woman-italic "#73d2e6")
 (set-face-foreground 'woman-bold "#a40000")
 
-(if (eq system-type 'windows-nt)
-    (setq woman-manpath (quote ("d:/gnu/home/yyc/mandb")))
-  (setq woman-manpath (quote ("/usr/share/man"  "/usr/local/share/man")))
-  )
-
 (defun see-woman()
   (interactive)
   (let ((woman-topic-at-point t))
