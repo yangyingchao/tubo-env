@@ -5,7 +5,7 @@
 DESCRIPTION="(>>FILE<<)"
 DOCS="AUTHORS ChangeLog NEWS README TODO"
 EAPI="2"
-HOMEPAGE="http://www.gnome.org/"
+HOMEPAGE="http://www.bukengnikengshui.com/(joke)"
 IUSE="doc"
 KEYWORDS="amd64 x86"
 LICENSE="LGPL-2"
