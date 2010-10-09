@@ -532,5 +532,8 @@ the mru bookmark stack."
 (add-hook 'shell-script-mode-hook 'my-program-hook)
 
 
+
+(add-to-list 'auto-mode-alist '("\\.ebuild$" . sh-mode))
+
 (provide 'emacs-rc-prog-mode)
 ;;;;; emacs-rc-prog-mode.el ends here

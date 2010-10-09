@@ -39,6 +39,7 @@
         ("\\.tex$" . ["insert.tex" auto-update-defaults])
         ("\\.html$" . ["insert.html" auto-update-defaults])
         ("\\.devhelp2$" . ["insert.devhelp2" auto-update-defaults])
+        ("\\.ebuild$" . ["insert.ebuild" auto-update-defaults])
         ))
 
 ;; function replaces the string '@@@' by the current file
