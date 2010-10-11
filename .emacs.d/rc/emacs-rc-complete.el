@@ -131,6 +131,7 @@
 
 (require 'yasnippet)
 (defvar my-yasnippet-dir nil "nil")
+(setq yas/indent-line 'fixed)
 (yas/initialize)
 (setq my-yasnippet-dir "~/.emacs.d/templates/yas-snippets")
 (yas/load-directory my-yasnippet-dir)
