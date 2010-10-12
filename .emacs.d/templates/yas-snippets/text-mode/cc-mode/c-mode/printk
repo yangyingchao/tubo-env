@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name : printf
+# contributor : joaotavora
+# --
+printk (${1:KERN_INFO} "${2:%s}\\n"${2:$(if (string-match "%" text) "," "\);")
+}$3${2:$(if (string-match "%" text) "\);" "")}
