@@ -239,10 +239,6 @@ the mru bookmark stack."
             interpreter-mode-alist))
 (setq ropemacs-enable-autoimport t)
 
-;; (eval-after-load "pymacs"
-;;   '(add-to-list 'pymacs-load-path YOUR-PYMACS-DIRECTORY))
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Auto-completion
 ;;;  Integrates:
