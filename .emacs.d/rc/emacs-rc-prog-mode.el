@@ -526,10 +526,11 @@ the mru bookmark stack."
 (add-hook 'lisp-mode-hook 'my-lisp-hook)
 (add-hook 'emacs-lisp-mode-hook 'my-lisp-hook)
 (add-hook 'shell-script-mode-hook 'my-program-hook)
+(add-hook 'sh-mode-hook 'my-program-hook)
 
 
 
-(add-to-list 'auto-mode-alist '("\\.ebuild$" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.ebuild$" . shell-script-mode))
 
 (provide 'emacs-rc-prog-mode)
 ;;;;; emacs-rc-prog-mode.el ends here

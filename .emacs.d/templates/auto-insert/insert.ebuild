@@ -23,9 +23,9 @@ src_configure(){
 }
 
 src_compile(){
-    emake -j3 || dir "Make failed."
+    emake -j3 || die "Make failed."
 }
 
 src_install() {
-    einstall
+    einstall || die "Failed to install"
 }

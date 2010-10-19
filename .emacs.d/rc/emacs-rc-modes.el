@@ -141,6 +141,18 @@
   (yyc/html-txt-format "p")
   )
 
+(defun yyc/html-txt-col (start end)
+  "Add colour."
+  (interactive "rp")
+  (kill-region start end)
+  (insert "   <font color=\"#a40000\">
+
+</font>"
+          )
+  (previous-line)
+  (yank)
+  )
+
 (defun yyc/html-ws ()
   "White Space."
   (interactive)
@@ -163,6 +175,7 @@
   (local-set-key (kbd "C-c p") 'yyc/html-txt-pre)
   (local-set-key (kbd "C-c P") 'yyc/html-txt-pha)
   (local-set-key (kbd "C-c t") 'yyc/html-txt-tt)
+  (local-set-key (kbd "C-c c") 'yyc/html-txt-col)
   (auto-complete-mode)
   (setq fill-column 120)
   )

@@ -201,7 +201,7 @@
 (setq  w3m-arrived-file-coding-system 'utf-8
        w3m-async-exec t
        w3m-coding-system 'utf-8
-       w3m-default-save-directory "~/tmp/down/"
+       w3m-default-save-directory "~/tmp/"
        w3m-delete-duplicated-empty-lines t
        w3m-file-coding-system 'utf-8
        w3m-file-name-coding-system 'utf-8
@@ -219,9 +219,7 @@
        w3m-use-favicon nil
        w3m-default-display-inline-images nil
        w3m-use-filter t
-       w3m-command-arguments '("-cookie" "-F" )
-       w3m-home-page "http://www.google.com"
-       )
+       w3m-command-arguments '("-cookie" "-F" ))
 
 (setq w3m-command-arguments-alist
       '(;; Don't use the proxy server to visit local web pages.

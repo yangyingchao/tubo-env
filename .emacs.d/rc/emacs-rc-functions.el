@@ -325,15 +325,14 @@ Uses `current-date-time-format' for the formatting the date/time."
 (defvar skeleton-pair t)
 (setq skeleton-pair-alist
       '(
-        (?\< ?  _ ">")
-        (?\{ ?  _ "}")
         (?\（ ?  _ "）")
         (?\“ ?  _ "”")
         (?\$ ?  _ "$")
         ))
 
 (defun program-mode-auto-pair ()
-  (interactive)
+  ;; (interactive)
+  (message "**** YYC: Setting skeleton for program mode ****")
   (make-local-variable 'skeleton-pair-alist)
   (setq skeleton-pair t)
   (local-set-key (kbd "(") 'skeleton-pair-insert-maybe)
@@ -343,7 +342,7 @@ Uses `current-date-time-format' for the formatting the date/time."
   )
 
 (defun base-auto-pair ()
-  (interactive)
+  ;; (interactive)
   (make-local-variable 'skeleton-pair-alist)
   (setq skeleton-pair t)
   (local-set-key (kbd "(") 'skeleton-pair-insert-maybe)
