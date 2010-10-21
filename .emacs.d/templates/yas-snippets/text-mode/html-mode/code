@@ -1,13 +1,11 @@
-<font size="4">
 <table width="95%" cellspacing="0" cellpadding="0" bordercolor="#999999" border="1" bgcolor="#f1f1f1" style="border-collapse: collapse;">
     <tbody>
         <tr>
             <td>
-	      <pre>
-${code_here}
-              </pre>
+          <pre><font size="1">
+${code_here}  </font></pre>
             </td>
         </tr>
     </tbody>
 </table>
- </font>
+
