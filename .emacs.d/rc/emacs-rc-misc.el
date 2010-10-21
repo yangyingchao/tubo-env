@@ -165,6 +165,7 @@
 
 (setq get-rfc-wget-program "wget")
 (setq get-rfc-remote-rfc-directory "http://www.rfc-editor.org/rfc/")
+(setq get-rfc-open-in-new-frame nil)
 
 (setq  get-rfc-local-rfc-directory platform-rfc-dir)
 (custom-set-faces
@@ -301,7 +302,7 @@
              (format "*w3m: %s*" (or w3m-current-title
                                      w3m-current-url)) t)))
 
-(setq browse-url-generic-program "/usr/bin/midori" )
+(setq browse-url-generic-program "/usr/bin/epiphany" )
 (defun w3m-open-current-page-in-gui ()
   "Opens the current URL in Mozilla Firefox."
   (interactive)
