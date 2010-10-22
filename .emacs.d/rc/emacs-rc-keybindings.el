@@ -23,6 +23,33 @@
 (global-set-key (kbd "<C-f4>") 'kmacro-start-macro-or-insert-counter)
 (global-set-key (kbd "<S-f4>") ' kmacro-end-or-call-macro)
 (global-set-key (kbd "<C-S-f4>") 'kmacro-end-and-call-macro)
+
+(require 'ansi-color)
+(autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+;; 这样直接把颜色滤掉
+(add-hook 'eshell-preoutput-filter-functions
+          'ansi-color-filter-apply)
+
+;; eshell ssh
+(defun eshell/ssh (&rest args)
+  "Secure shell"
+  (let ((cmd (eshell-flatten-and-stringify
+              (cons "ssh" args)))
+        (display-type (framep (selected-frame))))
+    (cond
+     ((and
+       (eq display-type 't)
+       (getenv "STY"))
+      (send-string-to-terminal (format "\033]83;screen %s\007" cmd)))
+     ((eq display-type 'x)
+      (eshell-do-eval
+       (eshell-parse-command
+        (format "Terminal -e %s &" cmd)))
+      nil)
+     (t
+      (apply 'eshell-exec-visual (cons "ssh" args))))))
+
 (global-set-key [f5] 'eshell)
 (global-set-key (kbd "<S-f5>") 'ansi-term)
 (setq compile-command "make -f makefile")
