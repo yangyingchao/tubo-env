@@ -578,13 +578,13 @@ Uses `current-date-time-format' for the formatting the date/time."
     (progn
       ;; Setting English Font
       (set-face-attribute
-       'default nil :font "文泉驿等宽微米黑 11")
+       'default nil :font "Monaco 12")
 
       ;; Chinese Font
       (dolist (charset '(kana han symbol cjk-misc bopomofo))
         (set-fontset-font (frame-parameter nil 'font)
                           charset
-                          (font-spec :family "Microsoft Yahei" :size 16)))
+                          (font-spec :family "Simsun" :size 16)))
       )
     ))
 
