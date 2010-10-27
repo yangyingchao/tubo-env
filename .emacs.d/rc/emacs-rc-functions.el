@@ -65,7 +65,8 @@
 (defun copy-word (&optional arg)
   "Copy words at point"
   (interactive "P")
-  (let ((beg (progn (if (looking-back "[a-zA-Z0-9]" 1) (backward-word 1)) (point)))
+  (let ((beg (progn (if (looking-back "[a-zA-Z0-9]" 1) (backward-word 1))
+                    (point)))
         (end (progn (forward-word arg) (point))))
     (copy-region-as-kill beg end))
   )
@@ -565,38 +566,24 @@ Uses `current-date-time-format' for the formatting the date/time."
 (defun setup-font ()
   (interactive)
   (if (string-match "ITC-208024"  system-name)
-      (progn
-        ;; Setting English Font
-        (set-frame-font "-unknown-Monaco-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1")
-        ;; Chinese Font
-        (dolist (charset '(kana han symbol cjk-misc bopomofo))
-          (set-fontset-font (frame-parameter nil 'font)
-                            charset
-                            (font-spec :family "Microsoft Yahei" :size 16)))
-
-        )
-    (progn
-      ;; Setting English Font
-      (set-face-attribute
-       'default nil :font "Monaco 12")
-
-      ;; Chinese Font
-      (dolist (charset '(kana han symbol cjk-misc bopomofo))
-        (set-fontset-font (frame-parameter nil 'font)
-                          charset
-                          (font-spec :family "Simsun" :size 16)))
-      )
-    ))
+      (set-face-attribute 'default nil :font "Consolas 11")
+    (set-face-attribute 'default nil :font "Consolas 12"))
+  (dolist (charset '(kana han symbol cjk-misc bopomofo))
+    (set-fontset-font (frame-parameter nil 'font)
+                      charset
+                      (font-spec :family "Microsoft YaHei" :size 16)))
+  )
 
 (defun yyc/comment-dwim-line (&optional arg)
-  "Replacement for the comment-dwim command.
-If no region is selected and current line is not blank and we are not at the end of the line,
-then comment current line.
-Replaces default behaviour of comment-dwim, when it inserts comment at the end of the line."
+  "Replacement for the comment-dwim command. If no region is selected and
+current line is not blank and we are not at the end of the line, then
+comment current line. Replaces default behaviour of comment-dwim, when it
+inserts comment at the end of the line."
   (interactive "*P")
   (comment-normalize-vars)
   (if (and (not (region-active-p)) (not (looking-at "[ \t]*$")))
-	  (comment-or-uncomment-region (line-beginning-position) (line-end-position))
+	  (comment-or-uncomment-region
+       (line-beginning-position) (line-end-position))
 	(comment-dwim arg)))
 
 (global-set-key "\M-;" 'yyc/comment-dwim-line)
