@@ -2,8 +2,7 @@
     <tbody>
         <tr>
             <td>
-          <pre><font size="1">
-${code_here}  </font></pre>
+          <pre><font size="1">${code_here}  </font></pre>
             </td>
         </tr>
     </tbody>

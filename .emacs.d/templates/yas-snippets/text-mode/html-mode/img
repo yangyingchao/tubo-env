@@ -2,4 +2,3 @@
 #name : <img src="..." class="..." alt="..." />
 # --
 <img src="$0" class="$2" alt="$3" />
-<!-- <img src= "data:image/${1:png};base64, ${2:data}"/> -->
