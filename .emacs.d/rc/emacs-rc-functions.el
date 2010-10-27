@@ -567,7 +567,7 @@ Uses `current-date-time-format' for the formatting the date/time."
   (interactive)
   (if (string-match "ITC-208024"  system-name)
       (set-face-attribute 'default nil :font "Consolas 11")
-    (set-face-attribute 'default nil :font "Consolas 12"))
+    (set-face-attribute 'default nil :font "WenQuanYi Micro Hei Mono 12"))
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font)
                       charset
