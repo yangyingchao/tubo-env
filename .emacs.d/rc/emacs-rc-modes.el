@@ -153,6 +153,17 @@
   (yank)
   )
 
+(defun yyc/small-font (start end)
+  "Add colour."
+  (interactive "rp")
+  (kill-region start end)
+  (insert "   <font size=\"1\">
+
+</font>"
+          )
+  (previous-line)
+  (yank)
+  )
 (defun yyc/html-ws ()
   "White Space."
   (interactive)
@@ -191,6 +202,7 @@
   (local-set-key (kbd "C-c t") 'yyc/html-txt-tt)
   (local-set-key (kbd "C-c c") 'yyc/html-txt-col)
   (local-set-key (kbd "C-c i") 'yyc/insert-b64-img)
+  (local-set-key (kbd "C-c s") 'yyc/small-font)
   (auto-complete-mode)
   (setq fill-column 120)
   )
