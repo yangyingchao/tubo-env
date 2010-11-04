@@ -6,30 +6,21 @@
 ;;;; CEDET Settings
 
 (require 'cedet)
-(require 'semantic/senator)
 
-;;;; gcc setup
-(require 'eldoc)
-(require 'semantic/analyze/refs)
+;; Enable code helpers.
+(semantic-load-enable-code-helpers)
+(global-semantic-decoration-mode 1)
+(global-semantic-idle-completions-mode 1)
+(global-semantic-idle-local-symbol-highlight-mode 1)
+(which-func-mode 1)
 
-(setq semantic-imenu-auto-rebuild-directory-indexes nil)
-(setq semanticdb-search-system-databases t)
-(setq senator-minor-mode-name "SN")
+;; Enable preparsing many neighboring files.
+(setq semantic-idle-work-parse-neighboring-files-flag t)
 
 (autoload 'speedbar-frame-mode "speedbar" "popup a speedbar frame" t)
 (autoload 'speedbar-get-focus "speedbar" "jump to speedbar frame" t)
 
-(defadvice push-mark (around semantic-mru-bookmark activate)
-  "Push a mark at LOCATION with NOMSG and ACTIVATE passed to `push-mark'.
-If `semantic-mru-bookmark-mode' is active, also push a tag onto
-the mru bookmark stack."
-  (semantic-mrub-push semantic-mru-bookmark-ring
-                      (point)
-                      'mark)
-  ad-do-it)
-
 ;; smart complitions
-(require 'semantic/ia)
 (setq-mode-local c-mode semanticdb-find-default-throttle
                  '(project unloaded system recursive))
 (setq-mode-local c++-mode semanticdb-find-default-throttle
@@ -40,10 +31,8 @@ the mru bookmark stack."
 (setq semanticdb-default-save-directory
       (expand-file-name "~/.emacs.d/database/semanticdb"))
 ;; 使用 gnu global 的TAGS。
-(require 'semantic/db-global)
 (semanticdb-enable-gnu-global-databases 'c-mode)
 (semanticdb-enable-gnu-global-databases 'c++-mode)
-
 
 (define-key-after (lookup-key global-map [menu-bar tools])
   [speedbar]
@@ -52,8 +41,8 @@ the mru bookmark stack."
   [calendar])
 
 ;;;; Include settings
-(require 'semantic/bovine/gcc)
-(require 'semantic/bovine/c)
+(require 'semantic-gcc)
+(require 'semantic-c)
 
 (defconst cedet-user-include-dirs
   (list ".." "../include" "../inc" "../common" "../public" "."
@@ -98,17 +87,17 @@ the mru bookmark stack."
                                      global-semantic-mru-bookmark-mode)))
  '(semantic-idle-scheduler-idle-time 3))
 
-(semantic-mode)
+;; (semantic-mode)
 (global-semantic-show-parser-state-mode 1)
 
 ;;;; Enable Ede
-(require 'ede)
+;; (require 'ede)
 (global-ede-mode 1)
 (require 'my-project)
 
 ;;;; Custom template for srecode
 (require 'srecode)
-(setq srecode-minor-menu t)
+;;(setq srecode-minor-menu t)
 (srecode-minor-mode 1)
 
 (setq srecode-map-load-path
@@ -126,7 +115,7 @@ the mru bookmark stack."
 (defun yyc/insert-single-comment ()
   "Insert signle line of comment using srecode"
   (interactive)
-  (insert "	/* */")
+  (insert " /* */")
   ;; (srecode-insert "declaration:comment-single")
   )
 
@@ -419,14 +408,15 @@ the mru bookmark stack."
 (defun yyc/c-mode-keys ()
   "description"
   (semantic-default-c-setup)
-  (local-set-key "\C-c?" 'semantic-ia-complete-symbol-menu)
   (local-set-key "\C-cb" 'semantic-mrub-switch-tags)
   (local-set-key "\C-cR" 'semantic-symref)
   (local-set-key "\C-cj" 'semantic-ia-fast-jump)
+  (local-set-key "\C-cJ" 'semantic-analyze-proto-impl-toggle)
   (local-set-key "\C-cp" 'semantic-ia-show-summary)
   (local-set-key "\C-cl" 'semantic-ia-show-doc)
   (local-set-key "\C-cr" 'semantic-symref-symbol)
   (local-set-key "\C-c/" 'semantic-ia-complete-symbol)
+  (local-set-key "\C-c?" 'semantic-ia-complete-symbol-menu)
   (local-set-key [(control return)] 'semantic-ia-complete-symbol)
   (local-set-key "." 'semantic-complete-self-insert)
   (local-set-key ">" 'semantic-complete-self-insert)
