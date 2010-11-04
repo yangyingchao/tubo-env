@@ -166,6 +166,20 @@
     (replace-match (match-string 1) nil nil))
   )
 
+(defvar fn_ext_name nil "Extension name of file.")
+(defvar b64_cmd nil "Command to execute")
+(defvar b64_content nil "nil")
+
+(defun yyc/insert-b64-img (fn)
+  "description"
+  (interactive "fImage to insert:\n")
+  (setq fn_ext_name (file-name-extension fn))
+  (setq b64_cmd (format "base64 %s | tr -d '\n'" fn))
+  (setq b64_content (shell-command-to-string b64_cmd))
+  (insert (format "<img src= \"data:image/%s;base64, %s\"/>"
+                  fn_ext_name b64_content))
+  )
+
 (defun my-html-mode-hooks ()
   "html mode hooks."
   (local-set-key (kbd "<C-return>") 'yyc/html-newline)
@@ -176,6 +190,7 @@
   (local-set-key (kbd "C-c P") 'yyc/html-txt-pha)
   (local-set-key (kbd "C-c t") 'yyc/html-txt-tt)
   (local-set-key (kbd "C-c c") 'yyc/html-txt-col)
+  (local-set-key (kbd "C-c i") 'yyc/insert-b64-img)
   (auto-complete-mode)
   (setq fill-column 120)
   )

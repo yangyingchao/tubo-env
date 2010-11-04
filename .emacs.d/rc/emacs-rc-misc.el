@@ -330,6 +330,8 @@
                           ))
     (setq fname bn))
   (setq fname (concat "file://" fname) )
+  (message fname)
+
   (w3m fname t)
   )
 
