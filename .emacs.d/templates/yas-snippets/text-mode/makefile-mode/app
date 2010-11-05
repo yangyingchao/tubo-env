@@ -24,7 +24,7 @@ all: $(TARGET)
 -include $(OBJS:.o=.d)
 
 $(TARGET): $(OBJS)
-	$(CC) -o $@ $(CPPFLAGS) $(LDFLAGS) $^
+	$(CC)  $^ -o $@ $(CPPFLAGS) $(LDFLAGS)
 	strip -s $@
 
 clean:
