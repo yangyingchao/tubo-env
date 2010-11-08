@@ -418,8 +418,8 @@
   (local-set-key "\C-c/" 'semantic-ia-complete-symbol)
   (local-set-key "\C-c?" 'semantic-ia-complete-symbol-menu)
   (local-set-key [(control return)] 'semantic-ia-complete-symbol)
-  (local-set-key "." 'semantic-complete-self-insert)
-  (local-set-key ">" 'semantic-complete-self-insert)
+  ;; (local-set-key "." 'semantic-complete-self-insert)
+  ;; (local-set-key ">" 'semantic-complete-self-insert)
   )
 
 ;;;; Function to change settings for tab.

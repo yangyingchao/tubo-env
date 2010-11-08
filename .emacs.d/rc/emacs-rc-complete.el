@@ -186,10 +186,19 @@ When OVERRIDES is specified, OVERRIDES is prepend to original source."
   (with-current-buffer (funcall backend 'doc-buffer item)
     (buffer-string)))
 
+(require 'semantic-ia)
 (defun ac-company-document (backend item)
   (or (ac-company-doc-buffer-as-document backend item)
       (ac-company-meta-as-document backend item)))
 
+(add-hook 'c-mode-common-hook
+          '(lambda ()
+             (add-to-list 'ac-omni-completion-sources
+                          (cons "\\." '(ac-source-semantic)))
+             (add-to-list 'ac-omni-completion-sources
+                          (cons "->" '(ac-source-semantic)))
+             (setq ac-sources '(ac-source-semantic ac-source-yasnippet))
+             ))
 ;;; Lisp mode
 (ac-company-define-source ac-source-company-elisp company-elisp)
 (add-hook 'emacs-lisp-mode-hook
