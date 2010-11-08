@@ -3,19 +3,6 @@
 ;;;; $Id: emacs-rc-complete.el, 08-27-2010
 
 
- ;; *********************** Company Mode ******************************
-
-(require 'company)
-
-(setq company-idle-delay nil)
-(setq company-minimum-prefix-length 3)
-(setq company-begin-commands '(self-insert-command))
-
-(add-hook 'c-mode-hook '(lambda () (company-mode)))
-(add-hook 'c++-mode-hook '(lambda () (company-mode)))
-(add-hook 'python-mode-hook '(lambda () (company-mode)))
-(global-set-key (kbd "<S-iso-lefttab>") 'company-complete-common)
-
  ;; ************** Autoinsert templates *****************
 (require 'autoinsert)
 (auto-insert-mode)  ;;; Adds hook to find-files-hook
@@ -147,9 +134,9 @@
 (require 'auto-complete)
 (require 'auto-complete-config)
 
-(ac-config-default) ; 调用默认设置, defined in auto-complete-config.el。
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/templates/ac-dict")
+(ac-config-default) ;; Defined in ac-complete-config
 
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/templates/ac-dict")
 
 ;; The sources for common all mode.
 (setq-default ac-sources
@@ -186,11 +173,11 @@ When OVERRIDES is specified, OVERRIDES is prepend to original source."
   (with-current-buffer (funcall backend 'doc-buffer item)
     (buffer-string)))
 
-(require 'semantic-ia)
 (defun ac-company-document (backend item)
   (or (ac-company-doc-buffer-as-document backend item)
       (ac-company-meta-as-document backend item)))
 
+(require 'semantic-ia)
 (add-hook 'c-mode-common-hook
           '(lambda ()
              (add-to-list 'ac-omni-completion-sources

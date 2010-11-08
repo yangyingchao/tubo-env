@@ -1,5 +1,5 @@
 #name : for (...; ...; ...) { ... }
 # --
-for (${1:init}; ${2:condition}; ${3:post}) {
-	$0
+for (${1:var} = ${2:init_val}; ${3:$1 < condition}; ${4:$1++}) {
+    $0
 }
