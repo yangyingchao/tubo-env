@@ -136,7 +136,6 @@
 (setq company-backends
       '(company-elisp company-nxml company-css
                      company-eclim company-semantic
-                     company-xcode company-ropemacs
                      (company-gtags company-dabbrev-code
                                     company-keywords)
                      company-files company-dabbrev)
