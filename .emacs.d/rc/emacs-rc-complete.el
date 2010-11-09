@@ -128,6 +128,24 @@
     (yas/load-directory my-yasnippet-dir)))
 (add-hook 'after-save-hook 'update-yasnippets-on-save)
 
+;; ************************ Company Mode ***********************
+
+(autoload 'company-mode "company" nil t)
+(setq company-idle-delay nil)
+
+(setq company-backends
+      '(company-elisp company-nxml company-css
+                     company-eclim company-semantic
+                     company-xcode company-ropemacs
+                     (company-gtags company-dabbrev-code
+                                    company-keywords)
+                     company-files company-dabbrev)
+  )
+
+(add-hook 'c-mode-hook '(lambda () (company-mode)))
+(add-hook 'c++-mode-hook '(lambda () (company-mode)))
+(add-hook 'python-mode-hook '(lambda () (company-mode)))
+(global-set-key (kbd "<S-iso-lefttab>") 'company-complete-common)
 
 ;;  *********************** Autocomplete ***********************
 
@@ -195,11 +213,11 @@ When OVERRIDES is specified, OVERRIDES is prepend to original source."
            (add-to-list 'ac-sources 'ac-source-symbols)
            )))
 
-(ac-company-define-source ac-source-company-c-lang company-clang)
+(ac-company-define-source ac-source-company-semantic company-semantic)
 (add-hook 'c-mode-common-hook
           (lambda ()
             (progn
-              (add-to-list 'ac-sources 'ac-source-company-c-lang)
+              (add-to-list 'ac-sources 'ac-source-company-semantic)
               )))
 
 ;;; Autofill Keybinding.
