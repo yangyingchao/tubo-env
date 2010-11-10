@@ -1,0 +1,468 @@
+ImagePath +:$HOME/.fvwm/icons
+EdgeResistance 250 100
+EdgeScroll 100 100
+ColormapFocus FollowsMouse
+ClickTime 750
+DeskTopSize 2x2
+
+# set imagepath to directorys we wish to use
+#设置我们所使用的图标路径。
+
+# environmental variables
+SetEnv fvwm_icon_size 96
+
+Style * Font xft:SimSun:Medium:Size=12:encoding=iso10646-1
+MenuStyle * Font xft:SimSun:Medium:Size=12:encoding=iso10646-1
+IconFont xft:SimSun:Medium:Size=12:encoding=iso10646-1
+Read bindings-extra
+
+## colormaps
+Colorset 0 fg #ffffff, bg #4584b5, hi gray, sh gray, RootTransparent buffer, Tint #4584b5 0
+Colorset 1 fg #ffffff, bg #4584b5, hi gray, sh gray, RootTransparent buffer, Tint #4584b5 0, IconAlpha 80
+Colorset 2 fg #ffffff, bg #7f7f7f, hi gray, sh gray, RootTransparent buffer, Tint #4584b5 0
+Colorset 3 fg #bfbfbf, bg #bfbfbf, hi #bfbfbf, sh #bfbfbf, RootTransparent buffer, Tint #4584b5 0
+Colorset 4 fg #bfbfbf, bg #bfbfbf, hi #bfbfbf, sh #bfbfbf, RootTransparent buffer, Tint #4584b5 0
+Colorset 5 fg #ffffff, bg gray60, hi gray, sh gray, RootTransparent buffer, Tint #4584b5 0
+Colorset 6 fg #ffffff, bg #4584b5, hi gray, sh gray, RootTransparent buffer, Tint #4584b5 50
+Colorset 7 fg #ffffff, bg gray, hi gray, sh gray, RootTransparent buffer, Tint #4584b5 0
+Colorset 8 fg #f0f0f0, bg #4584b5, hi #ffffff, sh #ffffff, RootTransparent buffer, Tint #4584b5 0
+
+
+# disable egde scrolling and EdgeCommand
+EdgeResistance 100 5
+EdgeThickness 1
+EdgeScroll 0 0
+BugOpts RaiseOverUnmanaged on
+
+# define the difference between click and hold
+ClickTime 200
+
+# use 8 viewports
+DeskTopSize 8x1
+
+# StaysOnBottom is supposed to put stuff in the very bottom layer, not on layer 2
+DefaultLayers 0 4 6
+
+# cursos styles - use an arrow instead of 'X' in root window
+CursorStyle ROOT    left_ptr
+CursorStyle TITLE   left_ptr
+CursorStyle SYS     left_ptr
+CursorStyle DEFAULT left_ptr
+CursorStyle MENU    left_ptr
+
+# window behavior
+OpaqueMoveSize -1
+SnapAttraction 3
+SnapGrid 1 1
+ColorMapFocus FollowsFocus
+
+# default window styles
+DefaultFont "xft:SimSun:size=10:encoding=iso10646-1"
+DefaultColorset 0
+
+Style * Colorset 1, HilightColorset 2
+Style * BorderWidth 0, HandleWidth 1
+Style * BorderColorset 4, HilightBorderColorset 5
+Style * MWMFunctions, MWMDecor
+Style * HintOverride, DecorateTransient, NoPPosition
+Style * FPGrabFocus
+Style * SloppyFocus, ClickToFocus
+Style * SmartPlacement
+Style * WindowShadeSteps 20
+Style * Button 1, Button 2, Button 4, Button 6
+Style * UseDecor DefaultDecor
+
+DestroyDecor DefaultDecor
+AddToDecor   DefaultDecor
++ TitleStyle LeftJustified Height 18
++ TitleStyle Active   ( Colorset 0 -- Flat ) InActive ( Colorset 2 -- Flat )
++ ButtonStyle All Active   ( Colorset 0 -- Flat )
++ ButtonStyle All InActive ( Colorset 2 -- Flat )
++ AddButtonStyle 1 Inactive   Vector 5 40x40@3 40x60@3 60x60@3 60x40@3 40x40@3 -- Flat
++ AddButtonStyle 1 ActiveUp   Vector 5 40x40@3 40x60@3 60x60@3 60x40@3 40x40@3 -- Flat
++ AddButtonStyle 1 ActiveDown Vector 4 49x49@3 49x50@3 50x50@3 49x49@3 -- Flat
++ AddButtonStyle 6 Inactive   Vector 5 30x60@3 60x60@3 60x50@3 30x50@3 30x60@3 -- Flat
++ AddButtonStyle 6 ActiveUp   Vector 5 30x60@3 60x60@3 60x50@3 30x50@3 30x60@3 -- Flat
++ AddButtonStyle 6 ActiveDown Vector 5 35x65@3 65x65@3 65x60@3 35x60@3 35x65@3 -- Flat
++ AddButtonStyle 4 Inactive   Vector 7 30x30@3 30x60@3 60x60@3 60x30@3 30x30@3 30x35@3 60x35@3 -- Flat
++ AddButtonStyle 4 ActiveUp   Vector 7 30x30@3 30x60@3 60x60@3 60x30@3 30x30@3 30x35@3 60x35@3 -- Flat
++ AddButtonStyle 4 ActiveDown Vector 7 35x35@3 35x65@3 65x65@3 65x35@3 35x35@3 35x40@3 65x40@3 -- Flat
++ AddButtonStyle 2 Inactive   Vector 4 30x30@3 60x60@3 60x30@4 30x60@3 -- Flat
++ AddButtonStyle 2 ActiveUp   Vector 4 30x30@3 60x60@3 60x30@4 30x60@3 -- Flat
++ AddButtonStyle 2 ActiveDown Vector 4 35x35@3 65x65@3 65x35@4 35x65@3 -- Flat
++ ButtonStyle 1 - MwmDecorMenu
++ ButtonStyle 6 - MwmDecorMin
++ ButtonStyle 4 - MwmDecorMax
+
+BorderStyle Active   Solid #0f0f0f -- NoInset HiddenHandles
+BorderStyle Inactive Solid #ffffff -- NoInset HiddenHandles
+
+# icons - should go to top left
+Style * IconBox 30 100 100 -15, IconFill top left
+Style * IconTitle, IndexedIconName
+Style * IconTitleColorset 3, HilightIconTitleColorset 3
+Style * IconTitleRelief 0
+
+# program specific styles
+Style FvwmPager NoTitle, Sticky, WindowListSkip, CirculateSkipIcon, CirculateSkip, BorderWidth 1, BorderColorset 5, NoHandles, NeverFocus, StaysOnTop
+#Style "xdaliclock"     NoTitle, Sticky, WindowListSkip, NoHandles, NeverFocus, StaysOnBottom,Layer 6
+Style FvwmDocker NoTitle, Sticky, Handlewidth 0, Borderwidth 0, WindowListSkip, NeverFocus,CirculateSkipIcon,CirculateSkip
+
+#==============================================================================
+#第2部分:
+# 1)
+#==============================================================================
+Colorset 20 fg #ffffff, bg #4584b5, hi gray, sh gray, RootTransparent buffer, IconAlpha 80, Tint #4584b5 0
+Colorset 21 fg #ff0000, bg #4584b5, hi gray, sh gray, RootTransparent buffer, IconAlpha 100, Tint #4584b5 0
+MenuStyle * MenuColorset 20, ActiveColorset 21
+MenuStyle * Hilight3DOff, HilightBack
+MenuStyle * PopupOffset 0 100, PopupDelay 300
+MenuStyle * BorderWidth 0
+MenuStyle * TitleUnderlines1
+MenuStyle * TrianglesSolid
+MenuStyle * SeparatorsShort
+MenuStyle * Animation
+MenuStyle * ItemFormat "%.2|%.5i%.5l%.5i%2.3>%2|"
+MenuStyle * VerticalItemSpacing 0 0
+
+# 应用程序替换图标
+Style "rox" Icon 48x48/drivemount-applet.png, IconOverride
+Style "gvim" Icon 48x48/gedit-icon.png, IconOverride
+Style "firefox" Icon 48x48/netscape.png, IconOverride
+Style "gimp" Icon 48x48/gimp.png, IconOverride
+Style "gaim" Icon 48x48/aim.png, IconOverride
+Style "urxvt" Icon 48x48/gnome-xterm.png, IconOverride, WindowShadeShrinks, Notitle, NoHandles
+
+###############################################################################
+## 菜单定义
+###############################################################################
+DestroyMenu MenuFvwmRoot
+AddToMenu MenuFvwmRoot
++ %24x24/desktop.png%"显示桌面背景" All (AcceptsFocus CurrentPage !Iconic !Shaded) Thumbnail
++ "" Nop
+# 常用软件
++ %24x24/terminal.png%"Terminal编码终端" Exec exec sakura
+#+ %24x24/drivemount-applet.png%" Konqueror文件管理" Exec exec konqueror
+#+ %24x24/gimp.png%"gimp图像处理" Exec exec gimp
+#+ %24x24/gthumb.png%"gthumb图像浏览" Exec exec gthumb
+#+ %24x24/gnome-applications.png%"Audacious播放器" Exec exec audacious
++ %24x24/emacs.png%"emacs编辑工具" Exec exec emacs
+#+ %24x24/eio.png%"EIOffice" Exec exec eio
+#+ %24x24/netscape.png%"RSS阅读器 " Exec exec liferea
++ %24x24/pidgin.png%"Pidgin聊天工具" Exec exec pidgin
++ "" Nop
++ %24x24/gtk-quit.png%"退出Fvwm2管理" Quit
+#+ %24x24/up2date.png%"FvwmConsole" Module FvwmConsole
++ "" Nop
+
+
+DestroyMenu MenuWindowOptions
+AddToMenu   MenuWindowOptions
++ "move"      Move
++ "resize"    Resize
++ "raise"     Raise
++ "lower"     Lower
++ "iconify"   Thumbnail
++ "(un)stick" Stick
++ "maximize" Maximize
++ ""          Nop
++ "close"     Close
++ "delete"    Delete
++ "destroy"   Destroy
+
+# bindings
+# use IgnoreModifiers to fix the NumLock bug(?)
+IgnoreModifiers L25
+
+# root window
+Key Tab A M WindowList Root c c NoDeskSort, SelectOnRelease Meta_L
+Key F1 A M Menu MenuFvwmRoot
+#Key F2 A M Resize # ALT+F2 Assigned to Launchy
+Key F4 A M Close
+Key t A MC Exec sakura
+
+
+Mouse 1 R A Menu MenuFvwmRoot Nop
+Mouse 3 R A WindowList NoGeometry
+
+# titlebar buttons
+Mouse 0 1 A Menu MenuWindowOptions Close
+Mouse 0 6 A Thumbnail
+Mouse 0 4 A Maximize
+Mouse 0 2 A FuncDestroyOnHold
+
+# window/border/icon
+Mouse 1 I A DeThumbnail
+Mouse 1 T A FuncMoveOrMaximize
+Mouse 1 W M FuncMoveOrMaximize
+
+# initfunctions
+DestroyFunc StartFunction
+gthumb
+AddToFunc   StartFunction
++ I Exec exec fvwm-root --dither --retain-pixmap $[HOME]/.fvwm/wallpaper/default.png
++ I Module FvwmButtons -g 500x50+350-0 FvwmDocker
++ I Module FvwmPager
++ I Module FvwmAnimate
++ I Module FvwmAuto FvwmAutoHide -menter FvwmDockerAutoEnter
++ I Function StartDocker
++ I Test (Restart) All (Iconic) WindowStyle IconOverride
++ I Test (Restart) Module FvwmConsole
++ I Exec exec ibus-daemon -d -x
++ I Exec exec pidgin
++ I Exec exec launchy
++ I Exec exec conky
++ I Exec exec xscreensaver
+
+DestroyFunc ExitFunction
+AddToFunc   ExitFunction
++ I KillModule FvwmPager
++ I KillModule FvwmDocker
++ I KillModule FvwmAnimate
++ I KillModule FvwmAuto
++ I Exec exec sync
+
+# functions
+
+# make windowlists etc. warp pointer to the middle of
+# the window instead of top left
+AddToFunc WindowListFunc
++ I WarpToWindow 50 50
+
+#----------------------------------------------------------------------#
+# Name:     Thumbnail
+# Purpose: Iconify a window with a reduced screenshot of the application
+#           Window, looks really cool.
+#
+#           Uses FvwmEvent to remove the Icon when deiconified, you will want
+#           to remove this if you use WindowStyle elsewhere.
+#
+#           Thumbnailing example: http://dev.gentoo.org/~taviso/step2.png
+#
+#----------------------------------------------------------------------#
+DestroyFunc Thumbnail
+AddToFunc   Thumbnail
++ I Raise
++ I PipeRead "xwd -silent -id $[w.id] | convert -scale $[fvwm_icon_size] -frame 1x1 \
+              -mattecolor black -quality 0 xwd:- png:$[HOME]/.fvwm/icon.tmp.$[w.id].png \
+              && echo WindowStyle IconOverride, Icon $[HOME]/.fvwm/icon.tmp.$[w.id].png, StaysOnBottom \
+              || echo Nop"
++ I Iconify
+
+DestroyFunc DeThumbnail
+AddToFunc   DeThumbnail
++ I Iconify off
++ I DestroyWindowStyle
++ I Exec exec rm -f $[HOME]/.fvwm/icon.tmp.$[w.id].png
+
+DestroyFunc FuncMoveOrMaximize
+AddToFunc   FuncMoveOrMaximize
++ I Raise
++ M Move
++ D Maximize 100 100
+
+DestroyFunc FuncDestroyOnHold
+AddToFunc   FuncDestroyOnHold
++ C Schedule 100 Close
++ H Destroy
++ H Beep
+
+DestroyFunc StartDocker
+AddToFunc   StartDocker
+#+ I Wait FvwmDocker
++ I AutoHide FvwmDocker 0 0 S
+
+DestroyFunc FvwmDockerAutoEnter
+# AddToFunc   FvwmDockerAutoEnter
+# + I AutoHide FvwmDocker 100 3600 S
+
+#----------------------------------------------------------------------#
+# These functions modified from the functions provided in the fvwm FAQ.
+# http://www.fvwm.org/documentation/faq/#7.17
+#----------------------------------------------------------------------#
+DestroyFunc AutoHide
+AddToFunc   AutoHide
++ I ThisWindow ($0) Deschedule $[w.id]
++ I TestRc (!Match) Deschedule -$[w.id]
++ I ThisWindow ($0) ThisWindow (shaded) AutohideShow $1 $3
++ I TestRc (!Match) All ($0, !shaded) AutohideHide $2 $3
+
+DestroyFunc AutohideShow
+AddToFunc   AutohideShow
++ I Schedule $0 -$[w.id] WindowShade $1 off
++ I Schedule $0 -$[w.id] Raise
++ I Schedule $0 -$[w.id] Deschedule $[w.id]
++ I Schedule $0 -$[w.id] Deschedule -$[w.id]
+
+DestroyFunc AutohideHide
+AddToFunc   AutohideHide
++ I Schedule $0 $[w.id] WindowShade $1 on
++ I Schedule $0 $[w.id] Deschedule $[w.id]
++ I Schedule $0 $[w.id] Deschedule -$[w.id]
+
+# this one originates from ikaros configs iirc
+DestroyFunc FuncDockLaunch
+AddToFunc   FuncDockLaunch
++ C Any ($1) Next ($1) WindowListFunc
++ C TestRc (NoMatch) Exec $0
++ H Any ($1) WindowList ($1) Rectangle +$2+$3 0 -100m CurrentAtEnd UseListSkip SortByClass NoCurrentDeskTitle
++ D Exec $0
+DestroyFunc FuncFullScreen
+AddtoFunc FuncFullScreen
++ I Current (State 0) Fullscreen-Stop
++ I TestRc Current (Maximizable) Fullscreen-Start
+
+DestroyFunc Fullscreen-Start
+AddtoFunc Fullscreen-Start
++ I WindowStyle NoTitle,HandleWidth 0,FixedSize,FixedPosition
++ I Current (!Maximized) Maximize
++ I ResizeMaximize 100 100
++ I State 0 true
+
+DestroyFunc Fullscreen-Stop
+AddtoFunc Fullscreen-Stop
++ I DestroyWindowStyle
++ I State 0 false
++ I Maximize
+
+Key F A  4       FuncFullScreen
+
+DestroyFunc FuncFvwmIconifyTrue
+AddToFunc FuncFvwmIconifyTrue
++ I All (!Iconic !"*onky" !"*Desk *" !"*FvwmDocker*") State 1
++ I All (State 1) Iconify True
+
+DestroyFunc FuncFvwmIconifFalse
+AddToFunc FuncFvwmIconifyFalse
++ I All (State 1) Iconify False
+
+DestroyFunc FuncFvwmIconifyToggle
+AddToFunc FuncFvwmIconifyToggle
++ I FuncFvwmIconifyFalse
++ I All (State 1) State 1 False
++ I TestRc (NoMatch) FuncFvwmIconifyTrue
+
+Key D A 4 FuncFvwmIconifyToggle
+Key D A CM FuncFvwmIconifyToggle
+
+# Lock screen.
+DestroyFunc FuncFvwmLockScreen
+AddToFunc FuncFvwmLockScreen
++ I All (xscreensaver) Nop
++ I TestRc (NoMatch) Exec xscreensaver -no-splash &
++ I Exec xscreensaver-command -lock
+
+Key L A CM FuncFvwmLockScreen
+Key L A 4 FuncFvwmLockScreen
+
+# module configs
+
+DestroyModuleConfig FvwmAnimate: *
+*FvwmAnimate: Effect Flip
+
+
+Colorset 40 fg #ffffff, bg #ffffff, hi #ffffff, sh #ffffff, RootTransparent buffer, Tint #4584b5 0
+Colorset 41 fg #ffffff, bg #ffffff, hi #ffffff, sh #ffffff, RootTransparent buffer, Tint #4584b5 0
+DestroyModuleConfig FvwmPager: *
+*FvwmPager: Colorset        * 40
+*FvwmPager: HilightColorset * 41
+*FvwmPager: Borderwidth     0
+*FvwmPager: Font            None
+*FvwmPager: DesktopScale    22
+*FvwmPager: Geometry        400x17-130+0
+*FvwmPager: MoveThreshold   0
+*FvwmPager: SloppyFocus
+*FvwmPager: UseSkipList
+*FvwmPager: SmallFont None
+*FvwmPager: WindowColorsets   2 0
+*FvwmPager: WindowBorderWidth 1
+
+*FvwmPager: Balloons           All
+*FvwmPager: BalloonColorset    * 0
+*FvwmPager: BalloonFont "xft:SimSun:Size=12:encoding=iso10646-1"
+*FvwmPager: BalloonYOffset     +2
+*FvwmPager: BalloonBorderWidth 1
+
+# =================== strokes ============================
+#strokes
+#window list without drag
+Stroke 0 0 R N WindowList
+
+#button 3 guesture with Ctrl starts programs in any context
+#"r" like guestures starts rxvt
+Stroke N5456 0 A C Exec exec xkill
+Stroke N65456 0 A C Exec exec xkill
+Stroke N78951 0 A C Exec exec sakura
+Stroke N78963 0 A C Exec exec sakura
+Stroke N7412369 0 A C Exec exec emacs
+Stroke N1478963 0 A C Exec exec firefox
+
+#grow horizontal and vertically
+Stroke N258 0 TSF2 N Maximize True 0 growup
+Stroke N852 0 TSF2 N Maximize True 0 growdown
+Stroke N456 0 TSF2 N Maximize True growright 0
+Stroke N654 0 TSF2 N Maximize True growleft 0
+
+#grow bidirectional
+Stroke N25852     0 TSF2 N Maximize True 0 grow
+Stroke N5852     0 TSF2 N Maximize True 0 grow
+Stroke N85258     0 TSF2 N Maximize True 0 grow
+Stroke N5258     0 TSF2 N Maximize True 0 grow
+Stroke N65456     0 TSF2 N Maximize True grow 0
+Stroke N5456     0 TSF2 N Maximize True grow 0
+Stroke N45654     0 TSF2 N Maximize True grow 0
+Stroke N5654     0 TSF2 N Maximize True grow 0
+
+#grow diagonally
+Stroke N159     0 TSF2 N Maximize True growright growup
+Stroke N951     0 TSF2 N Maximize True growleft growdown
+Stroke N753     0 TSF2 N Maximize True growright growdown
+Stroke N357     0 TSF2 N Maximize True growleft growup
+Stroke N5159     0 TSF2 N Maximize True grow grow
+Stroke N5951     0 TSF2 N Maximize True grow grow
+Stroke N5753     0 TSF2 N Maximize True grow grow
+Stroke N5357     0 TSF2 N Maximize True grow grow
+
+#reverse to unmaximized
+Stroke N74123 0 TSF2 N Maximize False
+
+#window functions
+Stroke 0     0 TSF    N RaiseLower
+Stroke 0     0 2       N Maximize-Func
+Stroke 0     0 A    C Lower
+Stroke N852     0 A C Iconify
+
+#Drag mouse on the root window
+Mouse 3 R N StrokeFunc DrawMotion
+ekkk
+#Drag mouse with Ctrl key
+Mouse 3 A C StrokeFunc DrawMotion
+
+#Drag mouse on the border
+Mouse 3 TSF N StrokeFunc DrawMotion
+
+#Drag mouse 1 on the maxmize button
+Mouse 1 2 N StrokeFunc DrawMotion
+
+#==============================================================================
+#第5部分:
+# 1) 修改色彩配置.用IconAlpha实现被选择图标自动加亮. [yonsan/20050826]
+#==============================================================================
+Colorset 50 fg #ffffff, bg #4584b5, hi gray, sh gray, RootTransparent buffer, IconAlpha 75, Tint #4584b5 0
+Colorset 51 fg #ffffff, bg #7f7f7f, hi gray, sh gray, RootTransparent buffer, IconAlpha 100, Tint #4584b5 0
+DestroyModuleConfig FvwmDocker: *
+*FvwmDocker: Colorset 50
+*FvwmDocker: ActiveColorset 51
+*FvwmDocker: Rows    1
+*FvwmDocker: Columns 9
+*FvwmDocker: Frame   0
+*FvwmDocker: Padding 1 1
+*FvwmDocker: (1x1, Icon 48x48/gnome-commander.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch gnome-commander gnome-commander* $left $top`, `Next (gnome-commander*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon 48x48/firefox.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch firefox firefox* $left $top`, `Next (firefox*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon 48x48/mail.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch outlook outlook* $left $top`, `Next (outlook*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon 48x48/gnome-dictionary.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch goldendict goldendict* $left $top`, `Next (goldendict*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon 48x48/openoffice.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch ooffice ooffice* $left $top`,`Next (ooffice*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon 48x48/devhelp.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch devhelp devhelp* $left $top`,`Next (devhelp*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon 48x48/dia.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch dia dia* $left $top`,`Next (dia*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon 48x48/foxitreader.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch foxit foxit* $left $top`, `Next (foxit*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon 48x48/virtualbox.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch VirtualBox VirtualBox* $left $top`, `Next (*VirtualBox) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)

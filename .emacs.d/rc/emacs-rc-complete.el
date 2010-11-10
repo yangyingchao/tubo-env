@@ -134,7 +134,7 @@
 (setq company-idle-delay nil)
 
 (setq company-backends
-      '(company-elisp company-nxml company-css company-ropemacs
+      '(company-elisp company-nxml company-css
                      company-eclim company-semantic
                      (company-gtags company-dabbrev-code
                                     company-keywords)
