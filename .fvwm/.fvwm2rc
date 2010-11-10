@@ -1,3 +1,6 @@
+# set imagepath to directorys we wish to use
+#设置我们所使用的图标路径。
+
 ImagePath +:$HOME/.fvwm/icons
 EdgeResistance 250 100
 EdgeScroll 100 100
@@ -5,8 +8,6 @@ ColormapFocus FollowsMouse
 ClickTime 750
 DeskTopSize 2x2
 
-# set imagepath to directorys we wish to use
-#设置我们所使用的图标路径。
 
 # environmental variables
 SetEnv fvwm_icon_size 96
