@@ -279,13 +279,10 @@
         (setq candidates (append candidates cand))))
     (delete-dups candidates)))
 
-(defvar tmp_lst nil "nil")
 (add-hook 'python-mode-hook
           (lambda ()
             (set (make-local-variable 'ac-sources)
-                 (setq tmp_lst ac-sources)
-                 (append tmp_lst '(ac-source-rope) '(ac-source-yasnippet))
-                 (setq ac-sources tmp_lst)
+                 (append ac-sources '(ac-source-rope) '(ac-source-yasnippet))
                  )
 
             (rope-open-project "~/.emacs.d/database/python/")
