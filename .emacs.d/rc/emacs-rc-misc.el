@@ -222,13 +222,16 @@
        w3m-use-filter t
        w3m-command-arguments '("-cookie" "-F" ))
 
-(setq w3m-command-arguments-alist
-      '(;; Don't use the proxy server to visit local web pages.
-        ("^http://\\([^/]*\\.\\)*your-company\\.com\\(/\\|$\\)"
-         "-no-proxy")
-        ;; Use the proxy server to visit any foreign urls.
-        (""
-         "-o" "http_proxy=http://127.0.0.1:5866/")))
+(if (string-match "ITC-208024"  system-name)
+    (setq w3m-command-arguments-alist
+          '(;; Don't use the proxy server to visit local web pages.
+            ("^http://\\([^/]*\\.\\)*your-company\\.com\\(/\\|$\\)"
+             "-no-proxy")
+            ;; Use the proxy server to visit any foreign urls.
+            (""
+             "-o" "http_proxy=http://127.0.0.1:5866/")))
+  )
+
 
 (standard-display-ascii ?\212 "-")
 (standard-display-ascii ?\226 "-")
