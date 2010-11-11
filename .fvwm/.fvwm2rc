@@ -214,6 +214,7 @@ AddToFunc   StartFunction
 + I Exec exec pidgin
 + I Exec exec launchy
 + I Exec exec conky
++ I Exec exec /usr/libexec/gnome-settings-daemon
 + I Exec exec xscreensaver
 
 DestroyFunc ExitFunction
