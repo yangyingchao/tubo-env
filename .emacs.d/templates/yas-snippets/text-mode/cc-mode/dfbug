@@ -1,11 +1,7 @@
-#ifdef __KERNEL__
-/* This one if debugging is on, and kernel space */
-#   define PDEBUG(fmt, args...)                                     \
-    printk( KERN_DEBUG "vserial: %s(%d)-%s:\t",__FILE__,__LINE__);  \
-    printk( KERN_DEBUG fmt, ## args)
-#else
-/* This one for user space */
+#ifdef DEBUG
 #define PDEBUG(fmt, args...)                                \
     printf("%s(%d)-%s:\t",__FILE__,__LINE__,__FUNCTION__);  \
     printf("\033[31m"fmt"\033[0m", ##args);
+#else
+#define PDEBUG(fmt, args...)  ;
 #endif

@@ -180,6 +180,7 @@ Key Tab A M WindowList Root c c NoDeskSort, SelectOnRelease Meta_L
 Key F1 A M Menu MenuFvwmRoot
 #Key F2 A M Resize # ALT+F2 Assigned to Launchy
 Key F4 A M Close
+Key F12 A C Exec emacs
 Key t A MC Exec sakura
 
 
@@ -344,7 +345,7 @@ AddToFunc FuncFvwmIconifyToggle
 + I TestRc (NoMatch) FuncFvwmIconifyTrue
 
 Key D A 4 FuncFvwmIconifyToggle
-Key D A CM FuncFvwmIconifyToggle
+Key D A CM All (AcceptsFocus CurrentPage !Iconic !Shaded, !FvwmButtons, !"*onky" !"*Desk *" !"*FvwmDocker*")Iconify
 
 # Lock screen.
 DestroyFunc FuncFvwmLockScreen
