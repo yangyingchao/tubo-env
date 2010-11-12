@@ -432,7 +432,7 @@ DestroyModuleConfig FvwmPager: *
 *FvwmPager: BalloonBorderWidth 1
 
 
-# # =================== strokes ============================
+## =================== strokes ============================
 #strokes
 #window list without drag
 Stroke 0 0 R N WindowList
