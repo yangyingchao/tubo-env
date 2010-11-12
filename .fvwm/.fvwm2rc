@@ -178,7 +178,7 @@ AddToMenu MenuNetwork
 DestroyMenu MenuUtility
 AddToMenu MenuUtility
 + "%/home/yyc/.fvwm/icons/24x24/accessories-calculator.png%Calculator"	Exec exec gcalctool
-+ "%/home/yyc/.fvwm/icons/24x24/gnome-commander.png%GNOME 指挥官"	Exec exec gnome-commander
++ "%/home/yyc/.fvwm/icons/24x24/gnome-commander.png% 文件管理器"	Exec exec emelfm2
 + "%/home/yyc/.fvwm/icons/24x24/terminal.png%Sakura"	Exec exec sakura
 #MenuUtility
 
@@ -215,7 +215,7 @@ Key F1 A M Menu MenuFvwmRoot
 Key F4 A M Close
 Key F12 A C Exec emacs
 Key F11 A 4 Exec "/home/tools/firefox/firefox"
-Key F12 A 4 Exec chromium
+Key F12 A 4 Exec chrome
 Key t A MC Exec sakura
 
 
@@ -258,7 +258,6 @@ AddToFunc   StartFunction
 + I Exec exec ibus-daemon -d -x
 + I Exec exec pidgin
 + I Exec exec launchy
-+ I Exec exec conky
 + I Exec exec xscreensaver
 + I Exec exec trayer --SetDockType true --widthtype pixel --width 204  --heighttype pixel --height 32 --align right  --transparent true --alpha 255  --edge bottom --margin 1
 
@@ -508,8 +507,8 @@ DestroyModuleConfig FvwmDocker: *
 *FvwmDocker: Columns 9
 *FvwmDocker: Frame   0
 *FvwmDocker: Padding 1 1
-*FvwmDocker: (1x1, Icon 48x48/gnome-commander.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch gnome-commander gnome-commander* $left $top`, `Next (gnome-commander*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
-*FvwmDocker: (1x1, Icon 48x48/Chrome.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch chromium chromium* $left $top`, `Next (chromium*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon 48x48/gnome-commander.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch emelfm2 emelfm2* $left $top`, `Next (emelfm2*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon 48x48/Chrome.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch chrome chrome* $left $top`, `Next (chrome*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon 48x48/mail.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch outlook outlook* $left $top`, `Next (outlook*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon 48x48/gnome-dictionary.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch goldendict goldendict* $left $top`, `Next (goldendict*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon 48x48/openoffice.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch ooffice ooffice* $left $top`,`Next (ooffice*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
