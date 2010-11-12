@@ -127,36 +127,67 @@ MenuStyle * ItemFormat "%.2|%.5i%.5l%.5i%2.3>%2|"
 MenuStyle * VerticalItemSpacing 0 0
 
 # 应用程序替换图标
-Style "rox" Icon 48x48/drivemount-applet.png, IconOverride
-Style "gvim" Icon 48x48/gedit-icon.png, IconOverride
-Style "firefox" Icon 48x48/netscape.png, IconOverride
-Style "gimp" Icon 48x48/gimp.png, IconOverride
-Style "gaim" Icon 48x48/aim.png, IconOverride
-Style "urxvt" Icon 48x48/gnome-xterm.png, IconOverride, WindowShadeShrinks, Notitle, NoHandles
 Style trayer !Title, Sticky, WindowListSkip,!Handles
 Style Conky !Title, Sticky, WindowListSkip,!Handles
 
 ###############################################################################
 ## 菜单定义
 ###############################################################################
-DestroyMenu MenuFvwmRoot
-AddToMenu MenuFvwmRoot
+DestroyMenu recreate MenuFvwmRoot
+AddToMenu MenuFvwmRoot "FVWM 菜单"	Title Top
 + %24x24/desktop.png%"显示桌面背景" All (AcceptsFocus CurrentPage !Iconic !Shaded) Thumbnail
 + "" Nop
-# 常用软件
-+ %24x24/terminal.png%"Terminal编码终端" Exec exec sakura
-#+ %24x24/drivemount-applet.png%" Konqueror文件管理" Exec exec konqueror
-#+ %24x24/gimp.png%"gimp图像处理" Exec exec gimp
-#+ %24x24/gthumb.png%"gthumb图像浏览" Exec exec gthumb
-#+ %24x24/gnome-applications.png%"Audacious播放器" Exec exec audacious
-+ %24x24/emacs.png%"emacs编辑工具" Exec exec emacs
-#+ %24x24/eio.png%"EIOffice" Exec exec eio
-#+ %24x24/netscape.png%"RSS阅读器 " Exec exec liferea
-+ %24x24/pidgin.png%"Pidgin聊天工具" Exec exec pidgin
-+ "" Nop
++ "%/home/yyc/.fvwm/icons/24x24/applications-development.png%开发"	Popup MenuDevelopment
++ "%/home/yyc/.fvwm/icons/24x24/applications-network.png%网络"	Popup MenuNetwork
++ "%/home/yyc/.fvwm/icons/24x24/applications-office.png%办公"	Popup MenuOffice
++ "%/home/yyc/.fvwm/icons/24x24/applications-graphics.png%图像"	Popup MenuGraphics
++ "%/home/yyc/.fvwm/icons/24x24/applications-utility.png%附件"	Popup MenuUtility
++ "%/home/yyc/.fvwm/icons/24x24/applications-system.png%系统"	Popup MenuSystem
 + %24x24/gtk-quit.png%"退出Fvwm2管理" Quit
-#+ %24x24/up2date.png%"FvwmConsole" Module FvwmConsole
 + "" Nop
+
+
+DestroyMenu MenuSystem
+AddToMenu MenuSystem
++ "%/home/yyc/.fvwm/icons/24x24/virtualbox.png%Oracle xVM VirtualBox"	Exec exec VirtualBox
++ "%/home/yyc/.fvwm/icons/24x24/wireshark.png%Wireshark"	Exec exec wireshark
+#MenuSystem
+
+DestroyMenu MenuDevelopment
+AddToMenu MenuDevelopment
++ "%/home/yyc/.fvwm/icons/24x24/devhelp.png%Devhelp"	Exec exec devhelp
++ "%/home/yyc/.fvwm/icons/24x24/emacs.png%GNU Emacs"	Exec exec /usr/bin/emacs
++ "%/home/yyc/.fvwm/icons/24x24/meld.png%Meld 差异查看器"	Exec exec meld
+#MenuDevelopment
+
+DestroyMenu MenuGraphics
+AddToMenu MenuGraphics
++ "%/home/yyc/.fvwm/icons/24x24/dia.png%Dia 图表编辑器"	Exec exec dia
++ "%/home/yyc/.fvwm/icons/24x24/gimp.png%GNU 图像处理程序"	Exec exec gimp-2.6
+#MenuGraphics
+
+DestroyMenu MenuNetwork
+AddToMenu MenuNetwork
++ "%/home/yyc/.fvwm/icons/24x24/filezilla.png%FileZilla"	Exec exec filezilla
++ "%/home/yyc/.fvwm/icons/24x24/firefox.png%Mozilla Firefox"	Exec exec /homt/tools/firefox/firefox
++ "%/home/yyc/.fvwm/icons/24x24/pidgin.png%Pidgin 互联网通讯程序"	Exec exec pidgin
++ "%/home/yyc/.fvwm/icons/24x24/remmina.png%Remmina 远程桌面客户端"	Exec exec remmina
++ "%/home/yyc/.fvwm/icons/24x24/vncviewer.png%vncviewer"	Exec exec vncviewer
+#MenuNetwork
+
+DestroyMenu MenuUtility
+AddToMenu MenuUtility
++ "%/home/yyc/.fvwm/icons/24x24/accessories-calculator.png%Calculator"	Exec exec gcalctool
++ "%/home/yyc/.fvwm/icons/24x24/gnome-commander.png%GNOME 指挥官"	Exec exec gnome-commander
++ "%/home/yyc/.fvwm/icons/24x24/terminal.png%Sakura"	Exec exec sakura
+#MenuUtility
+
+DestroyMenu MenuOffice
+AddToMenu MenuOffice
++ "%/home/yyc/.fvwm/icons/24x24/goldendict.png%GoldenDict"	Exec exec goldendict
++ "%/home/yyc/.fvwm/icons/24x24/jabref.png%JabRef"	Exec exec jabref
++ "%/home/yyc/.fvwm/icons/24x24/openoffice.png%OpenOffice"	Exec exec ooffice
+#MenuOffice
 
 
 DestroyMenu MenuWindowOptions
@@ -183,7 +214,7 @@ Key F1 A M Menu MenuFvwmRoot
 #Key F2 A M Resize # ALT+F2 Assigned to Launchy
 Key F4 A M Close
 Key F12 A C Exec emacs
-Key F11 A C Exec "/home/tools/firefox/firefox"
+Key F11 A 4 Exec "/home/tools/firefox/firefox"
 Key t A MC Exec sakura
 
 
@@ -227,7 +258,6 @@ AddToFunc   StartFunction
 + I Exec exec pidgin
 + I Exec exec launchy
 + I Exec exec conky
-+ I Exec exec /usr/libexec/gnome-settings-daemon
 + I Exec exec xscreensaver
 + I Exec exec trayer --SetDockType true --widthtype pixel --width 204  --heighttype pixel --height 32 --align right  --transparent true --alpha 255  --edge bottom --margin 1
 
@@ -403,66 +433,65 @@ DestroyModuleConfig FvwmPager: *
 
 
 # # =================== strokes ============================
-# XXXXXXXXXXXXXXXXXXXXX: Disable because of my POOR MOUSE XXXXXXXXXXXXXXXXXXXX
-# #strokes
-# #window list without drag
-# Stroke 0 0 R N WindowList
+#strokes
+#window list without drag
+Stroke 0 0 R N WindowList
 
-# #button 3 guesture with Ctrl starts programs in any context
-# #"r" like guestures starts rxvt
-# Stroke N5456 0 A C Exec exec xkill
-# Stroke N65456 0 A C Exec exec xkill
-# Stroke N78951 0 A C Exec exec sakura
-# Stroke N78963 0 A C Exec exec sakura
-# Stroke N7412369 0 A C Exec exec emacs
-# Stroke N1478963 0 A C Exec exec firefox
+#button 3 guesture with Ctrl starts programs in any context
+#"r" like guestures starts rxvt
+Stroke N5456 0 A C Exec exec xkill
+Stroke N65456 0 A C Exec exec xkill
+Stroke N7414789 0 A C Exec exec rxvt
+Stroke N789 0 A C Exec exec sakura
+Stroke N1478963 0 A C Exec exec firefox
+Stroke N7412369 0 A C Exec exec emacs
 
-# #grow horizontal and vertically
-# Stroke N258 0 TSF2 N Maximize True 0 growup
-# Stroke N852 0 TSF2 N Maximize True 0 growdown
-# Stroke N456 0 TSF2 N Maximize True growright 0
-# Stroke N654 0 TSF2 N Maximize True growleft 0
+#grow horizontal and vertically
+Stroke N258 0 TSF2 N Maximize True 0 growup
+Stroke N852 0 TSF2 N Maximize True 0 growdown
+Stroke N456 0 TSF2 N Maximize True growright 0
+Stroke N654 0 TSF2 N Maximize True growleft 0
 
-# #grow bidirectional
-# Stroke N25852     0 TSF2 N Maximize True 0 grow
-# Stroke N5852     0 TSF2 N Maximize True 0 grow
-# Stroke N85258     0 TSF2 N Maximize True 0 grow
-# Stroke N5258     0 TSF2 N Maximize True 0 grow
-# Stroke N65456     0 TSF2 N Maximize True grow 0
-# Stroke N5456     0 TSF2 N Maximize True grow 0
-# Stroke N45654     0 TSF2 N Maximize True grow 0
-# Stroke N5654     0 TSF2 N Maximize True grow 0
+#grow bidirectional
+Stroke N25852     0 TSF2 N Maximize True 0 grow
+Stroke N5852     0 TSF2 N Maximize True 0 grow
+Stroke N85258     0 TSF2 N Maximize True 0 grow
+Stroke N5258     0 TSF2 N Maximize True 0 grow
+Stroke N65456     0 TSF2 N Maximize True grow 0
+Stroke N5456     0 TSF2 N Maximize True grow 0
+Stroke N45654     0 TSF2 N Maximize True grow 0
+Stroke N5654     0 TSF2 N Maximize True grow 0
 
-# #grow diagonally
-# Stroke N159     0 TSF2 N Maximize True growright growup
-# Stroke N951     0 TSF2 N Maximize True growleft growdown
-# Stroke N753     0 TSF2 N Maximize True growright growdown
-# Stroke N357     0 TSF2 N Maximize True growleft growup
-# Stroke N5159     0 TSF2 N Maximize True grow grow
-# Stroke N5951     0 TSF2 N Maximize True grow grow
-# Stroke N5753     0 TSF2 N Maximize True grow grow
-# Stroke N5357     0 TSF2 N Maximize True grow grow
+#grow diagonally
+Stroke N159     0 TSF2 N Maximize True growright growup
+Stroke N951     0 TSF2 N Maximize True growleft growdown
+Stroke N753     0 TSF2 N Maximize True growright growdown
+Stroke N357     0 TSF2 N Maximize True growleft growup
+Stroke N5159     0 TSF2 N Maximize True grow grow
+Stroke N5951     0 TSF2 N Maximize True grow grow
+Stroke N5753     0 TSF2 N Maximize True grow grow
+Stroke N5357     0 TSF2 N Maximize True grow grow
 
-# #reverse to unmaximized
-# Stroke N74123 0 TSF2 N Maximize False
+#reverse to unmaximized
+Stroke N74123 0 TSF2 N Maximize False
 
-# #window functions
-# Stroke 0     0 TSF    N RaiseLower
-# Stroke 0     0 2       N Maximize-Func
-# Stroke 0     0 A    C Lower
-# Stroke N852     0 A C Iconify
+#window functions
+Stroke 0     0 TSF    N RaiseLower
+Stroke 0     0 2       N Maximize-Func
+Stroke 0     0 A    C Lower
+Stroke N852     0 A C Iconify
 
-# #Drag mouse on the root window
-# Mouse 3 R N StrokeFunc DrawMotion
-# ekkk
-# #Drag mouse with Ctrl key
-# Mouse 3 A C StrokeFunc DrawMotion
+#Drag mouse on the root window
+Mouse 3 R N StrokeFunc DrawMotion
+ekkk
+#Drag mouse with Ctrl key
+Mouse 3 A C StrokeFunc DrawMotion
 
-# #Drag mouse on the border
-# Mouse 3 TSF N StrokeFunc DrawMotion
+#Drag mouse on the border
+Mouse 3 TSF N StrokeFunc DrawMotion
 
-# #Drag mouse 1 on the maxmize button
-# Mouse 1 2 N StrokeFunc DrawMotion
+#Drag mouse 1 on the maxmize button
+Mouse 1 2 N StrokeFunc DrawMotion
 
 
 #==============================================================================
@@ -479,7 +508,7 @@ DestroyModuleConfig FvwmDocker: *
 *FvwmDocker: Frame   0
 *FvwmDocker: Padding 1 1
 *FvwmDocker: (1x1, Icon 48x48/gnome-commander.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch gnome-commander gnome-commander* $left $top`, `Next (gnome-commander*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
-*FvwmDocker: (1x1, Icon 48x48/firefox.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch firefox firefox* $left $top`, `Next (firefox*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon 48x48/Chrome.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch chromium chromium* $left $top`, `Next (chromium*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon 48x48/mail.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch outlook outlook* $left $top`, `Next (outlook*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon 48x48/gnome-dictionary.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch goldendict goldendict* $left $top`, `Next (goldendict*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon 48x48/openoffice.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch ooffice ooffice* $left $top`,`Next (ooffice*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)

@@ -13,10 +13,10 @@ if [ $# == 0 ]; then
     batch_convert
 else
     for fn in $@; do
-        echo "Resizing into 48x48: "$fn
+        echo "Resizing "$fn
         ff=`basename $fn`
         convert -resize 48x48 $fn 48x48/$ff
+        convert -resize 24x24 $fn 24x24/$ff
     done
     echo "Calling batch convert!"
-    batch_convert
 fi
