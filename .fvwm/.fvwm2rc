@@ -190,6 +190,37 @@ AddToMenu MenuOffice
 #MenuOffice
 
 
+# bindings
+# use IgnoreModifiers to fix the NumLock bug(?)
+IgnoreModifiers L25
+
+# root window
+Key Tab A M WindowList Root c c NoDeskSort, SelectOnRelease Meta_L
+Key F1 A M Menu MenuFvwmRoot
+Key F2 A M Module FvwmForm FvwmForm-Run
+Key F4 A M Close
+Key F12 A C Exec emacs
+Key F11 A 4 Exec "/home/tools/firefox/firefox"
+Key F12 A 4 Exec chrome
+Key t A MC Exec sakura
+
+Key F3 A 4 Module FvwmConsole
+
+
+Mouse 1 R A Menu MenuFvwmRoot Nop
+Mouse 3 R A WindowList NoGeometry
+
+# titlebar buttons
+Mouse 0 1 A Menu MenuWindowOptions Close
+Mouse 0 2 A Close
+Mouse 0 4 A Maximize
+Mouse 0 6 A Thumbnail
+
+# window/border/icon
+Mouse 1 I A DeThumbnail
+Mouse 1 T A FuncMoveOrMaximize
+Mouse 1 W M FuncMoveOrMaximize
+
 DestroyMenu MenuWindowOptions
 AddToMenu   MenuWindowOptions
 + "move"      Move
@@ -204,34 +235,36 @@ AddToMenu   MenuWindowOptions
 + "delete"    Delete
 + "destroy"   Destroy
 
-# bindings
-# use IgnoreModifiers to fix the NumLock bug(?)
-IgnoreModifiers L25
-
-# root window
-Key Tab A M WindowList Root c c NoDeskSort, SelectOnRelease Meta_L
-Key F1 A M Menu MenuFvwmRoot
-#Key F2 A M Resize # ALT+F2 Assigned to Launchy
-Key F4 A M Close
-Key F12 A C Exec emacs
-Key F11 A 4 Exec "/home/tools/firefox/firefox"
-Key F12 A 4 Exec chrome
-Key t A MC Exec sakura
+DestroyFunc SetWinLev
+AddToFunc SetWinLev
++ I Pick (Layer $0) Layer 0 4
++ I TestRc (Match) Current Raise
++ I TestRc (Match) Break 1
++ I Pick Layer 0 $0
 
 
-Mouse 1 R A Menu MenuFvwmRoot Nop
-Mouse 3 R A WindowList NoGeometry
+DestroyFunc MoveAndGotoPage
+AddToFunc MoveAndGotoPage
++ I GotoPage $*
++ I MoveToPage $*
 
-# titlebar buttons
-Mouse 0 1 A Menu MenuWindowOptions Close
-Mouse 0 6 A Thumbnail
-Mouse 0 4 A Maximize
-Mouse 0 2 A FuncDestroyOnHold
+#用热键转到别的页面时自动在新页面里找窗口给焦点。
+#点击页面管理的那个小程序不能让新页面里的窗口获得焦点，
+#号称要支持变换页面时定义行为，不过当时还没实现。
+DestroyFunc GotoPageAndFocus
+AddToFunc GotoPageAndFocus
++ I GotoPage $*
++ I Current (CurrentPage,!backgroundxterm*) Break
++ I Prev (CurrentPage,AcceptsFocus) FlipFocus NoWarp
 
-# window/border/icon
-Mouse 1 I A DeThumbnail
-Mouse 1 T A FuncMoveOrMaximize
-Mouse 1 W M FuncMoveOrMaximize
+Key 1           A       4       GotoPageAndFocus 0 0
+Key 2           A       4       GotoPageAndFocus 1 0
+Key 3           A       4       GotoPageAndFocus 2 0
+Key 4           A       4       GotoPageAndFocus 3 0
+
+
+
+
 
 # Settings of trayer {{{2
 DestroyFunc NotificationArea-Trayer
@@ -257,7 +290,6 @@ AddToFunc   StartFunction
 + I Exec conky -o -y 0 -d
 + I Exec exec ibus-daemon -d -x
 + I Exec exec pidgin
-+ I Exec exec launchy
 + I Exec exec xscreensaver
 + I Exec exec trayer --SetDockType true --widthtype pixel --width 204  --heighttype pixel --height 32 --align right  --transparent true --alpha 255  --edge bottom --margin 1
 
@@ -374,6 +406,43 @@ AddtoFunc Fullscreen-Stop
 + I Maximize
 
 Key F A  4       FuncFullScreen
+
+DestroyModuleConfig FvwmForm-Run: *
+*FvwmForm-Run: Line left
+*FvwmForm-Run: Text "Run:"
+*FvwmForm-Run: Line left
+*FvwmForm-Run: Input Comm 45 ""
+*FvwmForm-Run: Button continue "H"
+*FvwmForm-Run: Command Menu CommandHistory
+*FvwmForm-Run: Line right
+*FvwmForm-Run: Selection InOrEx multiple
+*FvwmForm-Run: Choice ExtComm Exec on "External command           "
+*FvwmForm-Run: Button quit "Run" ^M
+*FvwmForm-Run: Command $(InOrEx) $(Comm)
+*FvwmForm-Run: Command StoreComm $(InOrEx) $(Comm)
+*FvwmForm-Run: Button quit "Cancel" ^[
+*FvwmForm-Run: Command Nop
+
+DestroyFunc RunHistory
+AddToFunc RunHistory
++ I DestroyMenu recreate CommandHistory
++ I AddToMenu CommandHistory History Title
++ I PipeRead `i=0;tac $HOME/.fvwm/commhistory|while read line;\
+	do echo AddToMenu CommandHistory "\\"&$i. $line\\""\
+	"PipeRead \'echo \\'$line\\';echo StoreComm \\'$line\\'; echo KillModule FvwmForm FvwmForm-Run\'";((i++));done`
+
+DestroyFunc StoreComm
+AddToFunc   StoreComm
++ I SetEnv RunComm $[1]
++ I Test (!EnvMatch RunComm calc) PipeRead `file=$[HOME]/.fvwm/commhistory;\
+	if ! [ -f \$\file ];\
+	then echo -n "">>\$\file;fi;\
+	add="$*";add=\$\{add\# };\
+	tail -n 50 \$\file|awk -v add="\$\add" '\$\0 != add && \$\0 != "" {print} END{print add}' >\$\{file}.bak;\
+	mv \$\{file}.bak \$\file`
+
+Key r A CM Module FvwmForm FvwmForm-Run
+Key r A 4 Module FvwmForm FvwmForm-Run
 
 DestroyFunc FuncFvwmIconifyTrue
 AddToFunc FuncFvwmIconifyTrue
@@ -507,7 +576,7 @@ DestroyModuleConfig FvwmDocker: *
 *FvwmDocker: Columns 9
 *FvwmDocker: Frame   0
 *FvwmDocker: Padding 1 1
-*FvwmDocker: (1x1, Icon 48x48/gnome-commander.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch emelfm2 emelfm2* $left $top`, `Next (emelfm2*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon 48x48/gnome-commander.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch wxcommander wxcommander* $left $top`, `Next (wxcommander*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon 48x48/Chrome.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch chrome chrome* $left $top`, `Next (chrome*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon 48x48/mail.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch outlook outlook* $left $top`, `Next (outlook*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon 48x48/gnome-dictionary.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch goldendict goldendict* $left $top`, `Next (goldendict*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)

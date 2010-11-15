@@ -4,4 +4,6 @@ Exec sakura
 Exec firefox
 Exec dia
 Exec wireshark
+Exec wxcomander
+Exec wxcommander
 Exec emacs
