@@ -169,7 +169,7 @@ AddToMenu MenuGraphics
 DestroyMenu MenuNetwork
 AddToMenu MenuNetwork
 + "%/home/yyc/.fvwm/icons/24x24/filezilla.png%FileZilla"	Exec exec filezilla
-+ "%/home/yyc/.fvwm/icons/24x24/firefox.png%Mozilla Firefox"	Exec exec /home/tools/firefox/firefox
++ "%/home/yyc/.fvwm/icons/24x24/firefox.png%Mozilla Firefox"	Exec exec firefox
 + "%/home/yyc/.fvwm/icons/24x24/pidgin.png%Pidgin 互联网通讯程序"	Exec exec pidgin
 + "%/home/yyc/.fvwm/icons/24x24/remmina.png%Remmina 远程桌面客户端"	Exec exec remmina
 + "%/home/yyc/.fvwm/icons/24x24/vncviewer.png%vncviewer"	Exec exec vncviewer
@@ -200,8 +200,8 @@ Key F1 A M Menu MenuFvwmRoot
 Key F2 A M Module FvwmForm FvwmForm-Run
 Key F4 A M Close
 Key F12 A C Exec emacs
-Key F11 A 4 Exec "/home/tools/firefox/firefox"
-Key F12 A 4 Exec chrome
+Key F11 A 4 Exec firefox
+Key F12 A 4 Exec firefox
 Key t A MC Exec sakura
 
 Key F3 A 4 Module FvwmConsole
@@ -577,7 +577,7 @@ DestroyModuleConfig FvwmDocker: *
 *FvwmDocker: Frame   0
 *FvwmDocker: Padding 1 1
 *FvwmDocker: (1x1, Icon 48x48/gnome-commander.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch wxcommander wxcommander* $left $top`, `Next (wxcommander*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
-*FvwmDocker: (1x1, Icon 48x48/Chrome.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch chrome chrome* $left $top`, `Next (chrome*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon 48x48/firefox.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch firefox firefox* $left $top`, `Next (firefox*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon 48x48/mail.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch outlook outlook* $left $top`, `Next (outlook*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon 48x48/gnome-dictionary.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch goldendict goldendict* $left $top`, `Next (goldendict*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon 48x48/openoffice.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch ooffice ooffice* $left $top`,`Next (ooffice*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
