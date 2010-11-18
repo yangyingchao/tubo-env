@@ -486,11 +486,14 @@
 (defvar cmd nil nil)
 (defvar cflow-buf nil nil)
 (defvar cflow-buf-name nil nil)
-(defun yyc/cflow ()
-  "description"
-  (interactive)
-  (setq cmd (format "cflow  -b %s" buffer-file-name))
-  (setq cflow-buf-name (format "**clflow-%s**" (file-name-nondirectory buffer-file-name)))
+
+(defun yyc/cflow-function (function-name)
+  "Get call graph of inputed function. "
+  (interactive "sFunction name:\n")
+  (setq cmd (format "cflow  -b --main=%s %s" function-name buffer-file-name))
+  (setq cflow-buf-name (format "**cflow-%s:%s**"
+                               (file-name-nondirectory buffer-file-name)
+                               function-name))
   (setq cflow-buf (get-buffer-create cflow-buf-name))
   (set-buffer cflow-buf)
   (setq buffer-read-only nil)
@@ -500,6 +503,7 @@
   (goto-char (point-min))
   (cflow-mode)
   )
+
 
 (defun yyc/show-prog-keywords ()
   ;; highlight additional keywords
