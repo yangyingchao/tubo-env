@@ -501,66 +501,66 @@ DestroyModuleConfig FvwmPager: *
 *FvwmPager: BalloonBorderWidth 1
 
 
-## =================== strokes ============================
-#strokes
-#window list without drag
-Stroke 0 0 R N WindowList
+# ## =================== strokes ============================
+# #strokes
+# #window list without drag
+# Stroke 0 0 R N WindowList
 
-#button 3 guesture with Ctrl starts programs in any context
-#"r" like guestures starts rxvt
-Stroke N5456 0 A C Exec exec xkill
-Stroke N65456 0 A C Exec exec xkill
-Stroke N7414789 0 A C Exec exec rxvt
-Stroke N789 0 A C Exec exec sakura
-Stroke N1478963 0 A C Exec exec firefox
-Stroke N7412369 0 A C Exec exec emacs
+# #button 3 guesture with Ctrl starts programs in any context
+# #"r" like guestures starts rxvt
+# Stroke N5456 0 A C Exec exec xkill
+# Stroke N65456 0 A C Exec exec xkill
+# Stroke N7414789 0 A C Exec exec rxvt
+# Stroke N789 0 A C Exec exec sakura
+# Stroke N1478963 0 A C Exec exec firefox
+# Stroke N7412369 0 A C Exec exec emacs
 
-#grow horizontal and vertically
-Stroke N258 0 TSF2 N Maximize True 0 growup
-Stroke N852 0 TSF2 N Maximize True 0 growdown
-Stroke N456 0 TSF2 N Maximize True growright 0
-Stroke N654 0 TSF2 N Maximize True growleft 0
+# #grow horizontal and vertically
+# Stroke N258 0 TSF2 N Maximize True 0 growup
+# Stroke N852 0 TSF2 N Maximize True 0 growdown
+# Stroke N456 0 TSF2 N Maximize True growright 0
+# Stroke N654 0 TSF2 N Maximize True growleft 0
 
-#grow bidirectional
-Stroke N25852     0 TSF2 N Maximize True 0 grow
-Stroke N5852     0 TSF2 N Maximize True 0 grow
-Stroke N85258     0 TSF2 N Maximize True 0 grow
-Stroke N5258     0 TSF2 N Maximize True 0 grow
-Stroke N65456     0 TSF2 N Maximize True grow 0
-Stroke N5456     0 TSF2 N Maximize True grow 0
-Stroke N45654     0 TSF2 N Maximize True grow 0
-Stroke N5654     0 TSF2 N Maximize True grow 0
+# #grow bidirectional
+# Stroke N25852     0 TSF2 N Maximize True 0 grow
+# Stroke N5852     0 TSF2 N Maximize True 0 grow
+# Stroke N85258     0 TSF2 N Maximize True 0 grow
+# Stroke N5258     0 TSF2 N Maximize True 0 grow
+# Stroke N65456     0 TSF2 N Maximize True grow 0
+# Stroke N5456     0 TSF2 N Maximize True grow 0
+# Stroke N45654     0 TSF2 N Maximize True grow 0
+# Stroke N5654     0 TSF2 N Maximize True grow 0
 
-#grow diagonally
-Stroke N159     0 TSF2 N Maximize True growright growup
-Stroke N951     0 TSF2 N Maximize True growleft growdown
-Stroke N753     0 TSF2 N Maximize True growright growdown
-Stroke N357     0 TSF2 N Maximize True growleft growup
-Stroke N5159     0 TSF2 N Maximize True grow grow
-Stroke N5951     0 TSF2 N Maximize True grow grow
-Stroke N5753     0 TSF2 N Maximize True grow grow
-Stroke N5357     0 TSF2 N Maximize True grow grow
+# #grow diagonally
+# Stroke N159     0 TSF2 N Maximize True growright growup
+# Stroke N951     0 TSF2 N Maximize True growleft growdown
+# Stroke N753     0 TSF2 N Maximize True growright growdown
+# Stroke N357     0 TSF2 N Maximize True growleft growup
+# Stroke N5159     0 TSF2 N Maximize True grow grow
+# Stroke N5951     0 TSF2 N Maximize True grow grow
+# Stroke N5753     0 TSF2 N Maximize True grow grow
+# Stroke N5357     0 TSF2 N Maximize True grow grow
 
-#reverse to unmaximized
-Stroke N74123 0 TSF2 N Maximize False
+# #reverse to unmaximized
+# Stroke N74123 0 TSF2 N Maximize False
 
-#window functions
-Stroke 0     0 TSF    N RaiseLower
-Stroke 0     0 2       N Maximize-Func
-Stroke 0     0 A    C Lower
-Stroke N852     0 A C Iconify
+# #window functions
+# Stroke 0     0 TSF    N RaiseLower
+# Stroke 0     0 2       N Maximize-Func
+# Stroke 0     0 A    C Lower
+# Stroke N852     0 A C Iconify
 
-#Drag mouse on the root window
-Mouse 3 R N StrokeFunc DrawMotion
-ekkk
-#Drag mouse with Ctrl key
-Mouse 3 A C StrokeFunc DrawMotion
+# #Drag mouse on the root window
+# Mouse 3 R N StrokeFunc DrawMotion
+# ekkk
+# #Drag mouse with Ctrl key
+# Mouse 3 A C StrokeFunc DrawMotion
 
-#Drag mouse on the border
-Mouse 3 TSF N StrokeFunc DrawMotion
+# #Drag mouse on the border
+# Mouse 3 TSF N StrokeFunc DrawMotion
 
-#Drag mouse 1 on the maxmize button
-Mouse 1 2 N StrokeFunc DrawMotion
+# #Drag mouse 1 on the maxmize button
+# Mouse 1 2 N StrokeFunc DrawMotion
 
 
 #==============================================================================

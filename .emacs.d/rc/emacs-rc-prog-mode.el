@@ -482,11 +482,29 @@
   (local-set-key "\C-c\C-r" 'semantic-symref)
   )
 
-(defun yyc/show-prog-keywords ()
+(require 'cflow-mode)
+(defvar cmd nil nil)
+(defvar cflow-buf nil nil)
+(defvar cflow-buf-name nil nil)
+(defun yyc/cflow ()
+  "description"
   (interactive)
+  (setq cmd (format "cflow  -b %s" buffer-file-name))
+  (setq cflow-buf-name (format "**clflow-%s**" (file-name-nondirectory buffer-file-name)))
+  (setq cflow-buf (get-buffer-create cflow-buf-name))
+  (set-buffer cflow-buf)
+  (setq buffer-read-only nil)
+  (erase-buffer)
+  (insert (shell-command-to-string cmd))
+  (pop-to-buffer cflow-buf)
+  (goto-char (point-min))
+  (cflow-mode)
+  )
+
+(defun yyc/show-prog-keywords ()
   ;; highlight additional keywords
   (font-lock-add-keywords nil
-                          '(("\\<\\(FIX\\|FIXME\\|TODO\\|BUG\\|XXX\\|HACK\\)\\(:\\|!\\| \\)" 1
+                          '(("\\<\\(FIX\\|FIXME\\|TODO\\|BUG\\|XXX\\|YYC\\|yyc\\|HACK\\)\\(:\\|!\\| \\)" 1
                              font-lock-warning-face t)))
     (font-lock-add-keywords nil '(("\\<\\(DONE\\):" 1 font-lock-doc-face t)))
   ;; highlight too long lines
