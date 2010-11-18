@@ -257,13 +257,14 @@ AddToFunc GotoPageAndFocus
 + I Current (CurrentPage,!backgroundxterm*) Break
 + I Prev (CurrentPage,AcceptsFocus) FlipFocus NoWarp
 
-Key 1           A       4       GotoPageAndFocus 0 0
-Key 2           A       4       GotoPageAndFocus 1 0
-Key 3           A       4       GotoPageAndFocus 2 0
-Key 4           A       4       GotoPageAndFocus 3 0
-
-
-
+Key 1 A 4 GotoPageAndFocus 0 0
+Key 2 A 4 GotoPageAndFocus 1 0
+Key 3 A 4 GotoPageAndFocus 2 0
+Key 4 A 4 GotoPageAndFocus 3 0
+Key 5 A 4 GotoPageAndFocus 4 0
+Key 6 A 4 GotoPageAndFocus 5 0
+Key 7 A 4 GotoPageAndFocus 6 0
+Key 8 A 4 GotoPageAndFocus 7 0
 
 
 # Settings of trayer {{{2
