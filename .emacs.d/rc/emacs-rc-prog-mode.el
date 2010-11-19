@@ -523,6 +523,7 @@
   (program-mode-auto-pair)
   (local-set-key (kbd "'") 'skeleton-pair-insert-maybe)
   (local-set-key  [(tab)] 'indent-or-complete)
+  (local-set-key "\C-ct" 'yyc/cflow-function)
   )
 
 (defun my-lisp-hook ()
