@@ -204,6 +204,7 @@ Key F11 A 4 Exec firefox
 Key F12 A 4 Exec firefox
 Key t A MC Exec sakura
 
+Key F1 A 4 Exec wxcommander
 Key F3 A 4 Module FvwmConsole
 
 
