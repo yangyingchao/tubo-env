@@ -489,7 +489,6 @@
 
 (defun yyc/cflow-function (function-name)
   "Get call graph of inputed function. "
-  ;(interactive "sFunction name:\n")
   (interactive (list (car (senator-jump-interactive "Function name: "
                                                     nil nil nil))))
   (setq cmd (format "cflow  -b --main=%s %s" function-name buffer-file-name))
