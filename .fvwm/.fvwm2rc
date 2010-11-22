@@ -57,6 +57,12 @@ SnapAttraction 3
 SnapGrid 1 1
 ColorMapFocus FollowsFocus
 
+
+MoveThreshold 3
+HideGeometryWindow Never
+BugOpts FlickeringMoveWorkaround True
+SnapGrid 1 1
+
 # default window styles
 DefaultFont "xft:Microsoft YaHei:size=10:encoding=iso10646-1"
 DefaultColorset 0
