@@ -8,6 +8,8 @@
 (require 'cedet)
 
 ;; Enable code helpers.
+(semantic-load-enable-code-helpers)
+
 (global-semantic-decoration-mode 1)
 (global-semantic-decoration-mode 1)
 (setq global-semantic-idle-completions-mode 1)
@@ -15,7 +17,6 @@
 (global-semantic-idle-summary-mode 1)
 (global-semantic-mru-bookmark-mode 1)
 (global-semanticdb-minor-mode 1)
-(semantic-load-enable-code-helpers)
 
 (which-func-mode 1)
 
@@ -79,19 +80,6 @@
   (imenu-add-to-menubar "TAGS"))
 
 (add-hook 'semantic-init-hooks 'my-semantic-hook)
-
-
-;; ;;;;  Helper tools.
-;; (custom-set-variables
-;;  '(semantic-default-submodes (quote (
-;;                                      ;; global-semantic-highlight-func-mode
-;;                                      global-semantic-decoration-mode
-;;                                      global-semantic-idle-completions-mode
-;;                                      global-semantic-idle-scheduler-mode
-;;                                      global-semanticdb-minor-mode
-;;                                      global-semantic-idle-summary-mode
-;;                                      global-semantic-mru-bookmark-mode)))
-;;  '(semantic-idle-scheduler-idle-time 3))
 
 ;; (semantic-mode)
 (global-semantic-show-parser-state-mode 1)
