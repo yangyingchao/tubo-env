@@ -356,13 +356,13 @@
  ;; ****************************** Over ********************************
 
 
-(if (string-match "ITC-208024" system-name)
-    (progn
-      (require 'edit-server)
-      (setq edit-server-new-frame nil)
-      (edit-server-start))
-  nil
-  )
+;; (if (string-match "ITC-208024" system-name)
+;;     (progn
+;;       (require 'edit-server)
+;;       (setq edit-server-new-frame nil)
+;;       (edit-server-start))
+;;   nil
+;;   )
 
 
 (provide 'emacs-rc-modes)
