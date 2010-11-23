@@ -11,21 +11,16 @@
 (semantic-load-enable-code-helpers)
 
 (global-semantic-decoration-mode 1)
-(global-semantic-decoration-mode 1)
-(setq global-semantic-idle-completions-mode 1)
 (global-semantic-idle-scheduler-mode 1)
 (global-semantic-idle-summary-mode 1)
 (global-semantic-mru-bookmark-mode 1)
+(global-semantic-show-parser-state-mode 1)
 (global-semanticdb-minor-mode 1)
-
+(setq semantic-idle-scheduler-idle-time 3)
 (which-func-mode 1)
 
-
-;; Enable preparsing many neighboring files.
+(setq global-semantic-idle-completions-mode 1)
 (setq semantic-idle-work-parse-neighboring-files-flag t)
-
-(autoload 'speedbar-frame-mode "speedbar" "popup a speedbar frame" t)
-(autoload 'speedbar-get-focus "speedbar" "jump to speedbar frame" t)
 
 ;; smart complitions
 (setq-mode-local c-mode semanticdb-find-default-throttle
@@ -41,6 +36,9 @@
 (semanticdb-enable-gnu-global-databases 'c-mode)
 (semanticdb-enable-gnu-global-databases 'c++-mode)
 
+;;;; Speedbar-frame-mode
+(autoload 'speedbar-frame-mode "speedbar" "popup a speedbar frame" t)
+(autoload 'speedbar-get-focus "speedbar" "jump to speedbar frame" t)
 (define-key-after (lookup-key global-map [menu-bar tools])
   [speedbar]
   '("speedbar" .
@@ -80,10 +78,6 @@
   (imenu-add-to-menubar "TAGS"))
 
 (add-hook 'semantic-init-hooks 'my-semantic-hook)
-
-;; (semantic-mode)
-(global-semantic-show-parser-state-mode 1)
-(setq semantic-idle-scheduler-idle-time 3)
 
 ;;;; Enable Ede
 ;; (require 'ede)
