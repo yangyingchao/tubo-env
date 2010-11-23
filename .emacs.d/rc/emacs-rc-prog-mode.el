@@ -384,7 +384,6 @@
   (interactive "BAppend to buffer: \nMClass name: \nr")
   (setq function-declaration (buffer-substring-no-properties start end))
   (setq function-definition nil)
-
   (save-excursion
     (iter 0)
     (set-buffer (get-buffer-create buffer))
