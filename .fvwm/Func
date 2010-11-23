@@ -1,0 +1,217 @@
+##################    Thumbnail #################################
+SetEnv fvwm_icon_size 96
+DestroyFunc Thumbnail
+AddToFunc   Thumbnail
++ I Raise
++ I PipeRead "xwd -silent -id $[w.id] | convert -scale $[fvwm_icon_size] -frame 1x1 \
+              -mattecolor black -quality 0 xwd:- png:$[HOME]/.fvwm/icon.tmp.$[w.id].png \
+              && echo WindowStyle IconOverride, Icon $[HOME]/.fvwm/icon.tmp.$[w.id].png, StaysOnBottom \
+              || echo Nop"
++ I Iconify
+
+################# WindowMenu Options ################################
+DestroyMenu MenuWindowOptions
+AddToMenu   MenuWindowOptions
++ "move"      Move
++ "resize"    Resize
++ "raise"     Raise
++ "lower"     Lower
++ "iconify"   Thumbnail
++ "(un)stick" Stick
++ "maximize" Maximize
++ ""          Nop
++ "close"     Close
++ "delete"    Delete
++ "destroy"   Destroy
+
+DestroyFunc SetWinLev
+AddToFunc SetWinLev
++ I Pick (Layer $0) Layer 0 4
++ I TestRc (Match) Current Raise
++ I TestRc (Match) Break 1
++ I Pick Layer 0 $0
+
+
+DestroyFunc MoveAndGotoPage
+AddToFunc MoveAndGotoPage
++ I GotoPage $*
++ I MoveToPage $*
+
+DestroyFunc GotoPageAndFocus
+AddToFunc GotoPageAndFocus
++ I GotoPage $*
++ I Current (CurrentPage,!backgroundxterm*) Break
++ I Prev (CurrentPage,AcceptsFocus) FlipFocus NoWarp
+
+# DestroyFunc StartDocker
+# AddToFunc   StartDocker
+# #+ I Wait FvwmDocker
+# + I AutoHide FvwmDocker 0 0 S
+
+# DestroyFunc FvwmDockerAutoEnter
+# AddToFunc   FvwmDockerAutoEnter
+# + I AutoHide FvwmDocker 100 3600 S
+
+DestroyFunc AutoHide
+AddToFunc   AutoHide
++ I ThisWindow ($0) Deschedule $[w.id]
++ I TestRc (!Match) Deschedule -$[w.id]
++ I ThisWindow ($0) ThisWindow (shaded) AutohideShow $1 $3
++ I TestRc (!Match) All ($0, !shaded) AutohideHide $2 $3
+
+DestroyFunc AutohideShow
+AddToFunc   AutohideShow
++ I Schedule $0 -$[w.id] WindowShade $1 off
++ I Schedule $0 -$[w.id] Raise
++ I Schedule $0 -$[w.id] Deschedule $[w.id]
++ I Schedule $0 -$[w.id] Deschedule -$[w.id]
+
+DestroyFunc AutohideHide
+AddToFunc   AutohideHide
++ I Schedule $0 $[w.id] WindowShade $1 on
++ I Schedule $0 $[w.id] Deschedule $[w.id]
++ I Schedule $0 $[w.id] Deschedule -$[w.id]
+
+# this one originates from ikaros configs iirc
+DestroyFunc FuncDockLaunch
+AddToFunc   FuncDockLaunch
++ C Any ($1) Next ($1) WindowListFunc
++ C TestRc (NoMatch) Exec $0
++ H Any ($1) WindowList ($1) Rectangle +$2+$3 0 -100m CurrentAtEnd UseListSkip SortByClass NoCurrentDeskTitle
++ D Exec $0
+DestroyFunc FuncFullScreen
+AddtoFunc FuncFullScreen
++ I Current (State 0) Fullscreen-Stop
++ I TestRc Current (Maximizable) Fullscreen-Start
+
+DestroyFunc Fullscreen-Start
+AddtoFunc Fullscreen-Start
++ I WindowStyle NoTitle,HandleWidth 0,FixedSize,FixedPosition
++ I Current (!Maximized) Maximize
++ I ResizeMaximize 100 100
++ I State 0 true
+
+DestroyFunc Fullscreen-Stop
+AddtoFunc Fullscreen-Stop
++ I DestroyWindowStyle
++ I State 0 false
++ I Maximize
+
+
+############### Run ###################
+DestroyModuleConfig FvwmForm-Run: *
+*FvwmForm-Run: Line left
+*FvwmForm-Run: Text "Run:"
+*FvwmForm-Run: Line left
+*FvwmForm-Run: Input Comm 45 ""
+*FvwmForm-Run: Button continue "H"
+*FvwmForm-Run: Command Menu CommandHistory
+*FvwmForm-Run: Line right
+*FvwmForm-Run: Selection InOrEx multiple
+*FvwmForm-Run: Choice ExtComm Exec on "External command           "
+*FvwmForm-Run: Button quit "Run" ^M
+*FvwmForm-Run: Command $(InOrEx) $(Comm)
+*FvwmForm-Run: Command StoreComm $(InOrEx) $(Comm)
+*FvwmForm-Run: Button quit "Cancel" ^[
+*FvwmForm-Run: Command Nop
+
+DestroyFunc RunHistory
+AddToFunc RunHistory
++ I DestroyMenu recreate CommandHistory
++ I AddToMenu CommandHistory History Title
++ I PipeRead `i=0;tac $HOME/.fvwm/commhistory|while read line;\
+	do echo AddToMenu CommandHistory "\\"&$i. $line\\""\
+	"PipeRead \'echo \\'$line\\';echo StoreComm \\'$line\\'; echo KillModule FvwmForm FvwmForm-Run\'";((i++));done`
+
+DestroyFunc StoreComm
+AddToFunc   StoreComm
++ I SetEnv RunComm $[1]
++ I Test (!EnvMatch RunComm calc) PipeRead `file=$[HOME]/.fvwm/commhistory;\
+	if ! [ -f \$\file ];\
+	then echo -n "">>\$\file;fi;\
+	add="$*";add=\$\{add\# };\
+	tail -n 50 \$\file|awk -v add="\$\add" '\$\0 != add && \$\0 != "" {print} END{print add}' >\$\{file}.bak;\
+	mv \$\{file}.bak \$\file`
+
+DestroyFunc FuncFvwmIconifyTrue
+AddToFunc FuncFvwmIconifyTrue
++ I All (!Iconic !"*onky" !"*Desk *" !"*FvwmDocker*") State 1
++ I All (State 1) Iconify True
+
+DestroyFunc FuncFvwmIconifFalse
+AddToFunc FuncFvwmIconifyFalse
++ I All (State 1) Iconify False
+
+DestroyFunc FuncFvwmIconifyToggle
+AddToFunc FuncFvwmIconifyToggle
++ I FuncFvwmIconifyFalse
++ I All (State 1) State 1 False
++ I TestRc (NoMatch) FuncFvwmIconifyTrue
+
+
+#################### Lock screen. ##############
+DestroyFunc FuncFvwmLockScreen
+AddToFunc FuncFvwmLockScreen
++ I All (xscreensaver) Nop
++ I TestRc (NoMatch) Exec xscreensaver -no-splash &
++ I Exec xscreensaver-command -lock
+
+
+
+# Settings of trayer
+DestroyFunc NotificationArea-Trayer
+AddToFunc NotificationArea-Trayer
++ I SetEnv trayer_width_t "request"
++ I SetEnv trayer_heigth_t "pixel"
++ I SetEnv trayer_edge "top"
++ I SetEnv trayer_align "right"
++ I SetEnv trayer_marge "240"
++ I SetEnv trayer_dist "3"
++ I SetEnv trayer_width_w ""
+
+# initfunctions
+DestroyFunc StartFunction
+AddToFunc   StartFunction
++ I Exec exec fvwm-root --dither --retain-pixmap $[HOME]/.fvwm/wallpaper/default.png
++ I Module FvwmButtons -g 500x50+350-0 FvwmDocker
++ I Module FvwmPager
++ I Module FvwmAnimate
++ I Module FvwmAuto FvwmAutoHide -menter FvwmDockerAutoEnter
++ I Function StartDocker
++ I Exec conky -o -y 0 -d
++ I Exec exec ibus-daemon -d -x
++ I Exec exec pidgin
++ I Exec exec xscreensaver
++ I Exec exec trayer --SetDockType true --widthtype pixel --width 204  --heighttype pixel --height 32 --align right  --transparent true --alpha 255  --edge bottom --margin 1
+
+DestroyFunc ExitFunction
+AddToFunc   ExitFunction
++ I KillModule FvwmPager
++ I KillModule FvwmDocker
++ I KillModule FvwmAnimate
++ I KillModule FvwmAuto
++ I Exec killall -9 trayer
++ I Exec killall -9 conky
+
+# make windowlists etc. warp pointer to the middle of
+# the window instead of top left
+AddToFunc WindowListFunc
++ I WarpToWindow 50 50
+
+DestroyFunc DeThumbnail
+AddToFunc   DeThumbnail
++ I Iconify off
++ I DestroyWindowStyle
++ I Exec exec rm -f $[HOME]/.fvwm/icon.tmp.$[w.id].png
+
+DestroyFunc FuncMoveOrMaximize
+AddToFunc   FuncMoveOrMaximize
++ I Raise
++ M Move
++ D Maximize 100 100
+
+DestroyFunc FuncDestroyOnHold
+AddToFunc   FuncDestroyOnHold
++ C Schedule 100 Close
++ H Destroy
++ H Beep

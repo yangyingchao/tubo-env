@@ -1,0 +1,32 @@
+############## root window #######3
+# Pager
+Key 1 A 4 GotoPageAndFocus 0 0
+Key 2 A 4 GotoPageAndFocus 1 0
+Key 3 A 4 GotoPageAndFocus 2 0
+Key 4 A 4 GotoPageAndFocus 3 0
+Key 5 A 4 GotoPageAndFocus 4 0
+Key 6 A 4 GotoPageAndFocus 5 0
+Key 7 A 4 GotoPageAndFocus 6 0
+Key 8 A 4 GotoPageAndFocus 7 0
+
+# Minimal windows.
+Key D A 4 FuncFvwmIconifyToggle
+Key D A CM All (AcceptsFocus CurrentPage !Iconic !Shaded, !FvwmButtons, !"*onky" !"*Desk *" !"*FvwmDocker*")Iconify
+
+Key F A 4 FuncFullScreen
+Key F1 A 4 Exec wxcommander
+Key F1 A M Menu MenuFvwmRoot
+Key F11 A 4 Exec firefox
+Key F12 A 4 Exec firefox
+Key F12 A C Exec emacs
+Key F2 A M Module FvwmForm FvwmForm-Run
+Key F3 A 4 Module FvwmConsole
+Key F4 A M Close
+Key Tab A M WindowList Root c c NoDeskSort, SelectOnRelease Meta_L
+Key r A 4 Module FvwmForm FvwmForm-Run
+Key r A CM Module FvwmForm FvwmForm-Run
+Key t A MC Exec sakura
+
+# Lock screens
+Key L A 4 FuncFvwmLockScreen
+Key L A CM FuncFvwmLockScreen
