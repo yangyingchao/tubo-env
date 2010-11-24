@@ -1,3 +1,18 @@
+################# WindowMenu Options ################################
+DestroyMenu MenuWindowOptions
+AddToMenu   MenuWindowOptions
++ "move"      Move
++ "resize"    Resize
++ "raise"     Raise
++ "lower"     Lower
++ "iconify"   Thumbnail
++ "(un)stick" Stick
++ "maximize" Maximize
++ ""          Nop
++ "close"     Close
++ "delete"    Delete
++ "destroy"   Destroy
+
 DestroyDecor DefaultDecor
 AddToDecor   DefaultDecor
 + TitleStyle LeftJustified Height 18

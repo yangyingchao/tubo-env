@@ -9,20 +9,6 @@ AddToFunc   Thumbnail
               || echo Nop"
 + I Iconify
 
-################# WindowMenu Options ################################
-DestroyMenu MenuWindowOptions
-AddToMenu   MenuWindowOptions
-+ "move"      Move
-+ "resize"    Resize
-+ "raise"     Raise
-+ "lower"     Lower
-+ "iconify"   Thumbnail
-+ "(un)stick" Stick
-+ "maximize" Maximize
-+ ""          Nop
-+ "close"     Close
-+ "delete"    Delete
-+ "destroy"   Destroy
 
 DestroyFunc SetWinLev
 AddToFunc SetWinLev
@@ -42,6 +28,19 @@ AddToFunc GotoPageAndFocus
 + I GotoPage $*
 + I Current (CurrentPage,!backgroundxterm*) Break
 + I Prev (CurrentPage,AcceptsFocus) FlipFocus NoWarp
+
+DestroyFunc GotoRightPage
+AddToFunc GotoRightPage
++ I GotoPage +1p 0
++ I Current (CurrentPage,!backgroundxterm*) Break
++ I Prev (CurrentPage,AcceptsFocus) FlipFocus NoWarp
+
+DestroyFunc GotoLeftPage
+AddToFunc GotoLeftPage
++ I GotoPage -1p 0
++ I Current (CurrentPage,!backgroundxterm*) Break
++ I Prev (CurrentPage,AcceptsFocus) FlipFocus NoWarp
+
 
 # DestroyFunc StartDocker
 # AddToFunc   StartDocker
