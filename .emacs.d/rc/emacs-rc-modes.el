@@ -30,7 +30,7 @@
 (add-hook 'LaTeX-mode-hook (lambda()
                              (TeX-PDF-mode t)
                              (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t))
-                             (setq TeX-command-default "XeLaTeX")
+                             (setq TeX-command-default "LaTeX")
                              (setq TeX-save-query  nil )
                              (setq TeX-show-compilation nil)
                              (setq fill-column 78)
