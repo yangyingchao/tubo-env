@@ -89,10 +89,10 @@
 ;;(setq srecode-minor-menu t)
 (srecode-minor-mode 1)
 
-(setq srecode-map-load-path
-      (list (srecode-map-base-template-dir)
-            (expand-file-name "~/.emacs.d/templates/srecode")
-            ))
+;; (setq srecode-map-load-path
+;;       (list (srecode-map-base-template-dir)
+;;             (expand-file-name "~/.emacs.d/templates/srecode")
+;;             ))
 
 ;;;; Customized functions to generate code quickly.
 (defun yyc/insert-file-header ()

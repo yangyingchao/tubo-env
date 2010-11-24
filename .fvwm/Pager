@@ -1,6 +1,6 @@
 Style FvwmPager NoTitle, Sticky, WindowListSkip, CirculateSkipIcon, CirculateSkip, BorderWidth 1, BorderColorset 5, NoHandles, NeverFocus, StaysOnTop
 # use 4 virtual desktops
-DeskTopSize 6x1
+DeskTopSize 4x1
 
 Colorset 40 fg #ffffff, bg #ffffff, hi #ffffff, sh #ffffff, RootTransparent buffer, Tint #4584b5 0
 Colorset 41 fg #ffffff, bg #ffffff, hi #ffffff, sh #ffffff, RootTransparent buffer, Tint #4584b5 0

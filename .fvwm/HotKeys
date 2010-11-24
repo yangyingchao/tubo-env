@@ -4,8 +4,6 @@ Key 1 A 4 MoveAndGotoPage 0 0
 Key 2 A 4 MoveAndGotoPage 1 0
 Key 3 A 4 MoveAndGotoPage 2 0
 Key 4 A 4 MoveAndGotoPage 3 0
-Key 5 A 4 MoveAndGotoPage 4 0
-Key 6 A 4 MoveAndGotoPage 5 0
 
 Key Right A CM GotoRightPage
 Key Left A CM GotoLeftPage

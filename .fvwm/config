@@ -2,7 +2,7 @@
 ImagePath +:$HOME/.fvwm/icons
 
 # Edge Settings
-EdgeResistance -1
+EdgeResistance 100
 Style * EdgeMoveDelay 250
 Style * EdgeMoveResistance 20
 EdgeThickness 0
@@ -34,6 +34,8 @@ Style * MWMFunctions, MWMDecor, HintOverride
 Style * ResizeOpaque
 Style * VariablePPosition
 Style *	SnapAttraction 10 SameType Screen
+*FvwmAnimate: Effect None
+
 OpaqueMoveSize -1 # all window moves as solid.
 ColorMapFocus FollowsFocus
 
@@ -73,7 +75,7 @@ DefaultFont "xft:WenQuanYi Micro Hei:size=10:encoding=iso10646-1"
 DefaultColorset 0
 
 Style * Colorset 1, HilightColorset 2
-Style * BorderWidth 0, HandleWidth 1
+Style * BorderWidth 2, HandleWidth 1
 Style * BorderColorset 4, HilightBorderColorset 5
 Style * MWMFunctions, MWMDecor
 Style * HintOverride, DecorateTransient, NoPPosition
