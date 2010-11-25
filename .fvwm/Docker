@@ -11,7 +11,7 @@ DestroyModuleConfig FvwmDocker: *
 *FvwmDocker: Columns 9
 *FvwmDocker: Frame   0
 *FvwmDocker: Padding 1 1
-*FvwmDocker: (1x1, Icon 48x48/gnome-commander.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch wxcommander wxcommander* $left $top`, `Next (wxcommander*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon 48x48/gnome-commander.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch wcmd wcmd* $left $top`, `Next (wcmd*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon 48x48/firefox.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch firefox firefox* $left $top`, `Next (firefox*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon 48x48/mail.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch outlook outlook* $left $top`, `Next (outlook*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon 48x48/gnome-dictionary.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch goldendict goldendict* $left $top`, `Next (goldendict*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
