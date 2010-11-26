@@ -74,6 +74,6 @@ AddToMenu MenuOffice
 + "%/home/yyc/.fvwm/icons/24x24/word.png%Word"  Exec exec /home/yyc/.cxoffice/winxp/desktopdata/cxmenu/StartMenu.C^5E3A^5Fwindows^5Fprofiles^5Fcrossover^5FStart^2BMenu/Programs/Microsoft+Office/Microsoft+Office+Word+2007
 + "%/home/yyc/.fvwm/icons/24x24/excel.png%Excel" Exec exec   /home/yyc/.cxoffice/winxp/desktopdata/cxmenu/StartMenu.C^5E3A^5Fwindows^5Fprofiles^5Fcrossover^5FStart^2BMenu/Programs/Microsoft+Office/Microsoft+Office+Excel+2007
 + "%/home/yyc/.fvwm/icons/24x24/powerpoint.png%Powerpoint" Exec exec /home/yyc/.cxoffice/winxp/desktopdata/cxmenu/StartMenu.C^5E3A^5Fwindows^5Fprofiles^5Fcrossover^5FStart^2BMenu/Programs/Microsoft+Office/Microsoft+Office+PowerPoint+2007
-+ "%/home/yyc/.fvwm/icons/24x24/outlook.png%Outlook" Exec exec /home/yyc/.cxoffice/winxp/desktopdata/cxmenu/StartMenu.C^5E3A^5Fwindows^5Fprofiles^5Fcrossover^5FStart^2BMenu/Programs/Microsoft+Office/Microsoft+Office+Outlook+2007
++ "%/home/yyc/.fvwm/icons/24x24/outlook.png%Outlook" Exec exec outlook
 #MenuOffice
 
