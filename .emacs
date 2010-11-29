@@ -129,6 +129,7 @@
 (require 'emacs-rc-functions)
 (require 'emacs-rc-modes)
 (require 'emacs-rc-keybindings)
+(require 'my-project)
 
  ;;;; Fonts Settings
 
