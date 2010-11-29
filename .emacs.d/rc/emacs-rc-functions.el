@@ -23,7 +23,7 @@
 
 (defun edit-project ()
   (interactive)
-  (find-file "~/.emacs.d/projects/my-project.el"))
+  (find-file "~/.emacs.d/rc/99-proj.el"))
 
 (defun edit-rcs ()
   "Jump to directory where rc files located"
