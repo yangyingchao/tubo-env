@@ -82,17 +82,15 @@
 ;;;; Enable Ede
 ;; (require 'ede)
 (global-ede-mode 1)
-(require 'my-project)
 
 ;;;; Custom template for srecode
 (require 'srecode)
 ;;(setq srecode-minor-menu t)
 (srecode-minor-mode 1)
 
-;; (setq srecode-map-load-path
-;;       (list (srecode-map-base-template-dir)
-;;             (expand-file-name "~/.emacs.d/templates/srecode")
-;;             ))
+(add-to-list 'srecode-map-load-path
+            (expand-file-name "~/.emacs.d/templates/srecode")
+            )
 
 ;;;; Customized functions to generate code quickly.
 (defun yyc/insert-file-header ()

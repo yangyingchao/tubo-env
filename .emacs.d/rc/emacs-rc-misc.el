@@ -347,9 +347,10 @@
 (global-set-key (kbd "<C-S-f8>") 'yyc/w3m-open-this-page)
 
 
+ ;; *********************** graphviz dot mode ***********
+(load-file "/usr/share/emacs/site-lisp/graphviz-dot-mode/graphviz-dot-mode.el")
  ;; ***************************** Some extra modes *************************
 (add-to-list 'auto-mode-alist '("rc$" . conf-mode))
-
 
 (provide 'emacs-rc-misc)
 ;;;;; emacs-rc-misc.el ends here

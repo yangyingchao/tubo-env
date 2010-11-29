@@ -123,13 +123,13 @@
 
 ;;;; Load plugins
 (require 'site-gentoo) ;; Packages provided by gentoo.
+(require 'emacs-rc-functions)
+(require 'emacs-rc-keybindings)
 (require 'emacs-rc-misc)
 (require 'emacs-rc-complete)
 (require 'emacs-rc-prog-mode)
-(require 'emacs-rc-functions)
 (require 'emacs-rc-modes)
-(require 'emacs-rc-keybindings)
-(require 'my-project)
+(require '99-proj)
 
  ;;;; Fonts Settings
 

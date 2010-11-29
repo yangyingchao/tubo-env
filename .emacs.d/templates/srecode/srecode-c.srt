@@ -1,4 +1,4 @@
-;;; srecode-c.srt --- Templates for c++-mode
+;;; srecode-c.srt --- Templates for c-mode
 
 ;; Copyright (C) 2007, 2008, 2009 Eric M. Ludlam
 
