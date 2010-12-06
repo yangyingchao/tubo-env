@@ -348,7 +348,8 @@
 
 
  ;; *********************** graphviz dot mode ***********
-(load-file "/usr/share/emacs/site-lisp/graphviz-dot-mode/graphviz-dot-mode.el")
+(load-file"/usr/share/emacs/site-lisp/graphviz-dot-mode/graphviz-dot-mode.el")
+
  ;; ***************************** Some extra modes *************************
 (add-to-list 'auto-mode-alist '("rc$" . conf-mode))
 

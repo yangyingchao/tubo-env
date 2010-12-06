@@ -365,5 +365,5 @@
 ;;   )
 
 
-(provide 'emacs-rc-modes)
+(provide '98-emacs-rc-modes)
 ;;;;; emacs-rc-modes.el ends here

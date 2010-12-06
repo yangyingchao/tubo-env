@@ -195,16 +195,6 @@
 ;(require 'pysmell)
 (require 'python)
 
-(autoload 'python-mode "python-mode" "Python Mode." t)
-(autoload 'jython-mode "python-mode" "Python editing mode." t)
-(autoload 'py-shell "python-mode" "Start  interpreter in another window." t)
-(autoload 'pymacs-apply "pymacs")
-(autoload 'pymacs-call "pymacs")
-(autoload 'pymacs-eval "pymacs" nil t)
-(autoload 'pymacs-exec "pymacs" nil t)
-(autoload 'pymacs-load "pymacs" nil t)
-(pymacs-load "ropemacs" "rope-")
-
 (add-to-list 'auto-mode-alist '("\\.py$" . python-mode))
 (add-to-list 'interpreter-mode-alist '("python" . python-mode))
 
@@ -213,8 +203,6 @@
 (setq interpreter-mode-alist
       (cons '("python" . python-mode)
             interpreter-mode-alist))
-(setq ropemacs-enable-autoimport t)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Auto-completion
 ;;;  Integrates:
@@ -271,7 +259,16 @@
             (set (make-local-variable 'ac-sources)
                  (append ac-sources '(ac-source-rope) '(ac-source-yasnippet))
                  )
-
+            (autoload 'python-mode "python-mode" "Python Mode." t)
+            (autoload 'jython-mode "python-mode" "Python editing mode." t)
+            (autoload 'py-shell "python-mode" "Start  interpreter in another window." t)
+            (autoload 'pymacs-apply "pymacs")
+            (autoload 'pymacs-call "pymacs")
+            (autoload 'pymacs-eval "pymacs" nil t)
+            (autoload 'pymacs-exec "pymacs" nil t)
+            (autoload 'pymacs-load "pymacs" nil t)
+            (pymacs-load "ropemacs" "rope-")
+            (setq ropemacs-enable-autoimport t)
             (rope-open-project "~/.emacs.d/database/python/")
             (local-set-key "\C-css" 'cscope-find-this-symbol)
             (local-set-key "\C-csd" 'cscope-find-global-definition)
@@ -393,22 +390,6 @@
   (switch-to-buffer-other-window buffer))
 
 ;;;; C-mode-hooks .
-(defun yyc/c-mode-keys ()
-  "description"
-  (semantic-default-c-setup)
-  (local-set-key "\C-cb" 'semantic-mrub-switch-tags)
-  (local-set-key "\C-cR" 'semantic-symref)
-  (local-set-key "\C-cj" 'semantic-ia-fast-jump)
-  (local-set-key "\C-cJ" 'semantic-analyze-proto-impl-toggle)
-  (local-set-key "\C-cp" 'semantic-ia-show-summary)
-  (local-set-key "\C-cl" 'semantic-ia-show-doc)
-  (local-set-key "\C-cr" 'semantic-symref-symbol)
-  (local-set-key "\C-c/" 'semantic-ia-complete-symbol)
-  (local-set-key "\C-c?" 'semantic-ia-complete-symbol-menu)
-  (local-set-key [(control return)] 'semantic-ia-complete-symbol)
-  (local-set-key "." 'semantic-complete-self-insert)
-  (local-set-key ">" 'semantic-complete-self-insert)
-  )
 
 ;;;; Function to change settings for tab.
 (defun yyc/toggle-tab-mode ()
@@ -428,7 +409,6 @@
     )
   )
 
-(add-hook 'c-mode-common-hook 'yyc/c-mode-keys)
 
 
 
@@ -448,15 +428,19 @@
 
   ;;;; "keybindings for sematic"
   (semantic-default-c-setup)
+  (local-set-key "." 'semantic-complete-self-insert)
+  (local-set-key ">" 'semantic-complete-self-insert)
+  (local-set-key "\C-c/" 'semantic-ia-complete-symbol)
   (local-set-key "\C-c?" 'semantic-ia-complete-symbol-menu)
-  (local-set-key "\C-cb" 'semantic-mrub-switch-tags)
+  (local-set-key "\C-cJ" 'semantic-analyze-proto-impl-toggle)
+  (local-set-key "\C-cP" 'semantic-ia-show-summary)
   (local-set-key "\C-cR" 'semantic-symref)
+  (local-set-key "\C-cb" 'semantic-mrub-switch-tags)
   (local-set-key "\C-cj" 'semantic-ia-fast-jump)
-  (local-set-key "\C-cp" 'semantic-ia-show-summary)
   (local-set-key "\C-cl" 'semantic-ia-show-doc)
   (local-set-key "\C-cr" 'semantic-symref-symbol)
-  (local-set-key "\C-c/" 'semantic-ia-complete-symbol)
   (local-set-key [(control return)] 'semantic-ia-complete-symbol)
+
 
   ;;;; Keybindings for srecode
   (local-set-key "\C-cdf" 'srecode-document-insert-function-comment)
@@ -526,6 +510,206 @@
 (add-hook 'shell-script-mode-hook 'my-program-hook)
 (add-hook 'sh-mode-hook 'my-program-hook)
 
+
+
+;; flymake
+(autoload 'flymake-find-file-hook "flymake" "" t)
+(add-hook 'find-file-hook 'flymake-find-file-hook)
+(setq flymake-gui-warnings-enabled nil)
+(setq flymake-log-level 0)
+;; (setq flymake-no-changes-timeout 0.5)
+(setq flymake-master-file-dirs
+      '("." "./src" "../src" "../../src"
+        "./source" "../source" "../../source"
+        "./Source" "../Source" "../../Source"
+        "./test" "../test" "../../test"
+        "./Test" "../Test" "../../Test"
+        "./UnitTest" "../UnitTest" "../../UnitTest"))
+(setq flymake-allowed-file-name-masks '())
+(when (executable-find "texify")
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.tex\\'" flymake-simple-tex-init))
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("[0-9]+\\.tex\\'"
+                 flymake-master-tex-init flymake-master-cleanup)))
+(when (executable-find "xml")
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.xml\\'" flymake-xml-init))
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.html?\\'" flymake-xml-init)))
+(when (executable-find "perl")
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.p[ml]\\'" flymake-perl-init)))
+(when (executable-find "php")
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.php[345]?\\'" flymake-php-init)))
+(when (executable-find "make")
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.idl\\'" flymake-simple-make-init))
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.java\\'"
+                 flymake-simple-make-java-init flymake-simple-java-cleanup))
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.cs\\'" flymake-simple-make-init)))
+(when (or (executable-find "make")
+          (executable-find "gcc")
+          (executable-find "g++"))
+  (defvar flymake-makefile-filenames '("Makefile" "makefile" "GNUmakefile")
+    "File names for make.")
+  (defun flymake-get-gcc-cmdline (source base-dir)
+    (let ((cc (if (string= (file-name-extension source) "c") "gcc" "g++")))
+      (list cc
+            (list "-Wall"
+                  "-Wextra"
+                  "-pedantic"
+                  "-fsyntax-only"
+                  "-I.."
+                  "-I../include"
+                  "-I../inc"
+                  "-I../common"
+                  "-I../public"
+                  "-I../.."
+                  "-I../../include"
+                  "-I../../inc"
+                  "-I../../common"
+                  "-I../../public"
+                  source))))
+  (defun flymake-init-find-makfile-dir (source-file-name)
+    "Find Makefile, store its dir in buffer data and return its dir, if found."
+    (let* ((source-dir (file-name-directory source-file-name))
+           (buildfile-dir nil))
+      (catch 'found
+        (dolist (makefile flymake-makefile-filenames)
+          (let ((found-dir (flymake-find-buildfile makefile source-dir)))
+            (when found-dir
+              (setq buildfile-dir found-dir)
+              (setq flymake-base-dir buildfile-dir)
+              (throw 'found t)))))
+      buildfile-dir))
+  (defun flymake-simple-make-gcc-init-impl (create-temp-f
+                                            use-relative-base-dir
+                                            use-relative-source)
+    "Create syntax check command line for a directly checked source file.
+Use CREATE-TEMP-F for creating temp copy."
+    (let* ((args nil)
+           (source-file-name buffer-file-name)
+           (source-dir (file-name-directory source-file-name))
+           (buildfile-dir
+            (and (executable-find "make")
+                 (flymake-init-find-makfile-dir source-file-name)))
+           (cc (if (string= (file-name-extension source-file-name) "c")
+                   "gcc"
+                 "g++")))
+      (if (or buildfile-dir (executable-find cc))
+          (let* ((temp-source-file-name
+                  (ignore-errors
+                    (flymake-init-create-temp-buffer-copy create-temp-f))))
+            (if temp-source-file-name
+                (setq args
+                      (flymake-get-syntax-check-program-args
+                       temp-source-file-name
+                       (if buildfile-dir buildfile-dir source-dir)
+                       use-relative-base-dir
+                       use-relative-source
+                       (if buildfile-dir
+                           'flymake-get-make-cmdline
+                         'flymake-get-gcc-cmdline)))
+              (flymake-report-fatal-status
+               "TMPERR"
+               (format "Can't create temp file for %s" source-file-name))))
+        (flymake-report-fatal-status
+         "NOMK" (format "No buildfile (%s) found for %s, or can't found %s"
+                        "Makefile" source-file-name cc)))
+      args))
+  (defun flymake-simple-make-gcc-init ()
+    (flymake-simple-make-gcc-init-impl 'flymake-create-temp-inplace t t))
+  (defun flymake-master-make-gcc-init (get-incl-dirs-f
+                                       master-file-masks
+                                       include-regexp)
+    "Create make command line for a source file
+ checked via master file compilation."
+    (let* ((args nil)
+           (temp-master-file-name
+            (ignore-errors
+              (flymake-init-create-temp-source-and-master-buffer-copy
+               get-incl-dirs-f
+               'flymake-create-temp-inplace
+               master-file-masks
+               include-regexp)))
+           (cc (if (string= (file-name-extension buffer-file-name) "c")
+                   "gcc"
+                 "g++")))
+      (if temp-master-file-name
+          (let* ((source-file-name buffer-file-name)
+                 (source-dir (file-name-directory source-file-name))
+                 (buildfile-dir
+                  (and (executable-find "make")
+                       (flymake-init-find-makfile-dir source-file-name))))
+            (if (or buildfile-dir (executable-find cc))
+                (setq args (flymake-get-syntax-check-program-args
+                            temp-master-file-name
+                            (if buildfile-dir buildfile-dir source-dir)
+                            nil
+                            nil
+                            (if buildfile-dir
+                                'flymake-get-make-cmdline
+                              'flymake-get-gcc-cmdline)))
+              (flymake-report-fatal-status
+               "NOMK"
+               (format "No buildfile (%s) found for %s, or can't found %s"
+                       "Makefile" source-file-name cc))))
+        (flymake-report-fatal-status
+         "TMPERR" (format "Can't create temp file for %s" source-file-name)))
+      args))
+  (defun flymake-master-make-gcc-header-init ()
+    (flymake-master-make-gcc-init
+     'flymake-get-include-dirs
+     '("\\.cpp\\'" "\\.c\\'")
+     "[ \t]*#[ \t]*include[ \t]*\"\\([[:word:]0-9/\\_.]*%s\\)\""))
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.\\(?:h\\(?:pp\\)?\\)\\'"
+                 flymake-master-make-gcc-header-init flymake-master-cleanup))
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.\\(?:c\\(?:pp\\|xx\\|\\+\\+\\)?\\|CC\\)\\'"
+                 flymake-simple-make-gcc-init)))
+(when (executable-find "pyflakes")
+  (defun flymake-pyflakes-init ()
+    (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                       'flymake-create-temp-inplace))
+           (local-file (file-relative-name
+                        temp-file
+                        (file-name-directory buffer-file-name))))
+      (list "pyflakes" (list local-file))))
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.py\\'" flymake-pyflakes-init)))
+(defun flymake-display-current-error ()
+  "Display errors/warnings under cursor."
+  (interactive)
+  (let ((ovs (overlays-in (point) (1+ (point)))))
+    (catch 'found
+      (dolist (ov ovs)
+        (when (flymake-overlay-p ov)
+          (message (overlay-get ov 'help-echo))
+          (throw 'found t))))))
+(defun flymake-goto-next-error-disp ()
+  "Go to next error in err ring, then display error/warning."
+  (interactive)
+  (flymake-goto-next-error)
+  (flymake-display-current-error))
+(defun flymake-goto-prev-error-disp ()
+  "Go to previous error in err ring, then display error/warning."
+  (interactive)
+  (flymake-goto-prev-error)
+  (flymake-display-current-error))
+(defvar flymake-mode-map (make-sparse-keymap))
+(define-key flymake-mode-map (kbd "C-c n") 'flymake-goto-next-error-disp)
+(define-key flymake-mode-map (kbd "C-c p") 'flymake-goto-prev-error-disp)
+(define-key flymake-mode-map (kbd "C-c SPC")
+  'flymake-display-err-menu-for-current-line)
+(or (assoc 'flymake-mode minor-mode-map-alist)
+    (setq minor-mode-map-alist
+          (cons (cons 'flymake-mode flymake-mode-map)
+                minor-mode-map-alist)))
 
 
 (add-to-list 'auto-mode-alist '("\\.ebuild$" . shell-script-mode))
