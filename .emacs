@@ -128,7 +128,7 @@
 (require 'emacs-rc-misc)
 (require 'emacs-rc-complete)
 (require 'emacs-rc-prog-mode)
-(require 'emacs-rc-modes)
+(require '98-emacs-rc-modes)
 (require '99-proj)
 
  ;;;; Fonts Settings
