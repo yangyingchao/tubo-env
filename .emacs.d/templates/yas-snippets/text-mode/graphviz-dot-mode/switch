@@ -1,0 +1,1 @@
+switch_${1:Name} [label="${2:Condition}?" shape=diamond];
