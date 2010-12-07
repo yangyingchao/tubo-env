@@ -16,7 +16,7 @@ Key D A CM All (AcceptsFocus CurrentPage !Iconic !Shaded, !FvwmButtons, !"*onky"
 Key F A 4 FuncFullScreen
 Key F1 A 4 Exec wcmd
 Key F1 A M Menu MenuFvwmRoot
-Key F11 A 4 Exec firefox
+Key F11 A 4 Exec opera
 Key F12 A 4 Exec firefox
 Key F12 A C Exec emacs
 Key F2 A M Module FvwmForm FvwmForm-Run

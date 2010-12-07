@@ -119,18 +119,18 @@ AddToFunc RunHistory
 + I DestroyMenu recreate CommandHistory
 + I AddToMenu CommandHistory History Title
 + I PipeRead `i=0;tac $HOME/.fvwm/commhistory|while read line;\
-	do echo AddToMenu CommandHistory "\\"&$i. $line\\""\
-	"PipeRead \'echo \\'$line\\';echo StoreComm \\'$line\\'; echo KillModule FvwmForm FvwmForm-Run\'";((i++));done`
+    do echo AddToMenu CommandHistory "\\"&$i. $line\\""\
+    "PipeRead \'echo \\'$line\\';echo StoreComm \\'$line\\'; echo KillModule FvwmForm FvwmForm-Run\'";((i++));done`
 
 DestroyFunc StoreComm
 AddToFunc   StoreComm
 + I SetEnv RunComm $[1]
 + I Test (!EnvMatch RunComm calc) PipeRead `file=$[HOME]/.fvwm/commhistory;\
-	if ! [ -f \$\file ];\
-	then echo -n "">>\$\file;fi;\
-	add="$*";add=\$\{add\# };\
-	tail -n 50 \$\file|awk -v add="\$\add" '\$\0 != add && \$\0 != "" {print} END{print add}' >\$\{file}.bak;\
-	mv \$\{file}.bak \$\file`
+    if ! [ -f \$\file ];\
+    then echo -n "">>\$\file;fi;\
+    add="$*";add=\$\{add\# };\
+    tail -n 50 \$\file|awk -v add="\$\add" '\$\0 != add && \$\0 != "" {print} END{print add}' >\$\{file}.bak;\
+    mv \$\{file}.bak \$\file`
 
 DestroyFunc FuncFvwmIconifyTrue
 AddToFunc FuncFvwmIconifyTrue
@@ -171,14 +171,14 @@ AddToFunc NotificationArea-Trayer
 # initfunctions
 DestroyFunc StartFunction
 AddToFunc   StartFunction
-+ I Exec exec fvwm-root --dither --retain-pixmap $[HOME]/.fvwm/wallpaper/default.png
++ I Exec exec fvwm-root --dither --retain-pixmap $[HOME]/.fvwm/wallpaper.png
 + I Module FvwmButtons -g 500x50+350-0 FvwmDocker
 + I Module FvwmPager
 + I Module FvwmAnimate
 + I Module FvwmAuto FvwmAutoHide -menter FvwmDockerAutoEnter
 + I Function StartDocker
 + I Exec conky -o -y 0 -d
-+ I Exec exec ibus-daemon -d -x
++ I Exec exec ibus-daemon -x -d
 + I Exec exec pidgin
 + I Exec exec xscreensaver
 + I Exec exec trayer --SetDockType true --widthtype pixel --width 204  --heighttype pixel --height 32 --align right  --transparent true --alpha 255  --edge bottom --margin 1
