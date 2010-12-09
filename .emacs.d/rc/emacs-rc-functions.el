@@ -597,5 +597,28 @@ inserts comment at the end of the line."
   (setq test_var (expand-file-name "~/.emacs.d/tools/ditaa.jar"))
   (message test_var)
   )
+
+
+(defvar num nil "nil")
+(defvar fmt nil "nil")
+(defun yyc/insert-line-num (prefix)
+  "description "
+  (interactive "sInput Prefix")
+  (if (= (string-to-char prefix) 0)
+      (setq fmt "\%d ")
+    (setq fmt (concat (format "<%s" prefix) "%d> "))
+    )
+  (setq num 1)
+  (backward-page)
+  (insert (format fmt num))
+  (while
+      (< (forward-line 1) 1)
+    (message (format "NUM: %d" num))
+    (setq num (+ 1 num))
+    (insert (format fmt num))
+    )
+  (message "Done!")
+  )
+
 (provide 'emacs-rc-functions)
 ;;; emacs-rc-functions.el ends here
