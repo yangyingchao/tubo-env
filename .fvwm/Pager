@@ -19,6 +19,6 @@ DestroyModuleConfig FvwmPager: *
 *FvwmPager: WindowBorderWidth 1
 *FvwmPager: Balloons           All
 *FvwmPager: BalloonColorset    * 0
-*FvwmPager: BalloonFont "StringEncoding=utf-8:xft:WenQuanYi Micro Hei:Medium:Size=12:encoding=zh_CN.UTF-8"
+*FvwmPager: BalloonFont "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
 *FvwmPager: BalloonYOffset     +2
 *FvwmPager: BalloonBorderWidth 1

@@ -44,8 +44,8 @@ Style Fvwm* NoTitle,Sticky,BorderWidth 0, CirculateSkipIcon, CirculateSkip
 Style FvwmBanner  StaysOnTop
 Style FvwmButtons HandleWidth 0, NoHandles, FixedPosition, Icon toolbox.xpm, CirculateHit,NeverFocus, WindowListSkip,!Iconifiable, Fixedsize
 Style FvwmForm  StaysOnTop
-Style * Font "StringEncoding=utf-8:xft:WenQuanYi Micro Hei:Medium:Size=12:encoding=zh_CN.UTF-8"
-IconFont "StringEncoding=utf-8:xft:WenQuanYi Micro Hei:Medium:Size=12:encoding=zh_CN.UTF-8"
+Style * Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
+IconFont "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
 
 ## colormaps
 Colorset 0 fg #ffffff, bg #ececec, hi gray, sh gray, RootTransparent buffer, Tint #ececec 0
@@ -71,7 +71,7 @@ CursorStyle MENU    left_ptr
 
 
 # default window styles
-DefaultFont "StringEncoding=utf-8:xft:WenQuanYi Micro Hei:size=10:encoding=zh_CN.UTF-8"
+DefaultFont "StringEncoding=utf-8:xft:Microsoft YaHei:size=10:encoding=zh_CN.UTF-8"
 DefaultColorset 0
 
 Style * Colorset 1, HilightColorset 2
