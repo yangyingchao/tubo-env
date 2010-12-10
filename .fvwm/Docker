@@ -18,6 +18,6 @@ DestroyModuleConfig FvwmDocker: *
 *FvwmDocker: (1x1, Icon 48x48/openoffice.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch ooffice ooffice* $left $top`,`Next (ooffice*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon 48x48/devhelp.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch devhelp devhelp* $left $top`,`Next (devhelp*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon 48x48/dia.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch dia dia* $left $top`,`Next (dia*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
-*FvwmDocker: (1x1, Icon 48x48/foxitreader.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch foxit foxit* $left $top`, `Next (foxit*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon 48x48/evince.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch evince evince* $left $top`, `Next (foxit*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon 48x48/virtualbox.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch VirtualBox VirtualBox* $left $top`, `Next (*VirtualBox) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 
