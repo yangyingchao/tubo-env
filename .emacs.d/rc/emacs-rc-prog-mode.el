@@ -525,19 +525,62 @@
         "./Test" "../Test" "../../Test"
         "./UnitTest" "../UnitTest" "../../UnitTest"))
 
+
+(when (executable-find "pyflakes")
+  (defun flymake-pyflakes-init ()
+    (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                       'flymake-create-temp-inplace))
+           (local-file (file-relative-name
+                        temp-file
+                        (file-name-directory buffer-file-name))))
+      (list "pyflakes" (list local-file))))
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.py\\'" flymake-pyflakes-init)))
+
+(defun flymake-display-current-error ()
+  "Display errors/warnings under cursor."
+  (interactive)
+  (let ((ovs (overlays-in (point) (1+ (point)))))
+    (catch 'found
+      (dolist (ov ovs)
+        (when (flymake-overlay-p ov)
+          (message (overlay-get ov 'help-echo))
+          (throw 'found t))))))
+
+(defun flymake-goto-next-error-disp ()
+  "Go to next error in err ring, then display error/warning."
+  (interactive)
+  (flymake-goto-next-error)
+  (flymake-display-current-error))
+
+(defun flymake-goto-prev-error-disp ()
+  "Go to previous error in err ring, then display error/warning."
+  (interactive)
+  (flymake-goto-prev-error)
+  (flymake-display-current-error))
+
+(defvar flymake-mode-map (make-sparse-keymap))
+(define-key flymake-mode-map (kbd "C-c n") 'flymake-goto-next-error-disp)
+(define-key flymake-mode-map (kbd "C-c p") 'flymake-goto-prev-error-disp)
+(define-key flymake-mode-map (kbd "C-c SPC")
+  'flymake-display-err-menu-for-current-line)
+(or (assoc 'flymake-mode minor-mode-map-alist)
+    (setq minor-mode-map-alist
+          (cons (cons 'flymake-mode flymake-mode-map)
+                minor-mode-map-alist)))
+
 (setq flymake-allowed-file-name-masks '())
 (defun yyc/flymake-disable ()
   "Disable flymake mode. It's really borering when reading kernel code."
   (interactive)
   (setq flymake-allowed-file-name-masks '())
-  (setq flymake-mode nil)
+  (flymake-mode nil)
   )
 
 
 (defun yyc/flymake-enable ()
   "Enable flymake mode"
   (interactive)
-  (setq flymake-mode t)
   (setq flymake-allowed-file-name-masks '())
   (when (executable-find "texify")
     (add-to-list 'flymake-allowed-file-name-masks
@@ -688,49 +731,7 @@ Use CREATE-TEMP-F for creating temp copy."
                  '("\\.\\(?:c\\(?:pp\\|xx\\|\\+\\+\\)?\\|CC\\)\\'"
                    flymake-simple-make-gcc-init)))
 
-  (when (executable-find "pyflakes")
-    (defun flymake-pyflakes-init ()
-      (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                         'flymake-create-temp-inplace))
-             (local-file (file-relative-name
-                          temp-file
-                          (file-name-directory buffer-file-name))))
-        (list "pyflakes" (list local-file))))
-    (add-to-list 'flymake-allowed-file-name-masks
-                 '("\\.py\\'" flymake-pyflakes-init)))
-
-  (defun flymake-display-current-error ()
-    "Display errors/warnings under cursor."
-    (interactive)
-    (let ((ovs (overlays-in (point) (1+ (point)))))
-      (catch 'found
-        (dolist (ov ovs)
-          (when (flymake-overlay-p ov)
-            (message (overlay-get ov 'help-echo))
-            (throw 'found t))))))
-
-  (defun flymake-goto-next-error-disp ()
-    "Go to next error in err ring, then display error/warning."
-    (interactive)
-    (flymake-goto-next-error)
-    (flymake-display-current-error))
-
-  (defun flymake-goto-prev-error-disp ()
-    "Go to previous error in err ring, then display error/warning."
-    (interactive)
-    (flymake-goto-prev-error)
-    (flymake-display-current-error))
-
-  (defvar flymake-mode-map (make-sparse-keymap))
-  (define-key flymake-mode-map (kbd "C-c n") 'flymake-goto-next-error-disp)
-  (define-key flymake-mode-map (kbd "C-c p") 'flymake-goto-prev-error-disp)
-  (define-key flymake-mode-map (kbd "C-c SPC")
-    'flymake-display-err-menu-for-current-line)
-  (or (assoc 'flymake-mode minor-mode-map-alist)
-      (setq minor-mode-map-alist
-            (cons (cons 'flymake-mode flymake-mode-map)
-                  minor-mode-map-alist)))
-
+  (flymake-mode t)
   )
 
 
