@@ -181,6 +181,7 @@ AddToFunc   StartFunction
 + I Exec exec fcitx -d
 + I Exec exec pidgin
 + I Exec exec xscreensaver
++ I Exec exec xmodmap ~/.xmodmap
 + I Exec exec trayer --SetDockType true --widthtype pixel --width 204  --heighttype pixel --height 32 --align right  --transparent true --alpha 255  --edge bottom --margin 1
 
 DestroyFunc ExitFunction
