@@ -26,6 +26,7 @@ Key Tab A M WindowList Root c c NoDeskSort, SelectOnRelease Meta_L
 Key r A 4 Module FvwmForm FvwmForm-Run
 Key r A CM Module FvwmForm FvwmForm-Run
 Key t A MC Exec sakura
+Key p A MC4 Exec sudo poweroff
 
 # Lock screens
 Key L A 4 FuncFvwmLockScreen

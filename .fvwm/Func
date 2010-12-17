@@ -157,16 +157,16 @@ AddToFunc FuncFvwmLockScreen
 
 
 
-# Settings of trayer
-DestroyFunc NotificationArea-Trayer
-AddToFunc NotificationArea-Trayer
-+ I SetEnv trayer_width_t "request"
-+ I SetEnv trayer_heigth_t "pixel"
-+ I SetEnv trayer_edge "top"
-+ I SetEnv trayer_align "right"
-+ I SetEnv trayer_marge "240"
-+ I SetEnv trayer_dist "3"
-+ I SetEnv trayer_width_w ""
+# # Settings of trayer
+# DestroyFunc NotificationArea-Trayer
+# AddToFunc NotificationArea-Trayer
+# + I SetEnv trayer_width_t "request"
+# + I SetEnv trayer_heigth_t "pixel"
+# + I SetEnv trayer_edge "top"
+# + I SetEnv trayer_align "right"
+# + I SetEnv trayer_marge "240"
+# + I SetEnv trayer_dist "3"
+# + I SetEnv trayer_width_w ""
 
 # initfunctions
 DestroyFunc StartFunction
@@ -181,7 +181,6 @@ AddToFunc   StartFunction
 + I Exec exec fcitx -d
 + I Exec exec pidgin
 + I Exec exec xscreensaver
-+ I Exec exec xmodmap ~/.xmodmap
 + I Exec exec trayer --SetDockType true --widthtype pixel --width 204  --heighttype pixel --height 32 --align right  --transparent true --alpha 255  --edge bottom --margin 1
 
 DestroyFunc ExitFunction

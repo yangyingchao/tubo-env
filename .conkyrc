@@ -25,7 +25,6 @@ alignment top_left
 
 # set to yes if you want all text to be in uppercase
 uppercase no
-
 #avoid flicker
 double_buffer yes
 no_buffers yes
@@ -42,7 +41,6 @@ draw_shades no
 #draw_graph_borders yes
 #draw_borders yes
 
-
 #borders
 draw_borders no
 
@@ -54,28 +52,31 @@ use_spacer no
 
 
 TEXT
-
 ${color #a40000}System Info ${color}
-${color #2e3436}Kernel: $alignr${color dcff82}$kernel${color}${color}
-${color #2e3436}Time: $alignr${color dcff82}${time %D %H:%M}${color}${color}
-${color #2e3436}UpTime: $alignr${color dcff82}${uptime %H:%M}${color}${color}
-
-${color #2e3436}CPU I ${color dcff82}${cpu cpu1}%${color} CPU II ${color dcff82}${cpu cpu2}%${color}${color}
-${color #2e3436}Processes: ${color dcff82}${font}${processes} ${color}
-${color #2e3436}Running: ${color dcff82}${font}${running_processes} ${color}
-${color #2e3436}Mem: ${color dcff82}${font}${mem} ($memperc%)${color}
+${color #c4a000}Kernel: $alignr${color dcff82}$kernel${color}${color}
+${color #c4a000}Time: $alignr${color dcff82}${time %D %H:%M}${color}${color}
+${color #c4a000}UpTime: $alignr${color dcff82}${uptime %H:%M}${color}${color}
+${color #c4a000}CPU I ${color dcff82}${cpu cpu1}%${color} CPU II ${color dcff82}${cpu cpu2}%${color}${color}
+${color #c4a000}Mem: ${color dcff82}${font}${mem} ($memperc%)${color}
 ${color #dcff82}${membar 4,200}
+${color #c4a000}Processes: ${color dcff82}${font}${processes} ${color}
+${color #c4a000}Running: ${color dcff82}${font}${running_processes} ${color}
+${color slate grey}TOP 3:$alignr        -PID-  CPU%   $color
+${color #ef2929}${top name 1}$alignr${top pid 1}${top cpu 1}
+${color lightgrey}${top name 2}$alignr${top pid 2}${top cpu 2}
+${color lightgrey}${top name 3}$alignr${top pid 3}${top cpu 3}
 
 ${color #a40000}Network Info ${color}
-${color #2e3436}IP Addr: ${color #dcff82}${addr eth0}${color}
-${color #2e3436}Down: ${color #dcff82}${downspeed eth0}${color}${color} ${color #dcff82}${totaldown eth0}${color}${color}
-${color #2e3436}Up:   ${color #dcff82}${upspeed eth0}${color}${color #dcff82} ${totalup eth0}
+${color #c4a000}IP Addr: ${color #dcff82}${addr eth0}${color}
+${color #c4a000}Down: ${color #dcff82}${downspeed eth0}${color}${color} ${color #dcff82}${totaldown eth0}${color}${color}
+${color #c4a000}Up:   ${color #dcff82}${upspeed eth0}${color}${color #dcff82}
+#${totalup eth0}
 
 ${color #a40000}File System ${color}
-${color #2e3436}Disk IO: ${color #dcff82}${alignr 4}$diskio ${color} ${color}
-${color #2e3436}Root: ${color}${alignr}${color #dcff82}${fs_free /}${color} Free ${color}
+${color #c4a000}Disk IO: ${color #dcff82}${alignr 4}$diskio ${color} ${color}
+${color #c4a000}Root: ${color}${alignr}${color #dcff82}${fs_free /}${color} Free ${color}
 ${color #dcff82}${fs_bar 4 /}
-${color 2e3436}HOME: ${color}${alignr}${color #dcff82}${fs_free /home}${color} Free ${color}
+${color #c4a000}HOME: ${color}${alignr}${color #dcff82}${fs_free /home}${color} Free ${color}
 ${color #dcff82}${fs_bar 4 /home}${color}
 
 
