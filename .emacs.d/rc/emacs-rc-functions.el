@@ -199,8 +199,8 @@
   (find-file (concat (file-name-directory fname) "/Makefile"))
   )
 
-(global-set-key (kbd "<C-f5>")  (lambda()(interactive)(do-compile)))
-(global-set-key (kbd "<C-S-f5>")  (lambda()(interactive)(open-makefile)))
+(global-set-key (kbd "<C-f6>")  (lambda()(interactive)(do-compile)))
+(global-set-key (kbd "<C-S-f6>")  (lambda()(interactive)(open-makefile)))
 
 ;;;; Add new line before or after current line.
 (defun zl-newline nil
@@ -213,7 +213,7 @@
   (interactive)
   (beginning-of-line)
   (newline-and-indent))
-(global-set-key [f2] 'zl-newline-up)
+(global-set-key (kbd "C-S-o") 'zl-newline-up)
 
 
 (defun my-list-bookmarks nil
@@ -278,7 +278,7 @@
   "Format of date to insert with `insert-current-date-time' func
 See help of `format-time-string' for possible replacements")
 
-(defvar current-time-format "%a %H:%M:%S"
+(defvar current-time-format "%H:%M:%S"
   "Format of date to insert with `insert-current-time' func.
 Note the weekly scope of the command's precision.")
 
@@ -620,5 +620,13 @@ inserts comment at the end of the line."
   (message "Done!")
   )
 
+(defun auto-rename-buffer ()
+  "Rename current buffer to the basename"
+  (interactive)
+  (let ((newname (concat (buffer-name) "-" (format-time-string current-time-format (current-time)))))
+         (rename-buffer newname))
+  )
+
 (provide 'emacs-rc-functions)
 ;;; emacs-rc-functions.el ends here
+

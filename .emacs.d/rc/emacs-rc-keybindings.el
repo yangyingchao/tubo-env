@@ -3,12 +3,10 @@
 
 (require 'emacs-rc-functions)
 
-;; (global-set-key [(control f1)] 'open-mylist)
-;; (global-set-key [(f1)] (lambda()        ;;设定F1为woman快捷键
-;;           (interactive)
-;;           (let ((woman-topic-at-point t))
-;;             (woman))))
-(global-set-key [f2] 'zl-newline-up)
+;; C-F1: 'open-mylist
+;; F1: 为woman快捷键
+(global-set-key [f2] 'auto-rename-buffer)
+(global-set-key (kbd "<C-f2>") 'rename-buffer)
 (require 'artist)
 (global-set-key (kbd "<C-S-f2>") 'artist-mode)
 
@@ -25,11 +23,8 @@
 (global-set-key (kbd "<C-S-f4>") 'kmacro-end-and-call-macro)
 
 (require 'ansi-color)
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on t)
 (autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
-(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-;; 这样直接把颜色滤掉
-(add-hook 'eshell-preoutput-filter-functions
-          'ansi-color-filter-apply)
 
 ;; eshell ssh
 (defun eshell/ssh (&rest args)
@@ -52,9 +47,10 @@
 
 (global-set-key [f5] 'eshell)
 (global-set-key (kbd "<S-f5>") 'ansi-term)
-(setq compile-command "make -f makefile")
-;(global-set-key [f6] 'make)
-;(global-set-key [f7] 'sr-speedbar-toggle);f7打开/关闭speedbar
+;;;; Following Keybinds was set in other files.
+;; C-F6: do-compile
+;; C-S-F6: Open Makefile
+;; f7: 打开/关闭speedbar
 
 (global-set-key (kbd "<C-f9>") 'bookmark-jump)
 (global-set-key [f9] 'bookmark-set)
