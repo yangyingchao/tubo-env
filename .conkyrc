@@ -1,82 +1,49 @@
-#font
 use_xft yes
-xftfont WenQuanYi Micro Hei Mono:size=11
+xftfont Sans:size=8
 
-# Update interval in seconds
-update_interval 1
+xftalpha 0.9
+update_interval 3.0
+total_run_times 0
+double_buffer yes
 
+own_window yes
+own_window_transparent yes
+own_window_type desktop
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
 
-# Minimum size of text area
-minimum_size 280 5
+draw_shades no
+draw_outline no
+draw_borders no
+draw_graph_borders no
+stippled_borders 0
+border_margin 1
+border_width 1
+#default_color 0bFF3a
+default_color AADA2C
+default_outline_color a6b38d
 
-maximum_width 240
-
-
-# Default colors and also border colors
-default_color 4d4d4d
-default_shade_color white
-default_outline_color black
-own_window_colour 262626
-
-#position
-gap_x 1030
-gap_y 30
 alignment top_left
 
-# set to yes if you want all text to be in uppercase
-uppercase no
-#avoid flicker
-double_buffer yes
+
+#fs_free_perc
+
+gap_x 0
+gap_y 35
+
 no_buffers yes
+uppercase no
+cpu_avg_samples 2
+net_avg_samples 2
+override_utf8_locale no
 
-#own window to run simultanious 2 or more conkys
-own_window yes
-own_window_type normal
-own_window_hints undecorate,sticky,skip_taskbar,skip_pager
-own_window_transparent yes
+#use_spacer no
+#maximum_width 1000
+#minimum_width 890
 
-
-#shades
-draw_shades no
-#draw_graph_borders yes
-#draw_borders yes
-
-#borders
-draw_borders no
-
-# Force UTF8? note that UTF8 support required XFT
-override_utf8_locale yes
-
-#to prevent window from moving
-use_spacer no
+# Max lines to parse before displaying
+PARSELINES=60
 
 
 TEXT
-${color #a40000}System Info ${color}
-${color #c4a000}Kernel: $alignr${color dcff82}$kernel${color}${color}
-${color #c4a000}Time: $alignr${color dcff82}${time %D %H:%M}${color}${color}
-${color #c4a000}UpTime: $alignr${color dcff82}${uptime %H:%M}${color}${color}
-${color #c4a000}CPU I ${color dcff82}${cpu cpu1}%${color} CPU II ${color dcff82}${cpu cpu2}%${color}${color}
-${color #c4a000}Mem: ${color dcff82}${font}${mem} ($memperc%)${color}
-${color #dcff82}${membar 4,200}
-${color #c4a000}Processes: ${color dcff82}${font}${processes} ${color}
-${color #c4a000}Running: ${color dcff82}${font}${running_processes} ${color}
-${color slate grey}TOP 3:$alignr        -PID-  CPU%   $color
-${color #ef2929}${top name 1}$alignr${top pid 1}${top cpu 1}
-${color lightgrey}${top name 2}$alignr${top pid 2}${top cpu 2}
-${color lightgrey}${top name 3}$alignr${top pid 3}${top cpu 3}
-
-${color #a40000}Network Info ${color}
-${color #c4a000}IP Addr: ${color #dcff82}${addr eth0}${color}
-${color #c4a000}Down: ${color #dcff82}${downspeed eth0}${color}${color} ${color #dcff82}${totaldown eth0}${color}${color}
-${color #c4a000}Up:   ${color #dcff82}${upspeed eth0}${color}${color #dcff82}
-#${totalup eth0}
-
-${color #a40000}File System ${color}
-${color #c4a000}Disk IO: ${color #dcff82}${alignr 4}$diskio ${color} ${color}
-${color #c4a000}Root: ${color}${alignr}${color #dcff82}${fs_free /}${color} Free ${color}
-${color #dcff82}${fs_bar 4 /}
-${color #c4a000}HOME: ${color}${alignr}${color #dcff82}${fs_free /home}${color} Free ${color}
-${color #dcff82}${fs_bar 4 /home}${color}
-
-
+   - ${execi 10 sh $HOME/.fvwm/scripts/nowplaying.sh --showsong} - Free HD: ${fs_free /home}/${fs_free_perc /home}%  Pendrive:${fs_free /media/pendrive}    ${execi 800 bash $HOME/.fvwm/scripts/checkemail.sh }  ${execi 7000 bash $HOME/.fvwm/scripts/accucurrency.sh}  Weather: ${execi 1800 bash $HOME/.fvwm/scripts/accuweatherline.sh --forecast}
+   - ${execi 6900 sh $HOME/.fvwm/scripts/boxlooktheedition.sh}  ${execi 100 ps x | grep arecord | grep -v grep }
