@@ -7,6 +7,7 @@ Style * EdgeMoveDelay 250
 Style * EdgeMoveResistance 20
 EdgeThickness 0
 EdgeScroll 0 0
+EwmhBaseStruts 0 0 0 0
 
 # use IgnoreModifiers to fix the NumLock bug(?)
 IgnoreModifiers L25
@@ -21,12 +22,8 @@ SnapGrid 1 1
 
 
 ImagePath $[HOME]/.fvwm/icons:+
-SetEnv fvwm_script_path $[FVWM_USERDIR]/scripts/
-SetEnv fvwm_icon_path $[FVWM_USERDIR]/icons/
-SetEnv fvwm_config_path $[FVWM_USERDIR]
 SetEnv fvwm_icon_size 160
 SetEnv fvwm_decor $[HOME]/.fvwm/icons/decoration
-SetEnv mycursors $[HOME]/.fvwm/cursors
 
 
 # window behavior
@@ -39,7 +36,6 @@ Style * ClickToFocus, MouseFocusClickRaises
 Style * Colorset 5, HilightColorset 5
 Style * DecorateTransient
 Style * FPGrabFocusTransient, FPReleaseFocusTransient
-Style * IconBox 30 100 100 -15, IconFill top left
 Style * IconSize 48 48
 Style * IconTitle, IndexedIconName
 Style * IconTitleColorset 0, HilightIconTitleColorset 3

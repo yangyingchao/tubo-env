@@ -1,9 +1,8 @@
-Style FvwmPager NoTitle, Sticky, WindowListSkip, CirculateSkipIcon, CirculateSkip, BorderWidth 1, BorderColorset 5, NoHandles, NeverFocus, StaysOnTop
-# use 4 virtual desktops
+Style FvwmPager NoTitle, Sticky, WindowListSkip, CirculateSkipIcon, CirculateSkip, BorderWidth 1, BorderColorset 5, NoHandles, NeverFocus, StaysOnBottom
 DeskTopSize 4x1
 
-Colorset 40 fg #ffffff, bg #ffffff, hi #ffffff, sh #ffffff, RootTransparent buffer, Tint #4584b5 0
-Colorset 41 fg #ffffff, bg #ffffff, hi #ffffff, sh #ffffff, RootTransparent buffer, Tint #4584b5 0
+Colorset 40 fg #839eb0, bg #839eb0, hi #839eb0, sh #839eb0, RootTransparent buffer, Tint #4584b5 0
+Colorset 41 fg #839eb0, bg #839eb0, hi #839eb0, sh #839eb0, RootTransparent buffer, Tint #4584b5 0
 DestroyModuleConfig FvwmPager: *
 *FvwmPager: Colorset        * 40
 *FvwmPager: HilightColorset * 41

@@ -33,13 +33,11 @@ ButtonStyle 1 Active (MiniIcon)
 
 ButtonStyle All -- Flat UseTitleStyle
 
-Style trayer !Title, Sticky, WindowListSkip,!Handles
-Style Conky !Title, Sticky, WindowListSkip,!Handles
-
 
 #################
 # Use an arrow rather than the `X` cursor on the root window.
 #################
+SetEnv mycursors $[HOME]/.fvwm/cursors
 BusyCursor * False
 CursorStyle DEFAULT $[mycursors]/pantherx/cursors/top_left_arrow
 CursorStyle ROOT $[mycursors]/pantherx/cursors/left_ptr
@@ -100,4 +98,12 @@ Mouse 1 W M FuncMoveOrMaximize
 Mouse 1 W M FuncMoveOrMaximize
 Mouse 3 R A WindowList NoGeometry
 Mouse 3 R A WindowList NoGeometry
+
+
+
+# Specific Styles.
+
+Style trayer !Title, Sticky, WindowListSkip,!Handles
+Style Trayer !Title, Sticky, WindowListSkip,!Handles
+Style Conky !Title, Sticky, WindowListSkip,!Handles
 
