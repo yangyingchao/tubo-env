@@ -1,0 +1,214 @@
+##################    Thumbnail #################################
+SetEnv fvwm_icon_size 96
+DestroyFunc Thumbnail
+AddToFunc   Thumbnail
++ I Raise
++ I PipeRead "xwd -silent -id $[w.id] | convert -scale $[fvwm_icon_size] -frame 1x1 \
+              -mattecolor black -quality 0 xwd:- png:$[HOME]/.fvwm/icon.tmp.$[w.id].png \
+              && echo WindowStyle IconOverride, Icon $[HOME]/.fvwm/icon.tmp.$[w.id].png, StaysOnBottom \
+              || echo Nop"
++ I Iconify
+
+
+DestroyFunc SetWinLev
+AddToFunc SetWinLev
++ I Pick (Layer $0) Layer 0 4
++ I TestRc (Match) Current Raise
++ I TestRc (Match) Break 1
++ I Pick Layer 0 $0
+
+
+DestroyFunc MoveAndGotoPage
+AddToFunc MoveAndGotoPage
++ I GotoPage $*
++ I MoveToPage $*
+
+DestroyFunc GotoPageAndFocus
+AddToFunc GotoPageAndFocus
++ I GotoPage $*
++ I Current (CurrentPage,!backgroundxterm*) Break
++ I Prev (CurrentPage,AcceptsFocus) FlipFocus NoWarp
+
+DestroyFunc GotoRightPage
+AddToFunc GotoRightPage
++ I GotoPage +1p 0
++ I Current (CurrentPage,!backgroundxterm*) Break
++ I Prev (CurrentPage,AcceptsFocus) FlipFocus NoWarp
+
+DestroyFunc GotoLeftPage
+AddToFunc GotoLeftPage
++ I GotoPage -1p 0
++ I Current (CurrentPage,!backgroundxterm*) Break
++ I Prev (CurrentPage,AcceptsFocus) FlipFocus NoWarp
+
+
+DestroyFunc AutoHide
+AddToFunc   AutoHide
++ I ThisWindow ($0) Deschedule $[w.id]
++ I TestRc (!Match) Deschedule -$[w.id]
++ I ThisWindow ($0) ThisWindow (shaded) AutohideShow $1 $3
++ I TestRc (!Match) All ($0, !shaded) AutohideHide $2 $3
+
+DestroyFunc AutohideShow
+AddToFunc   AutohideShow
++ I Schedule $0 -$[w.id] WindowShade $1 off
++ I Schedule $0 -$[w.id] Raise
++ I Schedule $0 -$[w.id] Deschedule $[w.id]
++ I Schedule $0 -$[w.id] Deschedule -$[w.id]
+
+DestroyFunc AutohideHide
+AddToFunc   AutohideHide
++ I Schedule $0 $[w.id] WindowShade $1 on
++ I Schedule $0 $[w.id] Deschedule $[w.id]
++ I Schedule $0 $[w.id] Deschedule -$[w.id]
+
+# this one originates from ikaros configs iirc
+DestroyFunc FuncDockLaunch
+AddToFunc   FuncDockLaunch
++ C Any ($1) Next ($1) WindowListFunc
++ C TestRc (NoMatch) Exec $0
++ H Any ($1) WindowList ($1) Rectangle +$2+$3 0 -100m CurrentAtEnd UseListSkip SortByClass NoCurrentDeskTitle
++ D Exec $0
+DestroyFunc FuncFullScreen
+AddtoFunc FuncFullScreen
++ I Current (State 0) Fullscreen-Stop
++ I TestRc Current (Maximizable) Fullscreen-Start
+
+DestroyFunc Fullscreen-Start
+AddtoFunc Fullscreen-Start
++ I WindowStyle NoTitle,HandleWidth 0,FixedSize,FixedPosition
++ I Current (!Maximized) Maximize
++ I ResizeMaximize 100 100
++ I State 0 true
+
+DestroyFunc Fullscreen-Stop
+AddtoFunc Fullscreen-Stop
++ I DestroyWindowStyle
++ I State 0 false
++ I Maximize
+
+
+
+DestroyFunc StoreComm
+AddToFunc   StoreComm
++ I SetEnv RunComm $[1]
++ I Test (!EnvMatch RunComm calc) PipeRead `file=$[HOME]/.fvwm/commhistory;\
+    if ! [ -f \$\file ];\
+    then echo -n "">>\$\file;fi;\
+    add="$*";add=\$\{add\# };\
+    tail -n 50 \$\file|awk -v add="\$\add" '\$\0 != add && \$\0 != "" {print} END{print add}' >\$\{file}.bak;\
+    mv \$\{file}.bak \$\file`
+
+DestroyFunc FuncFvwmIconifyTrue
+AddToFunc FuncFvwmIconifyTrue
++ I All (!Iconic !"*onky" !"*Desk *" !"*FvwmDocker*") State 1
++ I All (State 1) Iconify True
+
+DestroyFunc FuncFvwmIconifFalse
+AddToFunc FuncFvwmIconifyFalse
++ I All (State 1) Iconify False
+
+DestroyFunc FuncFvwmIconifyToggle
+AddToFunc FuncFvwmIconifyToggle
++ I FuncFvwmIconifyFalse
++ I All (State 1) State 1 False
++ I TestRc (NoMatch) FuncFvwmIconifyTrue
+
+
+#################### Lock screen. ##############
+DestroyFunc FuncFvwmLockScreen
+AddToFunc FuncFvwmLockScreen
++ I All (xscreensaver) Nop
++ I TestRc (NoMatch) Exec xscreensaver -no-splash &
++ I Exec xscreensaver-command -lock
+
+
+# Iitfunctions
+DestroyFunc StartFunction
+AddToFunc   StartFunction
++ I Exec exec fvwm-root --dither --retain-pixmap $[HOME]/.fvwm/wallpaper.png
++ I Module FvwmButtons -g 500x50+350-0 FvwmDocker
++ I Module FvwmPager
++ I Module FvwmAnimate
++ I Module FvwmAuto FvwmAutoHide -menter FvwmDockerAutoEnter
++ I Exec exec trayer --SetDockType true --widthtype pixel --width 204  --heighttype pixel --height 32 --align right  --transparent true --alpha 255  --edge bottom --margin 1+ I Function StartDocker
++ I Exec conky -o -y 0 -d
++ I Exec exec fcitx -d
++ I Exec exec pidgin
++ I Exec exec xscreensaver
+
+
+DestroyFunc ExitFunction
+AddToFunc   ExitFunction
++ I KillModule FvwmPager
++ I KillModule FvwmDocker
++ I KillModule FvwmAnimate
++ I KillModule FvwmAuto
++ I Exec killall -9 trayer
++ I Exec killall -9 conky
+
+# make windowlists etc. warp pointer to the middle of
+# the window instead of top left
+AddToFunc WindowListFunc
++ I WarpToWindow 50 50
+
+DestroyFunc DeThumbnail
+AddToFunc   DeThumbnail
++ I Iconify off
++ I DestroyWindowStyle
++ I Exec exec rm -f $[HOME]/.fvwm/icon.tmp.$[w.id].png
+
+DestroyFunc FuncMoveOrMaximize
+AddToFunc   FuncMoveOrMaximize
++ I Raise
++ M Move
++ D Maximize 100 100
+
+DestroyFunc FuncDestroyOnHold
+AddToFunc   FuncDestroyOnHold
++ C Schedule 100 Close
++ H Destroy
++ H Beep
+
+DestroyFunc ExitMenu
+AddToFunc ExitMenu
++ I DestroyModuleConfig Exitmenu: *
++ I *Exitmenu: Font "Shadow=0 b bl r br r :xft:DejaVu Sans:size=9:bold"
++ I *Exitmenu: ButtonFont "xft:DejaVu Sans:size=9:bold"
++ I *Exitmenu: Colorset 9
++ I *Exitmenu: ItemColorset 9
++ I *Exitmenu: Line center
++ I *Exitmenu: Line center
++ I *Exitmenu: Line center
++ I *Exitmenu: Line center
++ I *Exitmenu: Line center
++ I *Exitmenu: Text "Are you sure you want to quit FVWM Mac OS X?"
++ I *Exitmenu: Line center
++ I *Exitmenu: Line center
++ I *Exitmenu: Line center
++ I *Exitmenu: Line center
++ I *Exitmenu: Line center
++ I *Exitmenu: Line center
++ I *Exitmenu: Line center
++ I *Exitmenu: Button quit " Reboot PC" ^[
++ I *Exitmenu: Command Exec sudo reboot
++ I *Exitmenu: Button quit " Halt PC" ^[
++ I *Exitmenu: Command Exec sudo halt
++ I *Exitmenu: Button quit " Logout Fvwm !" ^M
++ I *Exitmenu: Command Quit
++ I *Exitmenu: Line center
++ I *Exitmenu: Button quit " Execute..." ^[
++ I *Exitmenu: Command Exec grun
++ I *Exitmenu: Button quit " List processes" ^[
++ I *Exitmenu: Command Exec xterm  -fg green -bg black -e top
++ I *Exitmenu: Line center
++ I *Exitmenu: Button quit " Restart Fvwm " ^[
++ I *Exitmenu: Command Restart
++ I *Exitmenu: Button quit " Lock screensaver" ^[
++ I *Exitmenu: Command  Exec xscreensaver-command  -lock
++ I *Exitmenu: Button quit " Cancel" ^[
++ I *Exitmenu: Command Nop
++ I *Exitmenu: Line center
++ I *Exitmenu: Line center
++ I Module FvwmForm Exitmenu
+Style "Exitmenu" NoTitle

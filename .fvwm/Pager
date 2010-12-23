@@ -1,0 +1,24 @@
+Style FvwmPager NoTitle, Sticky, WindowListSkip, CirculateSkipIcon, CirculateSkip, BorderWidth 1, BorderColorset 5, NoHandles, NeverFocus, StaysOnTop
+# use 4 virtual desktops
+DeskTopSize 4x1
+
+Colorset 40 fg #ffffff, bg #ffffff, hi #ffffff, sh #ffffff, RootTransparent buffer, Tint #4584b5 0
+Colorset 41 fg #ffffff, bg #ffffff, hi #ffffff, sh #ffffff, RootTransparent buffer, Tint #4584b5 0
+DestroyModuleConfig FvwmPager: *
+*FvwmPager: Colorset        * 40
+*FvwmPager: HilightColorset * 41
+*FvwmPager: Borderwidth     0
+*FvwmPager: Font            None
+*FvwmPager: DesktopScale    22
+*FvwmPager: Geometry        400x17-130+0
+*FvwmPager: MoveThreshold   0
+*FvwmPager: SloppyFocus
+*FvwmPager: UseSkipList
+*FvwmPager: SmallFont None
+*FvwmPager: WindowColorsets   2 0
+*FvwmPager: WindowBorderWidth 1
+*FvwmPager: Balloons           All
+*FvwmPager: BalloonColorset    * 0
+*FvwmPager: BalloonFont "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
+*FvwmPager: BalloonYOffset     +2
+*FvwmPager: BalloonBorderWidth 1

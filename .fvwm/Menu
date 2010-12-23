@@ -1,0 +1,79 @@
+############################################################################
+#                                   菜单定义
+#############################################################################
+Colorset 20 fg #ffffff, bg #4584b5, hi gray, sh gray, RootTransparent buffer, IconAlpha 80, Tint #4584b5 0
+Colorset 21 fg #ff0000, bg #4584b5, hi gray, sh gray, RootTransparent buffer, IconAlpha 100, Tint #4584b5 0
+
+MenuStyle * MenuColorset 20, ActiveColorset 21
+MenuStyle * Hilight3DOff, HilightBack
+MenuStyle * PopupOffset 0 100, PopupDelay 300
+MenuStyle * BorderWidth 0
+MenuStyle * TitleUnderlines1
+MenuStyle * TrianglesSolid
+MenuStyle * SeparatorsShort
+MenuStyle * Animation
+MenuStyle * ItemFormat "%.2|%.5i%.5l%.5i%2.3>%2|"
+MenuStyle * VerticalItemSpacing 0 0
+Menustyle * Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
+
+
+DestroyMenu recreate MenuFvwmRoot
+AddToMenu MenuFvwmRoot "FVWM 菜单"  Title Top
++ %24x24/desktop.png%"显示桌面背景" All (AcceptsFocus CurrentPage !Iconic !Shaded) Thumbnail
++ "" Nop
++ "%/home/yyc/.fvwm/icons/24x24/applications-development.png%开发"  Popup MenuDevelopment
++ "%/home/yyc/.fvwm/icons/24x24/applications-network.png%网络"  Popup MenuNetwork
++ "%/home/yyc/.fvwm/icons/24x24/applications-office.png%办公"   Popup MenuOffice
++ "%/home/yyc/.fvwm/icons/24x24/applications-graphics.png%图像" Popup MenuGraphics
++ "%/home/yyc/.fvwm/icons/24x24/applications-utility.png%附件"  Popup MenuUtility
++ "%/home/yyc/.fvwm/icons/24x24/applications-system.png%系统"   Popup MenuSystem
++ %24x24/gtk-quit.png%"退出Fvwm2管理" Quit
++ "" Nop
+
+
+DestroyMenu MenuSystem
+AddToMenu MenuSystem
++ "%/home/yyc/.fvwm/icons/24x24/virtualbox.png%Oracle xVM VirtualBox"   Exec exec VirtualBox
++ "%/home/yyc/.fvwm/icons/24x24/wireshark.png%Wireshark"    Exec exec wireshark
+#MenuSystem
+
+DestroyMenu MenuDevelopment
+AddToMenu MenuDevelopment
++ "%/home/yyc/.fvwm/icons/24x24/devhelp.png%Devhelp"    Exec exec devhelp
++ "%/home/yyc/.fvwm/icons/24x24/emacs.png%GNU Emacs"    Exec exec /usr/bin/emacs
++ "%/home/yyc/.fvwm/icons/24x24/meld.png%Meld 差异查看器"   Exec exec meld
+#MenuDevelopment
+
+DestroyMenu MenuGraphics
+AddToMenu MenuGraphics
++ "%/home/yyc/.fvwm/icons/24x24/dia.png%Dia 图表编辑器" Exec exec dia
++ "%/home/yyc/.fvwm/icons/24x24/gimp.png%GNU 图像处理程序"  Exec exec gimp-2.6
+#MenuGraphics
+
+DestroyMenu MenuNetwork
+AddToMenu MenuNetwork
++ "%/home/yyc/.fvwm/icons/24x24/filezilla.png%FileZilla"    Exec exec filezilla
++ "%/home/yyc/.fvwm/icons/24x24/firefox.png%Mozilla Firefox"    Exec exec firefox
++ "%/home/yyc/.fvwm/icons/24x24/pidgin.png%Pidgin 互联网通讯程序"   Exec exec pidgin
++ "%/home/yyc/.fvwm/icons/24x24/remmina.png%Remmina 远程桌面客户端" Exec exec remmina
++ "%/home/yyc/.fvwm/icons/24x24/vncviewer.png%vncviewer"    Exec exec vncviewer
+#MenuNetwork
+
+DestroyMenu MenuUtility
+AddToMenu MenuUtility
++ "%/home/yyc/.fvwm/icons/24x24/accessories-calculator.png%Calculator"  Exec exec gcalctool
++ "%/home/yyc/.fvwm/icons/24x24/gnome-commander.png% 文件管理器"    Exec exec emelfm2
++ "%/home/yyc/.fvwm/icons/24x24/terminal.png%Sakura"    Exec exec sakura
+#MenuUtility
+
+DestroyMenu MenuOffice
+AddToMenu MenuOffice
++ "%/home/yyc/.fvwm/icons/24x24/goldendict.png%GoldenDict"  Exec exec goldendict
++ "%/home/yyc/.fvwm/icons/24x24/jabref.png%JabRef"  Exec exec jabref
++ "%/home/yyc/.fvwm/icons/24x24/openoffice.png%OpenOffice"  Exec exec ooffice
++ "%/home/yyc/.fvwm/icons/24x24/word.png%Word"  Exec exec /home/yyc/.cxoffice/winxp/desktopdata/cxmenu/StartMenu.C^5E3A^5Fwindows^5Fprofiles^5Fcrossover^5FStart^2BMenu/Programs/Microsoft+Office/Microsoft+Office+Word+2007
++ "%/home/yyc/.fvwm/icons/24x24/excel.png%Excel" Exec exec   /home/yyc/.cxoffice/winxp/desktopdata/cxmenu/StartMenu.C^5E3A^5Fwindows^5Fprofiles^5Fcrossover^5FStart^2BMenu/Programs/Microsoft+Office/Microsoft+Office+Excel+2007
++ "%/home/yyc/.fvwm/icons/24x24/powerpoint.png%Powerpoint" Exec exec /home/yyc/.cxoffice/winxp/desktopdata/cxmenu/StartMenu.C^5E3A^5Fwindows^5Fprofiles^5Fcrossover^5FStart^2BMenu/Programs/Microsoft+Office/Microsoft+Office+PowerPoint+2007
++ "%/home/yyc/.fvwm/icons/24x24/outlook.png%Outlook" Exec exec outlook
+#MenuOffice
+

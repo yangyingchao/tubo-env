@@ -1,0 +1,33 @@
+#Decor
+
+DestroyDecor DefaultDecor
+AddToDecor DefaultDecor
++ TitleStyle LeftJustified Height 22
++ TitleStyle -- Flat
++ ButtonStyle 1 AllActive (MiniIcon) AllInactive (MiniIcon)
++ ButtonStyle 2 ActiveUp (Pixmap $[fvwm_decor]/close_active_up.png) \
+               ActiveDown (Pixmap $[fvwm_decor]/close_active_down.png) \
+               Inactive (Pixmap $[fvwm_decor]/close_inactive.png)
++ ButtonStyle 4 ActiveUp (Pixmap $[fvwm_decor]/max_active_up.png) \
+               ActiveDown (Pixmap $[fvwm_decor]/max_active_down.png) \
+               Inactive (Pixmap $[fvwm_decor]/max_inactive.png)
++ ButtonStyle 6 ActiveUp (Pixmap $[fvwm_decor]/min_active_up.png) \
+               ActiveDown (Pixmap $[fvwm_decor]/min_active_down.png) \
+               Inactive (Pixmap $[fvwm_decor]/min_inactive.png)
+
++ ButtonStyle 1 - Clear
++ ButtonStyle 2 - Clear
++ ButtonStyle 4 - Clear MWMDecorMax
++ ButtonStyle 6 - Clear MWMDecorMin
+
++ ButtonStyle All -- Flat UseTitleStyle
++ BorderStyle Colorset 3 -- Flat HiddenHandles NoInset
+
+
+Style * UseDecor DefaultDecor
+
+Style *                 CenterPlacement, BorderWidth 0, HandleWidth 0
+Style * BorderColorset 100, HilightBorderColorset 100
+
+
+###################################################################

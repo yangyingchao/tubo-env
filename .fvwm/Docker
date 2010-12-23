@@ -1,0 +1,23 @@
+####################### Docker ########
+
+Style FvwmDocker NoTitle, Sticky, Handlewidth 0, Borderwidth 0, WindowListSkip, NeverFocus,CirculateSkipIcon,CirculateSkip
+
+Colorset 50 fg #ffffff, bg #4584b5, hi gray, sh gray, RootTransparent buffer, IconAlpha 75, Tint #4584b5 0
+Colorset 51 fg #ffffff, bg #7f7f7f, hi gray, sh gray, RootTransparent buffer, IconAlpha 100, Tint #4584b5 0
+DestroyModuleConfig FvwmDocker: *
+*FvwmDocker: Colorset 50
+*FvwmDocker: ActiveColorset 51
+*FvwmDocker: Rows    1
+*FvwmDocker: Columns 9
+*FvwmDocker: Frame   0
+*FvwmDocker: Padding 1 1
+*FvwmDocker: (1x1, Icon 48x48/gnome-commander.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch wcmd wcmd* $left $top`, `Next (wcmd*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon 48x48/firefox.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch firefox firefox* $left $top`, `Next (firefox*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon 48x48/mail.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch outlook outlook* $left $top`, `Next (outlook*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon 48x48/gnome-dictionary.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch goldendict goldendict* $left $top`, `Next (goldendict*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon 48x48/openoffice.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch ooffice ooffice* $left $top`,`Next (ooffice*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon 48x48/devhelp.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch devhelp devhelp* $left $top`,`Next (devhelp*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon 48x48/dia.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch dia dia* $left $top`,`Next (dia*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon 48x48/foxitreader.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch foxit foxit* $left $top`, `Next (foxit*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon 48x48/virtualbox.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch VirtualBox VirtualBox* $left $top`, `Next (*VirtualBox) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+

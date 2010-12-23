@@ -1,0 +1,18 @@
+#!/bin/bash
+
+cd test
+
+files=`ls b*png`
+
+cd ../
+
+for i in $files 
+do 
+	convert -resize 21x21 test/${i} ${i}
+	convert -resize 36x36 test/${i} big/${i}
+
+done
+
+echo "Done!!!!" 
+
+

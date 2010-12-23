@@ -1,0 +1,103 @@
+################# WindowMenu Options ################################
+DestroyMenu MenuWindowOptions
+AddToMenu   MenuWindowOptions
++ "move"      Move
++ "resize"    Resize
++ "raise"     Raise
++ "lower"     Lower
++ "iconify"   Thumbnail
++ "(un)stick" Stick
++ "maximize" Maximize
++ ""          Nop
++ "close"     Close
++ "delete"    Delete
++ "destroy"   Destroy
+
+ButtonStyle 6 ActiveUp Pixmap decoration/iconify_activeup.xpm
+ButtonStyle 6 ActiveDown Pixmap decoration/iconify_activedown.xpm
+ButtonStyle 6 Inactive Pixmap decoration/iconify_inactive.xpm
+
+ButtonStyle 4 ActiveUp Pixmap decoration/maximize_activeup.xpm
+ButtonStyle 4 ActiveDown Pixmap decoration/maximize_activedown.xpm
+ButtonStyle 4 Inactive Pixmap decoration/maximize_inactive.xpm
+
+ButtonStyle 2 ActiveUp Pixmap decoration/close_activeup.xpm
+ButtonStyle 2 ActiveDown Pixmap decoration/close_activedown.xpm
+ButtonStyle 2 Inactive Pixmap decoration/close_inactive.xpm
+
+ButtonStyle 1 ActiveDown Pixmap decoration/options_activedown.xpm
+ButtonStyle 1 ActiveUp Pixmap decoration/options_activeup.xpm
+ButtonStyle 1 Inactive Pixmap decoration/options_inactive.xpm
+
+ButtonStyle 1 Active (MiniIcon)
+
+ButtonStyle All -- Flat UseTitleStyle
+
+Style trayer !Title, Sticky, WindowListSkip,!Handles
+Style Conky !Title, Sticky, WindowListSkip,!Handles
+
+
+#################
+# Use an arrow rather than the `X` cursor on the root window.
+#################
+BusyCursor * False
+CursorStyle DEFAULT $[mycursors]/pantherx/cursors/top_left_arrow
+CursorStyle ROOT $[mycursors]/pantherx/cursors/left_ptr
+CursorStyle MENU $[mycursors]/pantherx/cursors/hand
+CursorStyle WAIT $[mycursors]/pantherx/cursors/watch
+CursorStyle BOTTOM_RIGHT  $[mycursors]/pantherx/cursors/bottom_right_corner
+CursorStyle BOTTOM  $[mycursors]/pantherx/cursors/bottom_side
+CursorStyle TOP  $[mycursors]/pantherx/cursors/top_side
+CursorStyle MOVE  $[mycursors]/pantherx/cursors/fleur
+CursorStyle TITLE  $[mycursors]/pantherx/cursors/fleur
+CursorStyle RESIZE  $[mycursors]/pantherx/cursors/fleur
+CursorStyle SYS  $[mycursors]/pantherx/cursors/hand2
+CursorStyle RIGHT  $[mycursors]/pantherx/cursors/right_side
+CursorStyle LEFT  $[mycursors]/pantherx/cursors/left_side
+
+
+
+TitleStyle ActiveUp MultiPixmap Main decoration/title_active.xpm, \
+UnderText decoration/titleunder_active.xpm, LeftOfText \
+decoration/titlelt_active.xpm, RightOfText \
+decoration/titlert_active.xpm
+
+TitleStyle ActiveDown MultiPixmap Main decoration/title_active.xpm, \
+UnderText decoration/titleunder_active.xpm, LeftOfText \
+decoration/titlelt_active.xpm, RightOfText \
+decoration/titlert_active.xpm
+
+TitleStyle Inactive MultiPixmap Main decoration/title_inactive.xpm, \
+UnderText decoration/titleunder_inactive.xpm, LeftOfText \
+decoration/titlelt_inactive.xpm, RightOfText \
+decoration/titlert_inactive.xpm
+
+
+read $[HOME]/.fvwm/icons/decoration/decor
+
+
+AddToFunc   arsen-decor-reload
++ I BorderStyle Simple -- HiddenHandles NoInset
++ I TitleStyle  -- Flat
++ I ButtonStyle All -- Flat
+arsen-decor-reload
+
+
+# titlebar buttons
+#   for the title bar buttons:
+# Mouse Mousebutton titlebutton modifier function
+Mouse 0 1 A Menu MenuWindowOptions Close
+Mouse 0 2 A Close
+Mouse 0 4 A Maximize
+Mouse 0 6 A Thumbnail
+Mouse 1 I A DeThumbnail
+Mouse 1 I A DeThumbnail
+Mouse 1 R A Menu MenuFvwmRoot Nop
+Mouse 1 R A Menu MenuFvwmRoot Nop
+Mouse 1 T A FuncMoveOrMaximize
+Mouse 1 T A FuncMoveOrMaximize
+Mouse 1 W M FuncMoveOrMaximize
+Mouse 1 W M FuncMoveOrMaximize
+Mouse 3 R A WindowList NoGeometry
+Mouse 3 R A WindowList NoGeometry
+
