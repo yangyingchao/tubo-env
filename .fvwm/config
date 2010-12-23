@@ -67,32 +67,26 @@ DefaultLayers 0 4 6
 
 ## colormaps
 Colorset 0 RootTransparent, Tint #ffffff 0, IconAlpha 60
-Colorset 1 RootTransparent, Tint #ffffff 50
-Colorset 2 RootTransparent, Tint #ffffff 90, fg #4890A3, fgsh #ffffff, bg #ffffff, sh #ffffff, hi #ffffff
 Colorset 0 fg #ffffff, bg #ececec, hi gray, sh gray, RootTransparent buffer, Tint #ececec 0
+Colorset 1 RootTransparent, Tint #ffffff 50
 Colorset 1 fg #ffffff, bg #ececec, hi gray, sh gray, RootTransparent buffer, Tint #ececec 0, IconAlpha 80
+Colorset 2 RootTransparent, Tint #ffffff 90, fg #4890A3, fgsh #ffffff, bg #ffffff, sh #ffffff, hi #ffffff
 Colorset 2 fg #ffffff, bg #7f7f7f, hi gray, sh gray, RootTransparent buffer, Tint #ececec 0
+Colorset 3 fg #4890A3, bg #ffffff, fgsh #ffffff, sh #ffffff, hi #ffffff
 Colorset 3 fg #bfbfbf, bg #bfbfbf, hi #bfbfbf, sh #bfbfbf, RootTransparent buffer, Tint #ececec 0
+Colorset 4 fg #63656e, bg black, RootTransparent buffer, Tint #b5b2ff 60
 Colorset 4 fg #bfbfbf, bg #bfbfbf, hi #bfbfbf, sh #bfbfbf, RootTransparent buffer, Tint #ececec 0
 Colorset 5 fg #ffffff, bg gray60, hi gray, sh gray, RootTransparent buffer, Tint #ececec 0
+Colorset 6 RootTransparent, Tint #ffffff 0, IconAlpha 99
 Colorset 6 fg #ffffff, bg #ececec, hi gray, sh gray, RootTransparent buffer, Tint #ececec 50
+Colorset 6 fg white, bg black, RootTransparent buffer, Tint #e4e5c7 90
 Colorset 7 fg #ffffff, bg gray, hi gray, sh gray, RootTransparent buffer, Tint #ececec 0
 Colorset 8 fg #f0f0f0, bg #ececec, hi #ffffff, sh #ffffff, RootTransparent buffer, Tint #ececec 0
-Colorset 3 fg #4890A3, bg #ffffff, fgsh #ffffff, sh #ffffff, hi #ffffff
-Colorset 6 RootTransparent, Tint #f7f7f7 0
-Colorset 5 fg #ffffff, bg #000000
-Colorset 6 RootTransparent, Tint #ffffff 0, IconAlpha 99
-Colorset 7 fg #4890A3, Pixmap $[HOME]/.fvwm/icons/macosx/menu2.png
 Colorset 9 RootTransparent, IconAlpha 60
 Colorset 10 fg #4890A3, fgsh #ffffff, bg #ffffff, sh #ffffff, hi #ffffff, RootTransparent, Tint #ffffff 60
 Colorset 11 RootTransparent, Tint #ffffff , IconAlpha 100
 Colorset 12 RootTransparent, Tint #ffffff 60, fg #4890A3, fgsh #ffffff, bg #ffffff, sh #ffffff, hi #ffffff
 Colorset 13 fg #000000, Pixmap decoration/title_bar1.png
-Colorset 2 fg white, bg black, RootTransparent buffer, Tint #b5b2ff 80
-Colorset 3 fg white, bg black, RootTransparent buffer, Tint #eeefcf 70
-Colorset 4 fg #63656e, bg black, RootTransparent buffer, Tint #b5b2ff 60
-Colorset 5 fg black, bg #e7e7e7, Plain
-Colorset 6 fg white, bg black, RootTransparent buffer, Tint #e4e5c7 90
 
 
 # default window styles

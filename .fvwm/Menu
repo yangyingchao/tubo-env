@@ -27,7 +27,7 @@ AddToMenu MenuFvwmRoot "FVWM 菜单"  Title Top
 + "%/home/yyc/.fvwm/icons/24x24/applications-graphics.png%图像" Popup MenuGraphics
 + "%/home/yyc/.fvwm/icons/24x24/applications-utility.png%附件"  Popup MenuUtility
 + "%/home/yyc/.fvwm/icons/24x24/applications-system.png%系统"   Popup MenuSystem
-+ %24x24/gtk-quit.png%"退出Fvwm2管理" Quit
++ %24x24/gtk-quit.png%"退出Fvwm2管理" ExitMenu
 + "" Nop
 
 
