@@ -103,7 +103,7 @@ Mouse 3 R A WindowList NoGeometry
 
 # Specific Styles.
 
-Style trayer !Title, Sticky, WindowListSkip,!Handles
-Style Trayer !Title, Sticky, WindowListSkip,!Handles
-Style Conky !Title, Sticky, WindowListSkip,!Handles
+Style trayer !Title, Sticky, WindowListSkip,!Handles,StaysOnBottom
+Style Trayer !Title, Sticky, WindowListSkip,!Handles,StaysOnBottom
+Style Conky !Title, Sticky, WindowListSkip,!Handles,StaysOnBottom
 
