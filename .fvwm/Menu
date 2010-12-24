@@ -17,9 +17,12 @@ MenuStyle * VerticalItemSpacing 0 0
 Menustyle * Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
 
 
-DestroyMenu recreate MenuFvwmRoot
-AddToMenu MenuFvwmRoot "FVWM 菜单"  Title Top
-+ %24x24/desktop.png%"显示桌面背景" All (AcceptsFocus CurrentPage !Iconic !Shaded) Thumbnail
+#DestroyMenu recreate MenuFvwmRoot
+#AddToMenu MenuFvwmRoot "FVWM 菜单@macosx/menudebian.png@"  Title Top
+DestroyMenu MenuFvwmRoot
+AddToMenu  "MenuFvwmRoot@macosx/menudebian.png@"
++ "%macosx/main2.png%   菜单"	Nop
++ %24x24/desktop.png%"显示桌面" All (AcceptsFocus CurrentPage !Iconic !Shaded) Thumbnail
 + "" Nop
 + "%/home/yyc/.fvwm/icons/24x24/applications-development.png%开发"  Popup MenuDevelopment
 + "%/home/yyc/.fvwm/icons/24x24/applications-network.png%网络"  Popup MenuNetwork
@@ -27,7 +30,7 @@ AddToMenu MenuFvwmRoot "FVWM 菜单"  Title Top
 + "%/home/yyc/.fvwm/icons/24x24/applications-graphics.png%图像" Popup MenuGraphics
 + "%/home/yyc/.fvwm/icons/24x24/applications-utility.png%附件"  Popup MenuUtility
 + "%/home/yyc/.fvwm/icons/24x24/applications-system.png%系统"   Popup MenuSystem
-+ %24x24/gtk-quit.png%"退出Fvwm2管理" ExitMenu
++ %24x24/gtk-quit.png%"退出桌面" ExitMenu
 + "" Nop
 
 

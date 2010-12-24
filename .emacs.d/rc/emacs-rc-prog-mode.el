@@ -122,7 +122,7 @@
       ecb-options-version "2.40"
       ecb-primary-secondary-mouse-buttons (quote mouse-2--C-mouse-2)
       ecb-tip-of-the-day nil
-      ecb-windows-width 0.2
+      ecb-windows-width 0.18
       )
 
 (defun update-method

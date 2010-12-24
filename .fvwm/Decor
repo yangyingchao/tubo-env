@@ -1,37 +1,98 @@
 ################# WindowMenu Options ################################
+
+Colorset 71 fg black, bg black, sh black, RootTransparent Buffer, Tint #f6f6f6 0
+
+
 DestroyMenu MenuWindowOptions
 AddToMenu   MenuWindowOptions
-+ "move"      Move
-+ "resize"    Resize
-+ "raise"     Raise
-+ "lower"     Lower
-+ "iconify"   Thumbnail
-+ "(un)stick" Stick
-+ "maximize" Maximize
-+ ""          Nop
-+ "close"     Close
-+ "delete"    Delete
-+ "destroy"   Destroy
++ "Send to%actions/22x22/send.png%" Popup FvwmSendto
++ "Move%actions/22x22/move.png%"  Move
++ "Resize%actions/22x22/resize.png%"  ResizeWarp
++ "Iconify%actions/22x22/iconify.png%"  Thumbnail
++ "Maximize%actions/22x22/maximize.png%" Maximize
++ "Shade%actions/22x22/shade.png%"  WindowShade
++ "Stick%actions/22x22/stick.png%"  Stick
++ "On top%actions/22x22/ontop.png%" Layer 0 6
++ "" Nop
++ "Close%actions/22x22/close.png%"  Close
++ "Delete%actions/22x22/delete.png%"  Delete
++ "Destroy%actions/22x22/destroy.png%"  Destroy
++ "" Nop
++ "Screenshot%actions/22x22/screenshot.png%" Popup FvwmScreenshot
++ "Identify%actions/22x22/identify.png%"  Module FvwmIdent
 
-ButtonStyle 6 ActiveUp Pixmap decoration/iconify_activeup.xpm
-ButtonStyle 6 ActiveDown Pixmap decoration/iconify_activedown.xpm
-ButtonStyle 6 Inactive Pixmap decoration/iconify_inactive.xpm
+DestroyMenu FvwmSendTo
+AddToMenu FvwmSendTo
++ "Desktop 1%actions/22x22/desktop.png%" Pick MoveToPage 0 0
++ "Desktop 2%actions/22x22/desktop.png%" Pick MoveToPage 1 0
++ "Desktop 3%actions/22x22/desktop.png%" Pick MoveToPage 2 0
++ "Desktop 4%actions/22x22/desktop.png%" Pick MoveToPage 3 0
 
-ButtonStyle 4 ActiveUp Pixmap decoration/maximize_activeup.xpm
-ButtonStyle 4 ActiveDown Pixmap decoration/maximize_activedown.xpm
-ButtonStyle 4 Inactive Pixmap decoration/maximize_inactive.xpm
+AddToMenu Menusendto "Window Popup"   Title
++ "Send Desk 1" MoveToPage 0 0
++ "Send Desk 2" MoveToPage 1 0
++ "Send Desk 3" MoveToPage 2 0
++ "Send Desk 4" MoveToPage 3 0
++ "_______" Nop
++ "Resize Window"   ResizeWarp
++ "(Un)Stick Window"   Stick
++ "Ontop layer" Layer 0 6
++ "Normal layer"    Layer 0 4
++ "Thumbnail"    Thumbnail
++ "Cascade Windows" Module FvwmRearrange -cascade -animate -incx 3 -incy 3
+#+ "Tile Windows vertically" Module FvwmRearrange -tile -animate -mn 2 Module FvwmRearrange -tile -v 6 98 93
++ "Tile Windows vertically" Module FvwmRearrange -tile -v 6 98 93
++ "Tile Windows horizontally" Module FvwmRearrange -tile -h 0 2
++ "_______" Nop
++ "Increase window opacity (Alt+wheel)" IncTrans
++ "Decrease window opacity (Alt+wheel)" DecTrans
++ "_______" Nop
++ "Goto Desk 1" GotoPage 0 0
++ "Goto Desk 2" GotoPage 1 0
++ "Goto Desk 3" GotoPage 2 0
++ "Goto Desk 4" GotoPage 3 0
++ "Alsa Sounds" Exec exec xterm -e alsamixer
++ "Identify"    Module  FvwmIdent
++ "_______" Nop
++ "Kill Window" Exec exec xkill
++ "Close Window"    Close
 
-ButtonStyle 2 ActiveUp Pixmap decoration/close_activeup.xpm
-ButtonStyle 2 ActiveDown Pixmap decoration/close_activedown.xpm
-ButtonStyle 2 Inactive Pixmap decoration/close_inactive.xpm
 
-ButtonStyle 1 ActiveDown Pixmap decoration/options_activedown.xpm
-ButtonStyle 1 ActiveUp Pixmap decoration/options_activeup.xpm
-ButtonStyle 1 Inactive Pixmap decoration/options_inactive.xpm
+DestroyDecor DefaultDecor
+AddToDecor DefaultDecor
++ TitleStyle Centered Height 20
++ TitleStyle InActive ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat ) Active ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
++ AddTitleStyle Active ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat ) \
+    Inactive ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
++ ButtonStyle All InActive ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
++ ButtonStyle All Active ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
++ ButtonStyle 1 AllActive (MiniIcon) AllInactive (MiniIcon)
++ ButtonStyle 2 ActiveUp (Pixmap $[fvwm_decor]/close_active_up.png) \
+               ActiveDown (Pixmap $[fvwm_decor]/close_active_down.png) \
+               Inactive (Pixmap $[fvwm_decor]/close_inactive.png)
++ ButtonStyle 4 ActiveUp (Pixmap $[fvwm_decor]/max_active_up.png) \
+               ActiveDown (Pixmap $[fvwm_decor]/max_active_down.png) \
+               Inactive (Pixmap $[fvwm_decor]/max_inactive.png)
++ ButtonStyle 6 ActiveUp (Pixmap $[fvwm_decor]/min_active_up.png) \
+               ActiveDown (Pixmap $[fvwm_decor]/min_active_down.png) \
+               Inactive (Pixmap $[fvwm_decor]/min_inactive.png)
++ ButtonStyle 1 - Clear
++ ButtonStyle 2 - Clear
++ ButtonStyle 4 - Clear MWMDecorMax
++ ButtonStyle 6 - Clear MWMDecorMin
++ ButtonStyle All -- Flat UseTitleStyle
++ BorderStyle Colorset 3 -- Flat HiddenHandles NoInset
 
-ButtonStyle 1 Active (MiniIcon)
 
-ButtonStyle All -- Flat UseTitleStyle
+Style * UseDecor DefaultDecor
+Style * CenterPlacement, BorderWidth 0, HandleWidth 0
+Style * BorderColorset 100, HilightBorderColorset 100
+Style * Font "Shadow=1 b bl r br r :xft:Verdona:bold:pixelsize=12:minspace=True"
+Style * HandleWidth  2
+Style * ForeColor    #C0C0C0
+Style * BackColor    Black
+Style * HilightFore  #FFFFFF
+Style * HilightBack  Black
 
 
 #################
@@ -54,43 +115,27 @@ CursorStyle RIGHT  $[mycursors]/pantherx/cursors/right_side
 CursorStyle LEFT  $[mycursors]/pantherx/cursors/left_side
 
 
+# TitleStyle ActiveUp MultiPixmap Main decoration/title_active.xpm, \
+# UnderText decoration/titleunder_active.xpm, LeftOfText \
+# decoration/titlelt_active.xpm, RightOfText \
+# decoration/titlert_active.xpm
 
-TitleStyle ActiveUp MultiPixmap Main decoration/title_active.xpm, \
-UnderText decoration/titleunder_active.xpm, LeftOfText \
-decoration/titlelt_active.xpm, RightOfText \
-decoration/titlert_active.xpm
+# TitleStyle ActiveDown MultiPixmap Main decoration/title_active.xpm, \
+# UnderText decoration/titleunder_active.xpm, LeftOfText \
+# decoration/titlelt_active.xpm, RightOfText \
+# decoration/titlert_active.xpm
 
-TitleStyle ActiveDown MultiPixmap Main decoration/title_active.xpm, \
-UnderText decoration/titleunder_active.xpm, LeftOfText \
-decoration/titlelt_active.xpm, RightOfText \
-decoration/titlert_active.xpm
+# TitleStyle Inactive MultiPixmap Main decoration/title_inactive.xpm, \
+# UnderText decoration/titleunder_inactive.xpm, LeftOfText \
+# decoration/titlelt_inactive.xpm, RightOfText \
+# decoration/titlert_inactive.xpm
 
-TitleStyle Inactive MultiPixmap Main decoration/title_inactive.xpm, \
-UnderText decoration/titleunder_inactive.xpm, LeftOfText \
-decoration/titlelt_inactive.xpm, RightOfText \
-decoration/titlert_inactive.xpm
-
-
-read $[HOME]/.fvwm/icons/decoration/decor
-
-
-AddToFunc   arsen-decor-reload
-+ I BorderStyle Simple -- HiddenHandles NoInset
-+ I TitleStyle  -- Flat
-+ I ButtonStyle All -- Flat
-arsen-decor-reload
-
-
-# titlebar buttons
-#   for the title bar buttons:
-# Mouse Mousebutton titlebutton modifier function
 Mouse 0 1 A Menu MenuWindowOptions Close
 Mouse 0 2 A Close
 Mouse 0 4 A Maximize
 Mouse 0 6 A Thumbnail
 Mouse 1 I A DeThumbnail
 Mouse 1 I A DeThumbnail
-Mouse 1 R A Menu MenuFvwmRoot Nop
 Mouse 1 R A Menu MenuFvwmRoot Nop
 Mouse 1 T A FuncMoveOrMaximize
 Mouse 1 T A FuncMoveOrMaximize
