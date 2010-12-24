@@ -140,6 +140,7 @@ AddToFunc   StartFunction
 + I Exec exec outlook
 
 
+
 DestroyFunc ExitFunction
 AddToFunc   ExitFunction
 + I KillModule FvwmPager
@@ -184,7 +185,7 @@ AddToFunc ExitMenu
 + I *Exitmenu: Line center
 + I *Exitmenu: Line center
 + I *Exitmenu: Line center
-+ I *Exitmenu: Text "Are you sure you want to quit FVWM Mac OS X?"
++ I *Exitmenu: Text "Are you sure you want to quit FVWM?"
 + I *Exitmenu: Line center
 + I *Exitmenu: Line center
 + I *Exitmenu: Line center
