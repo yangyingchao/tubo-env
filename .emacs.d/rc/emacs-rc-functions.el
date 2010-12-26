@@ -564,11 +564,8 @@ Uses `current-date-time-format' for the formatting the date/time."
 
 (defun setup-font ()
   (interactive)
-  (if (string-match "ITC-208024"  system-name)
-      (set-frame-font
-       "-unknown-文泉驿等宽微米黑-normal-normal-normal-*-14-*-*-*-*-0-iso10646-1")
-    (set-frame-font
-     "-unknown-文泉驿等宽微米黑-normal-normal-normal-*-15-*-*-*-*-0-iso10646-1"))
+  (set-frame-font
+   "-unknown-文泉驿等宽微米黑-normal-normal-normal-*-14-*-*-*-*-0-iso10646-1")
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font)
                       charset
