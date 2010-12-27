@@ -845,7 +845,7 @@ Must end with a newline.")
 ;;;;
 
 (defcustom cscope-use-face t
-  "*Whether to use text highlighting (à la font-lock) or not."
+  "*Whether to use text highlighting (à¥† la font-lock) or not."
   :group 'cscope
   :type '(boolean))
 
@@ -2468,9 +2468,5 @@ file."
 (or (assq 'cscope-minor-mode minor-mode-map-alist)
     (setq minor-mode-map-alist (cons (cons 'cscope-minor-mode cscope:map)
 				     minor-mode-map-alist)))
-
-(add-hook 'c-mode-hook (function cscope:hook))
-(add-hook 'c++-mode-hook (function cscope:hook))
-(add-hook 'dired-mode-hook (function cscope:hook))
 
 (provide 'xcscope)
