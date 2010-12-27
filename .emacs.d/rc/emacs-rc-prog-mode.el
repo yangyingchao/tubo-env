@@ -153,12 +153,12 @@
 
  ;; *************************** TAGS Database Settings *********************
 
+;;;; GNU global does not play with python, as a result, cscope is involved.
+(require 'xcscope)
+
 ;;;; xgtags settings.
 
 (require 'xgtags)
-
-;;;; GNU global does not play with python, as a result, cscope is involved.
-(require 'xcscope)
 
 (defun yp-xgtags-append ()
   (interactive)
