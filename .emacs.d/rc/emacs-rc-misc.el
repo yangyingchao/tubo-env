@@ -26,6 +26,15 @@
 (require 'session)
 (add-hook 'after-init-hook 'session-initialize)
 
+ ;;; ABBREV-MODE;;;
+
+(setq abbrev-file-name  "~/.emacs.d/abbrev_defs")
+(setq save-abbrevs t)
+(if (file-exists-p abbrev-file-name)
+    (quietly-read-abbrev-file))
+
+(setq-default abbrev-mode t)
+
 
 ;;;; Speedbar
 
