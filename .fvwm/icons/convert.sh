@@ -18,5 +18,4 @@ else
         convert -resize 48x48 $fn 48x48/$ff
         convert -resize 24x24 $fn 24x24/$ff
     done
-    echo "Calling batch convert!"
 fi
