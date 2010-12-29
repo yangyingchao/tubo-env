@@ -337,7 +337,7 @@
 (defun yyc/txt-mode-hook ()
   "My hooks for txt-mode."
   (interactive)
-  (define-key text-mode-map "\C-c\C-e" 'txt-to-png)
+  (define-key text-mode-map "\C-c\C-e" 'yyc/txt-to-png)
   (setq fill-column 120)
   )
 

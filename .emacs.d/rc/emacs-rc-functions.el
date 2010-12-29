@@ -524,24 +524,22 @@ Uses `current-date-time-format' for the formatting the date/time."
            (let ((mark-even-if-inactive transient-mark-mode))
              (indent-region (region-beginning) (region-end) nil))))))
 
-(defvar png_file nil "nil")
-
-(defun txt-to-png ()
+(defun yyc/txt-to-png ()
   "Change a txt file into png file using ditaa"
   (interactive)
-  (setq fname (buffer-file-name))
-  (setq png_file (concat (file-name-sans-extension fname) ".png"
-                         ))
-  (if (file-exists-p png_file)
-      (progn
-        (message "Delete old png file ...")
-        (delete-file png_file)
-        )
-      )
-  (message "Generate new png file ... ")
-  (start-process "txt-to-png" "*Messages*" "java" "-jar"
-                 (expand-file-name "~/.emacs.d/tools/ditaa.jar") fname)
-  (message "Finished, refer to Message buffer to see the result.")
+  (let* ((fname (buffer-file-name))
+         (txt2png-buf-name "*txt2png*")
+         (png_file (concat (file-name-sans-extension fname) ".png"))
+         )
+    (if (file-exists-p png_file)
+        (progn
+          (message "Delete old png file ...")
+          (delete-file png_file)))
+    (get-buffer-create txt2png-buf-name)
+    (pop-to-buffer txt2png-buf-name)
+    (start-process "txt-to-png" txt2png-buf-name "java" "-jar"
+                   (expand-file-name "~/.emacs.d/tools/ditaa.jar") fname)
+    (message "This may take for a while, refer to *txt2png* to see whether it has been finished or not"))
   )
 
 (defun increase-font-size ()

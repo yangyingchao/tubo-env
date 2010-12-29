@@ -39,7 +39,7 @@
   '(
     ("dot" "dotted" nil 0)
     ("ell" "ellipse" nil 0)
-    ("yyc" "Yang,Ying-chao" nil 6)
+    ("yyc," "Yang,Ying-chao" nil 6)
    ))
 
 (define-abbrev-table 'graphviz-dot-mode-abbrev-table '())
