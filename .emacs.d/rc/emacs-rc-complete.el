@@ -27,6 +27,7 @@
         ("\\.html$" . ["insert.html" auto-update-defaults])
         ("\\.devhelp2$" . ["insert.devhelp2" auto-update-defaults])
         ("\\.ebuild$" . ["insert.ebuild" auto-update-defaults])
+        ("Doxyfile$" . ["insert.doxyfile" auto-update-defaults])
         ))
 
 ;; function replaces the string '@@@' by the current file
@@ -154,6 +155,7 @@
 (ac-config-default) ;; Defined in ac-complete-config
 
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/templates/ac-dict")
+(setq global-auto-complete-mode t)
 
 ;; The sources for common all mode.
 (setq-default ac-sources
