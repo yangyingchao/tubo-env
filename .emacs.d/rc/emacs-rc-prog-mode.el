@@ -300,53 +300,59 @@
 
  ;;;; c-mode specific.
 
-(defun c-lineup-arglist-tabs-only (ignored)
-  "Line up argument lists by tabs, not spaces"
-  (let* ((anchor (c-langelem-pos c-syntactic-element))
-         (column (c-langelem-2nd-pos c-syntactic-element))
-         (offset (- (1+ column) anchor))
-         (steps (floor offset c-basic-offset)))
-    (* (max steps 1)
-       c-basic-offset)))
-
-
-(setq kernel-style
-      '(
-        (c-basic-offset . 8)
-        (indent-tabs-mode . t)
-        (tab-width . 8)
-        (c-comment-only-line-offset . 0)
-        (c-hanging-braces-alist
-         (brace-list-open)
-         (brace-entry-open)
-         (substatement-open after)
-         (block-close . c-snug-do-while)
-         (arglist-cont-nonempty))
-        (c-cleanup-list brace-else-brace)
-        (c-offsets-alist
-         (statement-block-intro . +)
-         (knr-argdecl-intro . 0)
-         (substatement-open . 0)
-         (substatement-label . 0)
-         (label . 0)
-         (statement-cont . +))))
-
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            ;; Add kernel style
-            (c-add-style
-             "kernel-coding"
-             '("linux" kernel-style))))
+;; Add kernel style
+(c-add-style "kernel-coding"
+             '( "linux"
+                (c-basic-offset . 8)
+                (indent-tabs-mode . t)
+                (tab-width . 8)
+                (c-comment-only-line-offset . 0)
+                (c-hanging-braces-alist
+                 (brace-list-open)
+                 (brace-entry-open)
+                 (substatement-open after)
+                 (block-close . c-snug-do-while)
+                 (arglist-cont-nonempty))
+                (c-cleanup-list brace-else-brace)
+                (c-offsets-alist
+                 (statement-block-intro . +)
+                 (knr-argdecl-intro . 0)
+                 (substatement-open . 0)
+                 (substatement-label . 0)
+                 (label . 0)
+                 (statement-cont . +))
+                ))
+(c-add-style "my-coding-style"
+             '( "k&r"
+                (c-basic-offset . 4)
+                (indent-tabs-mode . nil)
+                (tab-width . 4)
+                (c-comment-only-line-offset . 0)
+                (c-hanging-braces-alist
+                 (brace-list-open)
+                 (brace-entry-open)
+                 (substatement-open after)
+                 (block-close . c-snug-do-while)
+                 (arglist-cont-nonempty))
+                (c-cleanup-list brace-else-brace)
+                (c-offsets-alist
+                 (statement-block-intro . +)
+                 (knr-argdecl-intro . 0)
+                 (substatement-open . 0)
+                 (substatement-label . 0)
+                 (label . 0)
+                 (statement-cont . +))
+                ))
 
 (add-hook 'c-mode-hook
           (lambda ()
             (let ((filename (buffer-file-name)))
               ;; Enable kernel mode for the appropriate files
-              (when (and filename
-                         (string-match (expand-file-name "~/src/linux-trees")
-                                       filename))
-                (setq indent-tabs-mode t)
-                (c-set-style "linux-tabs-only")))))
+              (if (and filename
+                         (or (string-match "linux" filename)
+                             (string-match "kernel" filename)))
+                (c-set-style "kernel-coding")
+                (c-set-style "my-coding-style")))))
 
 (setq auto-mode-alist
       (append
