@@ -623,6 +623,7 @@ inserts comment at the end of the line."
   )
 
 (require 'ediff)
+(setq-default ediff-ignore-similar-regions t)
 (defun my-ediff-revision (&optional file startup-hooks)
   "Run Ediff by comparing versions of a file.
 The file is an optional FILE argument or the file entered at the prompt.
