@@ -344,14 +344,19 @@
                  (statement-cont . +))
                 ))
 
+(defvar kernel-keywords '("linux" "kernel" "driver")
+  "Keywords which are used to indicate this file is kernel code.")
+
 (add-hook 'c-mode-hook
           (lambda ()
-            (let ((filename (buffer-file-name)))
-              ;; Enable kernel mode for the appropriate files
-              (if (and filename
-                         (or (string-match "linux" filename)
-                             (string-match "kernel" filename)))
-                (c-set-style "kernel-coding")
+            (let* ((filename (buffer-file-name))
+                   (is-kernel-code nil))
+              (if filename
+                  (dolist (keyword kernel-keywords)
+                    (if (string-match keyword filename)
+                        (setq is-kernel-code t))))
+              (if is-kernel-code
+                  (c-set-style "kernel-coding")
                 (c-set-style "my-coding-style")))))
 
 (setq auto-mode-alist
