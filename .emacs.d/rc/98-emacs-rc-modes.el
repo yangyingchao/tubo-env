@@ -274,7 +274,6 @@
   (org-defkey org-mode-map "\C-cl" 'org-store-link)
   (org-defkey org-mode-map "\C-ca" 'org-agenda)
   (org-defkey org-mode-map "\C-cb" 'org-iswitchb)
-  (org-defkey org-mode-map (kbd "<tab>") 'self-insert-command)
   (org-defkey org-mode-map [(control ?,)]     'backward-page)
   (base-auto-pair)
   (yyc/show-pomodoro-keywords)

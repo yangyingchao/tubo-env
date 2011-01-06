@@ -77,6 +77,7 @@
 (global-set-key "\C-x\C-j" 'dired-jump)
 (global-set-key "\C-x\C-b" 'ibuffer)
 (global-set-key "\C-x\M-b" 'ibuffer-update)
+(global-set-key "\C-x\M-f" 'fill-paragraph)
 (global-set-key "\C-xT" 'tabify)
 (global-set-key "\C-xt" 'untabify)
 (global-set-key "\C-x\M-l" 'fill-region)
