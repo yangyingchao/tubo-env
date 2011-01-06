@@ -748,5 +748,5 @@ Use CREATE-TEMP-F for creating temp copy."
 
 (add-to-list 'auto-mode-alist '("\\.ebuild$" . shell-script-mode))
 
-(provide 'emacs-rc-prog-mode)
+(provide '11-rc-prog-mode)
 ;;;;; emacs-rc-prog-mode.el ends here

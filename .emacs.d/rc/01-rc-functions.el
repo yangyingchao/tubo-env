@@ -9,6 +9,8 @@
 (defun open-mylist ()
   (interactive)
   (find-file "~/Work/Orgs/to_do_today.org"))
+(global-set-key [(control f1)] 'open-mylist)
+
 
 (defun reload-file ()
   (interactive)
@@ -644,6 +646,6 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
      "BASE" "" startup-hooks)
     ))
 
-(provide 'emacs-rc-functions)
+(provide '01-rc-functions)
 ;;; emacs-rc-functions.el ends here
 

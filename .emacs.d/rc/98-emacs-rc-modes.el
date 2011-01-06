@@ -220,9 +220,7 @@
 (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|/TODO\\)$" . org-mode))
 (add-to-list 'file-coding-system-alist (cons "\\.\\(org\\|org_archive\\|/TODO\\)$"  'utf-8))
 (global-font-lock-mode 1)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-ce" 'org-show-entry)
-(global-set-key "\C-cl" 'org-store-link)
+(global-set-key (kbd "<C-S-f1>") 'org-agenda)
 (setq org-log-done t)
 (custom-set-variables
  '(org-startup-folded nil)
@@ -256,21 +254,16 @@
 
 ;;; Key bingdings
 
-(global-set-key [(control f1)] 'open-mylist)
-
-(defun insert-instead ()
-  "description"
-  (interactive)
-  (insert "\\_")
-  )
-
 (defun yyc/show-pomodoro-keywords ()
   "Pomodoro Keywords, used by pomodoro technique "
   (interactive)
   ;; highlight additional keywords
-  (font-lock-add-keywords nil '(("\\<\\(TODO \\)" 1 font-lock-comment-face t)))
-  (font-lock-add-keywords nil '(("\\<\\(DONE \\):" 1 font-lock-builtin-face t)))
-  (font-lock-add-keywords nil '(("\\<\\(DOING \\):" 1 font-lock-function-name-face t)))
+  (font-lock-add-keywords nil '(("\\<\\(TODO \\)"
+                                 1 font-lock-comment-face t)))
+  (font-lock-add-keywords nil '(("\\<\\(DONE \\):"
+                                 1 font-lock-builtin-face t)))
+  (font-lock-add-keywords nil '(("\\<\\(DOING \\):"
+                                 1 font-lock-function-name-face t)))
   ;; highlight too long lines
   (font-lock-add-keywords nil '(("^[^\n]\\{120\\}\\(.*\\)$" 1
                                  font-lock-warning-face t))))
@@ -281,8 +274,8 @@
   (org-defkey org-mode-map "\C-cl" 'org-store-link)
   (org-defkey org-mode-map "\C-ca" 'org-agenda)
   (org-defkey org-mode-map "\C-cb" 'org-iswitchb)
+  (org-defkey org-mode-map (kbd "<tab>") 'self-insert-command)
   (org-defkey org-mode-map [(control ?,)]     'backward-page)
-  (local-set-key  [(tab)] 'indent-or-complete)
   (base-auto-pair)
   (yyc/show-pomodoro-keywords)
   (setq fill-column 120)

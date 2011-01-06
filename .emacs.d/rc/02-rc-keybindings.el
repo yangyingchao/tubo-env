@@ -1,9 +1,10 @@
 ;;;; -*- emacs-lisp -*- -*- coding: utf-8; -*-
-;;; emacs-rc-keybindings.el begins ---
+;;; 02-rc-keybindings.el begins ---
 
-(require 'emacs-rc-functions)
+(require '01-rc-functions)
 
 ;; C-F1: 'open-mylist
+;; C-S-f1: org-agenda
 ;; F1: 为woman快捷键
 (global-set-key [f2] 'auto-rename-buffer)
 (global-set-key (kbd "<C-f2>") 'rename-buffer)
@@ -56,6 +57,13 @@
 (global-set-key [f9] 'bookmark-set)
 ; f10 show menu.
 (global-set-key (kbd "<C-f10>") 'bookmark-bmenu-list)
+;;;; f11 was used when compiling source codes.
+;; **** Following was set in 03-rc-misc.el ****
+;; (global-set-key (kbd "<M-S-f11>") 'ispell-buffer)
+;; (global-set-key (kbd "<C-f11>") 'flyspell-mode)
+;; (global-set-key (kbd "<C-S-f11>") 'flyspell-prog-mode)
+;; (global-set-key (kbd "<S-f11>") 'ispell-word)
+
 (autoload 'smerge-mode "smerge-mode" nil t)
 (global-set-key [f12] 'smerge-ediff)
 
@@ -142,5 +150,5 @@
 
 (setq doc-view-cache-directory "~/.emacs.d/docview")
 
-(provide 'emacs-rc-keybindings)
-;;; emacs-rc-keybindings.el ends here
+(provide '02-rc-keybindings)
+;;; 02-rc-keybindings.el ends here

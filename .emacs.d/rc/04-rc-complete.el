@@ -1,11 +1,11 @@
 ;;;; -*- emacs-lisp -*- -*- coding: utf-8; -*-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;; $Id: emacs-rc-complete.el, 08-27-2010
+;;;; $Id: 04-rc-complete.el, 08-27-2010
 
 
  ;; ************** Autoinsert templates *****************
 (require 'autoinsert)
-(auto-insert-mode)  ;;; Adds hook to find-files-hook
+(setq auto-insert-mode t)  ;;; Adds hook to find-files-hook
 (setq auto-insert-directory "~/.emacs.d/templates/auto-insert/")
 (setq auto-insert 'other)
 (setq auto-insert-query nil)
@@ -276,5 +276,5 @@ When OVERRIDES is specified, OVERRIDES is prepend to original source."
     ))
 
 
-(provide 'emacs-rc-complete)
-;;;;; emacs-rc-complete.el ends here
+(provide '04-rc-complete)
+;;;;; 04-rc-complete.el ends here

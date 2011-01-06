@@ -1,6 +1,6 @@
 ;;;; -*- emacs-lisp -*- -*- coding: utf-8; -*-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;; $Id: emacs-rc-misc.el, 08-27-2010
+;;;; $Id: 03-rc-misc.el, 08-27-2010
 
 (require 'icomplete)
 (icomplete-mode t)
@@ -87,7 +87,7 @@
 
 (add-hook 'log-edit-mode-hook 'turn-on-flyspell)
 
-(global-set-key [f11] 'ispell-buffer)
+(global-set-key (kbd "<M-S-f11>") 'ispell-buffer)
 (global-set-key (kbd "<C-f11>") 'flyspell-mode)
 (global-set-key (kbd "<C-S-f11>") 'flyspell-prog-mode)
 (global-set-key (kbd "<S-f11>") 'ispell-word)
@@ -361,5 +361,5 @@
  ;; ***************************** Some extra modes *************************
 (add-to-list 'auto-mode-alist '("rc$" . conf-mode))
 
-(provide 'emacs-rc-misc)
+(provide '03-rc-misc)
 ;;;;; emacs-rc-misc.el ends here
