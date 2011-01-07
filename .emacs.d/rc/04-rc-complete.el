@@ -154,18 +154,6 @@
 
 (ac-config-default) ;; Defined in ac-complete-config
 
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/templates/ac-dict")
-(setq global-auto-complete-mode t)
-
-;; The sources for common all mode.
-(setq-default ac-sources
-              '(
-                ac-source-semantic
-                ac-source-yasnippet
-                ac-source-words-in-buffer
-                ac-source-filename
-                ))
-
 (defmacro ac-company-define-source (name backend &rest overrides)
   "Define auto-complete source NAME from company BACKEND.
 When OVERRIDES is specified, OVERRIDES is prepend to original source."
@@ -221,32 +209,36 @@ When OVERRIDES is specified, OVERRIDES is prepend to original source."
               (add-to-list 'ac-sources 'ac-source-company-semantic)
               )))
 
-;;; Autofill Keybinding.
-(when (require 'auto-complete nil t)
-  (global-auto-complete-mode t)
-  (set-face-background 'ac-selection-face "steelblue")
-  (set-face-background 'ac-candidate-face "lightgray")
-  (set-face-underline-p 'ac-candidate-face "darkgray")
-  (define-key ac-complete-mode-map (kbd "<C-tab>") 'ac-expand)
-  (define-key ac-complete-mode-map "\M-\r" 'ac-complete)
-  (define-key ac-complete-mode-map [(tab)] 'ac-complete)
-  (define-key ac-complete-mode-map "\M-n" 'ac-next)
-  (define-key ac-complete-mode-map "\M-p" 'ac-previous)
-  (setq ac-auto-start 3)
-  (setq ac-dwim t)
-  (setq ac-override-local-map nil)  ;don't override local map
-  (setq ac-modes '(
-                   ada-mode
-                   asm-mode c++-mode c-mode cc-mode cperl-mode css-mode
-                   ecmascript-mode emacs-lisp-mode emms-tag-editor-mode
-                   f90-mode fortran-mode haskell-mode java-mode
-                   javascript-mode latex-mode lisp-interaction-mode lisp-mode
-                   literate-haskell-mode makefile-mode org-mode perl-mode
-                   php-mode python-mode ruby-mode scheme-mode sgml-mode
-                   sh-mode text-mode xml-mode  eshell-mode
-                   )))
 
-(global-auto-complete-mode t) ;enable global-mode
+(setq-default ac-sources
+              '(
+                ac-source-semantic
+                ac-source-yasnippet
+                ac-source-words-in-buffer
+                ac-source-filename
+                ))
+(setq ac-auto-start 3)
+(setq ac-dwim t)
+(setq ac-override-local-map nil)  ;don't override local map
+(global-auto-complete-mode t)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/templates/ac-dict")
+(mapc
+ (lambda(mode)
+   (add-to-list 'ac-modes mode))
+ '(asm-mode emms-tag-editor-mode haskell-mode latex-mode
+            lisp-mode literate-haskell-mode org-mode text-mode
+            eshell-mode graphviz-dot-mode))
+
+(set-face-background 'ac-selection-face "steelblue")
+(set-face-background 'ac-candidate-face "lightgray")
+(set-face-underline-p 'ac-candidate-face "darkgray")
+
+;; Autofill Keybinding.
+(define-key ac-complete-mode-map (kbd "<C-tab>") 'ac-expand)
+(define-key ac-complete-mode-map "\M-\r" 'ac-complete)
+(define-key ac-complete-mode-map [(tab)] 'ac-complete)
+(define-key ac-complete-mode-map "\M-n" 'ac-next)
+(define-key ac-complete-mode-map "\M-p" 'ac-previous)
 
 
 ;; ********************** Common Settings **************************

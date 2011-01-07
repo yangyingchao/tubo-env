@@ -296,6 +296,7 @@
             (local-set-key "\C-csS" 'cscope-tell-user-about-directory)
             (local-set-key "\C-csT" 'cscope-tell-user-about-directory)
             (local-set-key "\C-csD" 'cscope-dired-directory)
+            (local-set-key [(f1)] 'python-describe-symbol)
             ))
 
  ;;;; c-mode specific.

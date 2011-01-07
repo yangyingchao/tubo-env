@@ -5,7 +5,8 @@
 
 ;; C-F1: 'open-mylist
 ;; C-S-f1: org-agenda
-;; F1: 为woman快捷键
+;; F1: python-describe-symbol for python-mode.
+;;     Woman for other modes.
 (global-set-key [f2] 'auto-rename-buffer)
 (global-set-key (kbd "<C-f2>") 'rename-buffer)
 (require 'artist)

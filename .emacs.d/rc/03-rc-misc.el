@@ -361,5 +361,15 @@
  ;; ***************************** Some extra modes *************************
 (add-to-list 'auto-mode-alist '("rc$" . conf-mode))
 
+
+ ;; ********************** autocompressings *********************
+;; Now add bzip2 support and turn auto compression back on.
+(add-to-list 'jka-compr-compression-info-list
+             ["\\.dia\\'"
+              "compressing" "gzip" ("-c" "-q")
+              "uncompressing" "gzip" ("-c" "-q" "-d")
+              t t ""]
+             )
+(jka-compr-update)
 (provide '03-rc-misc)
 ;;;;; emacs-rc-misc.el ends here
