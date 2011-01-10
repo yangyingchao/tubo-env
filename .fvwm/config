@@ -46,6 +46,7 @@ Style * NoIconTitle
 Style * ResizeOpaque
 Style * StickyIcon
 Style * VariablePPosition
+Style * TileCascadePlacement
 *FvwmAnimate: Effect None
 
 OpaqueMoveSize -1 # all window moves as solid.

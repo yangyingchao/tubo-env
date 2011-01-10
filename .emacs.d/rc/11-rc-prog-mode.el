@@ -345,8 +345,8 @@
                  (statement-cont . +))
                 ))
 
-(defvar kernel-keywords '("linux" "kernel" "driver")
-  "Keywords which are used to indicate this file is kernel code.")
+(defvar kernel-keywords '("linux" "kernel" "driver" "samba")
+  "Keywords which are used to indicate this file should use kernel-style.")
 
 (add-hook 'c-mode-common-hook
           (lambda ()

@@ -85,7 +85,6 @@ AddToDecor DefaultDecor
 
 
 Style * UseDecor DefaultDecor
-Style * CenterPlacement, BorderWidth 0, HandleWidth 0
 Style * BorderColorset 100, HilightBorderColorset 100
 Style * Font "Shadow=1 b bl r br r :xft:Verdona:bold:pixelsize=12:minspace=True"
 Style * HandleWidth  2
@@ -151,4 +150,3 @@ Mouse 3 R A WindowList NoGeometry
 Style trayer !Title, Sticky, WindowListSkip,!Handles,StaysOnBottom
 Style Trayer !Title, Sticky, WindowListSkip,!Handles,StaysOnBottom
 Style Conky !Title, Sticky, WindowListSkip,!Handles,StaysOnBottom
-

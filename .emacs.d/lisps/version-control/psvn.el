@@ -509,7 +509,7 @@ equivalent to \".\", so you would commit more than you intended."
   :group 'psvn)
 (put 'svn-status-default-commit-arguments 'risky-local-variable t)
 
-(defcustom svn-status-default-diff-arguments '("-x" "--ignore-eol-style")
+(defcustom svn-status-default-diff-arguments '("-x")
   "*A list of arguments that is passed to the svn diff command.
 When the built in diff command is used,
 the following options are available: --ignore-eol-style, --ignore-space-change,

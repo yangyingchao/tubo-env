@@ -345,6 +345,9 @@
                            'add-change-log-entry-other-window)
             ))
 
+
+(add-to-list 'auto-mode-alist '("svn-commit.*" . log-edit-mode))
+
  ;; ****************************** Over ********************************
 
 

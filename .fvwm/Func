@@ -137,9 +137,6 @@ AddToFunc   StartFunction
 + I Exec exec trayer --SetDockType true --widthtype pixel --width 204  --heighttype pixel --height 32 --align right  --transparent true --alpha 255  --edge bottom --margin 1
 + I Exec exec fcitx -d
 + I Exec exec pidgin
-+ I Exec exec evolution
-
-
 
 DestroyFunc ExitFunction
 AddToFunc   ExitFunction
@@ -176,8 +173,8 @@ AddToFunc   FuncDestroyOnHold
 DestroyFunc ExitMenu
 AddToFunc ExitMenu
 + I DestroyModuleConfig Exitmenu: *
-+ I *Exitmenu: Font "Shadow=0 b bl r br r :xft:DejaVu Sans:size=9:bold"
-+ I *Exitmenu: ButtonFont "xft:DejaVu Sans:size=9:bold"
++ I *Exitmenu: Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=10:encoding=zh_CN.UTF-8"
++ I *Exitmenu: ButtonFont "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=10:encoding=zh_CN.UTF-8"
 + I *Exitmenu: Colorset 9
 + I *Exitmenu: ItemColorset 9
 + I *Exitmenu: Line center
@@ -185,7 +182,7 @@ AddToFunc ExitMenu
 + I *Exitmenu: Line center
 + I *Exitmenu: Line center
 + I *Exitmenu: Line center
-+ I *Exitmenu: Text "Are you sure you want to quit FVWM?"
++ I *Exitmenu: Text "确认要退出么？"
 + I *Exitmenu: Line center
 + I *Exitmenu: Line center
 + I *Exitmenu: Line center
@@ -193,23 +190,23 @@ AddToFunc ExitMenu
 + I *Exitmenu: Line center
 + I *Exitmenu: Line center
 + I *Exitmenu: Line center
-+ I *Exitmenu: Button quit " Reboot PC" ^[
++ I *Exitmenu: Button quit " 重启" ^[
 + I *Exitmenu: Command Exec sudo reboot
-+ I *Exitmenu: Button quit " Halt PC" ^[
++ I *Exitmenu: Button quit " 关机" ^[
 + I *Exitmenu: Command Exec sudo halt
-+ I *Exitmenu: Button quit " Logout Fvwm !" ^M
++ I *Exitmenu: Button quit " 注销!" ^M
 + I *Exitmenu: Command Quit
 + I *Exitmenu: Line center
-+ I *Exitmenu: Button quit " Execute..." ^[
++ I *Exitmenu: Button quit " 运行..." ^[
 + I *Exitmenu: Command Exec grun
-+ I *Exitmenu: Button quit " List processes" ^[
++ I *Exitmenu: Button quit " 列出进程" ^[
 + I *Exitmenu: Command Exec xterm  -fg green -bg black -e top
 + I *Exitmenu: Line center
-+ I *Exitmenu: Button quit " Restart Fvwm " ^[
++ I *Exitmenu: Button quit " 重新载入 fvwm " ^[
 + I *Exitmenu: Command Restart
-+ I *Exitmenu: Button quit " Lock screensaver" ^[
++ I *Exitmenu: Button quit " 锁住屏幕" ^[
 + I *Exitmenu: Command  Exec xscreensaver-command  -lock
-+ I *Exitmenu: Button quit " Cancel" ^[
++ I *Exitmenu: Button quit " 取消" ^[
 + I *Exitmenu: Command Nop
 + I *Exitmenu: Line center
 + I *Exitmenu: Line center
