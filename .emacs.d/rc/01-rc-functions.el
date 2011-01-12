@@ -40,7 +40,7 @@
 (defun edit-prog-mode ()
   "Jump to directory where rc files located"
   (interactive)
-  (find-file "~/.emacs.d/rc/emacs-rc-prog-mode.el"))
+  (find-file "~/.emacs.d/rc/11-rc-prog-mode.el"))
 
 (defun edit-modes ()
   "Jump to directory where rc files located"
@@ -645,6 +645,14 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
      (intern (format "ediff-%S-internal" ediff-version-control-package))
      "BASE" "" startup-hooks)
     ))
+
+(defun yyc/list-attentions ()
+  "List lines that need attentions, such as lines which include XXX or FIXME et.al."
+  (interactive)
+  (let ((wds "\"FIX|FIXME|TODO|BUG|XXX|YYC|HACK\""))
+    (eshell-command (concat "egrep " wds " . -rI"))
+    )
+  )
 
 (provide '01-rc-functions)
 ;;; emacs-rc-functions.el ends here

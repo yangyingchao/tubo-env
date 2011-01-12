@@ -53,6 +53,8 @@
 ;; C-F6: do-compile
 ;; C-S-F6: Open Makefile
 ;; f7: 打开/关闭speedbar
+(require 'attentions)
+(global-set-key (kbd "<C-f7>") 'attentions-toggle)
 
 (global-set-key (kbd "<C-f9>") 'bookmark-jump)
 (global-set-key [f9] 'bookmark-set)

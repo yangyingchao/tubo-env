@@ -449,7 +449,7 @@
   (local-set-key "\C-cR" 'semantic-symref)
   (local-set-key "\C-cb" 'semantic-mrub-switch-tags)
   (local-set-key "\C-cj" 'semantic-ia-fast-jump)
-  (local-set-key "\C-cl" 'semantic-ia-show-doc)
+  (local-set-key "\C-cp" 'semantic-ia-show-doc)
   (local-set-key "\C-cr" 'semantic-symref-symbol)
   (local-set-key [(control return)] 'semantic-ia-complete-symbol)
 
@@ -458,6 +458,8 @@
   (local-set-key "\C-cdf" 'srecode-document-insert-function-comment)
   (local-set-key "\C-cdh" 'yyc/insert-file-header)
   (local-set-key "\C-cds" 'yyc/insert-single-comment)
+
+  (local-set-key "\C-cl" 'yyc/list-attentions)
   ;;;; Others
   (local-set-key "\C-c\C-h" 'sourcepair-load)
   (local-set-key "\C-x\C-h" 'sourcepair-load)

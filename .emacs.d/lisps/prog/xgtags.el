@@ -66,6 +66,10 @@
 ;; - show the database in the *xgtags* buffer
 ;; - customizable keybindings?
 ;;
+;;; XXX:
+;;  Try to: support mulitiple instances.
+;;  I mean, make it support more than one xgtags--stack in different
+;;          *xgtags-buffers*
 
 
 ;;; Dependencies
