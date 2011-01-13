@@ -222,7 +222,7 @@ of a speedbar-window.  It will be created if necessary."
         (if (attentions-buffer-exist-p speedbar-buffer)
             (unless (attentions-window-exist-p attentions-window) ;if `attentions' window is not exist
               (attentions-get-window))
-          (if (<= (attentions-current-window-take-width) attentions-width) ;if current window width is narrower than `attentions-width'
+          (if (<= (attentions-current-window-take-width) attentions-width)
               (attentions-recalculate-width)) ;recalculate width of `attentions'
           (attentions-get-window)             ;get `attentions' window that split current window
           (setq speedbar-buffer (get-buffer-create attentions-buffer-name)
@@ -232,16 +232,11 @@ of a speedbar-window.  It will be created if necessary."
                 speedbar-verbosity-level 0 ;don't say anything, i don't like ... :)
                 speedbar-last-selected-file nil)
           (set-buffer speedbar-buffer)
-          (buffer-disable-undo speedbar-buffer) ;make disable in speedbar buffer, otherwise will occur `undo-outer-limit' error
+          (buffer-disable-undo speedbar-buffer)
           (speedbar-mode)
           (speedbar-reconfigure-keymaps)
           (speedbar-update-contents)
           (speedbar-set-timer 1)
-          ;; Emacs 21 compatibility.
-          (when (<= emacs-major-version 21)
-            (eval-when-compile
-              (with-no-warnings
-                (make-local-hook 'kill-buffer-hook))))
           ;; Add speedbar hook.
           (add-hook 'speedbar-before-visiting-file-hook 'attentions-before-visiting-file-hook t)
           (add-hook 'speedbar-before-visiting-tag-hook 'attentions-before-visiting-tag-hook t)
@@ -486,5 +481,5 @@ This advice can make `other-window' skip `attentions' window."
                (eq attentions-window (selected-window)))
       (other-window count))))
 
-(provide 'attention)
+(provide 'attentions)
 ;;;;; attention.el ends here

@@ -1,4 +1,4 @@
-;;;; -*- emacs-lisp -*- -*- coding: utf-8; -*-
+;;;; -*- emacs-lisp -*- -*- coding: utf-8; -*- 
 ;;; emacs-rc-functions.el begins ---
 
 (defvar fname nil "File name string")

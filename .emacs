@@ -133,7 +133,13 @@
 
 ;;;; Load plugins
 (require 'site-gentoo) ;; Packages provided by gentoo.
-(mapc 'load (directory-files "~/.emacs.d/rc" t "\\.elc$"))
+(require '01-rc-functions)
+(require '02-rc-keybindings)
+(require '03-rc-misc)
+(require '04-rc-complete)
+(require '11-rc-prog-mode)
+(require '98-emacs-rc-modes)
+(require '99-proj)
 (setup-font)
 
 
