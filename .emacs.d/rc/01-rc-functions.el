@@ -1,4 +1,4 @@
-;;;; -*- emacs-lisp -*- -*- coding: utf-8; -*- 
+;;;; -*- emacs-lisp -*- -*- coding: utf-8; -*-
 ;;; emacs-rc-functions.el begins ---
 
 (defvar fname nil "File name string")
@@ -164,7 +164,7 @@
           (progn
             (format "%s %s %s -o %s"
                     (or (getenv "CC") "g++")
-                    (or (getenv "CPPFLAGS")"-Wall -g") "*.cc"
+                    (or (getenv "CPPFLAGS")"-Wall -g") file
                     (file-name-sans-extension file)
                     ))
         (if (or (equal (file-name-extension buffer-file-name) "c")

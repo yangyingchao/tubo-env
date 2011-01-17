@@ -164,6 +164,8 @@ Files are saved in `get-rfc-local-rfc-directory' (q.v.)."
   "$Id: get-rfc.el,v 1.12 2004/02/27 21:28:12 wence Exp $"
   "get-rfc.el's version number.")
 
+
+
 ;;;
 ;;; Internal functions
 ;;;
@@ -174,16 +176,19 @@ Files are saved in `get-rfc-local-rfc-directory' (q.v.)."
 If FULLPATH is non-nil, then assume that RFC is an absolute location.
 Return the file it was saved in, so we can do
 \(find-file (get-rfc \"foo\"))."
-  (let ((rfc-full (concat (if (not fullpath)
-                              get-rfc-remote-rfc-directory)
-                          rfc)))
-    (if get-rfc-no-wget
-        (browse-url rfc-full)
-      (call-process get-rfc-wget-program nil nil nil
-                    rfc-full (concat get-rfc-wget-output-flag get-rfc-tmp-dir))
-      (if get-rfc-save-new-rfcs-locally
-          (copy-file rfc (concat get-rfc-local-rfc-directory rfc)))
-      rfc)))
+  (let* ((rfc-full (concat (if (not fullpath)
+                               get-rfc-remote-rfc-directory)
+                           rfc))
+         (rfc-tmp (concat get-rfc-tmp-dir rfc)))
+    (if (file-exists-p rfc-tmp)
+        (delete-file rfc-tmp)
+      )
+    (call-process get-rfc-wget-program nil "*Messages*" nil
+                  rfc-full)
+    ;; rfc-full (concat get-rfc-wget-output-flag rfc-tmp))
+    (if get-rfc-save-new-rfcs-locally
+        (copy-file rfc (concat get-rfc-local-rfc-directory rfc)))
+    ))
 
 ;;;
 ;;; User functions
@@ -217,9 +222,9 @@ You may also specify where on the web to find RFCs by setting
                                 'find-file-other-frame
                               'find-file)))
     (if get-rfc-rfcs-local-flag
-	(if (file-exists-p rfc-abs)
-	    (funcall find-file-command rfc-abs)
-	  (funcall find-file-command (get-rfc rfc)))
+        (if (file-exists-p rfc-abs)
+            (funcall find-file-command rfc-abs)
+          (funcall find-file-command (get-rfc rfc)))
       (funcall find-file-command (get-rfc rfc))))
   (if get-rfc-view-rfc-mode
       (funcall get-rfc-view-rfc-mode)))
