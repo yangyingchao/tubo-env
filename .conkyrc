@@ -66,11 +66,17 @@ ${color #ef2929}${top name 1}$alignr${top pid 1}${top cpu 1}
 ${color lightgrey}${top name 2}$alignr${top pid 2}${top cpu 2}
 ${color lightgrey}${top name 3}$alignr${top pid 3}${top cpu 3}
 
-${color #a40000}Network Info ${color}
+${color #a40000}Network Info ETH0${color}
 ${color #c4a000}IP Addr: ${color #dcff82}${addr eth0}${color}
 ${color #c4a000}Down: ${color #dcff82}${downspeed eth0}${color}${color} ${color #dcff82}${totaldown eth0}${color}${color}
 ${color #c4a000}Up:   ${color #dcff82}${upspeed eth0}${color}${color #dcff82}
 #${totalup eth0}
+
+${color #a40000}Network Info ETH1${color}
+${color #c4a000}IP Addr: ${color #dcff82}${addr eth1}${color}
+${color #c4a000}Down: ${color #dcff82}${downspeed eth1}${color}${color} ${color #dcff82}${totaldown eth1}${color}${color}
+${color #c4a000}Up:   ${color #dcff82}${upspeed eth1}${color}${color #dcff82}
+#${totalup eth1}
 
 ${color #a40000}File System ${color}
 ${color #c4a000}Disk IO: ${color #dcff82}${alignr 4}$diskio ${color} ${color}

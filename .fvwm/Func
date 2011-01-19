@@ -133,6 +133,7 @@ AddToFunc   StartFunction
 + I Module FvwmAuto FvwmAutoHide -menter FvwmDockerAutoEnter
 + I Function StartDocker
 + I Exec exec xscreensaver
++ I Exec exec tilda
 + I Exec conky -o -y 0 -d
 + I Exec exec trayer --SetDockType true --widthtype pixel --width 204  --heighttype pixel --height 32 --align right  --transparent true --alpha 255  --edge bottom --margin 1
 + I Exec exec fcitx -d
