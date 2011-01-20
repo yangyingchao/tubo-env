@@ -123,11 +123,14 @@
 (yas/initialize)
 (setq my-yasnippet-dir "~/.emacs.d/templates/yas-snippets")
 (yas/load-directory my-yasnippet-dir)
+
 ;; hook for automatic reloading of changed snippets
 (defun update-yasnippets-on-save ()
   (when (string-match "yas-snippets" buffer-file-name)
     (yas/load-directory my-yasnippet-dir)))
 (add-hook 'after-save-hook 'update-yasnippets-on-save)
+
+(global-set-key (kbd "<C-tab>") 'yas/expand)
 
 ;; ************************ Company Mode ***********************
 
@@ -266,7 +269,6 @@ When OVERRIDES is specified, OVERRIDES is prepend to original source."
       (hippie-expand nil)
     (indent-for-tab-command)
     ))
-
 
 (provide '04-rc-complete)
 ;;;;; 04-rc-complete.el ends here
