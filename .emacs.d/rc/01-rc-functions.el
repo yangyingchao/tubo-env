@@ -649,8 +649,8 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
 (defun yyc/list-attentions ()
   "List lines that need attentions, such as lines which include XXX or FIXME et.al."
   (interactive)
-  (let ((wds "\"FIX|FIXME|TODO|BUG|XXX|YYC|HACK\""))
-    (eshell-command (concat "egrep " wds " . -rI"))
+  (let ((wds "\"FIX|FIXME|TODO|BUG|XXX|YYC|HACK|zq|jimmy\""))
+    (eshell-command (concat "egrep -i " wds " . -rI"))
     )
   )
 
