@@ -369,5 +369,7 @@
               t t ""]
              )
 (jka-compr-update)
+
+(setq mail-default-directory "/tmp/")
 (provide '03-rc-misc)
 ;;;;; emacs-rc-misc.el ends here
