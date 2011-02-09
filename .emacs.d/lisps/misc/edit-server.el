@@ -38,6 +38,9 @@
 ;(setq debug-on-error 't)
 ;(setq edebug-all-defs 't)
 
+(if (not (featurep 'make-network-process))
+    (error "Incompatible version of [X]Emacs - lacks make-network-process"))
+
 ;; Customization
 (defcustom edit-server-port 9292
   "Local port the edit server listens to."
@@ -61,21 +64,31 @@ Current buffer holds the text that is about to be sent back to the client."
   :group 'edit-server
   :type 'hook)
 
+(defcustom edit-server-start-hook nil
+  "Hook run when starting a editing buffer.  Current buffer is
+the fully prepared editing buffer.  Use this hook to enable your
+favorite minor modes or add key bindings."
+  :group 'edit-server
+  :type 'hook)
+
 ; frame options
 (defcustom edit-server-new-frame t
   "If not nil, edit each buffer in a new frame (and raise it)."
   :group 'edit-server
   :type 'boolean)
 
-(defcustom edit-server-new-frame-minibuffer t
-  "Show the emacs frame's minibuffer if set to t; hide if nil."
+(defcustom edit-server-new-frame-alist
+  '((name . "Emacs TEXTAREA")
+    (width . 80)
+    (height . 25)
+    (minibuffer . t)
+    (menu-bar-lines . t))
+  "Frame parameters for new frames.  See `default-frame-alist' for examples.
+If nil, the new frame will use the existing `default-frame-alist' values."
   :group 'edit-server
-  :type 'boolean)
-
-(defcustom edit-server-new-frame-menu-bar t
-  "Show the emacs frame's menu-bar if set to t; hide if nil."
-  :group 'edit-server
-  :type 'boolean)
+  :type '(repeat (cons :format "%v"
+		       (symbol :tag "Parameter")
+		       (sexp :tag "Value"))))
 
 (defcustom edit-server-new-frame-mode-line t
   "Show the emacs frame's mode-line if set to t; hide if nil."
@@ -92,15 +105,6 @@ Current buffer holds the text that is about to be sent back to the client."
 (defconst edit-server-edit-buffer-name "TEXTAREA"
   "Template name of the edit-server text editing buffers.")
 
-(defconst edit-server-new-frame-title "Emacs TEXTAREA"
-  "Template name of the emacs frame's title.")
-
-(defconst edit-server-new-frame-width 80
-  "The emacs frame's width.")
-
-(defconst edit-server-new-frame-height 25
-  "The emacs frame's height.")
-
 (defvar edit-server-proc 'nil
   "Network process associated with the current edit, made local when
  the edit buffer is created")
@@ -109,23 +113,23 @@ Current buffer holds the text that is about to be sent back to the client."
   "The frame created for a new edit-server process, made local when
  then edit buffer is created")
 
-(defvar edit-server-clients '()
+(defvar edit-server-clients '() 
   "List of all client processes associated with the server process.")
 
-(defvar edit-server-phase nil
+(defvar edit-server-phase nil 
   "Symbol indicating the state of the HTTP request parsing.")
 
-(defvar edit-server-received nil
-  "Number of bytes received so far in the client buffer.
+(defvar edit-server-received nil 
+  "Number of bytes received so far in the client buffer. 
 Depending on the character encoding, may be different from the buffer length.")
 
-(defvar edit-server-request nil
+(defvar edit-server-request nil 
   "The HTTP request (GET, HEAD, POST) received.")
 
-(defvar edit-server-content-length nil
+(defvar edit-server-content-length nil 
   "The value gotten from the HTTP `Content-Length' header.")
 
-(defvar edit-server-url nil
+(defvar edit-server-url nil 
   "The value gotten from the HTTP `x-url' header.")
 
 ;; Mode magic
@@ -157,25 +161,28 @@ unmodified text is sent back instead.
 ;; Edit Server socket code
 ;
 
-(defun edit-server-start (&optional verbose)
+(defun edit-server-start (&optional verbose) 
   "Start the edit server.
 
 If argument VERBOSE is non-nil, logs all server activity to buffer `*edit-server-log*'.
 When called interactivity, a prefix argument will cause it to be verbose.
 "
   (interactive "P")
-  (if (process-status "edit-server")
+  (if (or (process-status "edit-server")
+          (null (condition-case err
+                    (make-network-process
+                     :name "edit-server"
+                     :buffer edit-server-process-buffer-name
+                     :family 'ipv4
+                     :host (if edit-server-host
+                               edit-server-host
+                             'local)
+                     :service edit-server-port
+                     :log 'edit-server-accept
+                     :server t
+                     :noquery t)
+                  (file-error nil))))
       (message "An edit-server process is already running")
-    (make-network-process
-     :name "edit-server"
-     :buffer edit-server-process-buffer-name
-     :family 'ipv4
-     :host (if edit-server-host
-           edit-server-host
-         'local)
-     :service edit-server-port
-     :log 'edit-server-accept
-     :server 't)
     (setq edit-server-clients '())
     (if verbose (get-buffer-create edit-server-log-buffer-name))
     (edit-server-log nil "Created a new edit-server process")))
@@ -201,10 +208,10 @@ If `edit-server-verbose' is non-nil, then STRING is also echoed to the message l
     (if (get-buffer edit-server-log-buffer-name)
         (with-current-buffer edit-server-log-buffer-name
           (goto-char (point-max))
-          (insert (current-time-string)
-                  " "
+          (insert (current-time-string) 
+                  " " 
                   (if (processp proc)
-                      (concat
+                      (concat 
                        (buffer-name (process-buffer proc))
                        ": ")
                     "") ; nil is not acceptable to 'insert
@@ -214,6 +221,8 @@ If `edit-server-verbose' is non-nil, then STRING is also echoed to the message l
 (defun edit-server-accept (server client msg)
   "Accept a new client connection."
   (let ((buffer (generate-new-buffer edit-server-process-buffer-name)))
+    (and (fboundp 'set-buffer-multibyte)
+         (set-buffer-multibyte t)) ; djb
     (buffer-disable-undo buffer)
     (set-process-buffer client buffer)
     (set-process-filter client 'edit-server-filter)
@@ -235,20 +244,20 @@ If `edit-server-verbose' is non-nil, then STRING is also echoed to the message l
   ;; requires us to keep track of the processing state.
   (with-current-buffer (process-buffer proc)
     (insert string)
-    (setq edit-server-received
+    (setq edit-server-received 
           (+ edit-server-received (string-bytes string)))
     (when (eq edit-server-phase 'wait)
       ;; look for a complete HTTP request string
       (save-excursion
         (goto-char (point-min))
         (when (re-search-forward "^\\([A-Z]+\\)\\s-+\\(\\S-+\\)\\s-+\\(HTTP/[0-9\.]+\\)\r?\n" nil t)
-          (edit-server-log proc
-                           "Got HTTP `%s' request, processing in buffer `%s'..."
+          (edit-server-log proc 
+                           "Got HTTP `%s' request, processing in buffer `%s'..." 
                            (match-string 1) (current-buffer))
           (setq edit-server-request (match-string 1))
           (setq edit-server-content-length nil)
           (setq edit-server-phase 'head))))
-
+    
     (when (eq edit-server-phase 'head)
       ;; look for "Content-length" header
       (save-excursion
@@ -271,12 +280,12 @@ If `edit-server-verbose' is non-nil, then STRING is also echoed to the message l
           ;; discard headers - keep only HTTP content in buffer
           (delete-region (point-min) (match-end 0))
           (setq edit-server-phase 'body))))
-
+    
     (when (eq edit-server-phase 'body)
       (if (and edit-server-content-length
                (> edit-server-content-length edit-server-received))
-          (edit-server-log proc
-                           "Received %d bytes of %d ..."
+          (edit-server-log proc 
+                           "Received %d bytes of %d ..." 
                            edit-server-received edit-server-content-length)
         ;; all content transferred - process request now
         (cond
@@ -293,22 +302,22 @@ If `edit-server-verbose' is non-nil, then STRING is also echoed to the message l
 (defun edit-server-create-frame(buffer)
   "Create a frame for the edit server"
   (if edit-server-new-frame
-      (let* ((property-alist
-         `((name . ,edit-server-new-frame-title)
-           (width . ,edit-server-new-frame-width)
-           (height . ,edit-server-new-frame-height)
-           (minibuffer . ,edit-server-new-frame-minibuffer)
-           (menu-bar-lines . ,edit-server-new-frame-menu-bar)))
-    ; Aquamacs gets confused by make-frame-on-display
-         (new-frame
-          (if (featurep 'aquamacs)
-          (make-frame property-alist)
-        (make-frame-on-display (getenv "DISPLAY")
-                       property-alist))))
-    (if (not edit-server-new-frame-mode-line)
+      (let ((new-frame
+	     (if (featurep 'aquamacs)
+                 (make-frame edit-server-new-frame-alist)
+               (make-frame-on-display (getenv "DISPLAY")
+                                      edit-server-new-frame-alist))))
+	(if (not edit-server-new-frame-mode-line)
             (setq mode-line-format nil))
-    (raise-frame new-frame)
-    new-frame)
+	(select-frame new-frame)
+	(if (and (eq window-system 'x)
+		 (fboundp 'x-send-client-message))
+	    (x-send-client-message nil 0 nil
+				   "_NET_ACTIVE_WINDOW" 32
+				   '(1 0 0)))
+	(raise-frame new-frame)
+        (set-window-buffer (frame-selected-window new-frame) buffer)
+	new-frame)
     (pop-to-buffer buffer)
     nil))
 
@@ -316,8 +325,11 @@ If `edit-server-verbose' is non-nil, then STRING is also echoed to the message l
   "Create an edit buffer, place content in it and save the network
   process for the final call back"
   (let ((buffer (generate-new-buffer (if edit-server-url
-                     edit-server-url
-                       edit-server-edit-buffer-name))))
+					 edit-server-url
+				       edit-server-edit-buffer-name))))
+    (with-current-buffer buffer
+      (and (fboundp 'set-buffer-multibyte)
+           (set-buffer-multibyte t))) ; djb
     (copy-to-buffer buffer (point-min) (point-max))
     (with-current-buffer buffer
       (not-modified)
@@ -326,14 +338,15 @@ If `edit-server-verbose' is non-nil, then STRING is also echoed to the message l
       (buffer-enable-undo)
       (set (make-local-variable 'edit-server-proc) proc)
       (set (make-local-variable 'edit-server-frame)
-       (edit-server-create-frame buffer)))))
+	   (edit-server-create-frame buffer))
+      (run-hooks 'edit-server-start-hook))))
 
 (defun edit-server-send-response (proc &optional body close)
   "Send an HTTP 200 OK response back to process PROC.
 Optional second argument BODY specifies the response content:
   - If nil, the HTTP response will have null content.
   - If a string, the string is sent as response content.
-  - Any other value will cause the contents of the current
+  - Any other value will cause the contents of the current 
     buffer to be sent.
 If optional third argument CLOSE is non-nil, then process PROC
 and its buffer are killed with `edit-server-kill-client'."
@@ -353,7 +366,7 @@ and its buffer are killed with `edit-server-kill-client'."
          ((not body) nil)
          (t (process-send-region proc (point-min) (point-max))))
         (process-send-eof proc)
-        (if close
+        (if close 
             (edit-server-kill-client proc))
         (edit-server-log proc "Editing done, sent HTTP OK response."))
     (message "edit-server-send-response: invalid proc (bug?)")))
