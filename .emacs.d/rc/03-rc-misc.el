@@ -356,6 +356,16 @@
  ;; *********************** graphviz dot mode ***********
 (load-file"/usr/share/emacs/site-lisp/graphviz-dot-mode/graphviz-dot-mode.el")
 
+(add-hook 'find-file-hook (lambda()
+                            (if (string= "dot" (file-name-extension
+                                                buffer-file-name))
+                                (progn
+                                  (message "Enabling Setings for dot-mode")
+                                  (setq fill-column 1000)
+                                  'base-auto-pair
+                                  )
+                              )))
+
  ;; ***************************** Some extra modes *************************
 (add-to-list 'auto-mode-alist '("rc$" . conf-mode))
 

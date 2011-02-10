@@ -1,1 +1,1 @@
-node_${1:name}[label="${2:Label}" shape=ellipse];
+node_${1:name}[label="$1()" shape=ellipse];
