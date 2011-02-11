@@ -334,7 +334,7 @@ Uses `current-date-time-format' for the formatting the date/time."
         ))
 
 (defun program-mode-auto-pair ()
-  ;; (interactive)
+  (interactive)
   (make-local-variable 'skeleton-pair-alist)
   (setq skeleton-pair t)
   (local-set-key (kbd "(") 'skeleton-pair-insert-maybe)
@@ -344,7 +344,7 @@ Uses `current-date-time-format' for the formatting the date/time."
   )
 
 (defun base-auto-pair ()
-  ;; (interactive)
+  (interactive)
   (make-local-variable 'skeleton-pair-alist)
   (setq skeleton-pair t)
   (local-set-key (kbd "(") 'skeleton-pair-insert-maybe)

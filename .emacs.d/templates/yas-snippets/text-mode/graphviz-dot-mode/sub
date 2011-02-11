@@ -3,6 +3,7 @@ subgraph cluster_${1:Name} {
     color = lightgray;
     style=filled;
     label = "${2:Label}";
+    edge[color="#2e3436"];
 
 $1_entry[label = "${3:name}" shape=ellipse color="#4e9a06" style=filled];
 $1_exit[label="Return" shape="ellipse" color="#ce5c00"];

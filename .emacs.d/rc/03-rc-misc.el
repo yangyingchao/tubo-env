@@ -354,7 +354,7 @@
 
 
  ;; *********************** graphviz dot mode ***********
-(load-file"/usr/share/emacs/site-lisp/graphviz-dot-mode/graphviz-dot-mode.el")
+(load-file "~/.emacs.d/lisps/misc/graphviz-dot-mode.el")
 
 (add-hook 'find-file-hook (lambda()
                             (if (string= "dot" (file-name-extension
@@ -362,7 +362,8 @@
                                 (progn
                                   (message "Enabling Setings for dot-mode")
                                   (setq fill-column 1000)
-                                  'base-auto-pair
+                                  (base-auto-pair)
+                                  (local-set-key (kbd "<C-f6>") 'compile)
                                   )
                               )))
 
