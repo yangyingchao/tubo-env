@@ -354,7 +354,8 @@
 
 
  ;; *********************** graphviz dot mode ***********
-(load-file "~/.emacs.d/lisps/misc/graphviz-dot-mode.el")
+;; (load-file "~/.emacs.d/lisps/misc/graphviz-dot-mode.el")
+(load "graphviz-dot-mode.el" nil t t)
 
 (add-hook 'find-file-hook (lambda()
                             (if (string= "dot" (file-name-extension
