@@ -5,7 +5,7 @@
  ;; *********************** auctex for LaTeX Mode ************************
 
 (load "auctex.el" nil t t)
-(load "preview-latex.el" nil t t)
+;; (load "preview-latex.el" nil t t)
 
 (require 'tex-site)
 (require 'tex-buf)
