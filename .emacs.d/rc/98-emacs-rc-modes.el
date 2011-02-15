@@ -8,8 +8,8 @@
 ;; (load "preview-latex.el" nil t t)
 
 (require 'tex-site)
-(require 'tex-buf)
-(require 'tex)
+(require 'prv-emacs)
+(require 'preview-latex)
 
 
 (setq TeX-auto-save t)
