@@ -18,7 +18,7 @@ src_configure(){
 
     myconf="${myconf} --prefix=/usr --sysconfdir=/etc"
 
-    econf ${myconf}
+    econf ${myconf} || die "Config failed."
 
 }
 
@@ -27,5 +27,5 @@ src_compile(){
 }
 
 src_install() {
-    DESTDIR={D} einstall || die "Failed to install"
+    emake DESTDIR="${D}" install || die "Failed to install"
 }
