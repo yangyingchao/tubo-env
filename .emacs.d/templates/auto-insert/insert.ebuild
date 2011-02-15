@@ -27,5 +27,5 @@ src_compile(){
 }
 
 src_install() {
-    einstall || die "Failed to install"
+    DESTDIR={D} einstall || die "Failed to install"
 }
