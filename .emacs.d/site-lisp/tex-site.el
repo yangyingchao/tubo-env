@@ -66,7 +66,7 @@ TeX-auto-* (automatically generated lisp).")
   "The directory where the AUCTeX non-Lisp data is located.")
 
 (defcustom TeX-auto-global
-    "/home/yyc/.emacs.d/site-lisp/var/auctex"
+    "/home/yyc/.emacs.d/var/auctex"
   "*Directory containing automatically generated information.
 Must end with a directory separator.
 
