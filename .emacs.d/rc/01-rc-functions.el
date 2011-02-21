@@ -314,7 +314,7 @@ Uses `current-date-time-format' for the formatting the date/time."
   (interactive)
   (insert (format-time-string current-year-format (current-time))))
 
-(defun insert-current-buffername ()
+(defun yyc/insert-current-buffername ()
   "insert the current time (1-week scope) into the current buffer."
   (interactive)
   (insert (buffer-file-name (current-buffer)))
