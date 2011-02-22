@@ -175,8 +175,7 @@
                     file)
           (if (or (equal (file-name-extension buffer-file-name) "tex")
                    (equal (file-name-extension buffer-file-name) "TEX"))
-               (format "latex %s && latex %s && latex %s && pdflatex %s"
-                       file file file file)
+               (format "pdflatex %s" file )
                )
           )
         ))))
