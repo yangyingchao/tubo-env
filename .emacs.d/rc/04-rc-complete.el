@@ -138,11 +138,11 @@
 (setq company-idle-delay nil)
 
 (setq company-backends
-      '(company-elisp company-nxml company-css
+      '(company-elisp company-nxml company-dabbrev company-css
                      company-eclim company-semantic
-                     (company-gtags company-dabbrev-code
-                                    company-keywords)
-                     company-files company-dabbrev)
+                     company-gtags company-dabbrev-code
+                     company-keywords
+                     company-files )
   )
 
 (add-hook 'c-mode-hook '(lambda () (company-mode)))
@@ -154,72 +154,10 @@
 
 (require 'auto-complete)
 (require 'auto-complete-config)
+(require 'ac-company)
 
 (ac-config-default) ;; Defined in ac-complete-config
 
-(defmacro ac-company-define-source (name backend &rest overrides)
-  "Define auto-complete source NAME from company BACKEND.
-When OVERRIDES is specified, OVERRIDES is prepend to original source."
-  `(defvar ,name
-     '(,@overrides
-       (candidates . (ac-company-candidates ',backend))
-       (prefix . (ac-company-prefix ',backend))
-       (document . (lambda (item) (ac-company-document ',backend item))))))
-
-(defun ac-company-prefix (backend)
-  (require backend nil t)
-  (when (fboundp backend)
-    (let ((prefix (funcall backend 'prefix)))
-      (when (stringp prefix)
-        (- (point) (length prefix))))))
-
-(defun ac-company-candidates (backend)
-  (funcall backend 'candidates ac-prefix))
-
-(defun ac-company-meta-as-document (backend item)
-  (funcall backend 'meta item))
-
-(defun ac-company-doc-buffer-as-document (backend item)
-  (with-current-buffer (funcall backend 'doc-buffer item)
-    (buffer-string)))
-
-(defun ac-company-document (backend item)
-  (or (ac-company-doc-buffer-as-document backend item)
-      (ac-company-meta-as-document backend item)))
-
-(require 'semantic-ia)
-(add-hook 'c-mode-common-hook
-          '(lambda ()
-             (add-to-list 'ac-omni-completion-sources
-                          (cons "\\." '(ac-source-semantic)))
-             (add-to-list 'ac-omni-completion-sources
-                          (cons "->" '(ac-source-semantic)))
-             (setq ac-sources '(ac-source-semantic ac-source-yasnippet))
-             ))
-;;; Lisp mode
-(ac-company-define-source ac-source-company-elisp company-elisp)
-(add-hook 'emacs-lisp-mode-hook
-       (lambda ()
-         (progn
-           (add-to-list 'ac-sources 'ac-source-company-elisp)
-           (add-to-list 'ac-sources 'ac-source-symbols)
-           )))
-
-(ac-company-define-source ac-source-company-semantic company-semantic)
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            (progn
-              (add-to-list 'ac-sources 'ac-source-company-semantic)
-              )))
-
-
-(setq-default ac-sources
-              '(
-                ac-source-semantic
-                ac-source-yasnippet
-                ac-source-words-in-buffer
-                ac-source-filename
-                ))
 (setq ac-auto-start 3)
 (setq ac-dwim t)
 (setq ac-override-local-map nil)  ;don't override local map
@@ -235,6 +173,46 @@ When OVERRIDES is specified, OVERRIDES is prepend to original source."
 (set-face-background 'ac-selection-face "steelblue")
 (set-face-background 'ac-candidate-face "lightgray")
 (set-face-underline-p 'ac-candidate-face "darkgray")
+
+(setq-default ac-sources
+              '(
+                ac-source-semantic
+                ac-source-yasnippet
+                ac-source-words-in-buffer
+                ac-source-filename
+                ac-source-semantic
+                ))
+
+;;; C mode
+(require 'semantic-ia)
+(ac-company-define-source ac-source-company-semantic company-semantic)
+(ac-company-define-source ac-source-company-abbr company-dabbrev)
+(ac-company-define-source ac-source-company-abbr-code company-dabbrev-code)
+(ac-company-define-source ac-source-company-keywords company-keywords)
+
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (push 'ac-source-company-semantic ac-sources)
+            (push 'ac-source-company-abbr ac-sources)
+            (push 'ac-source-company-abbr-code ac-sources)
+            (push 'ac-source-company-keywords ac-sources)
+
+            (add-to-list 'ac-omni-completion-sources
+                         (cons "\\." '(ac-source-semantic)))
+            (add-to-list 'ac-omni-completion-sources
+                         (cons "->" '(ac-source-semantic)))
+            ))
+
+;;; Lisp mode
+(ac-company-define-source ac-source-company-elisp company-elisp)
+(add-hook 'emacs-lisp-mode-hook
+       (lambda ()
+         (progn
+           (add-to-list 'ac-sources 'ac-source-company-elisp)
+           (add-to-list 'ac-sources 'ac-source-symbols)
+           )))
+
+
 
 ;; Autofill Keybinding.
 (define-key ac-complete-mode-map (kbd "<C-tab>") 'ac-expand)

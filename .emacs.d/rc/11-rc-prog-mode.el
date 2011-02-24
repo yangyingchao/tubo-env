@@ -59,7 +59,7 @@
                               "/usr/include/glib-2.0"
                               "/usr/include/gnu"
                               "/usr/include/gtk-2.0"
-                              "/usr/include/gtk-2.0/gdk-pixbuf"
+                              "/usr/include/gtk-2.0/gdk"
                               "/usr/include/gtk-2.0/gtk"
                               "/usr/local/include"
                               "/usr/local/include"))

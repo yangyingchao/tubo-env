@@ -1,0 +1,4 @@
+\defverbatim[colored]\\${1:Name}{%
+\begin{lstlisting}
+${code}
+\end{lstlisting}}%

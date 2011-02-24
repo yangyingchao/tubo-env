@@ -1,4 +1,0 @@
-    \defverbatim[colored]\${1:title}{
-\begin{lstlisting}
-${0:code}
-\end{lstlisting}}
