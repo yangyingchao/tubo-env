@@ -6,23 +6,21 @@ from copy import deepcopy
 
 
 #################  Customized Variables #################
+FVWM_HOME = os.path.join(os.getenv("HOME"), ".fvwm")
+
 menu_template = "Menu_Template"
-menu_template = os.path.join(os.getenv("HOME"), ".fvwm", menu_template)
+menu_template = os.path.join(FVWM_HOME, "tools", menu_template)
 menu_template_head = menu_template + "_Head"
 menu_template_tail = menu_template + "_Tail"
 
-desktop_search_path = ["/usr/share/applications"]
-categories_icon_path = "/usr/share/icons/gnome/24x24/categories"
-icon_paths = ["/usr/share/pixmaps", "/usr/share/icons/hicolor",
-              "/usr/share/icons/oxygen", "/home/yyc/.icons/Mac4Lin_Icons"]
-fvwm_menu_output = "Menu"
-fvwm_menu = {}
-category_list = ["Office", "Graphics", "System", "Engineering" "Utility",
-                 "Network", "Development"]
-keywords = ["Name", "Exec", "Icon", "Categories"]
+fvwm_icon_home = os.path.join(FVWM_HOME, "icons/apps")
+fvwm_menu_output = os.path.join(FVWM_HOME, "Menu")
 
-fvwm_icon_home = os.path.join(os.getenv("HOME"), ".fvwm", "icons/24x24")
-fvwm_menu_output = os.path.join(os.getenv("HOME"), ".fvwm", fvwm_menu_output)
+desktop_search_path = ["/usr/share/applications"]
+icon_paths          = ["/usr/share/pixmaps", "/usr/share/icons/hicolor",
+                       "/usr/share/icons/oxygen",
+                       "/home/yyc/.icons/Mac4Lin_Icons"]
+
 
 #             +-----------+------------+-------------+-----------+
 # fvwm_menu = | Category1 | Category2  | Category 3  | ........  |
@@ -38,8 +36,11 @@ fvwm_menu_output = os.path.join(os.getenv("HOME"), ".fvwm", fvwm_menu_output)
 #             +-----------+
 #             |    .      |
 #             +-----------+
-
-img_data = {}
+fvwm_menu     = {}
+img_data      = {}
+category_list = ["Office", "Graphics", "System", "Engineering" "Utility",
+                 "Network", "Development"]
+keywords      = ["Name", "Exec", "Icon", "Categories"]
 
 def gen_img_data():
     for path in icon_paths:
