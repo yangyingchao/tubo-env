@@ -86,14 +86,19 @@ def parse_single(path):
         for key in keywords:
             if item.startswith(key+"="):
                 val = item.split("=")[-1].strip("\n")
-                pos = val.find(";")
-                if  pos != -1:
-                    vlist = val.split(";")
-                    val = "Other"
-                    for v in vlist:
-                        if v in category_list:
-                            val = v
-                            break
+                if key == "Categories":
+                    pos = val.find(";")
+                    if  pos != -1:
+                        vlist = val.split(";")
+                        val = "Other"
+                        for v in vlist:
+                            if v in category_list:
+                                val = v
+                                break
+                elif key == "Exec":
+                    pos = val.rfind("%")
+                    if pos != -1:
+                        val = val[:pos]
                 tmp_dic[key] = val
                 break
     return deepcopy(tmp_dic)
