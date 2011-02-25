@@ -39,7 +39,7 @@ icon_paths          = ["/usr/share/pixmaps", "/usr/share/icons/hicolor",
 fvwm_menu     = {}
 img_data      = {}
 category_list = ["Office", "Graphics", "System", "Engineering" "Utility",
-                 "Network", "Development"]
+                 "Network", "Development", "AudioVideo"]
 keywords      = ["Name", "Exec", "Icon", "Categories"]
 
 def gen_img_data():
@@ -124,6 +124,8 @@ def find_icon(name, menu_type=1):
     if not menu_type:
         if name == "network":
             name = "internet"
+        elif name == "audiovideo":
+            name = "multimedia"
         name = "applications-%s.png"%name
 
     pos = name.rfind(".")
