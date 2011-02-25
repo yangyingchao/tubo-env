@@ -4,16 +4,25 @@
 import os
 from copy import deepcopy
 
+
+#################  Customized Variables #################
 menu_template = "Menu_Template"
+menu_template = os.path.join(os.getenv("HOME"), ".fvwm", menu_template)
+menu_template_head = menu_template + "_Head"
+menu_template_tail = menu_template + "_Tail"
+
 desktop_search_path = ["/usr/share/applications"]
 categories_icon_path = "/usr/share/icons/gnome/24x24/categories"
 icon_paths = ["/usr/share/pixmaps", "/usr/share/icons/hicolor",
               "/usr/share/icons/oxygen", "/home/yyc/.icons/Mac4Lin_Icons"]
-menu_output = "Menu"
+fvwm_menu_output = "Menu"
 fvwm_menu = {}
 category_list = ["Office", "Graphics", "System", "Engineering" "Utility",
                  "Network", "Development"]
 keywords = ["Name", "Exec", "Icon", "Categories"]
+
+fvwm_icon_home = os.path.join(os.getenv("HOME"), ".fvwm", "icons/24x24")
+fvwm_menu_output = os.path.join(os.getenv("HOME"), ".fvwm", fvwm_menu_output)
 
 #             +-----------+------------+-------------+-----------+
 # fvwm_menu = | Category1 | Category2  | Category 3  | ........  |
@@ -121,12 +130,7 @@ def find_icon(name, menu_type=1):
 
 
 if __name__ == '__main__':
-    fvwm_home = os.path.join(os.getenv("HOME"), ".fvwm")
-    icon_home = os.path.join(os.getenv("HOME"), ".fvwm", "icons/24x24")
-    menu_template = os.path.join(os.getenv("HOME"), ".fvwm", menu_template)
-    menu_template_head = menu_template + "_Head"
-    menu_template_tail = menu_template + "_Tail"
-    menu_output = os.path.join(os.getenv("HOME"), ".fvwm", menu_output)
+
 
     print "Generating image database ..."
     gen_img_data()
@@ -145,7 +149,7 @@ if __name__ == '__main__':
         icon_out = ""
 
         if len(icon_path):
-            icon_out = os.path.join(icon_home, os.path.basename(icon_path));
+            icon_out = os.path.join(fvwm_icon_home, os.path.basename(icon_path));
             os.system("convert -resize 24x24 %s %s"%(icon_path, icon_out))
 
         content += '+ "%%%s%%%s" Popup Menu%s\n'%(icon_out, key, key)
@@ -176,7 +180,7 @@ if __name__ == '__main__':
             icon_out = ""
 
             if len(icon_path):
-                icon_out = os.path.join(icon_home, "%s.png"%icon).lower();
+                icon_out = os.path.join(fvwm_icon_home, "%s.png"%icon).lower();
                 os.system("convert -resize 24x24 %s %s"%(icon_path, icon_out))
 
             content += '+ "%%%s%%%s" Exec exec %s\n'%(icon_out, name,
@@ -186,7 +190,7 @@ if __name__ == '__main__':
 
         content += "\n\n"
 
-    fp = open(menu_output, "w")
+    fp = open(fvwm_menu_output, "w")
     fp.write(content)
     fp.flush()
     fp.close()
