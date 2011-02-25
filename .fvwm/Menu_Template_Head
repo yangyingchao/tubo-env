@@ -1,0 +1,27 @@
+############################################################################
+#                                   菜单定义
+#############################################################################
+Colorset 20 fg #ffffff, bg #4584b5, hi gray, sh gray, RootTransparent buffer, IconAlpha 80, Tint #4584b5 0
+Colorset 21 fg #ff0000, bg #4584b5, hi gray, sh gray, RootTransparent buffer, IconAlpha 100, Tint #4584b5 0
+
+MenuStyle * MenuColorset 20, ActiveColorset 21
+MenuStyle * Hilight3DOff, HilightBack
+MenuStyle * PopupOffset 0 100, PopupDelay 300
+MenuStyle * BorderWidth 0
+MenuStyle * TitleUnderlines1
+MenuStyle * TrianglesSolid
+MenuStyle * SeparatorsShort
+MenuStyle * Animation
+MenuStyle * ItemFormat "%.2|%.5i%.5l%.5i%2.3>%2|"
+MenuStyle * VerticalItemSpacing 0 0
+Menustyle * Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
+
+
+#DestroyMenu recreate MenuFvwmRoot
+#AddToMenu MenuFvwmRoot "FVWM 菜单@macosx/menudebian.png@"  Title Top
+DestroyMenu MenuFvwmRoot
+AddToMenu  "MenuFvwmRoot@macosx/menudebian.png@"
++ "%macosx/main2.png%   菜单"   Nop
++ %24x24/desktop.png%"显示桌面" All (AcceptsFocus CurrentPage !Iconic !Shaded) Thumbnail
++ "" Nop
+

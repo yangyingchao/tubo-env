@@ -34,6 +34,7 @@ img_data = {}
 
 def gen_img_data():
     for path in icon_paths:
+        print "\t Processing icon directory: %s"%path
         os.path.walk(path, process_img, None)
 
 def process_img(arg, dirname, filenames):
@@ -42,6 +43,8 @@ def process_img(arg, dirname, filenames):
     """
     for fn  in filenames:
         path = os.path.join(dirname, fn)
+        if "16x16" in path or "22x22" in path:
+            continue
         if os.path.isdir(path):
             os.path.walk(path, process_img, None)
         else:
@@ -101,24 +104,19 @@ def add_to_menubase(dic):
 def find_icon(name, menu_type=1):
     """
     """
-    print "Input: %s"%name
     if os.access(name, os.F_OK): # Input is the absloute path of file.
-        print "Output: %s"%name
         return name
-    if menu_type:
-        pos = name.rfind(".")
-        if pos != -1:
-            name = name[:pos]
-        icon_path = img_data.get(name.lower())
-        if icon_path is None:
-            icon_path = ""
-    else:
+    if not menu_type:
         if name == "network":
             name = "internet"
-        icon_path = os.path.join(categories_icon_path,
-                                 "applications-%s.png"%name)
-        if not os.access(icon_path, os.F_OK):
-            icon_path = ""
+        name = "applications-%s.png"%name
+
+    pos = name.rfind(".")
+    if pos != -1:
+        name = name[:pos]
+    icon_path = img_data.get(name.lower())
+    if icon_path is None:
+        icon_path = ""
     return icon_path
 
 
@@ -130,15 +128,18 @@ if __name__ == '__main__':
     menu_template_tail = menu_template + "_Tail"
     menu_output = os.path.join(os.getenv("HOME"), ".fvwm", menu_output)
 
+    print "Generating image database ..."
     gen_img_data()
+    print "Finished to generate image database\n"
 
+    print "Searching and analyzing desktop entries..."
     for item in desktop_search_path:
         os.path.walk(item, process_subdir, item)
+    print "Finished analyze desktop entries.\n"
 
+    print "Writing new menu items for fvwm..."
     content = open(menu_template_head).read() # Head of template
-
     ### Generate categories.
-
     for key in fvwm_menu.keys():
         icon_path = find_icon(key.lower(), 0)
         icon_out = ""
@@ -155,6 +156,7 @@ if __name__ == '__main__':
     ### Generate Desktop entry.
 
     for key in fvwm_menu.keys():
+        print "Adding category: %s"%key
         content += "DestroyMenu Menu%s\nAddToMenu Menu%s\n"%(key, key)
 
         val_list = fvwm_menu[key]
@@ -165,9 +167,8 @@ if __name__ == '__main__':
             if name is None or exec_file is None or icon is None:
                 continue
 
-            print "Adding entry: %s\n"%name
+            print "\t+---- Adding entry: %s"%name
             icon_path = find_icon(icon, 1)
-            print "Using icon: %s"%icon_path
             icon = os.path.basename(icon)
             pos = icon.rfind(".")
             if pos != -1:
@@ -178,7 +179,10 @@ if __name__ == '__main__':
                 icon_out = os.path.join(icon_home, "%s.png"%icon).lower();
                 os.system("convert -resize 24x24 %s %s"%(icon_path, icon_out))
 
-            content += '+ "%%%s%%%s" Exec exec %s\n'%(icon_out, name, exec_file)
+            content += '+ "%%%s%%%s" Exec exec %s\n'%(icon_out, name,
+                                                      exec_file)
+        print "\n"
+
 
         content += "\n\n"
 
@@ -186,3 +190,5 @@ if __name__ == '__main__':
     fp.write(content)
     fp.flush()
     fp.close()
+
+    print "All work done!"
