@@ -1,0 +1,114 @@
+############################################################################
+#                                   菜单定义
+#############################################################################
+Colorset 20 fg #ffffff, bg #4584b5, hi gray, sh gray, RootTransparent buffer, IconAlpha 80, Tint #4584b5 0
+Colorset 21 fg #ff0000, bg #4584b5, hi gray, sh gray, RootTransparent buffer, IconAlpha 100, Tint #4584b5 0
+
+MenuStyle * MenuColorset 20, ActiveColorset 21
+MenuStyle * Hilight3DOff, HilightBack
+MenuStyle * PopupOffset 0 100, PopupDelay 300
+MenuStyle * BorderWidth 0
+MenuStyle * TitleUnderlines1
+MenuStyle * TrianglesSolid
+MenuStyle * SeparatorsShort
+MenuStyle * Animation
+MenuStyle * ItemFormat "%.2|%.5i%.5l%.5i%2.3>%2|"
+MenuStyle * VerticalItemSpacing 0 0
+Menustyle * Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
+
+
+#DestroyMenu recreate MenuFvwmRoot
+#AddToMenu MenuFvwmRoot "FVWM 菜单@macosx/menudebian.png@"  Title Top
+DestroyMenu MenuFvwmRoot
+AddToMenu  "MenuFvwmRoot@macosx/menudebian.png@"
++ "%macosx/main2.png%   菜单"   Nop
++ %actions/desktop.png%"显示桌面" All (AcceptsFocus CurrentPage !Iconic !Shaded) Thumbnail
++ "" Nop
+
++ "%/home/yyc/.fvwm/icons/apps/applications-development.png%Development" Popup MenuDevelopment
++ "%/home/yyc/.fvwm/icons/apps/applications-internet.png%Network" Popup MenuNetwork
++ "%/home/yyc/.fvwm/icons/apps/applications-office.png%Office" Popup MenuOffice
++ "%/home/yyc/.fvwm/icons/apps/applications-system.png%System" Popup MenuSystem
++ "%/home/yyc/.fvwm/icons/apps/applications-other.png%Other" Popup MenuOther
++ "%/home/yyc/.fvwm/icons/apps/applications-graphics.png%Graphics" Popup MenuGraphics
+
++ %actions/gtk-quit.png%"退出桌面" ExitMenu
++ "" Nop
+
+DestroyMenu MenuDevelopment
+AddToMenu MenuDevelopment
++ "%/home/yyc/.fvwm/icons/apps/doxywizard.png%DoxyWizard 1.7.2" Exec exec doxywizard
++ "%/home/yyc/.fvwm/icons/apps/emacs.png%GNU Emacs" Exec exec /usr/bin/emacs 
++ "%/home/yyc/.fvwm/icons/apps/meld.png%Meld Diff Viewer" Exec exec meld
++ "%/home/yyc/.fvwm/icons/apps/pycrust.png%PyAlaMode (2.8)" Exec exec pyalamode-2.8
++ "%/home/yyc/.fvwm/icons/apps/pycrust.png%PyCrust (2.8)" Exec exec pycrust-2.8
++ "%/home/yyc/.fvwm/icons/apps/cmakesetup32.png%CMake" Exec exec cmake-gui 
++ "%/home/yyc/.fvwm/icons/apps/designer.png%Designer" Exec exec /usr/bin/designer
++ "%/home/yyc/.fvwm/icons/apps/glade-3.png%Glade Interface Designer" Exec exec glade-3 
++ "%/home/yyc/.fvwm/icons/apps/pycrust.png%PyShell (2.8)" Exec exec pyshell-2.8
++ "%/home/yyc/.fvwm/icons/apps/xrced.png%XRCed (2.8)" Exec exec xrced-2.8
++ "%/home/yyc/.fvwm/icons/apps/sandbox.png%sandbox" Exec exec sandbox
++ "%/home/yyc/.fvwm/icons/apps/linguist-128-32.png%Linguist" Exec exec /usr/bin/linguist
++ "%/home/yyc/.fvwm/icons/apps/devhelp.png%Devhelp" Exec exec devhelp
+
+
+DestroyMenu MenuNetwork
+AddToMenu MenuNetwork
++ "%/home/yyc/.fvwm/icons/apps/firefox-icon.png%Mozilla Firefox" Exec exec /usr/bin/firefox 
++ "%/home/yyc/.fvwm/icons/apps/remmina.png%Remmina Remote Desktop Client" Exec exec remmina
++ "%/home/yyc/.fvwm/icons/apps/java-icon48.png%Java Web Start" Exec exec javaws 
++ "%/home/yyc/.fvwm/icons/apps/vncviewer.png%vncviewer" Exec exec vncviewer
++ "%/home/yyc/.fvwm/icons/apps/pidgin.png%Pidgin Internet Messenger" Exec exec pidgin
++ "%/home/yyc/.fvwm/icons/apps/ip-tux.png%iptux" Exec exec iptux
+
+
+DestroyMenu MenuOffice
+AddToMenu MenuOffice
++ "%/home/yyc/.fvwm/icons/apps/libreoffice-base.png%LibreOffice 3.3 Base" Exec exec libreoffice -base 
++ "%/home/yyc/.fvwm/icons/apps/goldendict.png%GoldenDict" Exec exec goldendict
++ "%/home/yyc/.fvwm/icons/apps/libreoffice-math.png%LibreOffice 3.3 Math" Exec exec libreoffice -math 
++ "%/home/yyc/.fvwm/icons/apps/libreoffice-startcenter.png%LibreOffice 3.3 " Exec exec libreoffice 
++ "%/home/yyc/.fvwm/icons/apps/libreoffice-draw.png%LibreOffice 3.3 Draw" Exec exec libreoffice -draw 
++ "%/home/yyc/.fvwm/icons/apps/libreoffice-printeradmin.png%LibreOffice 3.3 Printer Administration" Exec exec libreoffice-printeradmin
++ "%/home/yyc/.fvwm/icons/apps/libreoffice-impress.png%LibreOffice 3.3 Impress" Exec exec libreoffice -impress 
++ "%/home/yyc/.fvwm/icons/apps/libreoffice-writer.png%LibreOffice 3.3 Writer" Exec exec libreoffice -writer 
++ "%/home/yyc/.fvwm/icons/apps/evolution.png%Evolution" Exec exec evolution 
++ "%/home/yyc/.fvwm/icons/apps/libreoffice-calc.png%LibreOffice 3.3 Calc" Exec exec libreoffice -calc 
+
+
+DestroyMenu MenuSystem
+AddToMenu MenuSystem
++ "%/home/yyc/.fvwm/icons/apps/wireshark.png%Wireshark" Exec exec wireshark
++ "%/home/yyc/.fvwm/icons/apps/porthole-icon.png%The Porthole Portage Frontend" Exec exec porthole
++ "%/home/yyc/.fvwm/icons/apps/fcitx.png%Fcitx" Exec exec fcitx
++ "%/home/yyc/.fvwm/icons/apps/gconf-editor.png%Configuration Editor" Exec exec gconf-editor
++ "%/home/yyc/.fvwm/icons/apps/palimpsest.png%Disk Utility" Exec exec palimpsest
++ "%/home/yyc/.fvwm/icons/apps/vbox.png%Oracle VM VirtualBox" Exec exec VirtualBox
+
+
+DestroyMenu MenuOther
+AddToMenu MenuOther
++ "%/home/yyc/.fvwm/icons/apps/freemind.png%Freemind" Exec exec freemind
++ "%/home/yyc/.fvwm/icons/apps/geda-gattrib.png%gEDA Attribute Editor" Exec exec gattrib 
++ "%/home/yyc/.fvwm/icons/apps/evolution.png%Email Settings" Exec exec evolution-settings
++ "%/home/yyc/.fvwm/icons/apps/gdl_large.png%Google Desktop" Exec exec /opt/google/desktop/bin/gdlinux start
++ "%/home/yyc/.fvwm/icons/apps/gdl_large.png%Google Desktop Preferences" Exec exec /opt/google/desktop/bin/gdlinux preference
++ "%/home/yyc/.fvwm/icons/apps/gnochm.png%CHM Viewer" Exec exec gnochm 
++ "%/home/yyc/.fvwm/icons/apps/xscreensaver.png%Screensaver" Exec exec xscreensaver-demo
++ "%/home/yyc/.fvwm/icons/apps/terminal-tango.png%Sakura" Exec exec sakura
++ "%/home/yyc/.fvwm/icons/apps/input-keyboard.png%Keyboard Indicator plugins" Exec exec gkbd-indicator-plugins-capplet
++ "%/home/yyc/.fvwm/icons/apps/notification-properties.png%Pop-Up Notifications" Exec exec notification-properties
++ "%/home/yyc/.fvwm/icons/apps/emacs.png%Emacsclient" Exec exec /usr/bin/emacsclient 
++ "%/home/yyc/.fvwm/icons/apps/fcitx.png%Fcitx Config Tool" Exec exec fcitx-config
++ "%/home/yyc/.fvwm/icons/apps/geda-gschem.png%gEDA Schematic Editor" Exec exec gschem 
++ "%/home/yyc/.fvwm/icons/apps/file-roller.png%Archive Manager" Exec exec file-roller 
+
+
+DestroyMenu MenuGraphics
+AddToMenu MenuGraphics
++ "%/home/yyc/.fvwm/icons/apps/gimp.png%GNU Image Manipulation Program" Exec exec gimp-2.6 
++ "%/home/yyc/.fvwm/icons/apps/eog.png%Image Viewer" Exec exec eog 
++ "%/home/yyc/.fvwm/icons/apps/dia.png%Dia Diagram Editor" Exec exec dia 
++ "%/home/yyc/.fvwm/icons/apps/evince.png%Document Viewer" Exec exec evince 
+
+
