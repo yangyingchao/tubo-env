@@ -5,9 +5,12 @@
 (require 'icomplete)
 (icomplete-mode t)
 
-(require 'ido)
-(ido-mode t)
-(setq ido-enable-flex-matching t) ;; enable fuzzy matching
+;;;; ido
+(when (require 'ido "ido" t)
+  (ido-mode 'buffer)
+  ;;(ido-mode)
+  (setq ido-enable-flex-matching t) ;; enable fuzzy matching
+  (define-key ctl-x-map "\C-v" 'ido-find-file))
 
 (require 'make-mode)
 (autoload 'makefile-mode "makefile-mode" nil t)
@@ -94,8 +97,38 @@
 
  ;;Dired
 (require 'dired)
+(setq dired-dwim-target t)
+(load "dired-x")
+
+;; Don't copy files to open dired buffers via drag&drop
+(setq dired-dnd-protocol-alist nil)
+
+(setq dired-guess-shell-alist-user
+      (list
+       ;;(list "\\.fig" "c:\\utils\\4\\4nt /c fig2eps" "xfig")
+       (list "\\.ps" "gv")
+       (list "\\.doc" "oowriter")
+       (list "\\.ppt" "ooimpress")
+       (list "\\.xls" "oocalc")
+       (list "\\.sxc" "oocalc")
+       (list "\\.png" "gimp")
+       ))
+;;        (list "\\.pdf" "acroread")))
+
+(load "sorter" t t) ; sort dired listing (key s)
+(define-key dired-mode-map [(control shift r)] 'dired-rar-add-files)
+
+(when (require 'wdired nil t)
+  (define-key dired-mode-map "r" 'wdired-change-to-wdired-mode))
+                                        ;use the lisp ls implementation (using this sort by extension works)
+
 (setq dired-recursive-copies 'top)
 (setq dired-recursive-deletes 'top)
+(load "ls-lisp" t t)
+(setq ls-lisp-dirs-first t)
+(setq ls-lisp-use-insert-directory-program nil) ; needed on unix
+(setq auto-mode-alist (cons '("[^/]\\.dired$" . dired-virtual-mode)
+                            auto-mode-alist))
 
 ;; ************************** highlight utils ****************************
 (require 'highlight-utility)
@@ -108,8 +141,8 @@
 ;; ************************** SVN Settings *****************************
 
 (require 'psvn)
-
-(global-set-key "\C-xvv" 'svn-status-commit)
+;; C-xvv Bind to vc-next-action.
+(global-set-key "\C-xvV" 'svn-status-commit)
 (global-set-key "\C-xvl" 'svn-status-show-svn-log)
 (global-set-key "\C-xvu" 'svn-status-update-cmd)
 (global-set-key "\C-xvs" 'svn-status-curdir)

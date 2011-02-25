@@ -196,7 +196,7 @@
   (find-file (concat (file-name-directory fname) "/Makefile"))
   )
 
-(global-set-key (kbd "<C-f6>")  (lambda()(interactive)(do-compile)))
+(global-set-key (kbd "<f6>")  (lambda()(interactive)(do-compile)))
 (global-set-key (kbd "<C-S-f6>")  (lambda()(interactive)(open-makefile)))
 
 ;;;; Add new line before or after current line.
@@ -466,7 +466,7 @@ Uses `current-date-time-format' for the formatting the date/time."
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (add-hook 'after-save-hook 'autocompile)
 (add-hook 'shell-mode-hook 'mode-hook-func)
-(add-hook 'gdb-mode-hook 'mode-hook-func)
+
 
 (defun uniq-region (beg end)
   "Remove duplicate lines, a` la Unix uniq.
@@ -622,6 +622,7 @@ inserts comment at the end of the line."
 
 (require 'ediff)
 (setq-default ediff-ignore-similar-regions t)
+(setq ediff-split-window-function 'split-window-horizontally)
 (defun my-ediff-revision (&optional file startup-hooks)
   "Run Ediff by comparing versions of a file.
 The file is an optional FILE argument or the file entered at the prompt.

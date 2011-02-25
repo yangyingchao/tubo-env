@@ -18,6 +18,7 @@
 (global-semanticdb-minor-mode 1)
 (setq semantic-idle-scheduler-idle-time 3)
 (which-func-mode 1)
+(srecode-minor-mode 1)
 
 (setq global-semantic-idle-completions-mode 1)
 (setq semantic-idle-work-parse-neighboring-files-flag t)
@@ -746,6 +747,23 @@ Use CREATE-TEMP-F for creating temp copy."
 
 
 (add-to-list 'auto-mode-alist '("\\.ebuild$" . shell-script-mode))
+
+
+ ;;;;;;;; Configurations  about GDB;
+
+(defun gdb-mode-hook-func  ()
+  (local-set-key (kbd "<C-f5>") 'gud-go)
+  (local-set-key (kbd "<C-f6>") 'gud-step)
+  (local-set-key (kbd "<C-f7>") 'gud-next)
+  (set-process-sentinel (get-buffer-process (current-buffer))
+                        #'kill-buffer-on-exit)
+  '(auto-fill-mode nil)
+  (gud-tooltip-mode t)
+  (gdb-many-windows t))
+
+(add-hook 'gdb-mode-hook 'gdb-mode-hook-func)
+
+
 
 (provide '11-rc-prog-mode)
 ;;;;; emacs-rc-prog-mode.el ends here

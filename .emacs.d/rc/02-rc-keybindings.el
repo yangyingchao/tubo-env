@@ -1,4 +1,4 @@
-;;;; -*- emacs-lisp -*- -*- coding: utf-8; -*- 
+;;;; -*- emacs-lisp -*- -*- coding: utf-8; -*-
 ;;; 02-rc-keybindings.el begins ---
 
 (require '01-rc-functions)
@@ -49,6 +49,7 @@
 
 (global-set-key [f5] 'eshell)
 (global-set-key (kbd "<S-f5>") 'ansi-term)
+
 ;;;; Following Keybinds was set in other files.
 ;; C-F6: do-compile
 ;; C-S-F6: Open Makefile

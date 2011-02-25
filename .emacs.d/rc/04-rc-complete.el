@@ -183,16 +183,15 @@
                 ac-source-semantic
                 ))
 
-;;; C mode
+;;;; Extend Auto-Complete with company backends.
+;; C mode
 (require 'semantic-ia)
-(ac-company-define-source ac-source-company-semantic company-semantic)
 (ac-company-define-source ac-source-company-abbr company-dabbrev)
 (ac-company-define-source ac-source-company-abbr-code company-dabbrev-code)
 (ac-company-define-source ac-source-company-keywords company-keywords)
 
 (add-hook 'c-mode-common-hook
           (lambda ()
-            (push 'ac-source-company-semantic ac-sources)
             (push 'ac-source-company-abbr ac-sources)
             (push 'ac-source-company-abbr-code ac-sources)
             (push 'ac-source-company-keywords ac-sources)
@@ -203,7 +202,7 @@
                          (cons "->" '(ac-source-semantic)))
             ))
 
-;;; Lisp mode
+;; Lisp mode
 (ac-company-define-source ac-source-company-elisp company-elisp)
 (add-hook 'emacs-lisp-mode-hook
        (lambda ()
