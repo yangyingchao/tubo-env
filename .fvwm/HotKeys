@@ -32,3 +32,6 @@ Key L A 4 FuncFvwmLockScreen
 Key L A CM FuncFvwmLockScreen
 
 Key space A 4 Maximize # Maxmize window
+
+Key Print A N Exec exec scrot  /tmp/scrot_%Y-%m-%d_%H-%M-%S.png &
+Key Print A S Exec exec import -frame  /tmp/scrot_window.png &

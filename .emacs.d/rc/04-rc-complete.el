@@ -186,15 +186,15 @@
 ;;;; Extend Auto-Complete with company backends.
 ;; C mode
 (require 'semantic-ia)
-(ac-company-define-source ac-source-company-abbr company-dabbrev)
-(ac-company-define-source ac-source-company-abbr-code company-dabbrev-code)
-(ac-company-define-source ac-source-company-keywords company-keywords)
+;; (ac-company-define-source ac-source-company-abbr company-dabbrev)
+;; (ac-company-define-source ac-source-company-abbr-code company-dabbrev-code)
+;; (ac-company-define-source ac-source-company-keywords company-keywords)
 
 (add-hook 'c-mode-common-hook
           (lambda ()
-            (push 'ac-source-company-abbr ac-sources)
-            (push 'ac-source-company-abbr-code ac-sources)
-            (push 'ac-source-company-keywords ac-sources)
+            ;; (push 'ac-source-company-abbr ac-sources)
+            ;; (push 'ac-source-company-abbr-code ac-sources)
+            ;; (push 'ac-source-company-keywords ac-sources)
 
             (add-to-list 'ac-omni-completion-sources
                          (cons "\\." '(ac-source-semantic)))
@@ -237,6 +237,7 @@
         try-complete-file-name
         try-expand-all-abbrevs
         ))
+
 
 
 (defun indent-or-complete ()
