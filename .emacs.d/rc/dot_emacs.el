@@ -9,9 +9,9 @@
     (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
         (normal-top-level-add-subdirs-to-load-path))))
 
-(my-add-subdirs-to-load-path "~/.emacs.d/lisps/")
+(my-add-subdirs-to-load-path "~/.emacs.d/site-lisp/")
 ;;;; 将一些自己修改过的lisp放到load-path的最顶层，以变能够正确加载到。
-(push "~/.emacs.d/lisps/modified/" load-path)
+(push "~/.emacs.d/site-lisp/modified/" load-path)
 (push "~/.emacs.d/rc" load-path)
 (push "~/.emacs.d/projects" load-path)
 

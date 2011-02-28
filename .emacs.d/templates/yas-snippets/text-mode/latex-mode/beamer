@@ -1,7 +1,7 @@
 \documentclass[red,slidestop,compress,mathserif]{beamer}
 % ===================Package Area================== %
 \usepackage{CJKutf8}
-\usetheme{Antibes}
+\usetheme{lankton-keynote}
 \usecolortheme{lily}
 \usepackage{amsmath}
 \usepackage{booktabs, longtable}
