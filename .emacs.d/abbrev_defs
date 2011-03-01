@@ -37,7 +37,6 @@
 
 (define-abbrev-table 'global-abbrev-table
   '(
-    ("dot" "dotted" nil 0)
     ("ell" "ellipse" nil 0)
     ("yyc," "Yang,Ying-chao" nil 6)
    ))
