@@ -171,6 +171,8 @@ AddToFunc   FuncDestroyOnHold
 + H Destroy
 + H Beep
 
+Colorset 9 fg Black, Translucent White 75, hi Black, sh Black
+
 DestroyFunc ExitMenu
 AddToFunc ExitMenu
 + I DestroyModuleConfig Exitmenu: *

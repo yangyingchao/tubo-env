@@ -79,7 +79,6 @@ Colorset 6 fg #ffffff, bg #ececec, hi gray, sh gray, RootTransparent buffer, Tin
 Colorset 6 fg white, bg black, RootTransparent buffer, Tint #e4e5c7 90
 Colorset 7 fg #ffffff, bg gray, hi gray, sh gray, RootTransparent buffer, Tint #ececec 0
 Colorset 8 fg #f0f0f0, bg #ececec, hi #ffffff, sh #ffffff, RootTransparent buffer, Tint #ececec 0
-Colorset 9 RootTransparent, IconAlpha 60
 Colorset 10 fg #4890A3, fgsh #ffffff, bg #ffffff, sh #ffffff, hi #ffffff, RootTransparent, Tint #ffffff 60
 Colorset 11 RootTransparent, Tint #ffffff , IconAlpha 100
 Colorset 12 RootTransparent, Tint #ffffff 60, fg #4890A3, fgsh #ffffff, bg #ffffff, sh #ffffff, hi #ffffff
