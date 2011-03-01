@@ -11,7 +11,7 @@ Key Left A CM GotoLeftPage
 
 # Minimal windows.
 Key D A 4 FuncFvwmIconifyToggle
-Key D A CM All (AcceptsFocus CurrentPage !Iconic !Shaded, !FvwmButtons, !"*onky" !"*Desk *" !"*FvwmDocker*" !"Tild*")Iconify
+Key D A CM All (AcceptsFocus CurrentPage !Iconic !Shaded, !FvwmButtons, !"*onky" !"*Desk *" !"*FvwmDocker*" !"Tild*" !"*sv*")Iconify
 
 Key F A 4 FuncFullScreen
 Key F1 A 4 Exec wcmd
@@ -22,7 +22,7 @@ Key F12 A C Exec emacs
 Key F2 A M Exec exec grun
 Key F3 A 4 Module FvwmConsole
 Key F4 A M Close
-Key Tab A M WindowList (CurrentPage) Root c c NoDeskSort, SelectOnRelease Meta_L
+Key Tab A M WindowList (CurrentPage) Root c c NoDeskSort, SelectOnRelease Meta_L,CurrentAtEnd, IconifiedAtEnd
 Key r A 4 Exec exec grun
 Key r A CM Exec exec grun
 Key t A MC Exec sakura
