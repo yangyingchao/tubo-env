@@ -18,10 +18,7 @@ fvwm_menu_output = os.path.join(FVWM_HOME, "Menu")
 
 desktop_search_path = ["/usr/share/applications"]
 icon_paths          = ["/usr/share/pixmaps", "/usr/share/icons/hicolor",
-                       "/usr/share/icons/oxygen",
-                       "/home/yyc/.icons/Mac4Lin_Icons",
-                       "/home/yyc/.icons/Faenza"
-                       ]
+                       "/home/yyc/.icons/Faenza"]
 
 
 #             +-----------+------------+-------------+-----------+
@@ -123,7 +120,7 @@ def find_icon(name, menu_type=1):
     """
     if os.access(name, os.F_OK): # Input is the absloute path of file.
         return name
-    if not menu_type:
+    if not menu_type: # Categories start with applications-.
         if name == "network":
             name = "internet"
         elif name == "audiovideo":
