@@ -21,7 +21,7 @@ Menustyle * Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encodi
 #AddToMenu MenuFvwmRoot "FVWM 菜单@macosx/menudebian.png@"  Title Top
 DestroyMenu MenuFvwmRoot
 AddToMenu  "MenuFvwmRoot@macosx/menudebian.png@"
-+ "%macosx/main2.png%   菜单"   Nop
++ "%actions/menu.png%   菜单"   Nop
 + %actions/desktop.png%"显示桌面" All (AcceptsFocus CurrentPage !Iconic !Shaded) Thumbnail
 + "" Nop
 
