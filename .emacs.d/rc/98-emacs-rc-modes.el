@@ -204,6 +204,9 @@
   (local-set-key (kbd "C-c i") 'yyc/insert-b64-img)
   (local-set-key (kbd "C-c s") 'yyc/small-font)
   (auto-complete-mode)
+  (html-autoview-mode nil)
+  (setq html-autoview-mode nil)
+  (remove-hook 'after-save-hook 'browse-url-of-buffer t)
   (setq fill-column 120)
   )
 

@@ -1,13 +1,6 @@
 # -- THEME AUTO-WRITTEN BY gtk-theme-switch2 DO NOT EDIT
-#这将设置 GTK 程序的主题。将引号中的内容换成你自己喜欢的主题名称（下同）
-gtk-theme-name = "Clearlooks"
-#设置所用的图标主题
-gtk-icon-theme-name = "Mac4Lin_Icons"
-#设置鼠标指针主题
-gtk-cursor-theme-name = "Mac4Lin_Cursors"
+include "/usr/share/themes/oxygen-gtk/gtk-2.0/gtkrc"
 
-gtk-button-images=1
-gtk-menu-images=1
-gtk-enable-input-feedback-sounds=1
+include "/home/yyc/.gtkrc-2.0.mine"
 
-
+# -- THEME AUTO-WRITTEN BY gtk-theme-switch2 DO NOT EDIT

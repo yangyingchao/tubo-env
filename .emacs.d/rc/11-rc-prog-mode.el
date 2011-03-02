@@ -368,7 +368,7 @@
          ("\\.cc$"   . c++-mode)
          ("\\.hh$"   . c++-mode)
          ("\\.c$"    . c-mode)
-         ("\\.h$"    . c-mode)
+         ("\\.h$"    . c++-mode)
          ("\\.m$"    . objc-mode)
          ) auto-mode-alist))
 

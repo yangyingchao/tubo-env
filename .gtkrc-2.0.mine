@@ -1,0 +1,6 @@
+gtk-icon-theme-name = "Mac4Lin_Icons"
+gtk-cursor-theme-name = "Mac4Lin_Cursors"
+gtk-button-images=1
+gtk-menu-images=1
+gtk-enable-input-feedback-sounds=1
+
