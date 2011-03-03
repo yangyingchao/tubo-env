@@ -1,8 +1,8 @@
 ############################################################################
 #                                   菜单定义
 #############################################################################
-Colorset 20 fg Black, Translucent Gray 85,   hi Black, sh Black
-Colorset 21 fg Black, Translucent Gray 85,   hi Black, sh Black
+Colorset 20 fg Black, Translucent Gray 99,   hi Black, sh Black
+Colorset 21 fg Black, Translucent Gray 99,   hi Black, sh Black
 
 MenuStyle * MenuColorset 20, ActiveColorset 21
 MenuStyle * Hilight3DOff, HilightBack
