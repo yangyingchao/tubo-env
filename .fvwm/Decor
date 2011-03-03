@@ -11,14 +11,14 @@ AddToMenu   MenuWindowOptions
 + "Iconify%actions/22x22/iconify.png%"  Thumbnail
 + "Maximize%actions/22x22/maximize.png%" Maximize
 + "Shade%actions/22x22/shade.png%"  WindowShade
-+ "Stick%actions/22x22/stick.png%"  Stick
-+ "On top%actions/22x22/ontop.png%" Layer 0 6
++ "(Un)Stick%actions/22x22/stick.png%"  Stick
++ "Ontop Layer%actions/22x22/ontop.png%" Layer 0 6
++ "Normal Layer%actions/22x22/nontop.png%" Layer 0 4
 + "" Nop
 + "Close%actions/22x22/close.png%"  Close
 + "Delete%actions/22x22/delete.png%"  Delete
 + "Destroy%actions/22x22/destroy.png%"  Destroy
 + "" Nop
-+ "Screenshot%actions/22x22/screenshot.png%" Popup FvwmScreenshot
 + "Identify%actions/22x22/identify.png%"  Module FvwmIdent
 
 DestroyMenu FvwmSendTo
@@ -27,35 +27,6 @@ AddToMenu FvwmSendTo
 + "Desktop 2%actions/22x22/desktop.png%" Pick MoveToPage 1 0
 + "Desktop 3%actions/22x22/desktop.png%" Pick MoveToPage 2 0
 + "Desktop 4%actions/22x22/desktop.png%" Pick MoveToPage 3 0
-
-AddToMenu Menusendto "Window Popup"   Title
-+ "Send Desk 1" MoveToPage 0 0
-+ "Send Desk 2" MoveToPage 1 0
-+ "Send Desk 3" MoveToPage 2 0
-+ "Send Desk 4" MoveToPage 3 0
-+ "_______" Nop
-+ "Resize Window"   ResizeWarp
-+ "(Un)Stick Window"   Stick
-+ "Ontop layer" Layer 0 6
-+ "Normal layer"    Layer 0 4
-+ "Thumbnail"    Thumbnail
-+ "Cascade Windows" Module FvwmRearrange -cascade -animate -incx 3 -incy 3
-#+ "Tile Windows vertically" Module FvwmRearrange -tile -animate -mn 2 Module FvwmRearrange -tile -v 6 98 93
-+ "Tile Windows vertically" Module FvwmRearrange -tile -v 6 98 93
-+ "Tile Windows horizontally" Module FvwmRearrange -tile -h 0 2
-+ "_______" Nop
-+ "Increase window opacity (Alt+wheel)" IncTrans
-+ "Decrease window opacity (Alt+wheel)" DecTrans
-+ "_______" Nop
-+ "Goto Desk 1" GotoPage 0 0
-+ "Goto Desk 2" GotoPage 1 0
-+ "Goto Desk 3" GotoPage 2 0
-+ "Goto Desk 4" GotoPage 3 0
-+ "Alsa Sounds" Exec exec xterm -e alsamixer
-+ "Identify"    Module  FvwmIdent
-+ "_______" Nop
-+ "Kill Window" Exec exec xkill
-+ "Close Window"    Close
 
 
 DestroyDecor DefaultDecor
