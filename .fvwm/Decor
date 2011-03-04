@@ -5,28 +5,28 @@ Colorset 71 fg black, bg black, sh black, RootTransparent Buffer, Tint #f6f6f6 0
 
 DestroyMenu MenuWindowOptions
 AddToMenu   MenuWindowOptions
-+ "Send to%actions/22x22/send.png%" Popup FvwmSendto
-+ "Move%actions/22x22/move.png%"  Move
-+ "Resize%actions/22x22/resize.png%"  ResizeWarp
-+ "Iconify%actions/22x22/iconify.png%"  Thumbnail
-+ "Maximize%actions/22x22/maximize.png%" Maximize
-+ "Shade%actions/22x22/shade.png%"  WindowShade
-+ "(Un)Stick%actions/22x22/stick.png%"  Stick
-+ "Ontop Layer%actions/22x22/ontop.png%" Layer 0 6
-+ "Normal Layer%actions/22x22/nontop.png%" Layer 0 4
++ "Send to%actions/send.png%" Popup FvwmSendto
++ "Move%actions/move.png%"  Move
++ "Resize%actions/resize.png%"  ResizeWarp
++ "Iconify%actions/iconify.png%"  Thumbnail
++ "Maximize%actions/maximize.png%" Maximize
++ "Shade%actions/shade.png%"  WindowShade
++ "(Un)Stick%actions/stick.png%"  Stick
++ "Ontop Layer%actions/ontop.png%" Layer 0 6
++ "Normal Layer%actions/nontop.png%" Layer 0 4
 + "" Nop
-+ "Close%actions/22x22/close.png%"  Close
-+ "Delete%actions/22x22/delete.png%"  Delete
-+ "Destroy%actions/22x22/destroy.png%"  Destroy
++ "Close%actions/close.png%"  Close
++ "Delete%actions/delete.png%"  Delete
++ "Destroy%actions/destroy.png%"  Destroy
 + "" Nop
-+ "Identify%actions/22x22/identify.png%"  Module FvwmIdent
++ "Identify%actions/identify.png%"  Module FvwmIdent
 
 DestroyMenu FvwmSendTo
 AddToMenu FvwmSendTo
-+ "Desktop 1%actions/22x22/desktop.png%" Pick MoveToPage 0 0
-+ "Desktop 2%actions/22x22/desktop.png%" Pick MoveToPage 1 0
-+ "Desktop 3%actions/22x22/desktop.png%" Pick MoveToPage 2 0
-+ "Desktop 4%actions/22x22/desktop.png%" Pick MoveToPage 3 0
++ "Desktop 1%actions/desktop.png%" Pick MoveToPage 0 0
++ "Desktop 2%actions/desktop.png%" Pick MoveToPage 1 0
++ "Desktop 3%actions/desktop.png%" Pick MoveToPage 2 0
++ "Desktop 4%actions/desktop.png%" Pick MoveToPage 3 0
 
 
 DestroyDecor DefaultDecor

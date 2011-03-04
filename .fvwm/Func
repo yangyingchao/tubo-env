@@ -205,7 +205,7 @@ AddToFunc ExitMenu
 + I *Exitmenu: Button quit " 列出进程" ^[
 + I *Exitmenu: Command Exec xterm  -fg green -bg black -e top
 + I *Exitmenu: Line center
-+ I *Exitmenu: Button quit " 重新载入 fvwm " ^[
++ I *Exitmenu: Button quit " 重新载入 fvwm" ^[
 + I *Exitmenu: Command Restart
 + I *Exitmenu: Button quit " 锁住屏幕" ^[
 + I *Exitmenu: Command  Exec xscreensaver-command  -lock
