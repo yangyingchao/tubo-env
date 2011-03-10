@@ -763,6 +763,9 @@ Use CREATE-TEMP-F for creating temp copy."
 
 (add-hook 'gdb-mode-hook 'gdb-mode-hook-func)
 
+;;;;;;;; Configurations of PowerShell-mode ;;;;;;;;
+(autoload 'powershell-mode "powershell-mode" "A editing mode for Microsoft PowerShell." t)
+(add-to-list 'auto-mode-alist '("\\.ps1\\'" . powershell-mode)) ; PowerShell script
 
 
 (provide '11-rc-prog-mode)
