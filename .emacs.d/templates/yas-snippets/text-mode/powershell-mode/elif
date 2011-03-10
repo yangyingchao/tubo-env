@@ -1,0 +1,6 @@
+#name : elif (...) { ... }
+# --
+elseif (${1:condition})
+{
+$0$>
+}$>

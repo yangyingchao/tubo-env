@@ -429,7 +429,6 @@
 
 (defun setup-program-keybindings()
   (interactive)
-
   ;;;; Common program-keybindings
   (local-set-key  [(return)] 'newline-and-indent)
 
@@ -449,7 +448,6 @@
   (local-set-key "\C-cp" 'semantic-ia-show-doc)
   (local-set-key "\C-cr" 'semantic-symref-symbol)
   (local-set-key [(control return)] 'semantic-ia-complete-symbol)
-
 
   ;;;; Keybindings for srecode
   (local-set-key "\C-cdf" 'srecode-document-insert-function-comment)
@@ -773,8 +771,8 @@ Use CREATE-TEMP-F for creating temp copy."
                   val)
      (message fn)
      (setq val (completing-read (if fn
-                                    (format "Describe function (default %s): " fn)
-                                  "Describe function: ")
+                                    (format "Help for (default %s): " fn)
+                                  "Help for: ")
                                 obarray 'fboundp t nil nil
                                 ))
      (list (if (equal val "")
@@ -785,15 +783,26 @@ Use CREATE-TEMP-F for creating temp copy."
     (progn
       (start-process "Powershell-help" nil "devhelp" "-s" function))))
 
+
 (add-to-list 'auto-mode-alist '("\\.ps1\\'" .
-                                powershell-mode)) ; PowerShell script
+                                powershell-mode))
 (add-hook 'powershell-mode-hook
           (lambda()
             (progn
-              (auto-complete-mode t)
+              (yyc/show-prog-keywords)
+              (program-mode-auto-pair)
+              (setq indent-line-function 'powershell-indent-line)
               (local-set-key [(f1)] 'yyc/ps-help))))
+
+;;;;;;;;; Emacs-lisp mode ;;;;;;;;;;;;;;
+
+(add-hook 'emacs-lisp-mode-hook
+          (lambda()
+            (progn
+            (local-set-key [(f1)] 'describe-function))))
 
 
 
 (provide '11-rc-prog-mode)
+
 ;;;;; emacs-rc-prog-mode.el ends here

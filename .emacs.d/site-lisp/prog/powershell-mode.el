@@ -30,10 +30,10 @@
 ;; default mode map, really simple
 (defvar powershell-mode-map
   (let ((powershell-mode-map (make-keymap)))
-;;    (define-key powershell-mode-map "\r" 'powershell-indent-line)
+    ;;    (define-key powershell-mode-map "\r" 'powershell-indent-line)
     (define-key powershell-mode-map "\t" 'powershell-indent-line)
-;;    (define-key powershell-mode-map "{" 'powershell-electric-brace)
-;;    (define-key powershell-mode-map "}" 'powershell-electric-brace)
+    ;;    (define-key powershell-mode-map "{" 'powershell-electric-brace)
+    ;;    (define-key powershell-mode-map "}" 'powershell-electric-brace)
     powershell-mode-map)
   "Keymap for PS major mode")
 
@@ -47,16 +47,16 @@
       (save-excursion
         (beginning-of-line)
         (or
-;;          (looking-at "$\w+") ;Don't do this in a variable
-          (looking-at "{\s*|[^}]") ;Don't do this in an open procedure block
-          (looking-at "\"[^\"]*$")) ;Don't do this in a open string
-       )
+         ;;          (looking-at "$\w+") ;Don't do this in a variable
+         (looking-at "{\s*|[^}]") ;Don't do this in an open procedure block
+         (looking-at "\"[^\"]*$")) ;Don't do this in a open string
+        )
     (powershell-indent-line)
     (forward-char 1)
+    )
   )
-)
 
-;(add-to-list 'auto-mode-alist '("\\.ps1\\'" . powershell-mode))
+                                        ;(add-to-list 'auto-mode-alist '("\\.ps1\\'" . powershell-mode))
 
 
 ;; Function to control indenting.
@@ -69,8 +69,9 @@
 
   (if (bobp)
       (indent-line-to 0)
-
-    (let ((not-indented t) (lines-back 0) cur-indent)
+    (let ((not-indented t)
+          (lines-back 0)
+          cur-indent)
 
       (if (looking-at "^[ \t]*}") ; Check for closing brace
           (progn
@@ -78,11 +79,11 @@
               (forward-line -1)
               (setq lines-back (+ lines-back 1))
               (if (looking-at "^[ \t]*{") ; If now looking at opening block
-                (setq cur-indent (current-indentation)) ;; duplicate indent
+                  (setq cur-indent (current-indentation)) ;; duplicate indent
                 (setq cur-indent (- (current-indentation) powershell-indent-width)))
-            )
+              )
 
-  ;; Safety check to make sure we don't indent negative.
+            ;; Safety check to make sure we don't indent negative.
             (if (< cur-indent 0)
                 (setq cur-indent 0)))
 
@@ -107,21 +108,21 @@
                       (setq cur-indent (+ (current-indentation) powershell-indent-width))
                       (setq not-indented nil))
 
-                (if (looking-at "^[ \t]*\\(if\\|for\\|foreach\\|function\\|else\\|do\\|while\\)\\>")
-                    (progn
-                      (setq cur-indent (current-indentation))
-                      (forward-line 1)
-                      (setq lines-back (- lines-back 1))
-                      (if (looking-at "^[ \t]*{") ; Has block
-                          (setq not-indented nil)
-                        (if (equal lines-back 0) ; No block
-                            (progn
-                              (setq cur-indent (+ cur-indent powershell-indent-width))
-                              (setq not-indented nil))
-                          (setq not-indented nil)))
-                      )
-                  (if (bobp)
-                      (setq not-indented nil)))))))))
+                  (if (looking-at "^[ \t]*\\(if\\|for\\|foreach\\|function\\|else\\|do\\|while\\)\\>")
+                      (progn
+                        (setq cur-indent (current-indentation))
+                        (forward-line 1)
+                        (setq lines-back (- lines-back 1))
+                        (if (looking-at "^[ \t]*{") ; Has block
+                            (setq not-indented nil)
+                          (if (equal lines-back 0) ; No block
+                              (progn
+                                (setq cur-indent (+ cur-indent powershell-indent-width))
+                                (setq not-indented nil))
+                            (setq not-indented nil)))
+                        )
+                    (if (bobp)
+                        (setq not-indented nil)))))))))
 
       (if cur-indent
           (indent-line-to cur-indent)
@@ -135,7 +136,7 @@
    '("\\<\\(d\\(?:o\\|efault\\)\\|else\\(if\\)?\\|f\\(?:oreach\\|unction\\)\\|if\\|switch\\|t\\(?:hrow\\|rap\\)\\|w\\(?:here\\|hile\\)\\)\\>" . font-lock-keyword-face)
    '("$[a-zA-Z0-9_\\.:{}]+\\>" . font-lock-variable-name-face)
    '("\\<\\w+-\\w+\\>" . font-lock-function-name-face)
-   '("\\<-\\w+\\>" . font-lock-builtin-face)
+   '("\\<-\\w+\\>\\|cd" . font-lock-builtin-face)
    '("@'[A-z0-9\n\t ]+'@" . font-lock-string-face)
    '("@\"[A-z0-9\n\t ]+\"@" . font-lock-string-face)
    '("\\(-\\)\\([a-z][a-zA-Z0-9]+\\)" . font-lock-type-face))
@@ -147,27 +148,27 @@
 ;; is adding punctuation to word syntax appropriate??
 (defvar powershell-mode-syntax-table
   (let ((powershell-mode-syntax-table (make-syntax-table)))
-   (modify-syntax-entry ?.  "_" powershell-mode-syntax-table)
-   (modify-syntax-entry ?:  "_" powershell-mode-syntax-table)
-   (modify-syntax-entry ?\\ "_" powershell-mode-syntax-table)
-   (modify-syntax-entry ?{ "(}" powershell-mode-syntax-table)
-   (modify-syntax-entry ?} "){" powershell-mode-syntax-table)
-   (modify-syntax-entry ?[ "(]" powershell-mode-syntax-table)
-   (modify-syntax-entry ?] ")[" powershell-mode-syntax-table)
-   (modify-syntax-entry ?( "()" powershell-mode-syntax-table)
-   (modify-syntax-entry ?) ")(" powershell-mode-syntax-table)
-   (modify-syntax-entry ?` "\\" powershell-mode-syntax-table)
-   (modify-syntax-entry ?_  "w" powershell-mode-syntax-table)
-   (modify-syntax-entry ?#  "<" powershell-mode-syntax-table)
-   (modify-syntax-entry ?\n ">" powershell-mode-syntax-table)
-   (modify-syntax-entry ?' "\"" powershell-mode-syntax-table)
+    (modify-syntax-entry ?.  "_" powershell-mode-syntax-table)
+    (modify-syntax-entry ?:  "_" powershell-mode-syntax-table)
+    (modify-syntax-entry ?\\ "_" powershell-mode-syntax-table)
+    (modify-syntax-entry ?{ "(}" powershell-mode-syntax-table)
+    (modify-syntax-entry ?} "){" powershell-mode-syntax-table)
+    (modify-syntax-entry ?[ "(]" powershell-mode-syntax-table)
+                         (modify-syntax-entry ?] ")[" powershell-mode-syntax-table)
+    (modify-syntax-entry ?( "()" powershell-mode-syntax-table)
+                         (modify-syntax-entry ?) ")(" powershell-mode-syntax-table)
+    (modify-syntax-entry ?` "\\" powershell-mode-syntax-table)
+    (modify-syntax-entry ?_  "w" powershell-mode-syntax-table)
+    (modify-syntax-entry ?#  "<" powershell-mode-syntax-table)
+    (modify-syntax-entry ?\n ">" powershell-mode-syntax-table)
+    (modify-syntax-entry ?' "\"" powershell-mode-syntax-table)
     powershell-mode-syntax-table)
   "Syntax for PowerShell major mode")
 
 (defvar powershell-imenu-expressions
   '((nil "^\\(?:function\\|Add-Class\\)\\s-+\\([-a-z0-9A-Z_^:.]+\\)[^-a-z0-9A-Z_^:.]" 1))
   "alist of regexp identifying the start of powershell definitions"
-)
+  )
 (defun powershell-setup-imenu ()
   "Installs powershell-imenu-expression."
   (require 'imenu t)
@@ -176,7 +177,7 @@
   (imenu-add-menubar-index)
   (require 'which-func t)
   (which-function-mode t)
-)
+  )
 
 (defun powershell-mode ()
   "Major mode for editing PowerShell files"
@@ -194,13 +195,13 @@
       (setq compile-command (format "PowerShell -noprofile -nologo -command %s"
                                     (expand-file-name buffer-file-name))))
 
-   ; Here we register our line indentation function with Emacs. Now Emacs will
-   ; call our function every time line indentation is required (like when the
-   ; user calls indent-region).
-;;  (make-local-variable 'indent-line-function)
-;;  (setq indent-line-function 'powershell-indent-line)
+                                        ; Here we register our line indentation function with Emacs. Now Emacs will
+                                        ; call our function every time line indentation is required (like when the
+                                        ; user calls indent-region).
+  ;;  (make-local-variable 'indent-line-function)
+  ;;  (setq indent-line-function 'powershell-indent-line)
 
-   ; Set indentation defaults.
+                                        ; Set indentation defaults.
   (make-local-variable 'powershell-indent-width)
   (set (make-local-variable 'comment-start) "#")
   (powershell-setup-imenu)
