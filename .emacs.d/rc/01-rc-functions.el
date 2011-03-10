@@ -651,6 +651,7 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
     )
   )
 
+
 (provide '01-rc-functions)
 ;;; emacs-rc-functions.el ends here
 

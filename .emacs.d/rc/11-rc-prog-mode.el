@@ -764,8 +764,35 @@ Use CREATE-TEMP-F for creating temp copy."
 (add-hook 'gdb-mode-hook 'gdb-mode-hook-func)
 
 ;;;;;;;; Configurations of PowerShell-mode ;;;;;;;;
-(autoload 'powershell-mode "powershell-mode" "A editing mode for Microsoft PowerShell." t)
-(add-to-list 'auto-mode-alist '("\\.ps1\\'" . powershell-mode)) ; PowerShell script
+(require 'powershell-mode)
+
+(defun yyc/ps-help (function)
+  "Display the documentation of FUNCTION (a symbol)."
+  (interactive
+   (let ((fn (thing-at-point 'symbol))
+                  val)
+     (message fn)
+     (setq val (completing-read (if fn
+                                    (format "Describe function (default %s): " fn)
+                                  "Describe function: ")
+                                obarray 'fboundp t nil nil
+                                ))
+     (list (if (equal val "")
+               fn (intern val)))))
+
+  (if (null function)
+      (message "You didn't specify a function")
+    (progn
+      (start-process "Powershell-help" nil "devhelp" "-s" function))))
+
+(add-to-list 'auto-mode-alist '("\\.ps1\\'" .
+                                powershell-mode)) ; PowerShell script
+(add-hook 'powershell-mode-hook
+          (lambda()
+            (progn
+              (auto-complete-mode t)
+              (local-set-key [(f1)] 'yyc/ps-help))))
+
 
 
 (provide '11-rc-prog-mode)

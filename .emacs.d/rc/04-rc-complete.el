@@ -153,22 +153,24 @@
 ;;  *********************** Autocomplete ***********************
 
 (require 'auto-complete)
-(require 'auto-complete-config)
 (require 'ac-company)
+(require 'auto-complete-config)
 
 (ac-config-default) ;; Defined in ac-complete-config
 
 (setq ac-auto-start 3)
 (setq ac-dwim t)
 (setq ac-override-local-map nil)  ;don't override local map
+(setq ac-ignore-case t)
 (global-auto-complete-mode t)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/templates/ac-dict")
+
 (mapc
  (lambda(mode)
    (add-to-list 'ac-modes mode))
  '(asm-mode emms-tag-editor-mode haskell-mode latex-mode
             lisp-mode literate-haskell-mode org-mode text-mode
-            eshell-mode graphviz-dot-mode))
+            eshell-mode graphviz-dot-mode powershell-mode))
 
 (set-face-background 'ac-selection-face "steelblue")
 (set-face-background 'ac-candidate-face "lightgray")
@@ -181,6 +183,7 @@
                 ac-source-words-in-buffer
                 ac-source-filename
                 ac-source-semantic
+                ac-source-dictionary
                 ))
 
 ;;;; Extend Auto-Complete with company backends.
