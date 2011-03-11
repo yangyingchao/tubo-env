@@ -761,10 +761,41 @@ Use CREATE-TEMP-F for creating temp copy."
 
 (add-hook 'gdb-mode-hook 'gdb-mode-hook-func)
 
+
+
 ;;;;;;;; Configurations of PowerShell-mode ;;;;;;;;
 (require 'powershell-mode)
 
-(defun yyc/ps-help (function)
+(defun yyc/pws-find-tag (function)
+  "Find defination of function under current poin"
+  (interactive
+   (let ((fn (thing-at-point 'symbol))
+         val cmd)
+     (message fn)
+     (setq val (completing-read (if fn
+                                    (format "Search for (default %s): " fn)
+                                  "Search for: ")
+                                obarray 'fboundp t nil nil
+                                ))
+     (list (if (equal val "")
+               fn (intern val)))))
+
+  (if (null function)
+      (message "You didn't specify a function")
+    (progn
+      (setq cmd (concat "egrep -i \"^function +" function "\" . -rI"))
+      (eshell-command cmd)
+      (pop-to-buffer (get-buffer "*grep*"))
+      (setq buffer-read-only nil)
+      (goto-char (point-min))
+      (kill-line 3)
+      (insert (concat "*********************** Find Tag for:"
+                      function "********************\n\n"))
+      (setq buffer-read-only t)
+      (goto-char (point-min))
+      )))
+
+(defun yyc/pws-get-help (function)
   "Display the documentation of FUNCTION (a symbol)."
   (interactive
    (let ((fn (thing-at-point 'symbol))
@@ -792,7 +823,11 @@ Use CREATE-TEMP-F for creating temp copy."
               (yyc/show-prog-keywords)
               (program-mode-auto-pair)
               (setq indent-line-function 'powershell-indent-line)
-              (local-set-key [(f1)] 'yyc/ps-help))))
+              (local-set-key [(f1)] 'yyc/pws-get-help)
+              (local-set-key [(meta .)] 'yyc/pws-find-tag)
+              )))
+
+
 
 ;;;;;;;;; Emacs-lisp mode ;;;;;;;;;;;;;;
 

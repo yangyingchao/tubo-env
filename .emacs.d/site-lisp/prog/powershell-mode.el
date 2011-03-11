@@ -73,13 +73,16 @@
           (lines-back 0)
           cur-indent)
 
-      (if (looking-at "^[ \t]*}") ; Check for closing brace
+      (if (looking-at "^[ \t]*[)}]") ; Check for closing brace
           (progn
             (save-excursion
               (forward-line -1)
               (setq lines-back (+ lines-back 1))
-              (if (looking-at "^[ \t]*{") ; If now looking at opening block
-                  (setq cur-indent (current-indentation)) ;; duplicate indent
+              (if (looking-at "^[ \t]*[{()]") ; If now looking at opening
+                                        ; block
+                  (progn
+                    (setq cur-indent (current-indentation)))
+                   ;; duplicate indent
                 (setq cur-indent (- (current-indentation) powershell-indent-width)))
               )
 
@@ -88,7 +91,7 @@
                 (setq cur-indent 0)))
 
         (save-excursion
-          (if (looking-at "^[ \t]*{") ; Opening block
+          (if (looking-at "^[ \t]*[{(]") ; Opening block
               (progn
                 (forward-line -1)
                 (setq lines-back (+ lines-back 1))
@@ -98,22 +101,22 @@
             (while not-indented
               (forward-line -1)
               (setq lines-back (+ lines-back 1))
-              (if (looking-at "^[ \t]*}") ; Closing block
+              (if (looking-at "^[ \t]*[})]") ; Closing block
                   (progn
                     (setq cur-indent (current-indentation))
                     (setq not-indented nil))
 
-                (if (looking-at "^[ \t]*{") ; Opening block
+                (if (looking-at "^[ \t]*[{(]") ; Opening block
                     (progn
                       (setq cur-indent (+ (current-indentation) powershell-indent-width))
                       (setq not-indented nil))
 
-                  (if (looking-at "^[ \t]*\\(if\\|for\\|foreach\\|function\\|else\\|do\\|while\\)\\>")
+                  (if (looking-at "^[ \t]*\\(if\\|for\\|foreach\\|[fF]unction\\|else\\|do\\|while\\)\\>")
                       (progn
                         (setq cur-indent (current-indentation))
                         (forward-line 1)
                         (setq lines-back (- lines-back 1))
-                        (if (looking-at "^[ \t]*{") ; Has block
+                        (if (looking-at "^[ \t]*[{(]") ; Has block
                             (setq not-indented nil)
                           (if (equal lines-back 0) ; No block
                               (progn
@@ -133,7 +136,7 @@
 ;; only defined one keyword list right now
 (defconst powershell-font-lock-keywords-3
   (list
-   '("\\<\\(d\\(?:o\\|efault\\)\\|else\\(if\\)?\\|f\\(?:oreach\\|unction\\)\\|if\\|switch\\|t\\(?:hrow\\|rap\\)\\|w\\(?:here\\|hile\\)\\)\\>" . font-lock-keyword-face)
+   '("\\<\\(d\\(?:o\\|efault\\)\\|else\\(if\\)?\\|[fF]\\(?:oreach\\|unction\\)\\|if\\|switch\\|t\\(?:hrow\\|rap\\)\\|w\\(?:here\\|hile\\)\\)\\>" . font-lock-keyword-face)
    '("$[a-zA-Z0-9_\\.:{}]+\\>" . font-lock-variable-name-face)
    '("\\<\\w+-\\w+\\>" . font-lock-function-name-face)
    '("\\<-\\w+\\>\\|cd" . font-lock-builtin-face)
@@ -166,7 +169,7 @@
   "Syntax for PowerShell major mode")
 
 (defvar powershell-imenu-expressions
-  '((nil "^\\(?:function\\|Add-Class\\)\\s-+\\([-a-z0-9A-Z_^:.]+\\)[^-a-z0-9A-Z_^:.]" 1))
+  '((nil "^\\(?:[fF]unction\\|Add-Class\\)\\s-+\\([-a-z0-9A-Z_^:.]+\\)[^-a-z0-9A-Z_^:.]" 1))
   "alist of regexp identifying the start of powershell definitions"
   )
 (defun powershell-setup-imenu ()

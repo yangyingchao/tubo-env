@@ -2,8 +2,8 @@
 ImagePath +:$HOME/.fvwm/icons
 
 # Edge Settings
-EdgeResistance 100
-Style * EdgeMoveDelay 250
+EdgeResistance -1
+Style * EdgeMoveDelay 2500
 Style * EdgeMoveResistance 20
 EdgeThickness 0
 EdgeScroll 0 0
