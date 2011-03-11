@@ -136,7 +136,6 @@ AddToFunc   StartFunction
 + I Exec conky -o -y 0 -d
 + I Exec exec trayer --SetDockType true --widthtype pixel --width 204  --heighttype pixel --height 32 --align right  --transparent true --alpha 255  --edge bottom --margin 1
 + I Exec exec fcitx -d
-+ I Exec exec /opt/bin/gdlinux
 + I Exec exec pidgin
 
 DestroyFunc ExitFunction
