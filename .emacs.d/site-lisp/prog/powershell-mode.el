@@ -38,6 +38,10 @@
   "Keymap for PS major mode")
 
 (defvar powershell-indent-width 4)
+
+(defvar pws-wrap-line nil "Has line been wrapped before.")
+
+
 ;; make braces indent properly
 (defun powershell-electric-brace (arg)
   "Correct indentation for squigly brace"
@@ -73,6 +77,22 @@
           (lines-back 0)
           cur-indent)
 
+      (save-excursion
+        (forward-line -1)
+        (setq cur-indent (current-indentation))
+        (if (looking-at ".*`$")
+            (progn
+              (setq cur-indent (+ cur-indent powershell-indent-width))
+              (setq pws-wrap-line t)
+              (message "A"))
+          (progn
+            (if pws-wrap-line
+                (progn
+                  (setq cur-indent (- cur-indent powershell-indent-width))
+                  (setq pws-wrap-line nil)
+                  (message "B")
+                  )
+                ))))
       (if (looking-at "^[ \t]*[)}]") ; Check for closing brace
           (progn
             (save-excursion
@@ -81,8 +101,10 @@
               (if (looking-at "^[ \t]*[{()]") ; If now looking at opening
                                         ; block
                   (progn
-                    (setq cur-indent (current-indentation)))
-                   ;; duplicate indent
+                    ;; (setq cur-indent (current-indentation))
+                    nil
+                    )
+                ;; duplicate indent
                 (setq cur-indent (- (current-indentation) powershell-indent-width)))
               )
 
@@ -129,8 +151,8 @@
 
       (if cur-indent
           (indent-line-to cur-indent)
-        (indent-line-to 0)))))
-
+        (indent-line-to 0))
+      )))
 
 
 ;; only defined one keyword list right now
