@@ -21,8 +21,12 @@
 ;;       include it :) - Many thanks Richard! Fixes: indenting fixed, elseif keyword added,
 ;;       visiting file bug fixed, standard comment support added. I only tested with latest
 ;;       EmacsWin32, YMMV
-
-
+;;
+;; XXX: Added by yangyingchao@gmail.com
+;;      (A). Added indentation for wrapped line.
+;;      (B). Added indentation of bodyscripts.
+;;      (C). Register powershell-indent-line as default indent-line-function.
+;;      (D). Other small modifications.
 
 ;; custom hooks
 (defvar powershell-mode-hook nil)
@@ -81,18 +85,22 @@
         (setq cur-indent (current-indentation))
 
         (if (looking-at ".*`$")
-              (setq prev-wrap t)
-            (setq prev-wrap nil)
+            (setq prev-wrap t)
+          (setq prev-wrap nil)
           )
 
         (if (= 0 (forward-line -1))
             (if (looking-at ".*`$")
                 (setq pprev-wrap t)
               (setq pprev-wrap nil)  )
-            (setq pprev-wrap nil)
+          (setq pprev-wrap nil)
           )
 
         (forward-line)
+        (if (or prev-wrap pprev-wrap)
+            (setq not-indented nil)
+          (setq not-indented t)
+          )
         (if prev-wrap
             (if pprev-wrap ;; Previous lines are both wrapped.
                 nil
@@ -100,7 +108,7 @@
               )
           (if pprev-wrap
               (setq cur-indent (- cur-indent powershell-indent-width))
-              )
+            )
           ))
 
       (if (looking-at "^[ \t]*{.*}") ; Special blockscript, indent!
@@ -168,9 +176,6 @@
                       (if (bobp)
                           (setq not-indented nil)))))))))
         )
-
-
-
 
       (if cur-indent
           (indent-line-to cur-indent)

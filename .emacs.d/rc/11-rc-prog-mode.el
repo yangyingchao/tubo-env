@@ -427,13 +427,17 @@
 
 ;;;; Common Program settings
 
-(defun setup-program-keybindings()
+(defun yyc/basic-prog-keybinding ()
+  "Some Basic keybinds fro programming"
   (interactive)
-  ;;;; Common program-keybindings
   (local-set-key  [(return)] 'newline-and-indent)
-
-  (xgtags-mode 1) ;; keybindings for xgtags.
   (local-set-key (kbd "M-|") 'align)
+  )
+
+(defun setup-program-keybindings()
+  ;;;; Common program-keybindings
+  (xgtags-mode 1) ;; keybindings for xgtags.
+
   ;;;; "keybindings for sematic"
   (semantic-default-c-setup)
   (local-set-key "." 'semantic-complete-self-insert)
@@ -494,6 +498,7 @@
 (defun my-program-hook ()
   ;; Enable hide-ifdef-mode
   (yyc/show-prog-keywords)
+  (yyc/basic-prog-keybinding)
   (setup-program-keybindings)
   (program-mode-auto-pair)
   (local-set-key (kbd "'") 'skeleton-pair-insert-maybe)
@@ -504,6 +509,7 @@
 (defun my-lisp-hook ()
   ;; Enable hide-ifdef-mode
   (yyc/show-prog-keywords)
+  (yyc/basic-prog-keybinding)
   (setup-program-keybindings)
   (program-mode-auto-pair)
   (local-set-key  [(tab)] 'indent-or-complete)
@@ -822,7 +828,7 @@ Use CREATE-TEMP-F for creating temp copy."
             (progn
               (yyc/show-prog-keywords)
               (program-mode-auto-pair)
-
+              (yyc/basic-prog-keybinding)
               (local-set-key [(f1)] 'yyc/pws-get-help)
               (local-set-key [(meta .)] 'yyc/pws-find-tag)
               )))
