@@ -39,7 +39,7 @@
 
 (defvar powershell-indent-width 4)
 
-(defvar pws-wrap-line nil "Has line been wrapped before.")
+(defvar pws-prev-is-wrap nil "Has line been wrapped before.")
 
 
 ;; make braces indent properly
@@ -75,79 +75,105 @@
       (indent-line-to 0)
     (let ((not-indented t)
           (lines-back 0)
-          cur-indent)
+          (prev-wrap nil)
+          (pprev-wrap nil)
+          cur-indent )
 
       (save-excursion
         (forward-line -1)
         (setq cur-indent (current-indentation))
+
         (if (looking-at ".*`$")
-            (progn
+              (setq prev-wrap t)
+            (setq prev-wrap nil)
+          )
+
+        (if (= 0 (forward-line -1))
+            (if (looking-at ".*`$")
+                (setq pprev-wrap t)
+              (setq pprev-wrap nil)  )
+            (setq pprev-wrap nil)
+          )
+
+        (forward-line)
+        (if prev-wrap
+            (if pprev-wrap ;; Previous lines are both wrapped.
+                nil
               (setq cur-indent (+ cur-indent powershell-indent-width))
-              (setq pws-wrap-line t)
-              (message "A"))
-          (progn
-            (if pws-wrap-line
-                (progn
-                  (setq cur-indent (- cur-indent powershell-indent-width))
-                  (setq pws-wrap-line nil)
-                  (message "B")
-                  )
-                ))))
-      (if (looking-at "^[ \t]*[)}]") ; Check for closing brace
-          (progn
-            (save-excursion
-              (forward-line -1)
-              (setq lines-back (+ lines-back 1))
-              (if (looking-at "^[ \t]*[{()]") ; If now looking at opening
-                                        ; block
-                  (progn
-                    ;; (setq cur-indent (current-indentation))
-                    nil
-                    )
-                ;; duplicate indent
-                (setq cur-indent (- (current-indentation) powershell-indent-width)))
               )
+          (if pprev-wrap
+              (setq cur-indent (- cur-indent powershell-indent-width))
+              )
+          ))
 
-            ;; Safety check to make sure we don't indent negative.
-            (if (< cur-indent 0)
-                (setq cur-indent 0)))
+      (if (looking-at "^[ \t]*{.*}") ; Special blockscript, indent!
+          (setq cur-indent (+ cur-indent powershell-indent-width))
 
-        (save-excursion
-          (if (looking-at "^[ \t]*[{(]") ; Opening block
-              (progn
+        ;; Check others
+        (if (looking-at "^[ \t]*[)}]") ; Check for closing brace
+            (progn
+              (save-excursion
                 (forward-line -1)
                 (setq lines-back (+ lines-back 1))
-                (setq cur-indent (current-indentation))
-                (setq not-indented nil))
-
-            (while not-indented
-              (forward-line -1)
-              (setq lines-back (+ lines-back 1))
-              (if (looking-at "^[ \t]*[})]") ; Closing block
-                  (progn
-                    (setq cur-indent (current-indentation))
-                    (setq not-indented nil))
-
-                (if (looking-at "^[ \t]*[{(]") ; Opening block
+                (if (looking-at "^[ \t]*[{()]") ; Looking at opening block
                     (progn
-                      (setq cur-indent (+ (current-indentation) powershell-indent-width))
+                      ;; (setq cur-indent (current-indentation))
+                      nil
+                      )
+                  ;; duplicate indent
+                  (setq cur-indent (- (current-indentation) powershell-indent-width)))
+                )
+
+              ;; Safety check to make sure we don't indent negative.
+              (if (< cur-indent 0)
+                  (setq cur-indent 0))
+              )
+
+          (save-excursion
+            (if (looking-at "^[ \t]*[{(]") ; Opening block
+                (progn
+                  (forward-line -1)
+                  (setq lines-back (+ lines-back 1))
+                  (setq cur-indent (current-indentation))
+                  (setq not-indented nil))
+
+              (while not-indented
+                (forward-line -1)
+                (setq lines-back (+ lines-back 1))
+                ;; (if (looking-at "^[ \t]*[})]") ; Closing block
+                (if (looking-at "^[ \t]*[})]") ; Closing block
+                    (progn
+                      (setq cur-indent (current-indentation))
                       (setq not-indented nil))
 
-                  (if (looking-at "^[ \t]*\\(if\\|for\\|foreach\\|[fF]unction\\|else\\|do\\|while\\)\\>")
+                  (if (looking-at "^[ \t]*[{(]") ; Opening block
                       (progn
-                        (setq cur-indent (current-indentation))
-                        (forward-line 1)
-                        (setq lines-back (- lines-back 1))
-                        (if (looking-at "^[ \t]*[{(]") ; Has block
-                            (setq not-indented nil)
-                          (if (equal lines-back 0) ; No block
-                              (progn
-                                (setq cur-indent (+ cur-indent powershell-indent-width))
-                                (setq not-indented nil))
-                            (setq not-indented nil)))
-                        )
-                    (if (bobp)
-                        (setq not-indented nil)))))))))
+                        (setq not-indented nil)
+                        (if (looking-at "^[ \t]*[{(].*[)}]")
+                            (setq cur-indent (- (current-indentation)
+                                                powershell-indent-width))
+                          (setq cur-indent (+ (current-indentation)
+                                              powershell-indent-width))))
+
+                    (if (looking-at "^[ \t]*\\(if\\|for\\|foreach\\|[fF]unction\\|else\\|do\\|while\\)\\>")
+                        (progn
+                          (setq cur-indent (current-indentation))
+                          (forward-line 1)
+                          (setq lines-back (- lines-back 1))
+                          (if (looking-at "^[ \t]*[{(]") ; Has block
+                              (setq not-indented nil)
+                            (if (equal lines-back 0) ; No block
+                                (progn
+                                  (setq cur-indent (+ cur-indent powershell-indent-width))
+                                  (setq not-indented nil))
+                              (setq not-indented nil)))
+                          )
+                      (if (bobp)
+                          (setq not-indented nil)))))))))
+        )
+
+
+
 
       (if cur-indent
           (indent-line-to cur-indent)
