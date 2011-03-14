@@ -822,7 +822,7 @@ Use CREATE-TEMP-F for creating temp copy."
             (progn
               (yyc/show-prog-keywords)
               (program-mode-auto-pair)
-              (setq indent-line-function 'powershell-indent-line)
+
               (local-set-key [(f1)] 'yyc/pws-get-help)
               (local-set-key [(meta .)] 'yyc/pws-find-tag)
               )))

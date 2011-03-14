@@ -39,9 +39,6 @@
 
 (defvar powershell-indent-width 4)
 
-(defvar pws-prev-is-wrap nil "Has line been wrapped before.")
-
-
 ;; make braces indent properly
 (defun powershell-electric-brace (arg)
   "Correct indentation for squigly brace"
@@ -238,6 +235,7 @@
   (setq mode-name "PS")
   (set-syntax-table powershell-mode-syntax-table)
   (use-local-map powershell-mode-map)
+  (setq indent-line-function 'powershell-indent-line)
   (set (make-local-variable 'font-lock-defaults)
        '(powershell-font-lock-keywords))
 
