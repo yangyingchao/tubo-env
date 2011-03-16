@@ -28,7 +28,7 @@ SetEnv fvwm_decor $[HOME]/.fvwm/icons/decoration
 
 # window behavior
 Style *	SnapAttraction 10 SameType Screen
-Style * !IconTitle, StickyIcon, IconBox 1300x800+30-70, IconFill left bottom, IconGrid 30 30
+Style * !IconTitle, StickyIcon, IconBox 1300x960+30-30, IconFill top left, IconGrid 32 32, HilightFocusWin
 Style * BorderColorset 100, HilightBorderColorset 100
 Style * CascadePlacement
 Style * PositionPlacement Center, BorderWidth 1, HandleWidth 1

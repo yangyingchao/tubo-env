@@ -10,7 +10,7 @@ DestroyModuleConfig FvwmDocker: *
 *FvwmDocker: Rows    1
 *FvwmDocker: Columns 9
 *FvwmDocker: Frame   0
-*FvwmDocker: Geometry -0-30 #位置
+*FvwmDocker: Geometry -0-48 #位置
 *FvwmDocker: Padding 1 1
 *FvwmDocker: (1x1, Icon dock/wcmd.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch wcmd wcmd* $left $top`, `Next (wcmd*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon dock/firefox.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch firefox firefox* $left $top`, `Next (firefox*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
