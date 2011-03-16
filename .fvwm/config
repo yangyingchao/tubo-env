@@ -31,7 +31,7 @@ Style *	SnapAttraction 10 SameType Screen
 Style * !IconTitle, StickyIcon, IconBox 1300x800+30-70, IconFill left bottom, IconGrid 30 30
 Style * BorderColorset 100, HilightBorderColorset 100
 Style * CascadePlacement
-Style * CenterPlacement, BorderWidth 1, HandleWidth 1
+Style * PositionPlacement Center, BorderWidth 1, HandleWidth 1
 Style * ClickToFocus, MouseFocusClickRaises
 Style * Colorset 5, HilightColorset 5
 Style * DecorateTransient
@@ -40,7 +40,6 @@ Style * IconSize 48 48
 Style * IconTitle, IndexedIconName
 Style * IconTitleColorset 0, HilightIconTitleColorset 3
 Style * IconTitleRelief 0
-Style * LeftJustified
 Style * MWMFunctions, MWMDecor, HintOverride
 Style * NoIconTitle
 Style * ResizeOpaque
