@@ -1,0 +1,4 @@
+Function ${1:NAME} (${2:args...})
+{
+        $0
+}

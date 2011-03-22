@@ -1,0 +1,4 @@
+foreach ( ${1:<variable>} in ${2:<pipeline>} )
+{
+    ${3:<statementList>}
+}

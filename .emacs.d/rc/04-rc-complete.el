@@ -27,6 +27,7 @@
         ("\\.html$" . ["insert.html" auto-update-defaults])
         ("\\.devhelp2$" . ["insert.devhelp2" auto-update-defaults])
         ("\\.ebuild$" . ["insert.ebuild" auto-update-defaults])
+        ("\\.sh$" . ["insert.sh" auto-update-defaults])
         ("Doxyfile$" . ["insert.doxyfile" auto-update-defaults])
         ))
 

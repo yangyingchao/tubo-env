@@ -1,0 +1,5 @@
+switch ${1:-options} ( ${2:<pipeline>} )
+{
+${3:<pattern>} { ${4:<statementList>} }
+default { ${5:<statementList>} }
+}
