@@ -59,12 +59,12 @@
 
 (setq woman-manpath (quote ("/usr/share/man" "/usr/local/share/man/")))
 
-(defun peek-woman() ;; 这个名字有点罪过……
+(defun peer-woman() ;; 这个名字有点罪过……
   "Wrap of linux man command"
   (interactive)
   (let ((woman-topic-at-point t))
     (woman)))
-(global-set-key [(f1)] 'peek-woman)   ;;设定F1为woman快捷键
+(global-set-key [(f1)] 'peer-woman)   ;;设定F1为woman快捷键
 
 
  ;;; ispell
