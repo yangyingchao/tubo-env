@@ -18,7 +18,7 @@ fvwm_menu_output = os.path.join(FVWM_HOME, "Menu")
 
 desktop_search_path = ["/usr/share/applications"]
 icon_paths          = ["/usr/share/pixmaps", "/usr/share/icons/hicolor",
-                       "/home/yyc/.icons/Faenza"]
+                       "/usr/share/icons/oxygen", "/home/yyc/.icons/Faenza"]
 
 
 #             +-----------+------------+-------------+-----------+

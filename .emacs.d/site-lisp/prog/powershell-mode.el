@@ -160,7 +160,7 @@
                           (setq cur-indent (+ (current-indentation)
                                               powershell-indent-width))))
 
-                    (if (looking-at "^[ \t]*\\(if\\|for\\|foreach\\|[fF]unction\\|else\\|do\\|while\\)\\>")
+                    (if (looking-at "^[ \t]*\\(if\\|for\\|foreach\\|[fF]unction\\|else\\|do\\|while\\|try\\|catch\\)\\>")
                         (progn
                           (setq cur-indent (current-indentation))
                           (forward-line 1)
@@ -186,9 +186,9 @@
 ;; only defined one keyword list right now
 (defconst powershell-font-lock-keywords-3
   (list
-   '("\\<\\(d\\(?:o\\|efault\\)\\|else\\(if\\)?\\|[fF]\\(?:oreach\\|unction\\)\\|if\\|switch\\|t\\(?:hrow\\|rap\\)\\|w\\(?:here\\|hile\\)\\)\\>" . font-lock-keyword-face)
+   '("\\<\\(d\\(?:o\\|efault\\)\\|try\\|param\\|finally\\|catch\\|else\\(if\\)?\\|[fF]\\(?:oreach\\|unction\\)\\|if\\|switch\\|t\\(?:hrow\\|rap\\)\\|w\\(?:here\\|hile\\)\\)\\>" . font-lock-keyword-face)
    '("$[a-zA-Z0-9_\\.:{}]+\\>" . font-lock-variable-name-face)
-   '("\\<\\w+-\\w+\\>" . font-lock-function-name-face)
+   '("\\<\\w+-\\w+\\(-\\w+\\)*\\>" . font-lock-function-name-face)
    '("\\<-\\w+\\>\\|cd" . font-lock-builtin-face)
    '("@'[A-z0-9\n\t ]+'@" . font-lock-string-face)
    '("@\"[A-z0-9\n\t ]+\"@" . font-lock-string-face)
