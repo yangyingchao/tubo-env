@@ -186,7 +186,7 @@
 ;; only defined one keyword list right now
 (defconst powershell-font-lock-keywords-3
   (list
-   '("\\<\\(d\\(?:o\\|efault\\)\\|try\\|param\\|finally\\|catch\\|else\\(if\\)?\\|[fF]\\(?:oreach\\|unction\\)\\|if\\|switch\\|t\\(?:hrow\\|rap\\)\\|w\\(?:here\\|hile\\)\\)\\>" . font-lock-keyword-face)
+   '("\\<\\(d\\(?:o\\|efault\\)\\|try\\|return\\|param\\|finally\\|catch\\|else\\(if\\)?\\|[fF]\\(?:oreach\\|unction\\)\\|if\\|switch\\|t\\(?:hrow\\|rap\\)\\|w\\(?:here\\|hile\\)\\)\\>" . font-lock-keyword-face)
    '("$[a-zA-Z0-9_\\.:{}]+\\>" . font-lock-variable-name-face)
    '("\\<\\w+-\\w+\\(-\\w+\\)*\\>" . font-lock-function-name-face)
    '("\\<-\\w+\\>\\|cd" . font-lock-builtin-face)
