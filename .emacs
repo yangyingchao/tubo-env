@@ -102,6 +102,8 @@
                       :bold t)
   (set-face-attribute 'font-lock-function-name-face nil
                       :bold t)
+  (set-face-attribute 'font-lock-builtin-face nil
+                      :bold t)
   )
 
 ;;;; backup settings 备份设置

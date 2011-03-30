@@ -170,7 +170,8 @@
            "elseif" "foreach" "unction" "if" "else" "switch" "throw" "rap"
            "where" "while" "for" "Default" "Try" "Continue" "Return" "Param"
            "Finally" "Catch" "Elseif" "Foreach" "Unction" "If" "Else"
-           "Switch" "Throw" "Rap" "Where" "While" "For") symbol-end)
+           "Switch" "Throw" "Rap" "Where" "While" "For" "break" "Break"
+           ) symbol-end)
      . font-lock-keyword-face)
     ;; Variables.
     (,(rx "$"  (1+ word) (0+ "_" (1+ word)))
@@ -187,10 +188,10 @@
           (group "@" (1+ (or word ?_)) (0+ "." (1+ (or word ?_)))))
      (1 font-lock-type-face))
     ;; built-in comparations
-    (,(rx symbol-start "-"
-          (or
-           "eq" "gt" "lt" "ne" "and" "or" "not"
-           ) symbol-end)
+    (,(rx symbol-start
+          (or "-gt" "-lt" "-ne" "-and" "-or" "-not" "-eq"
+              "in"
+          ) symbol-end)
      . font-lock-builtin-face)
     ;; Builtin Functions
     (,(rx (1+ (1+ word) "-") (1+ word))
