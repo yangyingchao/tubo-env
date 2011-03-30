@@ -99,6 +99,9 @@ def parse_single(path):
                     pos = val.rfind("%")
                     if pos != -1:
                         val = val[:pos]
+                    pos = val.rfind(" -")
+                    if pos != -1:
+                        val = val[:pos]
                 tmp_dic[key] = val
                 break
     return deepcopy(tmp_dic)

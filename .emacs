@@ -30,7 +30,7 @@
 (setq w32-get-true-file-attributes nil)
 (setq x-select-enable-clipboard t) ; 支持外部剪贴板
 (show-paren-mode t) ; 显示匹配的括号
-(tool-bar-mode nil) ; 不显示菜单栏
+(tool-bar-mode -1) ; 不显示菜单栏
 (transient-mark-mode t) ; 高亮显示选中的部分
 (setq-default fill-column 78); 列宽
 (setq-default auto-fill-function 'do-auto-fill)
@@ -83,7 +83,13 @@
   (set-face-foreground 'font-lock-comment-face  "#cc0000")
   (set-face-foreground 'font-lock-constant-face "#3465a4")
   (set-face-foreground 'font-lock-doc-face "#204a87")
-  (set-face-foreground 'font-lock-string-face  "#ce5c00")
+  (set-face-foreground 'font-lock-function-name-face "#edd400")
+  (set-face-foreground 'font-lock-keyword-face "#729fcf")
+  (set-face-foreground 'font-lock-string-face "#ce5c00")
+  (set-face-foreground 'font-lock-type-face  "#8ae234")
+  (set-face-foreground 'font-lock-variable-name-face "#eeeeec")
+  (set-face-foreground 'font-lock-warning-face "#f57900")
+
   (set-face-attribute 'font-lock-keyword-face nil
                       :bold t)
   (set-face-attribute 'font-lock-type-face nil
