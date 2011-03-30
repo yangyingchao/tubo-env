@@ -36,32 +36,10 @@
   (let ((powershell-mode-map (make-keymap)))
     ;;    (define-key powershell-mode-map "\r" 'powershell-indent-line)
     (define-key powershell-mode-map "\t" 'powershell-indent-line)
-    ;;    (define-key powershell-mode-map "{" 'powershell-electric-brace)
-    ;;    (define-key powershell-mode-map "}" 'powershell-electric-brace)
     powershell-mode-map)
   "Keymap for PS major mode")
 
 (defvar powershell-indent-width 4)
-
-;; make braces indent properly
-(defun powershell-electric-brace (arg)
-  "Correct indentation for squigly brace"
-  (interactive "P")
-  (self-insert-command (prefix-numeric-value arg))
-  (unless
-      (save-excursion
-        (beginning-of-line)
-        (or
-         ;;          (looking-at "$\w+") ;Don't do this in a variable
-         (looking-at "{\s*|[^}]") ;Don't do this in an open procedure block
-         (looking-at "\"[^\"]*$")) ;Don't do this in a open string
-        )
-    (powershell-indent-line)
-    (forward-char 1)
-    )
-  )
-
-                                        ;(add-to-list 'auto-mode-alist '("\\.ps1\\'" . powershell-mode))
 
 
 ;; Function to control indenting.
@@ -183,20 +161,42 @@
       )))
 
 
-;; only defined one keyword list right now
-(defconst powershell-font-lock-keywords-3
-  (list
-   '("\\<\\(d\\(?:o\\|efault\\)\\|try\\|return\\|param\\|finally\\|catch\\|else\\(if\\)?\\|[fF]\\(?:oreach\\|unction\\)\\|if\\|switch\\|t\\(?:hrow\\|rap\\)\\|w\\(?:here\\|hile\\)\\)\\>" . font-lock-keyword-face)
-   '("$[a-zA-Z0-9_\\.:{}]+\\>" . font-lock-variable-name-face)
-   '("\\<\\w+-\\w+\\(-\\w+\\)*\\>" . font-lock-function-name-face)
-   '("\\<-\\w+\\>\\|cd" . font-lock-builtin-face)
-   '("@'[A-z0-9\n\t ]+'@" . font-lock-string-face)
-   '("@\"[A-z0-9\n\t ]+\"@" . font-lock-string-face)
-   '("\\(-\\)\\([a-z][a-zA-Z0-9]+\\)" . font-lock-type-face))
-  "Maximum highlighting for PowerShell major mode")
-
-(defvar powershell-font-lock-keywords powershell-font-lock-keywords-3
-  "Maximum highlighting for PowerShell major mode")
+(defvar pws-font-lock-keywords
+  `(
+    ;; Basic keywords.
+    (,(rx symbol-start
+          (or
+           "default" "try" "continue" "return" "param" "finally" "catch"
+           "elseif" "foreach" "unction" "if" "else" "switch" "throw" "rap"
+           "where" "while" "for" "Default" "Try" "Continue" "Return" "Param"
+           "Finally" "Catch" "Elseif" "Foreach" "Unction" "If" "Else"
+           "Switch" "Throw" "Rap" "Where" "While" "For") symbol-end)
+     . font-lock-keyword-face)
+    ;; Variables.
+    (,(rx "$"  (1+ word) (0+ "_" (1+ word)))
+     . font-lock-variable-name-face)
+    ;; Digital Numbers.
+    (,(rx symbol-start (1+ digit) (0+ "." (1+ digit))  symbol-end)
+     . font-lock-constant-face)
+    ;; Function declaretions.
+    (,(rx symbol-start (group (any "f" "F") "unction")
+          (1+ space) (group (1+ (or word ? (any "_" "-")))))
+     (1 font-lock-keyword-face) (2 font-lock-function-name-face))
+    ;; @blocks.
+    (,(rx line-start (* (any " \t"))
+          (group "@" (1+ (or word ?_)) (0+ "." (1+ (or word ?_)))))
+     (1 font-lock-type-face))
+    ;; built-in comparations
+    (,(rx symbol-start "-"
+          (or
+           "eq" "gt" "lt" "ne" "and" "or" "not"
+           ) symbol-end)
+     . font-lock-builtin-face)
+    ;; Builtin Functions
+    (,(rx (1+ (1+ word) "-") (1+ word))
+     . font-lock-function-name-face)
+    )
+  )
 
 ;; is adding punctuation to word syntax appropriate??
 (defvar powershell-mode-syntax-table
@@ -242,7 +242,7 @@
   (use-local-map powershell-mode-map)
   (setq indent-line-function 'powershell-indent-line)
   (set (make-local-variable 'font-lock-defaults)
-       '(powershell-font-lock-keywords))
+       '(pws-font-lock-keywords))
 
   (make-local-variable 'compile-command)
   (if buffer-file-name

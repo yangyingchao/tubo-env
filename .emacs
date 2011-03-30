@@ -83,11 +83,11 @@
   (set-face-foreground 'font-lock-comment-face  "#cc0000")
   (set-face-foreground 'font-lock-constant-face "#3465a4")
   (set-face-foreground 'font-lock-doc-face "#204a87")
-  (set-face-foreground 'font-lock-function-name-face "#edd400")
-  (set-face-foreground 'font-lock-keyword-face "#729fcf")
+  (set-face-foreground 'font-lock-function-name-face "Blue")
+  (set-face-foreground 'font-lock-keyword-face "Purple")
   (set-face-foreground 'font-lock-string-face "#ce5c00")
   (set-face-foreground 'font-lock-type-face  "#8ae234")
-  (set-face-foreground 'font-lock-variable-name-face "#eeeeec")
+  (set-face-foreground 'font-lock-variable-name-face "sienna")
   (set-face-foreground 'font-lock-warning-face "#f57900")
 
   (set-face-attribute 'font-lock-keyword-face nil
