@@ -159,8 +159,6 @@
           (indent-line-to cur-indent)
         (indent-line-to 0))
       )))
-
-
 (defvar pws-font-lock-keywords
   `(
     ;; Basic keywords.
