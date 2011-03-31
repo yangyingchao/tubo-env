@@ -821,8 +821,7 @@ Use CREATE-TEMP-F for creating temp copy."
       (start-process "Powershell-help" nil "devhelp" "-s" function))))
 
 
-(add-to-list 'auto-mode-alist '("\\.ps1\\'" .
-                                powershell-mode))
+
 (add-hook 'powershell-mode-hook
           (lambda()
             (progn

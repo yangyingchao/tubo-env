@@ -70,7 +70,8 @@
 ;;;; Color Settings 颜色配置
 (when window-system
   (set-face-attribute 'mode-line-buffer-id nil
-                      :foreground "RoyalBlue4")
+                      :foreground "navy"
+                      :bold t)
   (set-face-attribute 'mode-line-inactive nil
                       :foreground "black"
                       :background "gray75")
@@ -86,7 +87,7 @@
   (set-face-attribute 'trailing-whitespace nil
                       :background "#f57900")
   (set-face-attribute 'font-lock-constant-face nil
-                      :foreground "#bd7dbd")
+                      :foreground "dark cyan")
   (set-face-attribute 'font-lock-doc-face nil
                       :foreground "#204a87")
   (set-face-attribute 'font-lock-string-face nil
@@ -110,15 +111,12 @@
   (set-face-attribute 'font-lock-builtin-face nil
                       :italic t
                       :bold t
-                      :foreground "#8ae234")
+                      :foreground "lime green")
   (set-face-attribute 'font-lock-comment-face nil
                       :foreground "#cc0000")
   (set-face-attribute 'font-lock-preprocessor-face nil
                       :italic nil
                       :foreground "lavender")
-  (set-face-attribute 'mode-line-buffer-id nil
-                      :foreground "RoyalBlue4"
-                      :bold t)
   )
 
 ;;;; backup settings 备份设置
