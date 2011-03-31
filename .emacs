@@ -117,6 +117,8 @@
   (set-face-attribute 'font-lock-preprocessor-face nil
                       :italic nil
                       :foreground "lavender")
+  (set-face-attribute 'font-lock-preprocessor-face nil
+                      :foreground "red1")
   )
 
 ;;;; backup settings 备份设置
