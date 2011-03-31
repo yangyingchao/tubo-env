@@ -175,7 +175,7 @@
     (,(rx "$"  (1+ word) (0+ "_" (1+ word)))
      . font-lock-variable-name-face)
     ;; Digital Numbers.
-    (,(rx symbol-start (1+ digit) (0+ "." (1+ digit))  symbol-end)
+    (,(rx (1+ digit) (0+ "." (1+ digit)))
      . font-lock-constant-face)
     ;; Function declaretions.
     (,(rx symbol-start (group (any "f" "F") "unction")
@@ -189,7 +189,7 @@
     (,(rx symbol-start
           (or "-gt" "-lt" "-ne" "-and" "-or" "-not" "-eq"
               "in"
-          ) symbol-end)
+              ) symbol-end)
      . font-lock-builtin-face)
     ;; Builtin Functions
     (,(rx (1+ (1+ word) "-") (1+ word))
