@@ -1057,6 +1057,7 @@ Get-VMPerformance
 Get-VMXMachineConfig
 Get-VMwareResourcePool
 Get-Variable
+Get-VM
 Get-VirtualCOMPort
 Get-VirtualDVDDrive
 Get-VirtualDiskDrive
