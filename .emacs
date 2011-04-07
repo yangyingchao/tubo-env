@@ -69,6 +69,8 @@
 
 ;;;; Color Settings 颜色配置
 (when window-system
+  (set-face-attribute 'default nil
+                      :background "#f0f0f0")
   (set-face-attribute 'mode-line-buffer-id nil
                       :foreground "navy"
                       :bold t)
@@ -109,7 +111,6 @@
                       :foreground "Blue"
                       :bold t)
   (set-face-attribute 'font-lock-builtin-face nil
-                      :italic t
                       :bold t
                       :foreground "lime green")
   (set-face-attribute 'font-lock-comment-face nil
