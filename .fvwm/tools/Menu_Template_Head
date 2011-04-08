@@ -22,6 +22,6 @@ Menustyle * Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encodi
 DestroyMenu MenuFvwmRoot
 AddToMenu  "MenuFvwmRoot@macosx/menudebian.png@"
 + "%actions/menu.png%   菜单"   Nop
-+ %actions/desktop.png%"显示桌面" All (AcceptsFocus CurrentPage !Iconic !Shaded) Thumbnail
++ %actions/desktop.png%"显示桌面" All (AcceptsFocus CurrentPage !"xdaliclock" !Iconic !Shaded) Thumbnail
 + "" Nop
 

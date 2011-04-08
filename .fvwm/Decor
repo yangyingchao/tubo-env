@@ -120,4 +120,5 @@ Mouse 3 R A WindowList NoGeometry
 
 Style trayer !Title, Sticky, WindowListSkip,!Handles,StaysOnBottom
 Style Trayer !Title, Sticky, WindowListSkip,!Handles,StaysOnBottom
-Style Conky !Title, Sticky, WindowListSkip,!Handles,StaysOnBottom
+Style xdaliclock !Title, Sticky, WindowListSkip,!Handles,StaysOnBottom
+

@@ -101,7 +101,7 @@ AddToFunc               StoreComm
 
 DestroyFunc             FuncFvwmIconifyTrue
 AddToFunc               FuncFvwmIconifyTrue
-+                       I All (!Iconic !"*onky" !"*Desk *" !"*FvwmDocker*") State 1
++                       I All (!Iconic !"xdaliclock" !"*Desk *" !"*FvwmDocker*") State 1
 +                       I All (State 1) Iconify True
 
 DestroyFunc             FuncFvwmIconifFalse
@@ -132,7 +132,7 @@ AddToFunc               StartFunction
 +                       I Module FvwmAuto FvwmAutoHide -menter FvwmDockerAutoEnter
 +                       I Function StartDocker
 +                       I Exec exec xscreensaver
-+                       I Exec conky -o -y 0 -d
++                       I Exec exec xdaliclock -24 -transparent -noseconds -geometry -80-800 -fg black -visual TrueColor -memory low
 +                       I Exec exec trayer --SetDockType true --widthtype pixel --width 204  --heighttype pixel --height 32 --align right  --transparent true --alpha 255  --edge bottom --margin 1
 +                       I Exec exec fcitx -d
 +                       I Exec exec pidgin
@@ -144,7 +144,6 @@ AddToFunc               ExitFunction
 +                       I KillModule FvwmAnimate
 +                       I KillModule FvwmAuto
 +                       I Exec killall -9 trayer
-+                       I Exec killall -9 conky
 
 # make windowlists etc. warp pointer to the middle of
 # the window instead of top left

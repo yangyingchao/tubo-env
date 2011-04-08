@@ -11,7 +11,7 @@ Key Left A CM GotoLeftPage
 
 # Minimal windows.
 Key D A 4 FuncFvwmIconifyToggle
-Key D A CM All (AcceptsFocus CurrentPage !Iconic !Shaded, !FvwmButtons, !"*onky" !"*Desk *" !"*FvwmDocker*" !"Tild*" !"*sv*")Iconify
+Key D A CM All (AcceptsFocus CurrentPage !Iconic !Shaded, !FvwmButtons, !"xdaliclock" !"*Desk *" !"*FvwmDocker*" !"Tild*" !"*sv*")Iconify
 
 Key F A 4 FuncFullScreen
 Key F1 A 4 Exec wcmd
