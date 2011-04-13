@@ -24,7 +24,6 @@ Key F2 A M Exec exec grun
 Key F3 A 4 Module FvwmConsole
 Key F4 A M Close
 Key Tab A M WindowList (CurrentPage) Root c c NoDeskSort, SelectOnRelease Meta_L,CurrentAtEnd, IconifiedAtEnd
-Key r A 4 Exec exec grun
 Key r A CM Exec exec grun
 Key t A MC Exec sakura
 
