@@ -134,7 +134,6 @@ DestroyFunc             DeThumbnail
 AddToFunc               DeThumbnail
 +                       I Iconify off
 +                       I DestroyWindowStyle
-+                       I Exec exec rm -f $[HOME]/.fvwm/icon.tmp.$[w.id].png
 
 DestroyFunc             FuncMoveOrMaximize
 AddToFunc               FuncMoveOrMaximize
@@ -192,4 +191,9 @@ AddToFunc               ExitMenu
 +                       I *Exitmenu: Line center
 +                       I Module FvwmForm Exitmenu
 Style                   "Exitmenu" NoTitle
+
+DestroyFunc             Thumbnail
+AddToFunc               Thumbnail
++                       I Raise
++                       I Iconify
 

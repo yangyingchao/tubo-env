@@ -8,7 +8,7 @@ AddToMenu   MenuWindowOptions
 + "Send to%actions/send.png%" Popup FvwmSendto
 + "Move%actions/move.png%"  Move
 + "Resize%actions/resize.png%"  ResizeWarp
-+ "Iconify%actions/iconify.png%"  Thumbnail
++ "Iconify%actions/iconify.png%"  Iconify
 + "Maximize%actions/maximize.png%" Maximize
 + "Shade%actions/shade.png%"  WindowShade
 + "(Un)Stick%actions/stick.png%"  Stick
@@ -103,7 +103,7 @@ CursorStyle LEFT  $[mycursors]/pantherx/cursors/left_side
 Mouse 0 1 A Menu MenuWindowOptions Close
 Mouse 0 2 A Close
 Mouse 0 4 A Maximize
-Mouse 0 6 A Thumbnail
+Mouse 0 6 A Iconify
 Mouse 1 I A DeThumbnail
 Mouse 1 I A DeThumbnail
 Mouse 1 R A Menu MenuFvwmRoot Nop
