@@ -1,14 +1,5 @@
 ##################    Thumbnail #################################
 SetEnv                  fvwm_icon_size 96
-DestroyFunc             Thumbnail
-AddToFunc               Thumbnail
-+                       I Raise
-+                       I PipeRead "xwd -silent -id $[w.id] | convert -scale $[fvwm_icon_size] -frame 1x1 \
-              -mattecolor black -quality 0 xwd:- png:$[HOME]/.fvwm/icon.tmp.$[w.id].png \
-              &&        echo WindowStyle IconOverride, Icon $[HOME]/.fvwm/icon.tmp.$[w.id].png, StaysOnBottom \
-              ||        echo Nop"
-+                       I Iconify
-
 
 DestroyFunc             SetWinLev
 AddToFunc               SetWinLev
@@ -87,17 +78,6 @@ AddtoFunc               Fullscreen-Stop
 +                       I State 0 false
 +                       I Maximize
 
-
-
-DestroyFunc             StoreComm
-AddToFunc               StoreComm
-+                       I SetEnv RunComm $[1]
-+                       I Test (!EnvMatch RunComm calc) PipeRead `file=$[HOME]/.fvwm/commhistory;\
-    if                  ! [ -f \$\file ];\
-    then                echo -n "">>\$\file;fi;\
-    add="$*";add=\$\{add\# };\
-    tail                -n 50 \$\file|awk -v add="\$\add" '\$\0 != add && \$\0 != "" {print} END{print add}' >\$\{file}.bak;\
-    mv                  \$\{file}.bak \$\file`
 
 DestroyFunc             FuncFvwmIconifyTrue
 AddToFunc               FuncFvwmIconifyTrue
