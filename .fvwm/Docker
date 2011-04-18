@@ -8,16 +8,16 @@ DestroyModuleConfig FvwmDocker: *
 *FvwmDocker: Colorset 50
 *FvwmDocker: ActiveColorset 51
 *FvwmDocker: Rows    1
-*FvwmDocker: Columns 9
+*FvwmDocker: Columns 8
 *FvwmDocker: Frame   0
 *FvwmDocker: Geometry -0-48 #位置
 *FvwmDocker: Padding 1 1
-*FvwmDocker: (1x1, Icon dock/wcmd.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch wcmd wcmd* $left $top`, `Next (wcmd*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon dock/file-manager.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch wcmd wcmd* $left $top`, `Next (wcmd*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon dock/firefox.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch firefox firefox* $left $top`, `Next (firefox*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon dock/mail.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch evolution evolution* $left $top`, `Next (evolution*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon dock/goldendict.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch goldendict goldendict* $left $top`, `Next (goldendict*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon dock/openoffice.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch ooffice ooffice* $left $top`,`Next (ooffice*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon dock/devhelp.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch devhelp devhelp* $left $top`,`Next (devhelp*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
-*FvwmDocker: (1x1, Icon dock/dia.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch dia dia* $left $top`,`Next (dia*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
+*FvwmDocker: (1x1, Icon dock/gimp.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch gimp gimp* $left $top`,`Next (gimp*) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 *FvwmDocker: (1x1, Icon dock/virtualbox.png, ActionOnPress, Action(Mouse 1) `FuncDockLaunch VirtualBox VirtualBox* $left $top`, `Next (*VirtualBox) Popup MenuWindowOptions Rectangle +$left +$top 0 -100m`)
 
