@@ -14,6 +14,19 @@ EwmhBaseStruts 0 0 0 0
 # hits top edge
 EdgeCommand Left PopupWindowList $[pointer.x] $[pointer.y]
 EdgeCommand Top PopupWindowList $[pointer.x] $[pointer.y]
+EdgeCommand Bottom  TempRaise FvwmButtons
+
+DestroyFunc TempRaise
+AddToFunc TempRaise
++ I All ($0) Layer 0 6
++ I Schedule 1500 LowerTemp $0
+
+DestroyFunc LowerTemp
+AddToFunc LowerTemp
++ I All (HasPointer,$0)  Schedule 500 LowerTemp $0
++ I All ($0) Layer 0 2
++ I TestRc All ($0) Lower
+
 
 DestroyFunc PopupWindowList
 AddToFunc PopupWindowList
@@ -111,9 +124,7 @@ Style * WindowShadeSteps 20
 Style * Button 1, Button 2, Button 4, Button 6
 Style * UseDecor DefaultDecor
 
-Read Decor
+Read Modules
 Read Menu
-Read Docker
 Read HotKeys
-Read Pager
 Read Func

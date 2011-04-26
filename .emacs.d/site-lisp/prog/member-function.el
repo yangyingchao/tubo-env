@@ -845,7 +845,8 @@ implementation file."
         (find-file-noselect header)
         (find-file-noselect c-file)
         (set-buffer c-file)
-        (goto-char (point-max))
+        (goto-char (point-min))
+        (insert (format "#include \"%s\"\n\n" header))
         (when (and mf--checkout-if-readonly buffer-read-only)
             (vc-toggle-read-only))
         ;; note: Optimized by evacuating function definition blocks in c-file.
