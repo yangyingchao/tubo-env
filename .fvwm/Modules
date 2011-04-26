@@ -197,7 +197,7 @@ DestroyModuleConfig FvwmDock: *
         Action(Mouse 1) `exec exec oowriter`)
 *FvwmDock:  (5x7+37+0, ActionOnPress, \
         Icon        dock/gimp_48.png, \
-        ActiveIcon  dock/gipm_64.png, \
+        ActiveIcon  dock/gimp_64.png, \
         Action(Mouse 1) `exec exec gimp`)
 *FvwmDock:  (5x7+43+0, ActionOnPress, \
         Icon        dock/virtualbox_48.png, \
