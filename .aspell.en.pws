@@ -1,4 +1,4 @@
-personal_ws-1.1 en 57 
+personal_ws-1.1 en 58 
 wxPython
 px
 pci
@@ -43,6 +43,7 @@ Google
 GDB
 FCoE
 Ying
+hostname
 pre
 linux
 Mozilla

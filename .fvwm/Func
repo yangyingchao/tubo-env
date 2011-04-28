@@ -107,7 +107,6 @@ DestroyFunc StartFunction
 AddToFunc   StartFunction
 +           I Exec exec fvwm-root --dither --retain-pixmap $[HOME]/.fvwm/wallpapers/default.png
 +           I Module FvwmButtons  FvwmDock
-+           I Module FvwmPager
 +           I Module FvwmAnimate
 +           I Module FvwmAuto FvwmAutoHide -menter FvwmDockerAutoEnter
 +           I Exec exec xscreensaver
@@ -119,7 +118,6 @@ AddToFunc   StartFunction
 
 DestroyFunc             ExitFunction
 AddToFunc               ExitFunction
-+                       I KillModule FvwmPager
 +                       I KillModule FvwmButtons
 +                       I KillModule FvwmAnimate
 +                       I KillModule FvwmAuto

@@ -6,23 +6,28 @@ DeskTopSize 4x1
 Colorset 40 fg #839eb0, bg #839eb0, hi #839eb0, sh #839eb0, RootTransparent buffer, Tint #4584b5 0
 Colorset 41 fg #839eb0, bg #839eb0, hi #839eb0, sh #839eb0, RootTransparent buffer, Tint #4584b5 0
 DestroyModuleConfig FvwmPager: *
-*FvwmPager: Colorset        * 40
-*FvwmPager: HilightColorset * 41
-*FvwmPager: Borderwidth     0
-*FvwmPager: Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
-*FvwmPager: DesktopScale    22
-*FvwmPager: Geometry        400x17-130+0
-*FvwmPager: MoveThreshold   0
-*FvwmPager: SloppyFocus
-*FvwmPager: UseSkipList
-*FvwmPager: SmallFont "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
-*FvwmPager: WindowColorsets   2 0
-*FvwmPager: WindowBorderWidth 1
-*FvwmPager: Balloons           All
+*FvwmPager: BalloonBorderWidth 1
 *FvwmPager: BalloonColorset    * 0
 *FvwmPager: BalloonFont "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
 *FvwmPager: BalloonYOffset     +2
-*FvwmPager: BalloonBorderWidth 1
+*FvwmPager: Balloons           All
+*FvwmPager: Borderwidth     0
+*FvwmPager: Colorset        * 40
+*FvwmPager: DesktopScale    22
+*FvwmPager: Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
+*FvwmPager: Geometry        240x50-0-0
+*FvwmPager: HilightColorset * 41
+*FvwmPager: MiniIcons
+*FvwmPager: MoveThreshold   0
+*FvwmPager: NoSeparators
+*FvwmPager: Rows        1
+*FvwmPager: ShapeLabels
+*FvwmPager: SloppyFocus
+*FvwmPager: SmallFont "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
+*FvwmPager: UseSkipList
+*FvwmPager: WindowBorderWidth 1
+*FvwmPager: WindowColorsets   2 0
+
 
 ################# WindowMenu Options ################################
 
@@ -194,7 +199,7 @@ DestroyModuleConfig FvwmDock: *
 *FvwmDock:  (5x7+31+0, ActionOnPress, \
         Icon        dock/ooo_48.png, \
         ActiveIcon  dock/ooo_64.png, \
-        Action(Mouse 1) `exec exec oowriter`)
+        Action(Mouse 1) `exec exec ooffice`)
 *FvwmDock:  (5x7+37+0, ActionOnPress, \
         Icon        dock/gimp_48.png, \
         ActiveIcon  dock/gimp_64.png, \
