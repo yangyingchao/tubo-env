@@ -112,7 +112,7 @@ AddToFunc   StartFunction
 +           I Exec exec xscreensaver
 +           I Exec exec xdaliclock -24 -transparent -noseconds -geometry -80-800 -fg black -visual TrueColor -memory low
 #+           I Exec exec trayer --SetDockType true --widthtype pixel --width 204  --heighttype pixel --height 32 --align right  --transparent true --alpha 255  --edge bottom --margin 1
-+           I Exec exec fcitx -d
++           I Exec exec ibus-daemon -x -d
 +           I Exec exec pidgin
 
 
