@@ -1,14 +1,3 @@
-##################    Thumbnail #################################
-SetEnv                  fvwm_icon_size 96
-
-DestroyFunc             SetWinLev
-AddToFunc               SetWinLev
-+                       I Pick (Layer $0) Layer 0 4
-+                       I TestRc (Match) Current Raise
-+                       I TestRc (Match) Break 1
-+                       I Pick Layer 0 $0
-
-
 DestroyFunc             MoveAndGotoPage
 AddToFunc               MoveAndGotoPage
 +                       I GotoPage $*
@@ -111,8 +100,7 @@ AddToFunc   StartFunction
 +           I Module FvwmAuto FvwmAutoHide -menter FvwmDockerAutoEnter
 +           I Exec exec xscreensaver
 +           I Exec exec xdaliclock -24 -transparent -noseconds -geometry -80-800 -fg black -visual TrueColor -memory low
-#+           I Exec exec trayer --SetDockType true --widthtype pixel --width 204  --heighttype pixel --height 32 --align right  --transparent true --alpha 255  --edge bottom --margin 1
-+           I Exec exec ibus-daemon -x -d
++           I Exec exec fcitx -d
 +           I Exec exec pidgin
 
 
@@ -121,7 +109,7 @@ AddToFunc               ExitFunction
 +                       I KillModule FvwmButtons
 +                       I KillModule FvwmAnimate
 +                       I KillModule FvwmAuto
-+                       I Exec killall -9 trayer
+
 
 # make windowlists etc. warp pointer to the middle of
 # the window instead of top left

@@ -45,10 +45,10 @@ HideGeometryWindow Never
 SnapGrid 1 1
 
 
+# Customized variables.
 ImagePath $[HOME]/.fvwm/icons:+
 SetEnv fvwm_icon_size 160
 SetEnv fvwm_decor $[HOME]/.fvwm/icons/decoration
-
 
 # window behavior
 Style *	SnapAttraction 10 SameType Screen
