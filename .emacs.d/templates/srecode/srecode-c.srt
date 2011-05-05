@@ -26,10 +26,8 @@ set comment_start  "/**"
 set comment_end    " */"
 set comment_prefix " *"
 
-set COPYRIGHT "INVENTEC corporation (c)`(insert-current-year)` all rights reserved."
-
-;; OVERRIDE THIS in your user or project template file to whatever
-;; you use for your project.
+set COPYRIGHT "INVENTEC corporation (c) 2011 all rights reserved."
+set AUTHOR_NUM "itc-208024"
 set HEADEREXT ".h"
 
 context file
@@ -56,6 +54,23 @@ template header_guard :file :blank
 
 #endif // {{FILENAME_SYMBOL}}
 ----
+
+template fileheader :file :user
+----
+{{comment_start}} {{FILENAME}} --- {{^}}
+{{comment_prefix}}
+{{comment_prefix}} {{COPYRIGHT}}
+{{comment_prefix}}
+{{comment_prefix}} Update:
+{{comment_prefix}} Date         Name            Reason
+{{comment_prefix}} ========== ================= =====================================
+{{comment_prefix}} 2011-xx-xx {{AUTHOR}}  Create
+{{comment_prefix}}
+{{comment_prefix}} Known issues:
+{{comment_prefix}}
+{{comment_end}}
+----
+
 
 context misc
 

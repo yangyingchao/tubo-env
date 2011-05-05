@@ -181,9 +181,10 @@ DestroyModuleConfig FvwmDock: *
         ActiveIcon  dock/filemanager_64.png, \
         Action(Mouse 1) `exec exec wcmd`)
 *FvwmDock:  (5x7+7+0, ActionOnPress, \
-        Icon        dock/firefox_48.png, \
-        ActiveIcon  dock/firefox_64.png, \
-        Action(Mouse 1) `exec exec firefox`)
+        Icon        dock/chrome_48.png, \
+        ActiveIcon  dock/chrome_64.png, \
+        Action(Mouse 1) `exec exec chromium`
+        Action(Mouse 2) `exec exec firefox`)
 *FvwmDock:  (5x7+13+0, ActionOnPress, \
         Icon        dock/mail_48.png, \
         ActiveIcon  dock/mail_64.png, \

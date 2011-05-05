@@ -97,7 +97,7 @@
 (defun yyc/insert-file-header ()
   "Insert file comment using srecode"
   (interactive)
-  (srecode-insert "file:filecomment")
+  (srecode-insert "file:fileheader")
   )
 
 (defun yyc/insert-single-comment ()
@@ -420,6 +420,24 @@
 
 
 
+(require 'auto-header)
+(if (string-match "ITC-208024" system-name)
+    (progn
+      (setq header-copyright-notice
+            (format "INVENTEC corporation (c)%s all rights reserved."
+                    (format-time-string "%Y" (current-time)))
+            )
+      (setq header-email-address "Yang.Ying-chao@inventectj.com")
+      )
+  (progn
+    (setq header-copyright-notice
+          (format "%s Yang, Ying-chao"
+                  (format-time-string "%Y" (current-time))))
+    (setq header-email-address "yangyingchao@gmail.com")
+
+    )
+    )
+
 ;;;; Common Program settings
 
 (defun yyc/basic-prog-keybinding ()
@@ -450,7 +468,7 @@
 
   ;;;; Keybindings for srecode
   (local-set-key "\C-cdf" 'srecode-document-insert-function-comment)
-  (local-set-key "\C-cdh" 'yyc/insert-file-header)
+  (local-set-key "\C-cdh" 'header-make)
   (local-set-key "\C-cds" 'yyc/insert-single-comment)
 
   (local-set-key "\C-cl" 'yyc/list-attentions)
