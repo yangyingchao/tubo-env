@@ -104,11 +104,13 @@ AddToFunc   StartFunction
 +           I Exec exec pidgin
 
 
-DestroyFunc             ExitFunction
-AddToFunc               ExitFunction
-+                       I KillModule FvwmButtons
-+                       I KillModule FvwmAnimate
-+                       I KillModule FvwmAuto
+# fcitx and pidgin does not need to be killed: only one instance will be created.
+DestroyFunc  ExitFunction
+AddToFunc    ExitFunction
++            I KillModule FvwmButtons
++            I KillModule FvwmAnimate
++            I KillModule FvwmAuto
++            I Exec exec killall -9 xdaliclock
 
 
 # make windowlists etc. warp pointer to the middle of

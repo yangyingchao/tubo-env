@@ -159,10 +159,11 @@
 
 (ac-config-default) ;; Defined in ac-complete-config
 
-(setq ac-auto-start 3)
+(setq ac-auto-start nil)
 (setq ac-dwim t)
 (setq ac-override-local-map nil)  ;don't override local map
 (setq ac-ignore-case t)
+
 (global-auto-complete-mode t)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/templates/ac-dict")
 
@@ -218,11 +219,12 @@
 
 
 ;; Autofill Keybinding.
-(define-key ac-complete-mode-map (kbd "<C-tab>") 'ac-expand)
+(define-key ac-complete-mode-map (kbd "<C-tab>") 'a-expand)
 (define-key ac-complete-mode-map "\M-\r" 'ac-complete)
 (define-key ac-complete-mode-map [(tab)] 'ac-complete)
 (define-key ac-complete-mode-map "\M-n" 'ac-next)
 (define-key ac-complete-mode-map "\M-p" 'ac-previous)
+(define-key global-map "\C-\\" 'auto-complete)
 
 
 ;; ********************** Common Settings **************************
