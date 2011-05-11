@@ -255,6 +255,7 @@
 (setq org-export-author-info nil)
 (setq org-export-creator-info nil)
 (setq org-export-time-stamp-file nil)
+(define-key org-mode-map [(tab)] 'org-cycle)
 
 ;;; Key bingdings
 

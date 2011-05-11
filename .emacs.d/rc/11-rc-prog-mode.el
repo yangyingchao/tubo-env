@@ -141,17 +141,6 @@
 (global-set-key [f8] 'toggle-ecb)
 
 
-
-
-;;;; Cmake
-
-(autoload 'cmake-mode "cmake-mode" t)
-(add-to-list 'auto-mode-alist '("CMakeLists\\.txt\\'" . cmake-mode))
-(add-to-list 'auto-mode-alist '("\\.cmake\\'" . cmake-mode))
-
-(add-hook 'cmake-mode-hook 'alexott/common-hook)
-(add-hook 'cmake-mode-hook 'alexott/show-prog-keywords)
-
  ;; *************************** TAGS Database Settings *********************
 
 ;;;; GNU global does not play with python, as a result, cscope is involved.
@@ -461,7 +450,8 @@
   (local-set-key "\C-cP" 'semantic-ia-show-summary)
   (local-set-key "\C-cR" 'semantic-symref)
   (local-set-key "\C-cb" 'semantic-mrub-switch-tags)
-  (local-set-key "\C-cj" 'semantic-ia-fast-jump)
+  (local-set-key "\C-cj" 'semantic-complete-jump)
+  (local-set-key "\C-c\C-j" 'semantic-complete-jump)
   (local-set-key "\C-cp" 'semantic-ia-show-doc)
   (local-set-key "\C-cr" 'semantic-symref-symbol)
   (local-set-key [(control return)] 'semantic-ia-complete-symbol)
@@ -788,8 +778,9 @@ Use CREATE-TEMP-F for creating temp copy."
 (defun yyc/pws-find-tag (function)
   "Find defination of function under current poin"
   (interactive
-   (let ((fn (thing-at-point 'symbol))
-         val cmd)
+   (let* ((fn (thing-at-point 'symbol))
+         (val nil)
+         (cmd nil))
      (message fn)
      (setq val (completing-read (if fn
                                     (format "Search for (default %s): " fn)

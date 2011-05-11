@@ -159,7 +159,7 @@
 
 (ac-config-default) ;; Defined in ac-complete-config
 
-(setq ac-auto-start nil)
+(setq ac-auto-start 4)
 (setq ac-dwim t)
 (setq ac-override-local-map nil)  ;don't override local map
 (setq ac-ignore-case t)
