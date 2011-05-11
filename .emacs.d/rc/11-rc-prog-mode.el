@@ -450,8 +450,8 @@
   (local-set-key "\C-cP" 'semantic-ia-show-summary)
   (local-set-key "\C-cR" 'semantic-symref)
   (local-set-key "\C-cb" 'semantic-mrub-switch-tags)
-  (local-set-key "\C-cj" 'semantic-complete-jump)
   (local-set-key "\C-c\C-j" 'semantic-complete-jump)
+  (local-set-key "\C-cj" 'semantic-ia-fast-jump)
   (local-set-key "\C-cp" 'semantic-ia-show-doc)
   (local-set-key "\C-cr" 'semantic-symref-symbol)
   (local-set-key [(control return)] 'semantic-ia-complete-symbol)
@@ -498,10 +498,41 @@
   (font-lock-add-keywords nil '(("^[^\n]\\{120\\}\\(.*\\)$" 1
   font-lock-warning-face t))))
 
+(defun yyc/add-senator-expand-to-hippie ()
+  "Add senator-try-expand-semantic to hippie-try-functions-list.
+This can be done automatically, But I'd like to put this
+senator-try-expand-semantic after yas/hippie-try-expand."
+  (make-local-variable 'hippie-expand-try-functions-list)
+  (make-local-variable 'senator-try-function-already-enabled)
+      ;; Does nothing if semantic completion is already enabled (via
+      ;; customization for example).
+      (setq senator-try-function-already-enabled
+            (memq 'senator-try-expand-semantic
+                  hippie-expand-try-functions-list))
+
+      (if senator-try-function-already-enabled
+          nil
+        (progn ;; Remove yas/expand to avoid to load it multiple times.
+          (setq hippie-expand-try-functions-list
+                (delq 'yas/hippie-try-expand
+                      hippie-expand-try-functions-list))
+          (setq hippie-expand-try-functions-list
+                (cons 'senator-try-expand-semantic
+                      hippie-expand-try-functions-list))
+          (setq hippie-expand-try-functions-list
+                (cons 'semantic-ia-complete-symbol
+                      hippie-expand-try-functions-list))
+          (setq hippie-expand-try-functions-list
+                (cons 'yas/hippie-try-expand
+                      hippie-expand-try-functions-list))
+          )))
+
+
 (defun my-program-hook ()
   ;; Enable hide-ifdef-mode
   (yyc/show-prog-keywords)
   (yyc/basic-prog-keybinding)
+  (yyc/add-senator-expand-to-hippie)
   (setup-program-keybindings)
   (program-mode-auto-pair)
   (local-set-key (kbd "'") 'skeleton-pair-insert-maybe)
