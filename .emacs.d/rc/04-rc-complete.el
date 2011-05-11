@@ -180,11 +180,8 @@
 
 (setq-default ac-sources
               '(
-                ac-source-semantic
                 ac-source-yasnippet
                 ac-source-words-in-buffer
-                ac-source-filename
-                ac-source-semantic
                 ac-source-dictionary
                 ))
 
@@ -201,9 +198,9 @@
             ;; (push 'ac-source-company-abbr-code ac-sources)
             ;; (push 'ac-source-company-keywords ac-sources)
 
-            (add-to-list 'ac-omni-completion-sources
+            (add-to-list 'ac-sources
                          (cons "\\." '(ac-source-semantic)))
-            (add-to-list 'ac-omni-completion-sources
+            (add-to-list 'ac-sources
                          (cons "->" '(ac-source-semantic)))
             ))
 
