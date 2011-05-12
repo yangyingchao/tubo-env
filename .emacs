@@ -38,6 +38,7 @@
 (setq-default global-font-lock-mode t) ; 语法高亮
 (setq sentence-end-double-space nil)
 (setq font-lock-maximum-decoration t)
+(setq-default show-trailing-whitespace t)
 
 ;;;; Garbage Collection
 (setq-default garbage-collection-messages t)
