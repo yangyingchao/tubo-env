@@ -16,9 +16,9 @@ menu_template_tail = menu_template + "_Tail"
 fvwm_icon_home = os.path.join(FVWM_HOME, "icons/apps")
 fvwm_menu_output = os.path.join(FVWM_HOME, "Menu")
 
-desktop_search_path = ["/usr/share/applications"]
-icon_paths          = ["/usr/share/pixmaps", "/usr/share/icons/hicolor",
-                       "/usr/share/icons/oxygen", "/home/yyc/.icons/Mac4Lin_Icons"]
+DESKTOP_SEARCH_PATH = ["/usr/share/applications"]
+ICON_PATHS          = ["/usr/share/pixmaps", "/usr/share/icons/hicolor",
+                       "/home/yyc/.icons/Mac4Lin_Icons"]
 
 
 #             +-----------+------------+-------------+-----------+
@@ -37,12 +37,14 @@ icon_paths          = ["/usr/share/pixmaps", "/usr/share/icons/hicolor",
 #             +-----------+
 fvwm_menu     = {}
 img_data      = {}
-category_list = ["Office", "Graphics", "System", "Engineering" "Utility",
+CATEGORY_LIST = ["Office", "Graphics", "System", "Engineering" "Utility",
                  "Network", "Development", "AudioVideo"]
 keywords      = ["Name", "Exec", "Icon", "Categories"]
 
 def gen_img_data():
-    for path in icon_paths:
+    for path in ICON_PATHS:
+        if os.path.islink(path):
+            path = os.path.realpath(path)
         print "\t Processing icon directory: %s"%path
         os.path.walk(path, process_img, None)
 
@@ -60,14 +62,14 @@ def process_img(arg, dirname, filenames):
             key = os.path.basename(path).split(".")[0].lower()
             img_data[key] = path
 
-def process_subdir(arg, dirname, filenames):
+
+def process_desktop_entries(arg, dirname, filenames):
     """
     Parse each file in this subdir, store information into fvwm_menu;
     """
     path = os.path.join(arg, dirname)
     for filename in filenames:
         path_tmp = os.path.join(path, filename)
-
         if os.path.isdir(path_tmp):
             os.path.walk(path_tmp, process_subdir, path_tmp)
         else:
@@ -86,13 +88,13 @@ def parse_single(path):
         for key in keywords:
             if item.startswith(key+"="):
                 val = item.split("=")[-1].strip("\n")
-                if key == "Categories":
+                if key == "Categories": # Catergories
                     pos = val.find(";")
                     if  pos != -1:
                         vlist = val.split(";")
                         val = "Other"
                         for v in vlist:
-                            if v in category_list:
+                            if v in CATEGORY_LIST:
                                 val = v
                                 break
                 elif key == "Exec":
@@ -135,6 +137,7 @@ def find_icon(name, menu_type=1):
         name = name[:pos]
     icon_path = img_data.get(name.lower())
     if icon_path is None:
+        print "XXXXXXXXXXXXXXXXXXXXXXX: can not find icon: %s"%name
         icon_path = ""
     return icon_path
 
@@ -145,10 +148,12 @@ if __name__ == '__main__':
     print "Generating image database ..."
     gen_img_data()
     print "Finished to generate image database\n"
+    # for key in img_data.keys():
+    #     print "Key: %s, path: %s"%(key, img_data.get(key))
 
     print "Searching and analyzing desktop entries..."
-    for item in desktop_search_path:
-        os.path.walk(item, process_subdir, item)
+    for item in DESKTOP_SEARCH_PATH:
+        os.path.walk(item, process_desktop_entries, item)
     print "Finished analyze desktop entries.\n"
 
     print "Writing new menu items for fvwm..."
