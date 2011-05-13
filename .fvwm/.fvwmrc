@@ -19,13 +19,13 @@ EdgeCommand Bottom  TempRaise FvwmButtons
 DestroyFunc TempRaise
 AddToFunc TempRaise
 + I All ($0) Layer 0 6
-+ I Schedule 1500 LowerTemp $0
++ I Schedule 1000 LowerTemp $0
 
 DestroyFunc LowerTemp
 AddToFunc LowerTemp
-+ I All (HasPointer,$0)  Schedule 500 LowerTemp $0
++ I All (HasPointer,$0) Schedule 500 1003 LowerTemp $0
++ I TestRc (Match) Break
 + I All ($0) Layer 0 2
-+ I TestRc All ($0) Lower
 
 
 DestroyFunc PopupWindowList
