@@ -172,7 +172,7 @@
    (add-to-list 'ac-modes mode))
  '(asm-mode emms-tag-editor-mode haskell-mode latex-mode
             lisp-mode literate-haskell-mode org-mode text-mode
-            eshell-mode graphviz-dot-mode powershell-mode))
+            eshell-mode graphviz-dot-mode powershell-mode nxml-mode))
 
 (set-face-background 'ac-selection-face "steelblue")
 (set-face-background 'ac-candidate-face "lightgray")

@@ -434,6 +434,7 @@
   (interactive)
   (local-set-key  [(return)] 'newline-and-indent)
   (local-set-key (kbd "M-|") 'align)
+  (local-set-key  [(tab)] 'indent-or-complete)
   )
 
 (defun setup-program-keybindings()
@@ -536,7 +537,6 @@ senator-try-expand-semantic after yas/hippie-try-expand."
   (setup-program-keybindings)
   (program-mode-auto-pair)
   (local-set-key (kbd "'") 'skeleton-pair-insert-maybe)
-  (local-set-key  [(tab)] 'indent-or-complete)
   (local-set-key "\C-ct" 'yyc/cflow-function)
   )
 

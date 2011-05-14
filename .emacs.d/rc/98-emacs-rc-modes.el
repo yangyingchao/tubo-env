@@ -306,6 +306,7 @@
   (setq ispell-skip-html t)
   (hs-minor-mode 1)
   (base-auto-pair)
+  (yyc/basic-prog-keybinding)
   )
 
 (add-hook 'nxml-mode-hook 'my-nxml-mode-hook)
