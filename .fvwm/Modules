@@ -173,7 +173,7 @@ DestroyModuleConfig FvwmDock: *
 *FvwmDock:  Colorset    50
 *FvwmDock:  Rows        7
 *FvwmDock:  Columns     60
-*FvwmDock:  Geometry    779x75+250-5
+*FvwmDock:  Geometry    800x75+250-5
 *FvwmDock:  Padding     0 0
 *FvwmDock:  Frame       0
 *FvwmDock:  (5x7+1+0, ActionOnPress, \
@@ -209,6 +209,6 @@ DestroyModuleConfig FvwmDock: *
         Icon        dock/virtualbox_48.png, \
         ActiveIcon  dock/virtualbox_64.png, \
         Action(Mouse 1) `exec exec VirtualBox`)
-*FvwmDock: (5x7+52+0, Swallow(NoClose, UseOld) \
-         `stalonetray` `Exec exec stalonetray  -p`)
-
+ *FvwmDock: (5x7+49+0, Swallow(NoClose, UseOld) \
+          `stalonetray` `Exec exec stalonetray --max-width 60 -p`)
+*FvwmDock (5x7+55, Swallow(Respawn, NoHints) wmclock `Exec exec wmclock`)
