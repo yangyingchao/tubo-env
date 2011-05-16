@@ -204,6 +204,7 @@
   (local-set-key (kbd "C-c c") 'yyc/html-txt-col)
   (local-set-key (kbd "C-c i") 'yyc/insert-b64-img)
   (local-set-key (kbd "C-c s") 'yyc/small-font)
+  (yyc/basic-prog-keybinding)
   (auto-complete-mode)
   (html-autoview-mode nil)
   (setq html-autoview-mode nil)

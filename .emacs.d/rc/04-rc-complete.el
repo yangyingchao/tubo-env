@@ -133,23 +133,6 @@
 
 (global-set-key (kbd "<C-tab>") 'yas/expand)
 
-;; ************************ Company Mode ***********************
-
-(autoload 'company-mode "company" nil t)
-(setq company-idle-delay nil)
-
-(setq company-backends
-      '(company-elisp company-nxml company-dabbrev company-css
-                     company-eclim company-semantic
-                     company-gtags company-dabbrev-code
-                     company-keywords
-                     company-files )
-  )
-
-(add-hook 'c-mode-hook '(lambda () (company-mode)))
-(add-hook 'c++-mode-hook '(lambda () (company-mode)))
-(add-hook 'python-mode-hook '(lambda () (company-mode)))
-(global-set-key (kbd "<S-iso-lefttab>") 'company-complete-common)
 
 ;;  *********************** Autocomplete ***********************
 
@@ -188,16 +171,8 @@
 ;;;; Extend Auto-Complete with company backends.
 ;; C mode
 (require 'semantic-ia)
-;; (ac-company-define-source ac-source-company-abbr company-dabbrev)
-;; (ac-company-define-source ac-source-company-abbr-code company-dabbrev-code)
-;; (ac-company-define-source ac-source-company-keywords company-keywords)
-
 (add-hook 'c-mode-common-hook
           (lambda ()
-            ;; (push 'ac-source-company-abbr ac-sources)
-            ;; (push 'ac-source-company-abbr-code ac-sources)
-            ;; (push 'ac-source-company-keywords ac-sources)
-
             (add-to-list 'ac-sources
                          (cons "\\." '(ac-source-semantic)))
             (add-to-list 'ac-sources
@@ -205,11 +180,9 @@
             ))
 
 ;; Lisp mode
-(ac-company-define-source ac-source-company-elisp company-elisp)
 (add-hook 'emacs-lisp-mode-hook
        (lambda ()
          (progn
-           (add-to-list 'ac-sources 'ac-source-company-elisp)
            (add-to-list 'ac-sources 'ac-source-symbols)
            )))
 

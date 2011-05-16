@@ -494,10 +494,10 @@
   (font-lock-add-keywords nil
                           '(("\\<\\(FIX\\|FIXME\\|TODO\\|BUG\\|XXX\\|YYC\\|yyc\\|HACK\\)\\(:\\|!\\| \\)" 1
                              font-lock-warning-face t)))
-    (font-lock-add-keywords nil '(("\\<\\(DONE\\):" 1 font-lock-doc-face t)))
+  (font-lock-add-keywords nil '(("\\<\\(DONE\\):" 1 font-lock-doc-face t)))
   ;; highlight too long lines
   (font-lock-add-keywords nil '(("^[^\n]\\{120\\}\\(.*\\)$" 1
-  font-lock-warning-face t))))
+                                 font-lock-warning-face t))))
 
 (defun yyc/add-senator-expand-to-hippie ()
   "Add senator-try-expand-semantic to hippie-try-functions-list.

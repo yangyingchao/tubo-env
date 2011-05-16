@@ -1,0 +1,8 @@
+try:
+    ${1:EXPR}
+except ${2:EXCEPTION}:
+    ${3:PROCESS_EXCEPTION}
+else:
+    ${4:NORMAL_PROCESS}
+finally:
+    ${5:CLEANUP}
