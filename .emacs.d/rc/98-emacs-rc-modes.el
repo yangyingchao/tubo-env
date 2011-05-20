@@ -280,6 +280,7 @@
   (org-defkey org-mode-map "\C-cl" 'org-store-link)
   (org-defkey org-mode-map "\C-ca" 'org-agenda)
   (org-defkey org-mode-map "\C-cb" 'org-iswitchb)
+  (org-defkey org-mode-map (kbd "<C-tab>") 'indent-or-complete)
   (org-defkey org-mode-map [(control ?,)]     'backward-page)
   (base-auto-pair)
   (yyc/show-pomodoro-keywords)
@@ -358,13 +359,13 @@
  ;; ****************************** Over ********************************
 
 
-;; (if (string-match "ITC-208024" system-name)
-;;     (progn
-;;       (require 'edit-server)
-;;       (setq edit-server-new-frame nil)
-;;       (edit-server-start))
-;;   nil
-;;   )
+(if (string-match "ITC-208024" system-name)
+    (progn
+      (require 'edit-server)
+      (setq edit-server-new-frame nil)
+      (edit-server-start))
+  nil
+  )
 
 
 (provide '98-emacs-rc-modes)

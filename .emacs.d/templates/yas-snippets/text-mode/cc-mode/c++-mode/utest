@@ -1,0 +1,26 @@
+#name : unit test header
+# --
+#include <iostream>
+#include <string>
+#include "TestCase.h"
+#include "TestSuite.h"
+#include "TestCaller.h"
+#include "TestRunner.h"
+
+#include "${1:user_defined_header}"
+
+class ${2:TestClass} : public TestCase {
+public:
+  // constructor
+  $2(std::string name) : TestCase(name) {}
+
+  // method to test the constructor
+  void testConstructor();
+
+  // method to test the assigning and retrieval of grades
+  void test${3:Others}();
+
+  // method to create a suite of tests
+  static Test *suite ();
+};
+#endif

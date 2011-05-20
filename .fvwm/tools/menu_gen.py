@@ -16,8 +16,7 @@ menu_template_tail = menu_template + "_Tail"
 fvwm_icon_home = os.path.join(FVWM_HOME, "icons/apps")
 fvwm_menu_output = os.path.join(FVWM_HOME, "Menu")
 
-DESKTOP_SEARCH_PATH = ["/usr/share/applications",
-                        "/home/yyc/.local/share/applications"]
+DESKTOP_SEARCH_PATH = ["/usr/share/applications"]
 ICON_PATHS          = ["/usr/share/pixmaps", "/usr/share/icons/hicolor",
                        "/home/yyc/.icons/Mac4Lin_Icons"]
 
