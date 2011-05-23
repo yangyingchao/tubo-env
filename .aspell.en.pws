@@ -1,14 +1,18 @@
-personal_ws-1.1 en 58 
+personal_ws-1.1 en 66 
 wxPython
 px
+OHCI
 pci
 gbsn
 ITC
 moz
 CIFS
 arial
+usb
 inode
 iso
+EndPoints
+EHCI
 Customizability
 eamcs
 UTF
@@ -36,6 +40,7 @@ css
 charset
 wxWidgets
 UserWarning
+Isochronous
 verdana
 removeid
 struct
@@ -43,6 +48,7 @@ Google
 GDB
 FCoE
 Ying
+UHCI
 hostname
 pre
 linux
@@ -52,8 +58,10 @@ Tubo
 VFS
 FIP
 filesystem
+Readme
 defun
 han
 Kconfig
 dirs
 XXXX
+HCI

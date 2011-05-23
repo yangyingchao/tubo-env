@@ -285,6 +285,7 @@
   (base-auto-pair)
   (yyc/show-pomodoro-keywords)
   (setq fill-column 120)
+  (flyspell-mode)
   )
 
 (add-hook 'org-mode-hook 'yyc/org-mode-hooks)
