@@ -301,6 +301,36 @@
  ;; *************************** nxml mode for XML *******************
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; use fold-dwim to fold xml file        ;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(defun my-xhtml-extras ()
+  (make-local-variable 'outline-regexp)
+  (setq outline-regexp "\\s *<\\([h][1-6]\\|html\\|body\\|head\\)\\b")
+  (make-local-variable 'outline-level)
+  (setq outline-level 'my-xhtml-outline-level)
+  (outline-minor-mode 1)
+  (hs-minor-mode 1))
+
+(defun my-xhtml-outline-level ()
+  (save-excursion (re-search-forward html-outline-level))
+  (let ((tag (buffer-substring (match-beginning 1) (match-end 1))))
+    (if (eq (length tag) 2)
+        (- (aref tag 1) ?0)
+      0)))
+
+
+(defun my-nxml-forward-element ()
+  (interactive)
+  (let ((nxml-sexp-element-flag))
+    (setq nxml-sexp-element-flag (not (looking-at "<!--")))
+    (unless (looking-at outline-regexp)
+      (condition-case nil
+          (nxml-forward-balanced-item 1)
+        (error nil)))))
+
 (defun my-nxml-mode-hook ()
   (local-set-key "\C-c/" 'nxml-finish-element)
   (auto-fill-mode)
@@ -313,6 +343,9 @@
   )
 
 (add-hook 'nxml-mode-hook 'my-nxml-mode-hook)
+
+
+
 
 (add-to-list
  'auto-mode-alist
@@ -327,11 +360,14 @@
 (setq nxml-bind-meta-tab-to-complete-flag t)
 (setq nxml-slash-auto-complete-flag t)
 
-(add-to-list 'hs-special-modes-alist
-             '(nxml-mode
-               "\\|<[^/>]&>\\|<[^/][^>]*[^/]>"
-               ""
-               nil))
+(add-to-list
+ 'hs-special-modes-alist
+ '(nxml-mode
+   "<!--\\|<[^/>]>\\|<[^/][^>]*[^/]>"
+   ""
+   "<!--" ;; won't work on its own; uses syntax table
+   (lambda (arg) (my-nxml-forward-element))
+   nil))
 
  ;; **************************** Text Mode ***************************
 
@@ -359,14 +395,17 @@
 
  ;; ****************************** Over ********************************
 
+;; (if (string-match "ITC-208024" system-name)
+;;     (progn
+;;       (require 'edit-server)
+;;       (setq edit-server-new-frame nil)
+;;       (edit-server-start))
+;;   nil
+;;   )
 
-(if (string-match "ITC-208024" system-name)
-    (progn
-      (require 'edit-server)
-      (setq edit-server-new-frame nil)
-      (edit-server-start))
-  nil
-  )
+
+(require 'fold-dwim)
+(global-set-key (kbd "<S-f7>")      'fold-dwim-toggle)
 
 
 (provide '98-emacs-rc-modes)

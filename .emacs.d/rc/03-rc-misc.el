@@ -92,7 +92,7 @@
 
 (add-hook 'log-edit-mode-hook 'turn-on-flyspell)
 
-(global-set-key (kbd "<M-S-f11>") 'ispell-buffer)
+(global-set-key (kbd "<f11>") 'ispell-buffer)
 (global-set-key (kbd "<C-f11>") 'flyspell-mode)
 (global-set-key (kbd "<C-S-f11>") 'flyspell-prog-mode)
 (global-set-key (kbd "<S-f11>") 'ispell-word)
