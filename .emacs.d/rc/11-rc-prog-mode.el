@@ -89,10 +89,6 @@
 ;;(setq srecode-minor-menu t)
 (srecode-minor-mode 1)
 
-;; (add-to-list 'srecode-map-load-path
-;;             (expand-file-name "~/.emacs.d/templates/srecode")
-;;             )
-
 (setq srecode-map-load-path nil)
 
 (add-to-list 'srecode-map-load-path
