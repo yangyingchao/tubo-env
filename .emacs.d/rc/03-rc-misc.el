@@ -404,8 +404,6 @@
                               )))
 
  ;; ***************************** Some extra modes *************************
-(add-to-list 'auto-mode-alist '("rc$" . conf-mode))
-
 
  ;; ********************** autocompressings *********************
 ;; Now add bzip2 support and turn auto compression back on.

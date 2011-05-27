@@ -407,6 +407,23 @@
 (require 'fold-dwim)
 (global-set-key (kbd "<S-f7>")      'fold-dwim-toggle)
 
+
+ ;; ***************************** Mode Alias **************************
+
+(defvar conf-mode-list nil "List of files need to be treated as conf-mode")
+(setq conf-mode-list '("\\.\\(?:\\(?:doxy\\(?:gen\\)?\\)\\)\\_>"
+                       "\\.rc$"
+                       ".*\\.fvwm/.*"
+                         ))
+
+(defun yyc/add-to-mode-alist (reg-exp)
+  "Add regexp to mode"
+  (add-to-list 'auto-mode-alist
+               (cons reg-exp 'conf-mode))
+  )
+
+(mapc 'yyc/add-to-mode-alist conf-mode-list)
+
 
 (provide '98-emacs-rc-modes)
 ;;;;; emacs-rc-modes.el ends here
