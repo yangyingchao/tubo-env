@@ -188,8 +188,9 @@
   (setq fn_base_name (file-name-sans-extension (file-name-nondirectory fn)))
   (setq b64_cmd (format "base64 %s | tr -d '\n'" fn))
   (setq b64_content (shell-command-to-string b64_cmd))
-  (insert (format "<img title=%s src=\"data:image/%s;base64, %s\"/>"
-                  fn_base_name fn_ext_name b64_content))
+  (insert (format
+           "<img title=%s src=\"data:image/%s;base64, %s\" alt=\"%s\"/>"
+           fn_base_name fn_ext_name b64_content fn))
   )
 
 (defun my-html-mode-hooks ()

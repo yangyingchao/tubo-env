@@ -1,4 +1,4 @@
-personal_ws-1.1 en 71 
+personal_ws-1.1 en 73 
 wxPython
 px
 OHCI
@@ -23,6 +23,7 @@ SymanticDB
 subdirs
 IDE
 SMB
+Todo
 whitespace
 superblock
 MACroS
@@ -64,6 +65,7 @@ VFS
 FIP
 filesystem
 Readme
+wildcard
 defun
 han
 Kconfig
