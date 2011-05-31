@@ -152,12 +152,26 @@
 
 (require 'xgtags)
 
-(defun yp-xgtags-append ()
+(defvar cur-buffer nil
+  "Current buffer, used to restore buffer after tags has been updated.")
+
+(defun on-process-terminate (process event)
+  (message "Finished updating TAGs ...")
+   (pop-to-buffer "*Messages*")
+   (goto-char (point-max))
+   (pop-to-buffer cur-bufer))
+
+(defun yyc/update-tag ()
   (interactive)
-  (if xgtags-mode
-      (progn
-        (message "start to global -uv")
-        (start-process "yp-xgtags-append" "*scratch*" "global" "-uv"))))
+  (let ((up-process nil))
+    (if xgtags-mode
+        (progn
+          (setq cur-bufer (buffer-name))
+          (message "start to global -uv")
+          (setq up-process
+                (start-process "yyc/update-tag" "*Messages*" "global" "-uv"))
+          (set-process-sentinel up-process 'on-process-terminate)))))
+
 
   ;;;; "Setup key-binding for xgtags"
 (defun yyc/xgtags-hook-func ()
@@ -174,7 +188,7 @@
   (local-set-key "\C-csn" 'xgtags-select-next-tag)
   (local-set-key "\C-csp" 'xgtags-select-prev-tag)
   (local-set-key "\C-csu" 'xgtags-pop-stack)
-  (local-set-key "\C-csU" 'yp-xgtags-append)
+  (local-set-key "\C-csU" 'yyc/update-tag)
 )
 
 (add-hook 'xgtags-mode-hook 'yyc/xgtags-hook-func)

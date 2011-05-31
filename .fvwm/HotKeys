@@ -1,9 +1,9 @@
 ############## root window #######3
 # Pager
-Key 1 A 4 MoveAndGotoPage 0 0
-Key 2 A 4 MoveAndGotoPage 1 0
-Key 3 A 4 MoveAndGotoPage 2 0
-Key 4 A 4 MoveAndGotoPage 3 0
+Key 1 A 4 MoveToPage 0 0
+Key 2 A 4 MoveToPage 1 0
+Key 3 A 4 MoveToPage 2 0
+Key 4 A 4 MoveToPage 3 0
 
 Key Right A CM GotoRightPage
 Key Left A CM GotoLeftPage
@@ -25,7 +25,7 @@ Key F3 A 4 Module FvwmConsole
 Key F4 A M Close
 Key Tab A M WindowList (CurrentPage) Root c c NoDeskSort, SelectOnRelease Meta_L,CurrentAtEnd, IconifiedAtEnd
 Key r A CM Exec exec grun
-Key t A MC Exec sakura
+Key t A MC Exec roxterm
 
 # Lock screens
 Key L A 4 FuncFvwmLockScreen
