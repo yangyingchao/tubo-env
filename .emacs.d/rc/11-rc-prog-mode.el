@@ -49,30 +49,87 @@
 ;;;; Include settings
 (require 'semantic-gcc)
 (require 'semantic-c)
+(require 'semantic-ia)
+
+(defun DE-imply-includes-in-directory (dir)
+  "Add all header files in DIR to `semanticdb-implied-include-tags'."
+  (let ((files (directory-files dir t "^.+\\.h[hp]*$" t)))
+    (defvar-mode-local c++-mode semanticdb-implied-include-tags
+      (mapcar (lambda (header)
+                (semantic-tag-new-include
+                 header
+                 nil
+                 :filename header))
+              files))))
+
+
+(defun yyc/add-wx-support ()
+  "Add wxwidget related files."
+  (setq wx-base-dir "/usr/include/wx-2.8")
+  (semantic-add-system-include wx-base-dir 'c++-mode)
+
+  ;; include files for wxwidgets
+
+  ;; preprocessor macro
+  (add-to-list 'semantic-lex-c-preprocessor-symbol-map '("WXDLLEXPORT" . ""))
+  (add-to-list 'semantic-lex-c-preprocessor-symbol-map '("WXDLLIMPEXP_CORE" . ""))
+  (add-to-list 'semantic-lex-c-preprocessor-symbol-map '("WXDLLIMPEXP_FWD_CORE" . ""))
+  (add-to-list 'semantic-lex-c-preprocessor-symbol-map '("WXDLLIMPEXP_BASE" . ""))
+  (add-to-list 'semantic-lex-c-preprocessor-symbol-map '("WXDLLIMPEXP_FWD_BASE" . ""))
+  (add-to-list 'semantic-lex-c-preprocessor-symbol-map '("WXDLLIMPEXP_FWD_XML" . ""))
+  (add-to-list 'semantic-lex-c-preprocessor-symbol-map '("WXDLLIMPEXP_ADV" . ""))
+
+  (DE-imply-includes-in-directory (concat wx-base-dir "/wx/gtk"))
+  )
+
+
+(defun yyc/add-qt-support ( )
+  "Add qt related files."
+  (setq qt4-base-dir "/usr/include/qt4")
+  (setq qt4-gui-dir (concat qt4-base-dir "/QtGui"))
+  (semantic-add-system-include qt4-base-dir 'c++-mode)
+  (semantic-add-system-include qt4-gui-dir 'c++-mode)
+  (add-to-list 'semantic-lex-c-preprocessor-symbol-file
+               (concat qt4-base-dir "/Qt/qconfig.h"))
+  (add-to-list 'semantic-lex-c-preprocessor-symbol-file
+               (concat qt4-base-dir "/Qt/qconfig-dist.h"))
+  (add-to-list 'semantic-lex-c-preprocessor-symbol-file
+               (concat qt4-base-dir "/Qt/qglobal.h"))
+  (add-to-list 'semantic-lex-c-preprocessor-symbol-map
+               '("Q_GUI_EXPORT" . ""))
+  (add-to-list 'semantic-lex-c-preprocessor-symbol-map
+               '("Q_CORE_EXPORT" . ""))
+  )
+
+(defun yyc/add-gtk-support ( )
+  "Add gtk related files."
+  (setq gtk-related-includes (list
+                              "/usr/include/bits"
+                              "/usr/include/glib-2.0"
+                              "/usr/include/gtk-2.0"
+                              ))
+  (mapc (lambda(dir)
+          (semantic-add-system-include dir 'c-mode))
+        gtk-related-includes))
+
 
 (defconst cedet-user-include-dirs
   (list ".." "../include" "../inc" "../common" "../public" "."
         "../.." "../../include" "../../inc" "../../common" "../../public"))
 
-(setq cedet-sys-include-dirs (list
-                              "/usr/include"
-                              "/usr/include/bits"
-                              "/usr/include/glib-2.0"
-                              "/usr/include/gnu"
-                              "/usr/include/gtk-2.0"
-                              "/usr/include/gtk-2.0/gdk"
-                              "/usr/include/gtk-2.0/gtk"
-                              "/usr/local/include"
-                              "/usr/local/include"))
-
-(let ((include-dirs cedet-user-include-dirs))
-  (setq include-dirs (append include-dirs cedet-sys-include-dirs))
+(defun yyc/add-common-includes ( )
+  "Add common includes"
   (mapc (lambda (dir)
           (semantic-add-system-include dir 'c++-mode)
           (semantic-add-system-include dir 'c-mode))
-        include-dirs))
+        cedet-user-include-dirs))
 
 (setq semantic-c-dependency-system-include-path "/usr/include/")
+
+(yyc/add-common-includes)
+(yyc/add-wx-support)
+;; (yyc/add-qt-support)
+;; (yyc/add-gtk-support)
 
 ;;;; TAGS Menu
 (defun my-semantic-hook ()
@@ -376,6 +433,15 @@
  '(c-mode-abbrev-table c++-mode-abbrev-table))
 
 ;; 输入 inc , 可以自动提示输入文件名称,可以自动补全.
+
+(defconst cedet-sys-include-dirs (list
+                                  "/usr/include/bits"
+                                  "/usr/include/glib-2.0"
+                                  "/usr/include/gtk-2.0"
+                                  "/usr/include"
+                                  "/usr/include/wx-2.8"
+                                  "/usr/include/qt4"
+                                  ))
 (define-skeleton skeleton-include
   "generate include<>" ""
   > "#include <"
@@ -888,6 +954,9 @@ Use CREATE-TEMP-F for creating temp copy."
           (lambda()
             (progn
             (local-set-key [(f1)] 'describe-function))))
+
+ ;;;;;;;;;;;;;;;; For wxwidgets ;;;;;;;;;;;;;;;;;;;;;
+
 
 
 

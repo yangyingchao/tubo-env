@@ -1,7 +1,7 @@
 ############################### Pager #####################################
 
 Style FvwmPager NoTitle, Sticky, WindowListSkip, CirculateSkipIcon, CirculateSkip, BorderWidth 1, BorderColorset 5, NoHandles, NeverFocus, StaysOnBottom
-DeskTopSize 2x2
+DeskTopSize 4x1
 
 Colorset 40 fg #839eb0, bg #839eb0, hi #839eb0, sh #839eb0, RootTransparent buffer, Tint #4584b5 0
 Colorset 41 fg #839eb0, bg #839eb0, hi #839eb0, sh #839eb0, RootTransparent buffer, Tint #4584b5 0
@@ -15,7 +15,7 @@ DestroyModuleConfig FvwmPager: *
 *FvwmPager: Colorset        * 40
 *FvwmPager: DesktopScale    22
 *FvwmPager: Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
-*FvwmPager: Geometry        240x50-0-0
+*FvwmPager: Geometry        +865+2
 *FvwmPager: HilightColorset * 41
 *FvwmPager: MiniIcons
 *FvwmPager: MoveThreshold   0

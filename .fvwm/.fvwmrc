@@ -31,6 +31,7 @@ AddToFunc LowerTemp
 DestroyFunc PopupWindowList
 AddToFunc PopupWindowList
 + I PipeRead `[ $[pointer.x]  -lt 30 ] && [ $[pointer.y] -lt 30 ] && echo "Windowlist (CurrentPage) NoDeskSort, SelectOnRelease, Meta_L,CurrentAtEnd, IconifiedAtEnd"`
++ I PipeRead `[ $[pointer.x]  -gt 850 ] && [ $[pointer.x]  -lt 1150 ] && [ $[pointer.y] -lt 30 ] && echo "TempRaise FvwmPager"`
 
 
 # use IgnoreModifiers to fix the NumLock bug(?)
