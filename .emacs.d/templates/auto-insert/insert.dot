@@ -1,0 +1,9 @@
+// $Id: (>>FILE<<), (>>DATE<<)
+digraph Name {
+    node [shape=record fontsize=12 fontname=Courier style=filled];
+    edge[color=blue];
+    rankdir=LR;
+
+    //XXX: Place to put subgraphs
+
+}

@@ -21,6 +21,7 @@
         ("\\.sh$" . ["insert.sh" auto-update-defaults])
         ("\\.lisp$" . ["insert.lisp" auto-update-defaults])
         ("\\.el$" . ["insert.el" auto-update-defaults])
+        ("\\.dot$" . ["insert.dot" auto-update-defaults])
         ("\\.erl$" . ["insert.err" auto-update-defaults])
         ("\\.py$" . ["insert.py" auto-update-defaults])
         ("\\.tex$" . ["insert.tex" auto-update-defaults])

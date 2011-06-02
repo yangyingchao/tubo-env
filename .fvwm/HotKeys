@@ -35,3 +35,5 @@ Key space A 4 Maximize # Maxmize window
 
 Key Print A N Exec exec gnome-screenshot
 Key Print A S Exec exec gnome-screenshot -w
+
+Key t A 4 Exec exec xterm

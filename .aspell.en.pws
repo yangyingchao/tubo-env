@@ -1,4 +1,4 @@
-personal_ws-1.1 en 73 
+personal_ws-1.1 en 75 
 wxPython
 px
 OHCI
@@ -43,6 +43,8 @@ progn
 SSF
 css
 charset
+graphviz
+Graphviz
 wxWidgets
 UserWarning
 Isochronous

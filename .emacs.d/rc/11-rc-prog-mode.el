@@ -7,21 +7,37 @@
 
 (require 'cedet)
 
+
+
+(require 'eassist)
+(require 'semantic-c)
+(require 'semantic-decorate-include)
+(require 'semantic-gcc)
+(require 'semantic-ia)
+(require 'semanticdb-global)
+(require 'semantic-lex-spp)
+
+
 ;; Enable code helpers.
 (semantic-load-enable-code-helpers)
 
 (global-semantic-decoration-mode 1)
-(global-semantic-idle-scheduler-mode 1)
-(global-semantic-idle-summary-mode 1)
 (global-semantic-mru-bookmark-mode 1)
 (global-semantic-show-parser-state-mode 1)
 (global-semanticdb-minor-mode 1)
-(setq semantic-idle-scheduler-idle-time 3)
-(which-func-mode 1)
-(srecode-minor-mode 1)
 
-(setq global-semantic-idle-completions-mode 1)
+(global-semantic-mru-bookmark-mode 1)
+
+(global-semantic-idle-completions-mode 1)
+(global-semantic-idle-scheduler-mode 1)
+(global-semantic-idle-summary-mode 1)
+(which-func-mode 1)
+(global-srecode-minor-mode 1)
+
 (setq semantic-idle-work-parse-neighboring-files-flag t)
+(setq semantic-idle-scheduler-idle-time 2)
+(global-ede-mode t)
+(ede-enable-generic-projects)
 
 ;; smart complitions
 (setq-mode-local c-mode semanticdb-find-default-throttle
@@ -47,71 +63,6 @@
   [calendar])
 
 ;;;; Include settings
-(require 'semantic-gcc)
-(require 'semantic-c)
-(require 'semantic-ia)
-
-(defun DE-imply-includes-in-directory (dir)
-  "Add all header files in DIR to `semanticdb-implied-include-tags'."
-  (let ((files (directory-files dir t "^.+\\.h[hp]*$" t)))
-    (defvar-mode-local c++-mode semanticdb-implied-include-tags
-      (mapcar (lambda (header)
-                (semantic-tag-new-include
-                 header
-                 nil
-                 :filename header))
-              files))))
-
-
-(defun yyc/add-wx-support ()
-  "Add wxwidget related files."
-  (setq wx-base-dir "/usr/include/wx-2.8")
-  (semantic-add-system-include wx-base-dir 'c++-mode)
-
-  ;; include files for wxwidgets
-
-  ;; preprocessor macro
-  (add-to-list 'semantic-lex-c-preprocessor-symbol-map '("WXDLLEXPORT" . ""))
-  (add-to-list 'semantic-lex-c-preprocessor-symbol-map '("WXDLLIMPEXP_CORE" . ""))
-  (add-to-list 'semantic-lex-c-preprocessor-symbol-map '("WXDLLIMPEXP_FWD_CORE" . ""))
-  (add-to-list 'semantic-lex-c-preprocessor-symbol-map '("WXDLLIMPEXP_BASE" . ""))
-  (add-to-list 'semantic-lex-c-preprocessor-symbol-map '("WXDLLIMPEXP_FWD_BASE" . ""))
-  (add-to-list 'semantic-lex-c-preprocessor-symbol-map '("WXDLLIMPEXP_FWD_XML" . ""))
-  (add-to-list 'semantic-lex-c-preprocessor-symbol-map '("WXDLLIMPEXP_ADV" . ""))
-
-  (DE-imply-includes-in-directory (concat wx-base-dir "/wx/gtk"))
-  )
-
-
-(defun yyc/add-qt-support ( )
-  "Add qt related files."
-  (setq qt4-base-dir "/usr/include/qt4")
-  (setq qt4-gui-dir (concat qt4-base-dir "/QtGui"))
-  (semantic-add-system-include qt4-base-dir 'c++-mode)
-  (semantic-add-system-include qt4-gui-dir 'c++-mode)
-  (add-to-list 'semantic-lex-c-preprocessor-symbol-file
-               (concat qt4-base-dir "/Qt/qconfig.h"))
-  (add-to-list 'semantic-lex-c-preprocessor-symbol-file
-               (concat qt4-base-dir "/Qt/qconfig-dist.h"))
-  (add-to-list 'semantic-lex-c-preprocessor-symbol-file
-               (concat qt4-base-dir "/Qt/qglobal.h"))
-  (add-to-list 'semantic-lex-c-preprocessor-symbol-map
-               '("Q_GUI_EXPORT" . ""))
-  (add-to-list 'semantic-lex-c-preprocessor-symbol-map
-               '("Q_CORE_EXPORT" . ""))
-  )
-
-(defun yyc/add-gtk-support ( )
-  "Add gtk related files."
-  (setq gtk-related-includes (list
-                              "/usr/include/bits"
-                              "/usr/include/glib-2.0"
-                              "/usr/include/gtk-2.0"
-                              ))
-  (mapc (lambda(dir)
-          (semantic-add-system-include dir 'c-mode))
-        gtk-related-includes))
-
 
 (defconst cedet-user-include-dirs
   (list ".." "../include" "../inc" "../common" "../public" "."
@@ -126,10 +77,82 @@
 
 (setq semantic-c-dependency-system-include-path "/usr/include/")
 
+
+(defun DE-imply-includes-in-directory (dir)
+  "Add all header files in DIR to `semanticdb-implied-include-tags'."
+  (let ((files (directory-files dir t "^.+\\.h[hp]*$" t)))
+    (defvar-mode-local c++-mode semanticdb-implied-include-tags
+      (mapcar (lambda (header)
+                (semantic-tag-new-include
+                 header
+                 nil
+                 :filename header))
+              files))))
+
+(defun yyc/add-semantic-symbol (symbol)
+  "Add symbol to semantic-lex-c-preprocessor-symbol-map"
+  (add-to-list 'semantic-lex-c-preprocessor-symbol-map symbol)
+  )
+
+(defun yyc/add-wx-support ()
+  "Add wxwidget related files."
+  (let* ((wx-base-dir "/usr/include/wx-2.8")
+         (wx-symbol-list (list '("WXDLLEXPORT" . "")
+                               '("WXDLLIMPEXP_CORE" . "")
+                               '("WXDLLIMPEXP_ADV" . "")
+                               '("WXDLLIMPEXP_BASE" . "")
+                               '("WXDLLIMPEXP_FWD_CORE" . "")
+                               '("WXDLLIMPEXP_FWD_XML" . "")
+                               '("WXDLLIMPEXP_FWD_BASE" . "")
+                               )))
+    ;; include files for wxwidgets
+    (semantic-add-system-include wx-base-dir 'c++-mode)
+
+    ;; preprocessor macro
+    (mapc 'yyc/add-semantic-symbol
+          wx-symbol-list)
+    (DE-imply-includes-in-directory (concat wx-base-dir "/wx/gtk"))
+    ))
+
+
+(defun yyc/add-qt-support ( )
+  "Add qt related files."
+  (let* ((qt4-base-dir "/usr/include/qt4")
+         (qt4-gui-dir (concat qt4-base-dir "/QtGui"))
+         )
+    (semantic-add-system-include qt4-base-dir 'c++-mode)
+    (semantic-add-system-include qt4-gui-dir 'c++-mode)
+
+    (add-to-list 'semantic-lex-c-preprocessor-symbol-file
+                 (concat qt4-base-dir "/Qt/qconfig.h"))
+    (add-to-list 'semantic-lex-c-preprocessor-symbol-file
+                 (concat qt4-base-dir "/Qt/qconfig-dist.h"))
+    (add-to-list 'semantic-lex-c-preprocessor-symbol-file
+                 (concat qt4-base-dir "/Qt/qglobal.h"))
+
+    (add-to-list 'semantic-lex-c-preprocessor-symbol-map
+                 '("Q_GUI_EXPORT" . ""))
+    (add-to-list 'semantic-lex-c-preprocessor-symbol-map
+                 '("Q_CORE_EXPORT" . ""))
+    ))
+
+(defun yyc/add-gtk-support ( )
+  "Add gtk related files."
+  (let ((gtk-related-includes (list
+                               "/usr/include/bits"
+                               "/usr/include/glib-2.0"
+                               "/usr/include/gtk-2.0"
+                               )))
+    (mapc (lambda(dir)
+            (semantic-add-system-include dir 'c-mode))
+          gtk-related-includes)))
+
 (yyc/add-common-includes)
+
+;;;; XXX: It does not work, don't know why!
 (yyc/add-wx-support)
-;; (yyc/add-qt-support)
-;; (yyc/add-gtk-support)
+(yyc/add-qt-support)
+(yyc/add-gtk-support)
 
 ;;;; TAGS Menu
 (defun my-semantic-hook ()
@@ -153,17 +176,11 @@
              )
 
 ;;;; Customized functions to generate code quickly.
-(defun yyc/insert-file-header ()
-  "Insert file comment using srecode"
-  (interactive)
-  (srecode-insert "file:fileheader")
-  )
 
 (defun yyc/insert-single-comment ()
   "Insert signle line of comment using srecode"
   (interactive)
   (insert " /* */")
-  ;; (srecode-insert "declaration:comment-single")
   )
 
  ;;; ECB Setttings
@@ -216,14 +233,14 @@
   (message "Finished updating TAGs ...")
    (pop-to-buffer "*Messages*")
    (goto-char (point-max))
-   (pop-to-buffer cur-bufer))
+   (pop-to-buffer cur-buffer))
 
 (defun yyc/update-tag ()
   (interactive)
   (let ((up-process nil))
     (if xgtags-mode
         (progn
-          (setq cur-bufer (buffer-name))
+          (setq cur-buffer (buffer-name))
           (message "start to global -uv")
           (setq up-process
                 (start-process "yyc/update-tag" "*Messages*" "global" "-uv"))
@@ -432,26 +449,35 @@
                                )))
  '(c-mode-abbrev-table c++-mode-abbrev-table))
 
+
+
 ;; 输入 inc , 可以自动提示输入文件名称,可以自动补全.
 
-(defconst cedet-sys-include-dirs (list
-                                  "/usr/include/bits"
-                                  "/usr/include/glib-2.0"
-                                  "/usr/include/gtk-2.0"
-                                  "/usr/include"
-                                  "/usr/include/wx-2.8"
-                                  "/usr/include/qt4"
-                                  ))
+(defun yyc/filter-include-dirs ()
+  "remove non-existed dirs from input-list"
+  (setq inc-list nil)
+  (mapc (lambda (inc-dir)
+          (if (file-exists-p inc-dir)
+              (add-to-list 'inc-list inc-dir)
+            nil
+            ))
+        semantic-dependency-system-include-path)
+  (princ inc-list)
+  )
+
 (define-skeleton skeleton-include
   "generate include<>" ""
   > "#include <"
   (completing-read "Include File:"
-                   (mapcar #'(lambda (f) (list f ))
+                   (mapcar (lambda (f) (list f ))
                            (apply 'append
                                   (mapcar
-                                   #'(lambda (dir)
-                                       (directory-files dir))
-                                   cedet-sys-include-dirs))))
+                                   (lambda (dir)
+                                     (directory-files
+                                      dir nil
+                                      "\\(\\.h\\)?"))
+                                   (yyc/filter-include-dirs)
+))))
   ">")
 
 (require 'ctypes)
@@ -461,8 +487,11 @@
 (require 'member-function)
 (setq  mf--source-file-extension "cpp")
 
-(add-hook 'c++-mode-hook (lambda () (local-set-key "\C-cm"
-                                                   #'expand-member-functions)))
+(add-hook 'c++-mode-hook
+          (lambda ()
+            (local-set-key
+             "\C-cm"
+             'expand-member-functions)))
 
 ;;;; C-mode-hooks .
 
