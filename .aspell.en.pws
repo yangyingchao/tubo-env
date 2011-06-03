@@ -42,9 +42,8 @@ Screenshot
 progn
 SSF
 css
-charset
 graphviz
-Graphviz
+charset
 wxWidgets
 UserWarning
 Isochronous
@@ -65,6 +64,7 @@ hermitsoft
 Tubo
 VFS
 FIP
+SVN
 filesystem
 Readme
 wildcard

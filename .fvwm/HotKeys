@@ -25,7 +25,7 @@ Key F3 A 4 Module FvwmConsole
 Key F4 A M Close
 Key Tab A M WindowList (CurrentPage) Root c c NoDeskSort, SelectOnRelease Meta_L,CurrentAtEnd, IconifiedAtEnd
 Key r A CM Exec exec grun
-Key t A MC Exec roxterm
+Key t A MC Exec sakura
 
 # Lock screens
 Key L A 4 FuncFvwmLockScreen
