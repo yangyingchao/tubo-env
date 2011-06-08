@@ -176,6 +176,10 @@
           (if (or (equal (file-name-extension buffer-file-name) "tex")
                    (equal (file-name-extension buffer-file-name) "TEX"))
                (format "pdflatex %s" file )
+            (if (or (equal (file-name-extension buffer-file-name) "sh")
+                    (equal (file-name-extension buffer-file-name) "SH"))
+                (format "./%s" file)
+                )
                )
           )
         ))))
@@ -710,7 +714,6 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
                        counter pos))
       (if (string-match r_name var-defination pos)
           (progn
-            (message "A")
             (setq struct-name
                   (match-string 2 var-defination))
             (setq header-str
@@ -720,7 +723,6 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
             (iter (match-end 0)))
         (if (string-match r_attr_str var-defination pos)
             (progn
-              (message "B")
               (setq var-type
                     (match-string 1 var-defination))
               (setq var-name
