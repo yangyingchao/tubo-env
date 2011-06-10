@@ -682,7 +682,8 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
   "Tail part of dot")
 (defconst yyc/dot-node-head
   "
-        node_%s[shape=record label=\"<f0>*** STRUCT %s ***|\\"
+    node_%s[shape=record
+            label=\"<f0>*** STRUCT %s ***|\\"
   "Format of node.")
 (defconst yyc/dot-node-tail "
 \"];"

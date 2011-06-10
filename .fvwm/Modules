@@ -88,15 +88,13 @@ AddToDecor DefaultDecor
 + BorderStyle Colorset 3 -- Flat HiddenHandles NoInset
 
 
-Style * UseDecor DefaultDecor
-Style * BorderColorset 100, HilightBorderColorset 100
-Style * Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
-Style * HandleWidth  2
-Style * ForeColor    #C0C0C0
-Style * BackColor    Black
-Style * HilightFore  #FFFFFF
-Style * HilightBack  Black
+Style DefaultStyle \
+      UseDecor DefaultDecor, HandleWidth 2, ForeColor white, \
+      BackColor grey40, HilightFore black, HilightBack grey70,\
+      BorderColorset 100, HilightBorderColorset 100,\
+      Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
 
+Style * UseStyle DefaultStyle
 
 #################
 # Use an arrow rather than the `X` cursor on the root window.
