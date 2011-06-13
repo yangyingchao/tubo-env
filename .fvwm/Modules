@@ -65,11 +65,14 @@ AddToMenu FvwmSendTo
 DestroyDecor DefaultDecor
 AddToDecor DefaultDecor
 + TitleStyle Centered Height 20
-+ TitleStyle InActive ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat ) Active ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
++ TitleStyle InActive (TiledPixmap decoration/titlebar-mid-focused.png -- Flat) \
+             Active   (TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
 + AddTitleStyle Active ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat ) \
-    Inactive ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
+                Inactive ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
 + ButtonStyle All InActive ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
 + ButtonStyle All Active ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
+
++ BorderStyle Colorset 3 -- Flat HiddenHandles NoInset
 + ButtonStyle 1 AllActive (MiniIcon) AllInactive (MiniIcon)
 + ButtonStyle 2 ActiveUp (Pixmap $[fvwm_decor]/close_active_up.png) \
                ActiveDown (Pixmap $[fvwm_decor]/close_active_down.png) \
@@ -85,13 +88,10 @@ AddToDecor DefaultDecor
 + ButtonStyle 4 - Clear MWMDecorMax
 + ButtonStyle 6 - Clear MWMDecorMin
 + ButtonStyle All -- Flat UseTitleStyle
-+ BorderStyle Colorset 3 -- Flat HiddenHandles NoInset
-
 
 Style DefaultStyle \
       UseDecor DefaultDecor, HandleWidth 2, ForeColor white, \
-      BackColor grey40, HilightFore black, HilightBack grey70,\
-      BorderColorset 100, HilightBorderColorset 100,\
+      BackColor grey40, HilightFore white, HilightBack grey70,\
       Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
 
 Style * UseStyle DefaultStyle
