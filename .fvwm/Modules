@@ -60,42 +60,6 @@ AddToMenu FvwmSendTo
 + "Desktop 4%actions/desktop.png%" Pick MoveToPage 3 0
 
 
-############################# Decor ###########################################
-
-DestroyDecor DefaultDecor
-AddToDecor DefaultDecor
-+ TitleStyle Centered Height 20
-+ TitleStyle InActive (TiledPixmap decoration/titlebar-mid-focused.png -- Flat) \
-             Active   (TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
-+ AddTitleStyle Active ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat ) \
-                Inactive ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
-+ ButtonStyle All InActive ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
-+ ButtonStyle All Active ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
-
-+ BorderStyle Colorset 3 -- Flat HiddenHandles NoInset
-+ ButtonStyle 1 AllActive (MiniIcon) AllInactive (MiniIcon)
-+ ButtonStyle 2 ActiveUp (Pixmap $[fvwm_decor]/close_active_up.png) \
-               ActiveDown (Pixmap $[fvwm_decor]/close_active_down.png) \
-               Inactive (Pixmap $[fvwm_decor]/close_inactive.png)
-+ ButtonStyle 4 ActiveUp (Pixmap $[fvwm_decor]/max_active_up.png) \
-               ActiveDown (Pixmap $[fvwm_decor]/max_active_down.png) \
-               Inactive (Pixmap $[fvwm_decor]/max_inactive.png)
-+ ButtonStyle 6 ActiveUp (Pixmap $[fvwm_decor]/min_active_up.png) \
-               ActiveDown (Pixmap $[fvwm_decor]/min_active_down.png) \
-               Inactive (Pixmap $[fvwm_decor]/min_inactive.png)
-+ ButtonStyle 1 - Clear
-+ ButtonStyle 2 - Clear
-+ ButtonStyle 4 - Clear MWMDecorMax
-+ ButtonStyle 6 - Clear MWMDecorMin
-+ ButtonStyle All -- Flat UseTitleStyle
-
-Style DefaultStyle \
-      UseDecor DefaultDecor, HandleWidth 2, ForeColor white, \
-      BackColor grey40, HilightFore white, HilightBack grey70,\
-      Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
-
-Style * UseStyle DefaultStyle
-
 #################
 # Use an arrow rather than the `X` cursor on the root window.
 #################
@@ -114,22 +78,6 @@ CursorStyle RESIZE  $[mycursors]/pantherx/cursors/fleur
 CursorStyle SYS  $[mycursors]/pantherx/cursors/hand2
 CursorStyle RIGHT  $[mycursors]/pantherx/cursors/right_side
 CursorStyle LEFT  $[mycursors]/pantherx/cursors/left_side
-
-
-# TitleStyle ActiveUp MultiPixmap Main decoration/title_active.xpm, \
-# UnderText decoration/titleunder_active.xpm, LeftOfText \
-# decoration/titlelt_active.xpm, RightOfText \
-# decoration/titlert_active.xpm
-
-# TitleStyle ActiveDown MultiPixmap Main decoration/title_active.xpm, \
-# UnderText decoration/titleunder_active.xpm, LeftOfText \
-# decoration/titlelt_active.xpm, RightOfText \
-# decoration/titlert_active.xpm
-
-# TitleStyle Inactive MultiPixmap Main decoration/title_inactive.xpm, \
-# UnderText decoration/titleunder_inactive.xpm, LeftOfText \
-# decoration/titlelt_inactive.xpm, RightOfText \
-# decoration/titlert_inactive.xpm
 
 Mouse 0 1 A Menu MenuWindowOptions Close
 Mouse 0 2 A Close
@@ -210,3 +158,44 @@ DestroyModuleConfig FvwmDock: *
 *FvwmDock (5x7+50+0, Swallow(Respawn, NoHints) wmclock `Exec exec wmclock`)
 *FvwmDock: (5x7+58, Swallow(NoClose, UseOld) \
           `stalonetray` `Exec exec stalonetray --geometry 100x50 -p`)
+
+############################# Decor ###########################################
+
+DestroyDecor DefaultDecor
+AddToDecor DefaultDecor
++ TitleStyle Centered Height 20
++ TitleStyle InActive (TiledPixmap decoration/titlebar-mid-focused.png -- Flat) \
+             Active   (TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
++ AddTitleStyle Active ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat ) \
+                Inactive ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
++ ButtonStyle All InActive ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
++ ButtonStyle All Active ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
+
++ BorderStyle Colorset 3 -- Flat HiddenHandles NoInset
++ ButtonStyle 1 AllActive (MiniIcon) AllInactive (MiniIcon)
++ ButtonStyle 2 ActiveUp (Pixmap $[fvwm_decor]/close_active_up.png) \
+               ActiveDown (Pixmap $[fvwm_decor]/close_active_down.png) \
+               Inactive (Pixmap $[fvwm_decor]/close_inactive.png)
++ ButtonStyle 4 ActiveUp (Pixmap $[fvwm_decor]/max_active_up.png) \
+               ActiveDown (Pixmap $[fvwm_decor]/max_active_down.png) \
+               Inactive (Pixmap $[fvwm_decor]/max_inactive.png)
++ ButtonStyle 6 ActiveUp (Pixmap $[fvwm_decor]/min_active_up.png) \
+               ActiveDown (Pixmap $[fvwm_decor]/min_active_down.png) \
+               Inactive (Pixmap $[fvwm_decor]/min_inactive.png)
++ ButtonStyle 1 - Clear
++ ButtonStyle 2 - Clear
++ ButtonStyle 4 - Clear MWMDecorMax
++ ButtonStyle 6 - Clear MWMDecorMin
++ ButtonStyle All -- Flat UseTitleStyle
+
+Style DefaultStyle \
+      UseDecor DefaultDecor, HandleWidth 2, ForeColor white, \
+      BackColor grey40, HilightFore white, HilightBack grey,\
+      Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
+
+Style * UseStyle DefaultStyle
+
+Style xterm UseStyle DefaultStyle
+
+
+
