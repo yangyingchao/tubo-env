@@ -70,7 +70,8 @@ AddtoFunc               Fullscreen-Stop
 
 DestroyFunc             FuncFvwmIconifyTrue
 AddToFunc               FuncFvwmIconifyTrue
-+                       I All (!Iconic !"xdaliclock" !"*Desk *" !"*FvwmDocker*") State 1
++                       I All (AcceptsFocus CurrentPage !Iconic !Shaded, !FvwmButtons, !"xdaliclock" !"*Desk *" !"*Desk *" !"*FvwmDocker*") State 1
+
 +                       I All (State 1) Iconify True
 
 DestroyFunc             FuncFvwmIconifFalse

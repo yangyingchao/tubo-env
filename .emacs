@@ -39,6 +39,7 @@
 (setq sentence-end-double-space nil)
 (setq font-lock-maximum-decoration t)
 (setq-default show-trailing-whitespace t)
+(setq-default max-specpdl-size 2048)
 
 ;;;; Garbage Collection
 (setq-default garbage-collection-messages t)
