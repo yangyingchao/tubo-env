@@ -107,7 +107,7 @@ def parse_single(path):
                         val = val[:pos]
                 tmp_dic[key] = val
                 break
-    if tmp_dic.get("Icon") is None:
+    if tmp_dic.get("Icon") is None or "@" in tmp_dic.get("Icon"):
         tmp_dic["Show"] = False
     else:
         tmp_dic["Show"] = True

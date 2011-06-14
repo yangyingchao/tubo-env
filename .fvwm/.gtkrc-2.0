@@ -1,7 +1,7 @@
 # -- THEME AUTO-WRITTEN BY gtk-theme-switch2 DO NOT EDIT
 include "/usr/share/themes/Aurora/gtk-2.0/gtkrc"
 
-gtk-color-scheme = "base_color:#ffffff\nfg_color:#000000\ntooltip_fg_color:#FFFFFF\nselected_bg_color:#7EA2B8\nselected_fg_color:#FFFFFF\ntext_color:#3C3C3C\nbg_color:#F2F1F0\ntooltip_bg_color:#C7C7C7\nlink_color:#7EA2B8"
+gtk-color-scheme = "base_color:#ffffff\nfg_color:#000000\ntooltip_fg_color:#000000\nselected_bg_color:#7EA2B8\nselected_fg_color:#FFFFFF\ntext_color:#3C3C3C\nbg_color:#c7c7c7\ntooltip_bg_color:#BABDB6\nlink_color:#7EA2B8"
 
 gtk-icon-sizes = "panel-menu=22,22:gtk-button=16,16"
 gtk-menu-popup-delay = 40
@@ -294,7 +294,7 @@ style "dark-toolbar" = "dark"
 {
     xthickness = 3
     ythickness = 3
-    bg[NORMAL] = "#3c3b37" #"#343330"
+    bg[NORMAL] = "#e7e7e7" #"#343330"
     bg[PRELIGHT] =  shade (0.65, @selected_bg_color)
     bg[SELECTED] =  shade (0.35, @bg_color)
     bg[ACTIVE] =  shade (0.35, @bg_color)
@@ -302,13 +302,13 @@ style "dark-toolbar" = "dark"
     engine "Aurora"
     {
         border_shades = {1.3, 1.1} # draw a gradient on the border.
-        border_colors = {"#3c3b37", "#3c3b37"}#{ "#343330", "#343330" }
+        border_colors = {"#e7e7e7", "#e7e7e7"}
         glowstyle = 4
         gradient_shades = {1.05,1.0,1.0,0.9}
-            highlight_shade = 1.1
-            lightborder_shade   = 1.05
-            reliefstyle = 4     # 0 = flat, 1 = inset, 2 = shadow, = 3 for a gradient on shadow, = 4 for a stronger shadow.
-            contrast = 1.4
+        highlight_shade = 1.1
+        lightborder_shade   = 1.05
+        reliefstyle = 4     # 0 = flat, 1 = inset, 2 = shadow, = 3 for a gradient on shadow, = 4 for a stronger shadow.
+        contrast = 1.4
     }
 }
 
@@ -367,9 +367,9 @@ style "menu" = "dark" {
     xthickness = 0
     ythickness = 0
 
-    bg[NORMAL] = "#43423f"
-    bg[INSENSITIVE] = "#43423f"
-    fg[INSENSITIVE]   = shade (0.54, "#43423f")
+    bg[NORMAL] = "#e7e7e7"
+    bg[INSENSITIVE] = "#e7e7e7"
+    fg[INSENSITIVE]   = shade (0.54, "#e7e7e7")
 
     engine "Aurora"
     {
@@ -755,5 +755,5 @@ widget "*IdoEntryMenuItem*" style "wide"
 widget_class "EShellWindow.GtkVBox.BonoboDock.BonoboDockBand.BonoboDockItem*" style "evo_new_button_workaround"
 
 gtk-icon-theme-name="Faenza"
-
+gtk-cursor-theme-name="default"
 # -- THEME AUTO-WRITTEN BY gtk-theme-switch2 DO NOT EDIT

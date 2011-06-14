@@ -189,13 +189,11 @@ AddToDecor DefaultDecor
 + ButtonStyle All -- Flat UseTitleStyle
 
 Style DefaultStyle \
-      UseDecor DefaultDecor, HandleWidth 2, ForeColor white, \
-      BackColor grey40, HilightFore white, HilightBack grey,\
+      UseDecor DefaultDecor, HandleWidth 2, \
+      ForeColor #babdb6, BackColor black, \
+      HilightFore white, HilightBack grey,\
       Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
 
 Style * UseStyle DefaultStyle
-
-Style xterm UseStyle DefaultStyle
-
 
 

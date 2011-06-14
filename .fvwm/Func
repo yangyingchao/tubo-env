@@ -112,6 +112,8 @@ AddToFunc    ExitFunction
 +            I KillModule FvwmButtons
 +            I KillModule FvwmAnimate
 +            I KillModule FvwmAuto
++            I Exec exec /home/yyc/.fvwm/tools/kill_btn.sh
++            I Exec exec killall -9 emacs
 
 
 # make windowlists etc. warp pointer to the middle of

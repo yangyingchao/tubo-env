@@ -2,7 +2,7 @@
 #                                   菜单定义
 #############################################################################
 Colorset 20 fg Black, bg Gray,   hi Black, sh Black
-Colorset 21 fg White, bg #888a85,  hi Black, sh Green
+Colorset 21 fg White, bg #7ea2b8,  hi Black, sh Green
 
 MenuStyle * MenuColorset 20, ActiveColorset 21
 MenuStyle * Hilight3DOff, HilightBack
