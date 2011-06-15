@@ -169,12 +169,13 @@
 ;;(setq srecode-minor-menu t)
 (srecode-minor-mode 1)
 
-(setq srecode-map-load-path nil)
+;; (setq srecode-map-load-path nil)
 
-(add-to-list 'srecode-map-load-path
-             (expand-file-name "~/.emacs.d/templates/srecode")
-             )
+;; (add-to-list 'srecode-map-load-path
+;;              (expand-file-name "~/.emacs.d/templates/srecode")
+;;              )
 
+(push (expand-file-name "~/.emacs.d/templates/srecode") srecode-map-load-path)
 ;;;; Customized functions to generate code quickly.
 
 (defun yyc/insert-single-comment ()

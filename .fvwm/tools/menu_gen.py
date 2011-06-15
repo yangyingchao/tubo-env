@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 from copy import deepcopy
 
 
@@ -41,11 +42,20 @@ CATEGORY_LIST = ["Office", "Graphics", "System", "Engineering" "Utility",
                  "Network", "Development", "AudioVideo"]
 keywords      = ["Name", "Exec", "Icon", "Categories"]
 
+verbose = True
+
+def log_print(msg):
+    global verbose
+    if verbose:
+        print msg
+    else:
+        pass
+
 def gen_img_data():
     for path in ICON_PATHS:
         if os.path.islink(path):
             path = os.path.realpath(path)
-        print "\t Processing icon directory: %s"%path
+        log_print("\t Processing icon directory: %s"%path)
         os.path.walk(path, process_img, None)
 
 def process_img(arg, dirname, filenames):
@@ -69,7 +79,7 @@ def process_desktop_entries(arg, dirname, filenames):
     """
     for filename in filenames:
         path = os.path.join(dirname, filename)
-        print "Processing %s"%path
+        log_print ("Processing %s"%path)
         if os.path.isdir(path):
             continue
         else:
@@ -152,12 +162,12 @@ def find_icon(name, menu_type=1):
 
 if __name__ == '__main__':
 
+    if len(sys.argv) > 1:
+        verbose = False
 
     print "Generating image database ..."
     gen_img_data()
     print "Finished to generate image database\n"
-    # for key in img_data.keys():
-    #     print "Key: %s, path: %s"%(key, img_data.get(key))
 
     print "Searching and analyzing desktop entries..."
     for item in DESKTOP_SEARCH_PATH:
@@ -188,7 +198,7 @@ if __name__ == '__main__':
         tmp_list = fvwm_menu[key]
         val_list = sorted(tmp_list, cmp=sort_name)
 
-        print "Adding category: %s"%key
+        log_print ("Adding category: %s"%key)
         for val in val_list:
             name = val.get("Name")
             exec_file = val.get("Exec")
@@ -196,7 +206,7 @@ if __name__ == '__main__':
             if name is None or exec_file is None or icon is None:
                 continue
 
-            print "\t+---- Adding entry: %s"%name
+            log_print ("\t+---- Adding entry: %s"%name)
             icon_path = find_icon(icon, 1)
             icon = os.path.basename(icon)
             pos = icon.rfind(".")
@@ -210,7 +220,7 @@ if __name__ == '__main__':
 
             content += '+ "%%%s%%%s" Exec exec %s\n'%(icon_out, name,
                                                       exec_file)
-        print "\n"
+        log_print ("\n")
 
 
         content += "\n\n"

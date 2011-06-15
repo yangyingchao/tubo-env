@@ -22,7 +22,7 @@
 (fset 'yes-or-no-p 'y-or-n-p); 用y/n替代yes/no
 (mouse-avoidance-mode 'animate); 光标碰到鼠标所在位置时，鼠标自动移开
 (scroll-bar-mode nil); 去掉滚动条
-(setq frame-title-format '("" buffer-file-name )); 设置title
+(setq frame-title-format '("" buffer-file-name)); 设置title
 (setq inhibit-startup-message t);  关闭启动界面
 (setq-default major-mode 'text-mode); 默认模式为文本模式
 (setq mouse-yank-at-point t); 支持鼠标中键粘贴
