@@ -14,7 +14,7 @@ MenuStyle * SeparatorsShort
 MenuStyle * Animation
 MenuStyle * ItemFormat "%.2|%.5i%.5l%.5i%2.3>%2|"
 MenuStyle * VerticalItemSpacing 0 0
-Menustyle * Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
+Menustyle * Font "StringEncoding=utf-8:xft:WenQuanYi Micro Hei:Medium:Size=12:encoding=zh_CN.UTF-8"
 
 
 #DestroyMenu recreate MenuFvwmRoot
