@@ -62,6 +62,8 @@
     speedbar-frame-mode)
   [calendar])
 
+;; C mode
+
 ;;;; Include settings
 
 (defconst cedet-user-include-dirs
@@ -547,12 +549,15 @@
 
 (defun setup-program-keybindings()
   ;;;; Common program-keybindings
+  (interactive)
   (xgtags-mode 1) ;; keybindings for xgtags.
 
   ;;;; "keybindings for sematic"
   (semantic-default-c-setup)
   (local-set-key "." 'semantic-complete-self-insert)
   (local-set-key ">" 'semantic-complete-self-insert)
+  (local-set-key (kbd "M-n") 'senator-next-tag)
+  (local-set-key (kbd "M-p") 'senator-previous-tag)
   (local-set-key "\C-c/" 'semantic-ia-complete-symbol)
   (local-set-key "\C-c?" 'semantic-ia-complete-symbol-menu)
   (local-set-key "\C-cJ" 'semantic-analyze-proto-impl-toggle)
@@ -979,11 +984,6 @@ Use CREATE-TEMP-F for creating temp copy."
 
 
 ;;;;;;;;; Emacs-lisp mode ;;;;;;;;;;;;;;
-
-(add-hook 'emacs-lisp-mode-hook
-          (lambda()
-            (progn
-            (local-set-key [(f1)] 'describe-function))))
 
  ;;;;;;;;;;;;;;;; For wxwidgets ;;;;;;;;;;;;;;;;;;;;;
 

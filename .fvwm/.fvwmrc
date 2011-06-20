@@ -96,7 +96,8 @@ DefaultFont "StringEncoding=utf-8:xft:Microsoft YaHei:size=10:encoding=zh_CN.UTF
 DefaultColorset 0
 
 Style *	SnapAttraction 10 SameType Screen
-Style * !IconTitle, StickyIcon, IconBox 1300x960+30-30, IconFill top left, IconGrid 32 32
+Style * !IconTitle, StickyIcon
+Style * IconBox 1300x960+30-30, IconFill top left, IconGrid 32 32 IconSize 64 64
 Style * BorderColorset 100, HilightBorderColorset 100
 Style * BorderWidth 2, HandleWidth 1
 Style * Button 1, Button 2, Button 4, Button 6
