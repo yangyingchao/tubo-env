@@ -695,7 +695,9 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
 (defconst r_name "\\_<\\(typedef[ \t]+\\)?struct[ \t]+\\(.*\\)?[ \t]*{"
   "Regular expression for mating struct name")
 
-(defconst r_func "\(.*\)"
+(defconst r_func_l "\(.*"
+  "Regular expression to match a function")
+(defconst r_func_r ".*\)"
   "Regular expression to match a function")
 
 (defconst r_comments "^[ \t/\\*][/\\*]+"
@@ -738,7 +740,8 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
                     (match-string 2 var-defination))
               (setq next-begin (match-end 0))
               (if (or
-                   (string-match r_func var-defination pos) ;Skip function.
+                   (string-match r_func_l var-type 0) ;Skip function.
+                   (string-match r_func_r var-name 0)
                    (string-match r_comments var-type 0) ;Comments
                    )
                   nil
