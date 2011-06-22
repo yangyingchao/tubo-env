@@ -163,11 +163,10 @@ DestroyModuleConfig FvwmDock: *
 
 DestroyDecor DefaultDecor
 AddToDecor DefaultDecor
-+ TitleStyle Centered Height 22
-+ TitleStyle InActive (TiledPixmap decoration/titlebar-mid-inactive.png -- Flat) \
++ TitleStyle Centered \
+             Height 22 \
+             InActive (TiledPixmap decoration/titlebar-mid-inactive.png -- Flat) \
              Active   (TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
-+ AddTitleStyle Active ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat ) \
-                Inactive ( TiledPixmap decoration/titlebar-mid-inactive.png -- Flat )
 + ButtonStyle All InActive ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
 + ButtonStyle All Active ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
 

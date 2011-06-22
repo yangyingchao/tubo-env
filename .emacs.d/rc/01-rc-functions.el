@@ -689,14 +689,23 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
 \"];"
   "Format of node.")
 
-(defconst r_attr_str "[ \t]+\\(.*+\\)[ \t]+\\(.*\\)?;"
+(defconst r_attr_str "[ \t]+\\(.*+\\)[ \t]+\\(.*?\\);\\([ \t]*/[/\\*].*\\)?$"
   "Regular expression for matching struct fields.")
 
 (defconst r_name "\\_<\\(typedef[ \t]+\\)?struct[ \t]+\\(.*\\)?[ \t]*{"
   "Regular expression for mating struct name")
 
+(defconst r_func "\(.*\)"
+  "Regular expression to match a function")
+
+(defconst r_comments "^[ \t/\\*][/\\*]+"
+  "Regular expression to match a commentted field.")
+
 (defconst attr_str "
-<f%d>%s %s\\l|\\" "nil")
+<f%d>+%s : %s\\l|\\" "nil")
+
+(defconst attr_func "
+<f%d>-%s : %s\\l|\\" "nil")
 
 (defun yyc/datastruct-to-dot (start end)
   "generate c++ function definition and insert it into `buffer'"
@@ -708,13 +717,12 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
          (counter 0)
          (struct-name "")
          (header-str "")
+         (next-begin 0)
          )
     (defun iter (pos)
-      (setq counter (+ counter 1))
-      (message (format "Counter: %d, pos: %d"
-                       counter pos))
       (if (string-match r_name var-defination pos)
           (progn
+            (setq counter (+ counter 1))
             (setq struct-name
                   (match-string 2 var-defination))
             (setq header-str
@@ -728,10 +736,19 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
                     (match-string 1 var-defination))
               (setq var-name
                     (match-string 2 var-defination))
-              (setq tmp_str
-                    (concat tmp_str
-                            (format attr_str counter var-type var-name)))
-              (iter (match-end 0)))
+              (setq next-begin (match-end 0))
+              (if (or
+                   (string-match r_func var-defination pos) ;Skip function.
+                   (string-match r_comments var-type 0) ;Comments
+                   )
+                  nil
+                (progn
+                  (setq counter (+ counter 1))
+                  (setq tmp_str
+                        (concat tmp_str
+                                (format attr_str
+                                        counter var-name var-type)))))
+              (iter next-begin))
           nil)))
     (save-excursion
       (iter 0)
