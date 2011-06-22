@@ -103,7 +103,6 @@ AddToFunc   StartFunction
 +           I Exec exec xscreensaver
 +           I Exec exec fcitx -d
 +           I Exec exec pidgin
-+           I Exec exec gdlinux
 
 
 # fcitx and pidgin does not need to be killed: only one instance will be created.
