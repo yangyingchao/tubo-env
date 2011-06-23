@@ -1,5 +1,4 @@
 # -*- mode: snippet -*-
-#name : if ... -> ... ; true -> ... end
 # --
 if
     $1 -> $2;

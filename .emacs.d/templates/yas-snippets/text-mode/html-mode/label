@@ -1,4 +1,3 @@
 # -*- mode: snippet -*-
-#name : <label ... ></label>
 # --
 <label for="$1">$2</label>

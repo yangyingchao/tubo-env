@@ -1,5 +1,4 @@
 # -*- mode: snippet -*-
-# --
 # Debug utility for python.
 # --
 import inspect

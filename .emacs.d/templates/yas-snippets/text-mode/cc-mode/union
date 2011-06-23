@@ -1,5 +1,4 @@
 # -*- mode: snippet -*-
-#name : union ... { ... }
 # --
 union ${1:name} {
 $0$>

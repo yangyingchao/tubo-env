@@ -1,5 +1,4 @@
 # -*- mode: snippet -*-
-#name : a function that process a file
 #contributor : Xah Lee
 # --
 (defun doThisFile (fpath)

@@ -1,5 +1,4 @@
 # -*- mode: snippet -*-
-#name : -module().
 #contributor : hitesh <hitesh.jasani@gmail.com>
 # --
 -module(${1:`(file-name-nondirectory

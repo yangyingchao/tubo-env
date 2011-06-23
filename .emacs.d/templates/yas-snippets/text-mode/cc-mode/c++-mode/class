@@ -1,5 +1,4 @@
 # -*- mode: snippet -*-
-#name : class ... { ... }
 # --
 class ${1:Name} {
 public:

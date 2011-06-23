@@ -1,5 +1,4 @@
 # -*- mode: snippet -*-
-#name : try {} catch (...) { ... }
 # --
 try {
     ${1:commands}

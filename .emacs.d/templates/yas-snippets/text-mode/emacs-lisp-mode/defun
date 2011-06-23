@@ -1,5 +1,4 @@
 # -*- mode: snippet -*-
-#name : function template
 #contributor : Xah Lee
 # --
 (defun ${1:func_name} (${2:args})

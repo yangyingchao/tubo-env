@@ -1,4 +1,3 @@
 # -*- mode: snippet -*-
-#name : (= @N "")
 # --
 (= @${1:offset} "$0")

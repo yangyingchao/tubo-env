@@ -1,5 +1,4 @@
 # -*- mode: snippet -*-
-#name : require "..."
 #group : general
 # --
 require "$0"

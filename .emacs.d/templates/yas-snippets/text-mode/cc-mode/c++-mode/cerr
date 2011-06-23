@@ -1,4 +1,3 @@
 # -*- mode: snippet -*-
-#name : std::cerr << ... << std::endl;
 # --
 std::cerr << $0 << std::endl;

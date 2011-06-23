@@ -1,5 +1,4 @@
 # -*- mode: snippet -*-
-#name : loop(...) -> receive _ -> loop(...) end.
 # --
 ${1:loop}($2) ->
     receive

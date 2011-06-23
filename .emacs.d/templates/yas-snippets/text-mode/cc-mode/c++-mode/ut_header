@@ -1,5 +1,4 @@
 # -*- mode: snippet -*-
-#name : unit test header
 # --
 #include <iostream>
 #include <string>

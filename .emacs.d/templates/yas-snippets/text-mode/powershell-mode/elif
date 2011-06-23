@@ -1,5 +1,4 @@
 # -*- mode: snippet -*-
-#name : elif (...) { ... }
 # --
 elseif (${1:condition})
 {

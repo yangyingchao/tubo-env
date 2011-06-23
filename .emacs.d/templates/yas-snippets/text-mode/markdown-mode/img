@@ -1,5 +1,4 @@
 # -*- mode: snippet -*-
-#name : Image
 #contributor: Peng Deng <dengpeng@gmail.com>
 # --
 ![${1:Alt Text}](${2:URL} $3) $0

@@ -1,5 +1,4 @@
 # -*- mode: snippet -*-
-#name : when ... end
 #group : control structure
 # --
 when ${condition}

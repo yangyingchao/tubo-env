@@ -1,5 +1,4 @@
 # -*- mode: snippet -*-
-#name : if ... ; then ... ; fi
 # --
 if [ ${1:expression} ]; then
 $0$>

@@ -1,5 +1,4 @@
 # -*- mode: snippet -*-
-#name : struct ... { ... }
 # --
 typedef struct _${1:name} {
 $0

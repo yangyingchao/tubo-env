@@ -1,5 +1,4 @@
 # -*- mode: snippet -*-
-#name : -export([]).
 #contributor : hitesh <hitesh.jasani@gmail.com>
 # --
 -export([${1:start/0}]).

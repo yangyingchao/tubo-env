@@ -1,5 +1,4 @@
 # -*- mode: snippet -*-
-#name : sub ... { ... }
 # --
 sub ${1:function_name} {
     $0

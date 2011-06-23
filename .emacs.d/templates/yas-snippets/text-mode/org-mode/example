@@ -1,5 +1,4 @@
 # -*- mode: snippet -*-
-#name : #+begin_...#+end_
 # --
 #+BEGIN_EXAMPLE
 $0

@@ -1,4 +1,3 @@
 # -*- mode: snippet -*-
-#name : #include <...>
 # --
 #include "$1"
