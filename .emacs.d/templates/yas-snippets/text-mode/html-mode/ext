@@ -1,1 +1,2 @@
+# -*- mode: snippet -*-
 {% extends "${1:filename}.html" %}

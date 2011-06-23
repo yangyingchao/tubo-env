@@ -1,1 +1,2 @@
+# -*- mode: snippet -*-
 node_${1:name}[label="$1()" shape=ellipse];

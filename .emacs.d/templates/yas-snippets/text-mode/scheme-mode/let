@@ -1,3 +1,4 @@
+# -*- mode: snippet -*-
 #name : (let (..))
 # --
 (let ((${1:var} ${2:value}))

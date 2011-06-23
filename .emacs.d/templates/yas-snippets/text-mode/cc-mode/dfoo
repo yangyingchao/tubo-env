@@ -1,2 +1,3 @@
+# -*- mode: snippet -*-
 #define oops(ch, args...)\
     {fprintf(stderr,ch,##args);perror("Reason from system call: ");return -1;}

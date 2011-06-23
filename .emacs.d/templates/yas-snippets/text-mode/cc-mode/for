@@ -1,3 +1,4 @@
+# -*- mode: snippet -*-
 #name : for (...; ...; ...) { ... }
 # --
 for (${1:var} = ${2:init_val}; ${3:$1 < condition}; ${4:$1++}) {

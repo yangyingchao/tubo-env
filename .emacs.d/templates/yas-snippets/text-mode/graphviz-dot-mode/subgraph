@@ -1,3 +1,4 @@
+# -*- mode: snippet -*-
 subgraph cluster_${1:Name} {
     node [shape=record fontsize=12 fontname=Courier style=filled];
     color = lightgray;

@@ -1,3 +1,4 @@
+# -*- mode: snippet -*-
 #name : require File.join(File.dirname(__FILE__), ...)
 #group : general
 # --

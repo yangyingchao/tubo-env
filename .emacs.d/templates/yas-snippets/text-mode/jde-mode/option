@@ -1,3 +1,4 @@
+# -*- mode: snippet -*-
 Options options = new Options();
 String appName = $0;
 

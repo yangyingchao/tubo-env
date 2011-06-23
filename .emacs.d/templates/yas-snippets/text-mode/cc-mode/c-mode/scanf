@@ -1,1 +1,2 @@
+# -*- mode: snippet -*-
 scanf("%${1:format}", ${2:addr});

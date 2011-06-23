@@ -1,1 +1,2 @@
+# -*- mode: snippet -*-
 (setq ${1:var} ${2:val})

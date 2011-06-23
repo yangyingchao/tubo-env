@@ -1,3 +1,4 @@
+# -*- mode: snippet -*-
 #name : for (...) { ... }
 # --
 for (my \$${1:var} = 0; \$$1 < ${2:expression}; \$$1++) {

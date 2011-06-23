@@ -1,3 +1,4 @@
+# -*- mode: snippet -*-
 {\renewcommand\baselinestretch{${1:0.8}}\selectfont
 $0
       \par}

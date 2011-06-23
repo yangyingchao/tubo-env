@@ -1,3 +1,4 @@
+# -*- mode: snippet -*-
 (let ((n 0))
   (while (< n 10000)
     (message "ahei-test")

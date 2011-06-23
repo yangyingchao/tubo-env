@@ -1,3 +1,4 @@
+# -*- mode: snippet -*-
 \begin{figure}[htbp]
   \centering
   \includegraphics[angle=0,width=.90\textwidth]{images/${1:name}}

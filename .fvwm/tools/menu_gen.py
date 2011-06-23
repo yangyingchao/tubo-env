@@ -19,7 +19,7 @@ fvwm_menu_output = os.path.join(FVWM_HOME, "Menu")
 
 DESKTOP_SEARCH_PATH = ["/usr/share/applications"]
 ICON_PATHS          = ["/usr/share/pixmaps", "/usr/share/icons/hicolor",
-                       "/home/yyc/.icons/Mac4Lin_Icons"]
+                       "/home/yyc/.icons/default"]
 
 
 #             +-----------+------------+-------------+-----------+

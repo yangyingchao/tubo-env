@@ -1,3 +1,4 @@
+# -*- mode: snippet -*-
 #name : enum ... { ... }
 # --
 typedef enum _${1:name}{

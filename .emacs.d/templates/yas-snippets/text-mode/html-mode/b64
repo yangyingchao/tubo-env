@@ -1,1 +1,2 @@
+# -*- mode: snippet -*-
 <img src= "data:image/${1:png};base64, ${2:data}"/>

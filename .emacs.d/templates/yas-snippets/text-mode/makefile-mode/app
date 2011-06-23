@@ -1,3 +1,4 @@
+# -*- mode: snippet -*-
 CC=gcc
 CPPFLAGS=-Wall -O2 -g -DDEBUG
 LDFLAGS=

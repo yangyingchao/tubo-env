@@ -1,3 +1,4 @@
+# -*- mode: snippet -*-
 #ifdef DEBUG
 #define PDEBUG(fmt, args...)                                \
     printf("%s(%d)-%s:\t",__FILE__,__LINE__,__FUNCTION__);  \

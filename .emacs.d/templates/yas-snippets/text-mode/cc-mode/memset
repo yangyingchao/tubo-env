@@ -1,1 +1,2 @@
+# -*- mode: snippet -*-
 memset(${1:var}, ${2:0}, ${3:size});

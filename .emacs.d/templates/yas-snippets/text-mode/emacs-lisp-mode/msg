@@ -1,1 +1,2 @@
+# -*- mode: snippet -*-
 (message ${1:message})

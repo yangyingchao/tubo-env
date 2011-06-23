@@ -1,3 +1,4 @@
+# -*- mode: snippet -*-
 #name : packs: Fill Tex with predefined packages
 # --
 \documentclass[a4paper,11pt]{article}

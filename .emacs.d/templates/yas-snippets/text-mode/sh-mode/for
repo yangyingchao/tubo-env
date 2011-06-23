@@ -1,3 +1,4 @@
+# -*- mode: snippet -*-
 #name : for .. in .... ; do ... ; done
 # --
 for item in ${1:range}; do

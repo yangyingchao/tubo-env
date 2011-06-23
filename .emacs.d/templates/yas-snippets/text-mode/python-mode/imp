@@ -1,1 +1,2 @@
+# -*- mode: snippet -*-
 import ${1:packagename}

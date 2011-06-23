@@ -1,3 +1,4 @@
+# -*- mode: snippet -*-
 % Define a backgound.
 \usepackage{eso-pic}
 \newcommand\BackgroundPic{

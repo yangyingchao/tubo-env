@@ -1,2 +1,3 @@
+# -*- mode: snippet -*-
 else:
     ${1:codes_here}

@@ -1,1 +1,2 @@
+# -*- mode: snippet -*-
 (defvar ${1:var_name} ${nil} "${nil}")

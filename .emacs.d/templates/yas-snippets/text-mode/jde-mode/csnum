@@ -1,3 +1,4 @@
+# -*- mode: snippet -*-
 public static long csnum(String num)
 {
     String num_part = num.toString();

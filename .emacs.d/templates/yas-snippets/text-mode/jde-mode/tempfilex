@@ -1,1 +1,2 @@
+# -*- mode: snippet -*-
 String fn = File.createTempFile("tmp", "").getCanonicalPath();

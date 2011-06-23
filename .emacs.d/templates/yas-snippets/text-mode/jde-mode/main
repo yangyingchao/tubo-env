@@ -1,3 +1,4 @@
+# -*- mode: snippet -*-
 public static void main(String[] args)
 {
     <cursor>

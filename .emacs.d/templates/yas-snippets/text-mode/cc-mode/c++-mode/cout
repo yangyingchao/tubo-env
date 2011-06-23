@@ -1,1 +1,2 @@
+# -*- mode: snippet -*-
 cout << "${1:Variable} = " << ${2:val} << endl;

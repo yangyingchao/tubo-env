@@ -1,3 +1,4 @@
+# -*- mode: snippet -*-
 inline long long csnum(const char * num)
 {
     int lastIdx = strlen(num) - 1;

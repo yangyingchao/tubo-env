@@ -1,1 +1,2 @@
+# -*- mode: snippet -*-
 node_state_${1:state}[label="${2:STATE}" shape=ellipse color="#729fcf"];

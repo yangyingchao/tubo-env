@@ -1,3 +1,4 @@
+# -*- mode: snippet -*-
 \defverbatim[colored]\\${1:Name}{%
 \begin{lstlisting}
 ${code}

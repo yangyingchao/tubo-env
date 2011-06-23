@@ -1,1 +1,2 @@
+# -*- mode: snippet -*-
 signal(${1:SIGNAL}, $1_handler)

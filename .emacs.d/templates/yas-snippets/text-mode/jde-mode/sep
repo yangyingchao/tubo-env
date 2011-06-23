@@ -1,1 +1,2 @@
+# -*- mode: snippet -*-
 System.err.println(<cursor>);

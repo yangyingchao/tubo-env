@@ -1,3 +1,4 @@
+# -*- mode: snippet -*-
 #name : if (...) { ... }
 # --
 IF (${1:condition})
