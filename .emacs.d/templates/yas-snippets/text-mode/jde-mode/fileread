@@ -1,4 +1,5 @@
 # -*- mode: snippet -*-
+# --
 BufferedReader br = new BufferedReader(
     new InputStreamReader(new FileInputStream(<QUERY "filename: ">)));
 String line;

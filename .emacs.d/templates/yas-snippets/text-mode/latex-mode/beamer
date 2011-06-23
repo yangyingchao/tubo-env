@@ -1,4 +1,5 @@
 # -*- mode: snippet -*-
+# --
 \documentclass[red,slidestop,compress,mathserif]{beamer}
 % ===================Package Area================== %
 \usepackage{CJKutf8}

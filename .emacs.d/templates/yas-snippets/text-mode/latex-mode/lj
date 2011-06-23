@@ -1,2 +1,3 @@
 # -*- mode: snippet -*-
+# --
 \hyperlink{${1:targetname}}{\beamergotobutton{${description}}} %\beamerbutton, \beamergotobutton, \beamerreturnbutton

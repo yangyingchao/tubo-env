@@ -1,4 +1,5 @@
 # -*- mode: snippet -*-
+# --
 TITLE: Emacs Idiom Template Set. Version 1. 2009-02-22
 
 DESCRIPTION: Some useful templates for emacs lisp. This template set is based on useful elisp idioms on common tasks.

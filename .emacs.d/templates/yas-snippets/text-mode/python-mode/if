@@ -1,3 +1,4 @@
 # -*- mode: snippet -*-
+# --
 if ${1:condition}:
     ${codes_here}

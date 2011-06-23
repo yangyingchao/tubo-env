@@ -1,4 +1,5 @@
 # -*- mode: snippet -*-
+# --
 #contributor : Julio Carlos Menendez <godinblack@gmail.com>
 #name : _get_foo ... _set_foo ... foo=property(...)
 # --

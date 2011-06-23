@@ -1,4 +1,5 @@
 # -*- mode: snippet -*-
+# --
 <font size="4"> <strong>简介：</strong><br /></font>
 <font size=3><tt>
   ${1:填写简介}<br />

@@ -982,6 +982,9 @@ Use CREATE-TEMP-F for creating temp copy."
               )))
 
 
+ ;;;;;;;; Perl mode;;;;;;;;;;;;;;;
+(add-hook 'perl-mode-hook 'my-program-hook)
+
 
 ;;;;;;;;; Emacs-lisp mode ;;;;;;;;;;;;;;
 

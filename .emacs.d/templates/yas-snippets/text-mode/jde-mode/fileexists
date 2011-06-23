@@ -1,2 +1,3 @@
 # -*- mode: snippet -*-
+# --
 new File($0).exists()

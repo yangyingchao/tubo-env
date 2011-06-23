@@ -1,2 +1,3 @@
 # -*- mode: snippet -*-
+# --
 (add-hook '${HOOK-NAME} '${FUNC})

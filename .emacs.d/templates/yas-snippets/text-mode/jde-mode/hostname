@@ -1,4 +1,5 @@
 # -*- mode: snippet -*-
+# --
 String hostname;
 try {
     InetAddress addr = InetAddress.getLocalHost();

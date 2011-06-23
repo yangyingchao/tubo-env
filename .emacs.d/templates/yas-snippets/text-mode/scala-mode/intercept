@@ -1,4 +1,5 @@
 # -*- mode: snippet -*-
+# --
 #Author : Jonas Bonèr <jonas@jonasboner.com>
 #name : intercept(classOf[T]) { ..}
 # --

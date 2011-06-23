@@ -1,4 +1,5 @@
 # -*- mode: snippet -*-
+# --
 # name : ${n:$(...)} mirror
 # key : $m
 # contributor : joaotavora

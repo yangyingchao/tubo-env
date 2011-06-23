@@ -1,4 +1,5 @@
 # -*- mode: snippet -*-
+# --
 (defun $0)
   "$0"
   (interactive)

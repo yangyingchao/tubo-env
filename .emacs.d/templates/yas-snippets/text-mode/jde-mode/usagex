@@ -1,4 +1,5 @@
 # -*- mode: snippet -*-
+# --
 public static void usage(String appName, Options options)
 {
     HelpFormatter helpFormatter = new HelpFormatter();

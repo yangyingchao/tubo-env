@@ -1,2 +1,4 @@
 # -*- mode: snippet -*-
+#name : node
+# --
 node_${1:name}[label="${2:Label}"];

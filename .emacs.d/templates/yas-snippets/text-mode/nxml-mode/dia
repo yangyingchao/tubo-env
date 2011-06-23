@@ -1,4 +1,5 @@
 # -*- mode: snippet -*-
+# --
 <dia:composite type="umlattribute">
   <dia:attribute name="name">
     <dia:string>#${1:name}#</dia:string>

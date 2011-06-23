@@ -1,2 +1,3 @@
 # -*- mode: snippet -*-
+# --
 \hypertarget{${1:targetname}}{${text}}

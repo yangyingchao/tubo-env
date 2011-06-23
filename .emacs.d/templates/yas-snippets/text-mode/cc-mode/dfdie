@@ -1,4 +1,5 @@
 # -*- mode: snippet -*-
+# --
 inline die(int ret, char * Reason)
 {
        perror(Reason) ;

@@ -1,3 +1,4 @@
 # -*- mode: snippet -*-
+# --
 \subsubsection{${1:title}}
 \label{s:$1}

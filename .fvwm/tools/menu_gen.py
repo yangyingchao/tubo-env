@@ -64,7 +64,7 @@ def process_img(arg, dirname, filenames):
     """
     for fn  in filenames:
         path = os.path.join(dirname, fn)
-        if "16x16" in path or "22x22" in path:
+        if "16x16" in path or "22x22" in path: # Skip: icon is too small.
             continue
         if os.path.isdir(path):
             continue
@@ -183,7 +183,7 @@ if __name__ == '__main__':
 
         if len(icon_path):
             icon_out = os.path.join(fvwm_icon_home, os.path.basename(icon_path));
-            os.system("convert -resize 24x24 %s %s"%(icon_path, icon_out))
+            os.system("convert -background none -resize 24x24 %s %s"%(icon_path, icon_out))
 
         content += '+ "%%%s%%%s" Popup Menu%s\n'%(icon_out, key, key)
 
@@ -216,7 +216,7 @@ if __name__ == '__main__':
 
             if len(icon_path):
                 icon_out = os.path.join(fvwm_icon_home, "%s.png"%icon).lower();
-                os.system("convert -resize 24x24 %s %s"%(icon_path, icon_out))
+                os.system("convert -background none -resize 24x24 %s %s"%(icon_path, icon_out))
 
             content += '+ "%%%s%%%s" Exec exec %s\n'%(icon_out, name,
                                                       exec_file)

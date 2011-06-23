@@ -1,4 +1,5 @@
 # -*- mode: snippet -*-
+# --
 try:
     ${1:EXPR}
 except ${2:EXCEPTION}:

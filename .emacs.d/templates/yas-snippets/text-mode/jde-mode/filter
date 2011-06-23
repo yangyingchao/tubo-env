@@ -1,4 +1,5 @@
 # -*- mode: snippet -*-
+# --
 package $0;
 
 import dcmpi.*;
