@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
+#name: for
 # --
-for item in ${1:range}; do
+for $1{var} in ${2:list}; do
 $0$>
 done$>
