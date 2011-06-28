@@ -152,9 +152,9 @@
 (yyc/add-common-includes)
 
 ;;;; XXX: It does not work, don't know why!
-(yyc/add-wx-support)
-(yyc/add-qt-support)
-(yyc/add-gtk-support)
+;; (yyc/add-wx-support)
+;; (yyc/add-qt-support)
+;; (yyc/add-gtk-support)
 
 ;;;; TAGS Menu
 (defun my-semantic-hook ()
