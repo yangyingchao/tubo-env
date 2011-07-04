@@ -23,8 +23,9 @@ if [ -e $input_file ]; then
 
     echo "Converting $input_file into $output_file_48 and $output_file_64"
 
-    convert -resize 64x64 $input_file $output_file_64 && \
-        convert -resize 48x48 $input_file $output_file_48
+    convert -background none -resize 64x64 $input_file $output_file_64 && \
+    convert -background none -resize 48x48 $input_file $output_file_48
+
     if [ $? -ne 0 ]; then
         echo "Failed to convert file: $input_file!"
         exit 1

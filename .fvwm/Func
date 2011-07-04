@@ -110,6 +110,7 @@ DestroyFunc  ExitFunction
 AddToFunc    ExitFunction
 +            I KillModule FvwmButtons
 +            I KillModule FvwmAnimate
++            I KillModule FvwmPager
 +            I KillModule FvwmAuto
 
 
