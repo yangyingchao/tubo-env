@@ -431,7 +431,8 @@
                     (if (string-match keyword filename)
                         (setq is-kernel-code t))))
               (if is-kernel-code
-                  (c-set-style "kernel-coding")
+                  (progn
+                    (c-set-style "kernel-coding"))
                 (c-set-style "my-coding-style")))))
 
 (setq auto-mode-alist
