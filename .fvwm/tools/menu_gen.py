@@ -225,6 +225,7 @@ if __name__ == '__main__':
 
         content += "\n\n"
 
+    print "Write to file:", fvwm_menu_output
     fp = open(fvwm_menu_output, "w")
     fp.write(content)
     fp.flush()

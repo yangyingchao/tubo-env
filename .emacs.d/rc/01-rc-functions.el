@@ -768,8 +768,7 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
     (switch-to-buffer-other-window "tmp.dot")
     (goto-char (point-min))
     )
-  (message "Finished, please see *tmp.dot* buffer.")
-  )
+  (message "Finished, please refer to *tmp.dot* buffer."))
 
 (provide '01-rc-functions)
 ;;; emacs-rc-functions.el ends here

@@ -103,6 +103,8 @@ AddToFunc   StartFunction
 +           I Exec exec xscreensaver
 +           I Exec exec fcitx -d
 +           I Exec exec pidgin
++           I Exec exec $[HOME]/.fvwm/tools/run_conky.sh
+
 
 
 # fcitx and pidgin does not need to be killed: only one instance will be created.
