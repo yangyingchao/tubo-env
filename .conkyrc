@@ -72,12 +72,6 @@ ${color #c4a000}Down: ${color #dcff82}${downspeed eth0}${color}${color} ${color 
 ${color #c4a000}Up:   ${color #dcff82}${upspeed eth0}${color}${color #dcff82}
 #${totalup eth0}
 
-${color #a40000}Network Info ETH1${color}
-${color #c4a000}IP Addr: ${color #dcff82}${addr eth1}${color}
-${color #c4a000}Down: ${color #dcff82}${downspeed eth1}${color}${color} ${color #dcff82}${totaldown eth1}${color}${color}
-${color #c4a000}Up:   ${color #dcff82}${upspeed eth1}${color}${color #dcff82}
-#${totalup eth1}
-
 ${color #a40000}File System ${color}
 ${color #c4a000}Disk IO: ${color #dcff82}${alignr 4}$diskio ${color} ${color}
 ${color #c4a000}Root: ${color}${alignr}${color #dcff82}${fs_free /}${color} Free ${color}

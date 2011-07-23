@@ -1,0 +1,7 @@
+;; sawfish user customization -- do not edit by hand!
+;; sawfish version 1.6.3, written Sat Jul 23 15:18:04 2011
+
+(custom-set-typed-variable (quote default-font) (quote ("Pango" . "微软雅黑 9")) (quote font))
+(custom-set-typed-variable (quote default-frame-style) (quote brushed-metal) (quote frame-style))
+(custom-set-typed-variable (quote smaker:inverted-buttons) (quote ()) (quote boolean))
+(custom-set-typed-variable (quote tooltips-enabled) (quote ()) (quote boolean) (quote sawfish.wm.ext.tooltips))

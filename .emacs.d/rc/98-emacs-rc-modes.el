@@ -426,5 +426,14 @@
 (mapc 'yyc/add-to-mode-alist conf-mode-list)
 
 
+
+  (autoload 'sawfish-mode "sawfish" "sawfish-mode" t)
+
+  (setq auto-mode-alist (cons '("\\.sawfishrc$"  . sawfish-mode) auto-mode-alist)
+        auto-mode-alist (cons '("\\.jl$"         . sawfish-mode) auto-mode-alist)
+        auto-mode-alist (cons '("\\.sawfish/rc$" . sawfish-mode) auto-mode-alist))
+
+
+
 (provide '98-emacs-rc-modes)
 ;;;;; emacs-rc-modes.el ends here

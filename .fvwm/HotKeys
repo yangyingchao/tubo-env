@@ -14,24 +14,28 @@ Key D A 4 FuncFvwmIconifyToggle
 Key D A CM All (AcceptsFocus CurrentPage !Iconic !Shaded, !FvwmButtons, !"xdaliclock" !"*Desk *" !"*FvwmDocker*" !"Tild*" !"*sv*")Iconify
 
 Key F A 4 FuncFullScreen
+Key space A 4 Maximize
+
 Key F1 A 4 Exec wcmd
 Key F2 A 4 Exec devhelp
-Key F1 A M Menu MenuFvwmRoot
+Key F3 A 4 Exec goldendict
+Key F8 A 4 Module FvwmConsole
 Key F11 A 4 Exec opera
 Key F12 A 4 Exec firefox
+
+Key F1 A M Menu MenuFvwmRoot
 Key F12 A C Exec emacs
 Key F2 A M Exec exec grun
-Key F3 A 4 Module FvwmConsole
 Key F4 A M Close
+
 Key Tab A M WindowList (CurrentPage) Root c c NoDeskSort, SelectOnRelease Meta_L,CurrentAtEnd, IconifiedAtEnd
+
 Key r A CM Exec exec grun
 Key t A MC Exec sakura
 
 # Lock screens
 Key L A 4 FuncFvwmLockScreen
 Key L A CM FuncFvwmLockScreen
-
-Key space A 4 Maximize # Maxmize window
 
 Key Print A N Exec exec gnome-screenshot
 Key Print A S Exec exec gnome-screenshot -w

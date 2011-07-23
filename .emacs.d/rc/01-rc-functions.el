@@ -160,7 +160,7 @@
           (progn
             (format "%s %s %s -o %s"
                     (or (getenv "CC") "g++")
-                    (or (getenv "CPPFLAGS")"-Wall -g") file
+                    (or (getenv "CPPFLAGS")"-Wall -g ") file
                     (file-name-sans-extension file)
                     ))
         (if (or (equal (file-name-extension buffer-file-name) "c")
@@ -169,9 +169,9 @@
             (format "%s -o %s %s %s %s %s"
                     (or (getenv "CC") "gcc")
                     (file-name-sans-extension file)
-                    (or (getenv "GTKFLAGS") "-Wall -g")
-                    (or (getenv "CPPFLAGS")"-DDEBUG=9 ")
-                    (or (getenv "CFLAGS") "-Wall -g")
+                    (or (getenv "GTKFLAGS") "-Wall -g ")
+                    (or (getenv "CPPFLAGS")"-DDEBUG=9  ")
+                    (or (getenv "CFLAGS") "-Wall -g  ")
                     file)
           (if (or (equal (file-name-extension buffer-file-name) "tex")
                    (equal (file-name-extension buffer-file-name) "TEX"))

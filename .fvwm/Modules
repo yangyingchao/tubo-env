@@ -146,7 +146,7 @@ DestroyModuleConfig FvwmDock: *
 *FvwmDock:  (5x7+31+0, ActionOnPress, \
         Icon        dock/ooo_48.png, \
         ActiveIcon  dock/ooo_64.png, \
-        Action(Mouse 1) `exec exec ooffice`)
+        Action(Mouse 1) `exec exec libreoffice`)
 *FvwmDock:  (5x7+37+0, ActionOnPress, \
         Icon        dock/gimp_48.png, \
         ActiveIcon  dock/gimp_64.png, \
