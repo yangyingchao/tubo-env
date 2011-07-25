@@ -95,6 +95,10 @@
            "Super-F2" '(jump-or-exec "devhelp" "devhelp")
            "Super-F3" '(jump-or-exec "goldendict" "goldendict")
            "Super-F8" '(jump-or-exec "xterm" "xterm sawfish-client")
+           "Super-1" '(move-window-to-workspace
+                       (current-event-window) current-workspace 0)
+           "Super-2" '(move-window-to-workspace
+                       (current-event-window) current-workspace 1)
            "Super-e"   '(jump-or-exec "emacs" "emacs")
            "Super-t" '(jump-or-exec "Xterm" "xterm")
            "Super-r" '(jump-or-exec "Grun" "grun")
@@ -106,8 +110,8 @@
            "M-F4" '(my-kill-window)
            "M-C-Right" '(select-workspace 1)
            "M-C-Left" '(select-workspace 0)
+           "M-C-t" '(jump-or-exec "sakura" "sakura")
            "M-C-d" '(iconify-workspace-windows)
-
            )
 
 (bind-keys root-window-keymap "button1-click1"
