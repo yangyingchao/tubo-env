@@ -164,13 +164,13 @@ DestroyModuleConfig FvwmDock: *
 DestroyDecor DefaultDecor
 AddToDecor DefaultDecor
 + TitleStyle Centered \
-             Height 22 \
+             Height 26 \
              InActive (TiledPixmap decoration/titlebar-mid-inactive.png -- Flat) \
              Active   (TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
 + ButtonStyle All InActive ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
 + ButtonStyle All Active ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
 
-+ BorderStyle Colorset 3 -- Flat HiddenHandles NoInset
++ BorderStyle Colorset 4 -- Flat HiddenHandles NoInset
 + ButtonStyle 1 AllActive (MiniIcon) AllInactive (MiniIcon)
 + ButtonStyle 2 ActiveUp (Pixmap $[fvwm_decor]/button-close.png) \
                ActiveDown (Pixmap $[fvwm_decor]/button-close-focus.png) \
@@ -188,7 +188,7 @@ AddToDecor DefaultDecor
 + ButtonStyle All -- Flat UseTitleStyle
 
 Style DefaultStyle \
-      UseDecor DefaultDecor, HandleWidth 2, \
+      UseDecor DefaultDecor, HandleWidth 2, BorderWidth 2, \
       ForeColor #babdb6, BackColor black, \
       HilightFore black, HilightBack grey,\
       Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"

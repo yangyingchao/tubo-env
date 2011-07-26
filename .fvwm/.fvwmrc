@@ -57,7 +57,7 @@ OpaqueMoveSize -1 # all window moves as solid.
 ColorMapFocus FollowsFocus
 
 # styles for fvwm modules.
-Style Fvwm* NoTitle,Sticky,BorderWidth 0, CirculateSkipIcon, CirculateSkip
+Style Fvwm* NoTitle,Sticky,BorderWidth 6, CirculateSkipIcon, CirculateSkip
 Style FvwmBanner  StaysOnTop
 Style FvwmButtons HandleWidth 0, NoHandles, FixedPosition, Icon toolbox.xpm, CirculateHit,NeverFocus, WindowListSkip,!Iconifiable, Fixedsize
 Style FvwmForm  StaysOnTop
@@ -99,7 +99,7 @@ Style *	SnapAttraction 10 SameType Screen
 Style * !IconTitle, StickyIcon
 Style * IconBox 1300x960+30-30, IconFill top left, IconGrid 32 32 IconSize 64 64
 Style * BorderColorset 100, HilightBorderColorset 100
-Style * BorderWidth 2, HandleWidth 1
+Style * PositionPlacement Center
 Style * Button 1, Button 2, Button 4, Button 6
 Style * CascadePlacement
 Style * ClickToFocus, MouseFocusClickRaises
@@ -114,7 +114,6 @@ Style * IconTitleColorset 0, HilightIconTitleColorset 3
 Style * IconTitleRelief 0
 Style * MWMFunctions, MWMDecor, HintOverride
 Style * NoIconTitle
-Style * PositionPlacement Center, BorderWidth 1, HandleWidth 1
 Style * ResizeOpaque
 Style * SloppyFocus, ClickToFocus
 Style * SmartPlacement
