@@ -1,6 +1,6 @@
 ;;; flyspell.el --- on-the-fly spell checker
 
-;; Copyright (C) 1998, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2010,
+;; Copyright (C) 1998, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2010-2011,
 ;;   2008, 2009, 2010  Free Software Foundation, Inc.
 
 ;; Author: Manuel Serrano <Manuel.Serrano@sophia.inria.fr>
@@ -422,7 +422,7 @@ like <img alt=\"Some thing.\">."
       (define-key map "\M-\t" 'flyspell-auto-correct-word))
     (define-key map flyspell-auto-correct-binding 'flyspell-auto-correct-previous-word)
     (define-key map "\M-," 'flyspell-goto-next-error)
-    (define-key map "\M-." 'flyspell-auto-correct-word)
+    (define-key map "\M-m" 'flyspell-auto-correct-word)
     (define-key map [?\C-c ?$] 'flyspell-correct-word-before-point)
     map)
   "Minor mode keymap for Flyspell mode--for the whole buffer.")

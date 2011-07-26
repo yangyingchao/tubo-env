@@ -142,7 +142,7 @@
 (require 'auto-complete-config)
 
 (ac-config-default) ;; Defined in ac-complete-config
-
+(ac-flyspell-workaround)
 (setq ac-auto-start 3)
 (setq ac-dwim t)
 (setq ac-override-local-map nil)  ;don't override local map
@@ -157,7 +157,7 @@
  '(asm-mode emms-tag-editor-mode haskell-mode latex-mode lisp-mode
             literate-haskell-mode org-mode text-mode eshell-mode
             graphviz-dot-mode powershell-mode nxml-mode conf-mode
-            sawfish-mode))
+            sawfish-mode flyspell-mode))
 
 (set-face-background 'ac-selection-face "steelblue")
 (set-face-background 'ac-candidate-face "lightgray")

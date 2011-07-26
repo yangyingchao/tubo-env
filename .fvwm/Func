@@ -95,7 +95,7 @@ AddToFunc               FuncFvwmLockScreen
 
 DestroyFunc StartFunction
 AddToFunc   StartFunction
-+           I Exec exec fvwm-root --dither --retain-pixmap $[HOME]/.fvwm/wallpapers/default.png
++           I Exec exec fvwm-root --dither --retain-pixmap $[HOME]/.fvwm/wallpapers/default.jpg
 +           I Module FvwmButtons  FvwmDock
 +           I Module FvwmAnimate
 +           I Module FvwmAuto FvwmAutoHide -menter FvwmDockerAutoEnter

@@ -6,9 +6,6 @@
 ;;;; CEDET Settings
 
 (require 'cedet)
-
-
-
 (require 'eassist)
 (require 'semantic-c)
 (require 'semantic-decorate-include)
@@ -559,8 +556,8 @@
   (local-set-key ">" 'semantic-complete-self-insert)
   (local-set-key (kbd "M-n") 'senator-next-tag)
   (local-set-key (kbd "M-p") 'senator-previous-tag)
-  (local-set-key "\C-c/" 'semantic-ia-complete-symbol)
-  (local-set-key "\C-c?" 'semantic-ia-complete-symbol-menu)
+  (local-set-key "\C-c?" 'semantic-ia-complete-symbol)
+  (local-set-key "\C-c}" 'semantic-ia-complete-symbol-menu)
   (local-set-key "\C-cJ" 'semantic-analyze-proto-impl-toggle)
   (local-set-key "\C-cP" 'semantic-ia-show-summary)
   (local-set-key "\C-cR" 'semantic-symref)

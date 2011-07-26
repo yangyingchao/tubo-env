@@ -347,7 +347,7 @@
              (format "*w3m: %s*" (or w3m-current-title
                                      w3m-current-url)) t)))
 
-(setq browse-url-generic-program "/usr/bin/firefox" )
+(setq browse-url-generic-program "/usr/bin/firefox")
 (defun w3m-open-current-page-in-gui ()
   "Opens the current URL in Mozilla Firefox."
   (interactive)
