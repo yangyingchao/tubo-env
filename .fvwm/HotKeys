@@ -20,9 +20,8 @@ Key F1 A 4 Exec wcmd
 Key F2 A 4 Exec devhelp
 Key F3 A 4 Exec goldendict
 Key F8 A 4 Module FvwmConsole
-Key F11 A 4 Exec opera
 Key F11 A 4 Exec google-chrome
-Key F12 A 4 Exec firefox
+Key F12 A 4 Exec chromium
 
 Key F1 A M Menu MenuFvwmRoot
 Key F12 A C Exec emacs
@@ -38,7 +37,7 @@ Key t A MC Exec sakura
 Key L A 4 FuncFvwmLockScreen
 Key L A CM FuncFvwmLockScreen
 
-Key Print A N Exec exec gnome-screenshot
+Key Print A N Exec exec scrot /tmp/'%Y-%m-%d.png'
 Key Print A S Exec exec gnome-screenshot -w
 
 Key t A 4 Exec exec xterm
