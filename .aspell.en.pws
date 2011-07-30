@@ -1,4 +1,4 @@
-personal_ws-1.1 en 76 
+personal_ws-1.1 en 80 
 wxPython
 Makefile
 px
@@ -9,6 +9,7 @@ ITC
 moz
 CIFS
 arial
+wxwidget
 usb
 inode
 iso
@@ -28,6 +29,7 @@ Todo
 whitespace
 superblock
 MACroS
+Linuxer
 FailOver
 Failover
 filesystems
@@ -44,9 +46,11 @@ progn
 SSF
 css
 graphviz
+GTK
 charset
 wxWidgets
 UserWarning
+gmail
 Isochronous
 verdana
 removeid

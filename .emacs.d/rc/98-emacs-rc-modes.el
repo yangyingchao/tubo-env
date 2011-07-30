@@ -396,14 +396,9 @@
 
  ;; ****************************** Over ********************************
 
-;; (if (string-match "ITC-208024" system-name)
-;;     (progn
-;;       (require 'edit-server)
-;;       (setq edit-server-new-frame nil)
-;;       (edit-server-start))
-;;   nil
-;;   )
-
+(require 'edit-server)
+(setq edit-server-new-frame nil)
+(edit-server-start)
 
 (require 'fold-dwim)
 (global-set-key (kbd "<S-f7>")      'fold-dwim-toggle)

@@ -4,7 +4,7 @@
     <tbody>
         <tr>
             <td>
-          <pre  style="margin: 0px; padding: 4px; border: 1px solid rgb(198, 198, 198); width: 640px; overflow: auto;"><font size="1">${code_here}  </font></pre>
+          <pre  style="margin: 0px; padding: 4px; border: 1px solid rgb(198, 198, 198); overflow: auto;"><font size="1">${code_here}  </font></pre>
             </td>
         </tr>
     </tbody>
