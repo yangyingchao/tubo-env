@@ -21,7 +21,7 @@ Key F2 A 4 Exec devhelp
 Key F3 A 4 Exec goldendict
 Key F8 A 4 Module FvwmConsole
 Key F11 A 4 Exec google-chrome
-Key F12 A 4 Exec chromium
+Key F12 A 4 Exec chromium --disk-cache-dir=/dev/null
 
 Key F1 A M Menu MenuFvwmRoot
 Key F12 A C Exec emacs
