@@ -188,3 +188,46 @@ AddToFunc               Thumbnail
 +                       I Raise
 +                       I Iconify
 
+
+DestroyFunc             SSHList
+AddToFunc               SSHList
++                       I DestroyModuleConfig SSHList: *
++                       I *SSHList: Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=10:encoding=zh_CN.UTF-8"
++                       I *SSHList: ButtonFont "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=10:encoding=zh_CN.UTF-8"
++                       I *SSHList: Colorset 9
++                       I *SSHList: ItemColorset 9
++                       I *SSHList: Line center
++                       I *SSHList: Line center
++                       I *SSHList: Line center
++                       I *SSHList: Line center
++                       I *SSHList: Line center
++                       I *SSHList: Text "Select a target"
++                       I *SSHList: Line center
++                       I *SSHList: Line center
++                       I *SSHList: Line center
++                       I *SSHList: Line center
++                       I *SSHList: Line center
++                       I *SSHList: Line center
++                       I *SSHList: Line center
++                       I *SSHList: Button quit " DDP" ^[
++                       I *SSHList: Command Exec sudo reboot
++                       I *SSHList: Button quit " 关机" ^[
++                       I *SSHList: Command Exec sudo halt
++                       I *SSHList: Button quit " 注销!" ^M
++                       I *SSHList: Command Quit
++                       I *SSHList: Line center
++                       I *SSHList: Button quit " 运行..." ^[
++                       I *SSHList: Command Exec grun
++                       I *SSHList: Button quit " 列出进程" ^[
++                       I *SSHList: Command Exec xterm  -fg green -bg black -e top
++                       I *SSHList: Line center
++                       I *SSHList: Button quit " 重新载入 fvwm" ^[
++                       I *SSHList: Command Restart
++                       I *SSHList: Button quit " 锁住屏幕" ^[
++                       I *SSHList: Command  Exec xscreensaver-command  -lock
++                       I *SSHList: Button quit " 取消" ^[
++                       I *SSHList: Command Nop
++                       I *SSHList: Line center
++                       I *SSHList: Line center
++                       I Module FvwmForm SSHList
+Style                   "SSHList" NoTitle

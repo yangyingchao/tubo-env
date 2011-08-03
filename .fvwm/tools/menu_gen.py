@@ -93,7 +93,12 @@ def parse_single(path):
     Arguments:
     - `path`:
     """
-    content = open(path).readlines()
+    try:
+        content = open(path).readlines()
+    except:
+        print("Exception when proceesing file:%s", path)
+        return
+
     tmp_dic = {}
     for item in content:
         for key in keywords:
