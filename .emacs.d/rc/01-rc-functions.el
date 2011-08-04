@@ -639,6 +639,16 @@ inserts comment at the end of the line."
 (require 'ediff)
 (setq-default ediff-ignore-similar-regions t)
 (setq ediff-split-window-function 'split-window-horizontally)
+
+(defvar cfile nil "nil")
+(defvar cbuffer nil "nil")
+(defun ediff-quit-hook-func ( )
+  ;; (delete-other-windows)
+  (kill-buffer (file-name-nondirectory cfile))
+  (if (file-exists-p cfile)
+      (delete-file cfile))
+  )
+
 (defun my-ediff-revision (&optional file startup-hooks)
   "Run Ediff by comparing versions of a file.
 The file is an optional FILE argument or the file entered at the prompt.
@@ -646,18 +656,25 @@ Default: the file visited by the current buffer.
 Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
   ;; if buffer is non-nil, use that buffer instead of the current buffer
   (interactive "P")
-  (setq file (buffer-file-name(current-buffer)))
-  (find-file file)
-  (if (and (buffer-modified-p)
-           (y-or-n-p (format "Buffer %s is modified. Save buffer? "
-                             (buffer-name))))
-      (save-buffer (current-buffer)))
-  (let (rev1 rev2)
-    (ediff-load-version-control)
-    (funcall
-     (intern (format "ediff-%S-internal" ediff-version-control-package))
-     "BASE" "" startup-hooks)
-    ))
+  (save-excursion
+    (setq cbuffer (current-buffer))
+    (setq file (buffer-file-name cbuffer))
+    (setq cfile (format "%s.~BASE~" file))
+    (find-file file)
+    (if (and (buffer-modified-p)
+             (y-or-n-p (format "Buffer %s is modified. Save buffer? "
+                               (buffer-name))))
+        (save-buffer (current-buffer)))
+    (add-hook 'ediff-quit-hook
+              (lambda ()
+                (remove-hook 'ediff-quit-hook 'ediff-quit-hook-func)
+                (ediff-quit-hook-func)))
+    (let (rev1 rev2)
+      (ediff-load-version-control)
+      (funcall
+       (intern (format "ediff-%S-internal" ediff-version-control-package))
+       "BASE" "" startup-hooks)))
+  )
 
 (defun yyc/list-attentions ()
   "List lines that need attentions, such as lines which include XXX or FIXME et.al."

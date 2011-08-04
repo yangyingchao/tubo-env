@@ -422,5 +422,7 @@
 
 
 
+(add-to-list 'auto-mode-alist
+             '(".*\\.jl" . emacs-lisp-mode))
 (provide '98-emacs-rc-modes)
 ;;;;; emacs-rc-modes.el ends here
