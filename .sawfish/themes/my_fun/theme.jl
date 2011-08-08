@@ -144,7 +144,7 @@
 
     ((background . ,frame-colors)
      (foreground . ,minimize)
-     (right-edge . 52)
+     (right-edge . 56)
      (top-edge . -20)
      (width . 26)
      (height . 14)
@@ -153,7 +153,7 @@
 
     ((background . ,frame-colors)
      (foreground . ,maximize-restore)
-     (right-edge . 26)
+     (right-edge . 30)
      (top-edge . -20)
      (width . 26)
      (height . 14)
@@ -162,7 +162,7 @@
 
     ((background . ,frame-colors)
      (foreground . ,close)
-     (right-edge . 0)
+     (right-edge . 4)
      (top-edge . -20)
      (width . 26)
      (height . 14)
@@ -216,7 +216,7 @@
 
     ((background . ,frame-colors)
      (foreground . ,minimize)
-     (right-edge . 45)
+     (right-edge . 49)
      (top-edge . -20)
      (width . 26)
      (height . 14)
@@ -225,7 +225,7 @@
 
     ((background . ,frame-colors)
      (foreground . ,maximize-restore)
-     (right-edge . 26)
+     (right-edge . 30)
      (top-edge . -20)
      (width . 26)
      (height . 14)
@@ -234,7 +234,7 @@
 
     ((background . ,frame-colors)
      (foreground . ,close)
-     (right-edge . 0)
+     (right-edge . 3)
      (top-edge . -20)
      (width . 26)
      (height . 14)
