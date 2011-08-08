@@ -1,0 +1,14 @@
+;; sawfish user customization -- do not edit by hand!
+;; sawfish version 1.6.3, written Mon Aug  8 16:47:03 2011
+
+(custom-set-typed-variable (quote cycle-include-iconified) (quote t) (quote boolean))
+(custom-set-typed-variable (quote default-frame-style) (quote my_fun) (quote frame-style))
+(custom-set-typed-variable (quote default-font) (quote ("Pango" . "微软雅黑 Bold 9")) (quote font))
+(custom-set-typed-variable (quote viewport-dimensions) (quote (2 . 1)) (quote (pair (number 1) (number 1))))
+(custom-set-typed-variable (quote browser-program) (quote "firefox") (quote string))
+(custom-set-typed-variable (quote cycle-all-viewports) (quote t) (quote boolean))
+(custom-set-typed-variable (quote mxflat:customize-title-position) (quote t) (quote boolean))
+(custom-set-typed-variable (quote mxflat:title-height) (quote 16) (quote (number 9 1000)))
+(custom-set-typed-variable (quote tooltips-enabled) (quote ()) (quote boolean) (quote sawfish.wm.ext.tooltips))
+(custom-set-typed-variable (quote move-lock-when-maximized) (quote ()) (quote boolean))
+(custom-set-typed-variable (quote smaker:inverted-buttons) (quote ()) (quote boolean))

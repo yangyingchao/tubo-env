@@ -1,0 +1,142 @@
+(defconst init_flag "/tmp/.sawfish-yyc-lock" "nil")
+
+
+;; 自己定义的宏
+(defmacro my-setq (name value)
+  "Declare the NAME as a variable and set its value to VALUE."
+  `(progn (defvar ,name)
+      (setq ,name ,value)))
+
+(my-setq decorate-transients t)
+
+
+;; 自己定义的函数
+(defun backgroundize (string)
+  "Append a character `&' to STRING if it is not end with a `&'."
+  (let ((len (length string)))
+    (if (string= "&" (substring string (- len 1)))
+    string
+      (concat string " &")))) ;; concat函数用于连接两个字符串
+
+
+(defun call-startup-programs (command-list)
+  "Run the programs specified in COMMAND-LIST when Sawfish start."
+  (mapcar #'(lambda (command)
+              (system (backgroundize command)))
+      command-list))
+
+(defun try-execute-conky ( )
+  "Try to execute conky. If machine has more than two CPUs, execute it."
+  (interactive)
+  (let ((fp nil)
+        (line-num 0)
+        (msg nil))
+    (setq fp (open-file "/proc/cpuinfo" 'read))
+    (while (read-line fp)
+        (setq line-num (+ line-num 1))
+        )
+    (close-file fp)
+    (if (> line-num 26)
+        (system (backgroundize "conky"))
+      nil
+        )
+    )
+  )
+
+;; ** 设定变量
+
+
+(defvar startup-programs
+  '("tint2" "fcitx" "pidgin" "xscreensaver"
+    "xloadimage -onroot ~/.sawfish/default.png"))
+
+
+;; *** 在Sawfish启动时运行的程序
+
+(defun try-startup-apps ()
+  "Try to startup some apps if apps have not been started."
+  (if (file-exists-p init_flag)
+      nil
+    (progn
+      (call-startup-programs startup-programs)
+      (try-execute-conky)
+      (insert-workspace 0) ;; Create two workspaces
+      (system (format nil "touch %s &" init_flag)))))
+
+(try-startup-apps)
+
+
+(defun my-remove-flag ()
+  "Kill apps before quit."
+  (system (format nil "rm -rf  %s &" init_flag))
+  (mapc (lambda (app) killall -9 app &) 'startup-programs)
+  )
+
+(add-hook 'before-exit-hook 'my-remove-flag)
+
+
+;; ** 设定键绑定
+(require 'sawfish.wm.state.maximize)
+
+(defun my-kill-window ()
+  "Kill current window"
+  (delete-window (current-event-window))
+  )
+
+(defun my-max-window ( )
+  "Maximize current window"
+  (maximize-window-toggle (current-event-window))
+  )
+
+(defun all-iconified ()
+  "Whether all apps has been iconified"
+  (let ((ret t))
+    (mapcar #'(lambda (win) (and ret (window-iconified-p win)))
+          (workspace-windows))
+    (if ret
+        t
+      nil)))
+
+(defun my-iconify-toggle ()
+  "Show desktop, or restore windows"
+  (if (all-iconified); all iconified
+      (system "touch /tmp/aaaaaaaaaaa")
+      ;; (mapcar #'(lambda (win) ; restore all
+      ;;             (uniconity-window win))
+      ;;         (workspace-windows))
+    (iconify-workspace-windows)))
+
+
+(require 'sawfish.wm.commands.jump-or-exec)
+;(require 'sawfish.wm.commands.run-shell-command)
+(bind-keys global-keymap
+           "C-F12"   '(jump-or-exec "emacs" "emacs")
+           "Super-F1" '(jump-or-exec "wcmd" "wcmd")
+           "Super-F12"  '(jump-or-exec "firefox" "firefox")
+           "Super-F11"  '(jump-or-exec "chromium" "chromium")
+           "Super-F2" '(jump-or-exec "devhelp" "devhelp")
+           "Super-F3" '(jump-or-exec "goldendict" "goldendict")
+           "Super-F8" '(jump-or-exec "xterm" "xterm sawfish-client")
+           "Super-1" '(move-window-to-workspace
+                       (current-event-window) current-workspace 0)
+           "Super-2" '(move-window-to-workspace
+                       (current-event-window) current-workspace 1)
+           "Super-e"   '(jump-or-exec "emacs" "emacs")
+           "Super-t" '(jump-or-exec "Xterm" "xterm")
+           "Super-r" '(jump-or-exec "Grun" "grun")
+           "Super-d" '(iconify-workspace-windows)
+           "Super-SPC" '(my-max-window)
+           "Super-l" '(system "xscreensaver-command -lock &")
+           "M-F1" '(popup-root-menu)
+           "M-F2" '(jump-or-exec "Grun" "grun")
+           "M-F4" '(my-kill-window)
+           "M-C-Right" '(select-workspace 1)
+           "M-C-Left" '(select-workspace 0)
+           "M-C-t" '(jump-or-exec "sakura" "sakura")
+           "M-C-d" '(iconify-workspace-windows)
+           )
+
+(bind-keys root-window-keymap "button1-click1"
+       '(popup-root-menu))
+
+(set-window-type (get-window-by-name-re "[Cc]chrom.*") 'unframed)
