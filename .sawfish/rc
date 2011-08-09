@@ -152,21 +152,27 @@
 ;; ( defvar-setq top-right-corner-function
 ;;   ( lambda () ( pager-unhide ) ) )
 
-( defvar-setq  bottom-right-corner-function
-  ( lambda () (iconify-workspace-windows) ) )
+(defvar-setq  bottom-right-corner-function
+  (lambda () (iconify-workspace-windows) ) )
 
 ;; ( defvar-setq bottom-left-corner-function
 ;;   ( lambda () ( raise-window ( get-window-by-role "panel_") ) ) )
 
+;;;; actions when pointer hits edge
+
 ;; (defvar-setq top-edge-function
-;;                  (lambda () (jump-or-exec "Xterm" "xterm")))
-;; actions when pointer hits edge
-;; ( defvar-setq left-right-edge-action 'flip-viewport )
+;;   (lambda () (jump-or-exec "Xterm" "xterm")))
+
+(defvar-setq right-edge-function
+  (lambda ()
+    (raise-window (get-window-by-name-re ".*onky.*"))
+    ))
+
 ;; ( defvar-setq top-bottom-edge-action 'none/hot-spot )
 
 ;; actions while moving window hits edge
 ;; ( defvar-setq left-right-edge-move-action 'flip-workspace )
-;; ( defvar-setq top-bottom-edge-move-action 'none )
+( defvar-setq top-bottom-edge-move-action 'none )
 
 
 
