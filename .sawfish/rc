@@ -37,11 +37,12 @@
         )
     (close-file fp)
     (if (> line-num 26)
-        (system (backgroundize "conky"))
+        (system (backgroundize "conky -d"))
       nil
         )
     )
   )
+
 
 ;; ** 设定变量
 
@@ -139,4 +140,33 @@
 (bind-keys root-window-keymap "button1-click1"
        '(popup-root-menu))
 
-(set-window-type (get-window-by-name-re "[Cc]chrom.*") 'unframed)
+(setq edge-actions-enabled t)
+(activate-edges t)
+
+( defvar-setq edge-flip-delay 250 )
+( defvar-setq hot-spot-delay 125 )
+
+;; ( defvar-setq top-left-corner-function
+;;   ( lambda () ( tile-windows ) ) )
+
+;; ( defvar-setq top-right-corner-function
+;;   ( lambda () ( pager-unhide ) ) )
+
+( defvar-setq  bottom-right-corner-function
+  ( lambda () (iconify-workspace-windows) ) )
+
+;; ( defvar-setq bottom-left-corner-function
+;;   ( lambda () ( raise-window ( get-window-by-role "panel_") ) ) )
+
+;; (defvar-setq top-edge-function
+;;                  (lambda () (jump-or-exec "Xterm" "xterm")))
+;; actions when pointer hits edge
+;; ( defvar-setq left-right-edge-action 'flip-viewport )
+;; ( defvar-setq top-bottom-edge-action 'none/hot-spot )
+
+;; actions while moving window hits edge
+;; ( defvar-setq left-right-edge-move-action 'flip-workspace )
+;; ( defvar-setq top-bottom-edge-move-action 'none )
+
+
+
