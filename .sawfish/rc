@@ -131,23 +131,25 @@
            "M-F1" '(popup-root-menu)
            "M-F2" '(jump-or-exec "Grun" "grun")
            "M-F4" '(my-kill-window)
-           "M-C-Right" '(select-workspace 1)
-           "M-C-Left" '(select-workspace 0)
-           "M-C-t" '(jump-or-exec "sakura" "sakura")
-           "M-C-d" '(iconify-workspace-windows)
+           "C-M-Right" '(select-workspace 1)
+           "C-M-Left" '(select-workspace 0)
+           "C-M-t" '(jump-or-exec "sakura" "sakura")
+           "C-M-d" '(iconify-workspace-windows)
            )
 
 (bind-keys root-window-keymap "button1-click1"
        '(popup-root-menu))
 
+;;;; ************************ Edge Commands *******************************
 (setq edge-actions-enabled t)
 (activate-edges t)
 
 ( defvar-setq edge-flip-delay 250 )
 ( defvar-setq hot-spot-delay 125 )
 
-;; ( defvar-setq top-left-corner-function
-;;   ( lambda () ( tile-windows ) ) )
+(defvar-setq top-left-corner-function
+  (lambda ()
+    (popup-window-list-menu) ) )
 
 ;; ( defvar-setq top-right-corner-function
 ;;   ( lambda () ( pager-unhide ) ) )
@@ -163,10 +165,27 @@
 ;; (defvar-setq top-edge-function
 ;;   (lambda () (jump-or-exec "Xterm" "xterm")))
 
+(require 'rep.io.timers)
+(defun on-right-edge (pos)
+  "Do something according to pos."
+  (if (> pos 100)
+      (if (< pos 500)
+          (progn
+            (raise-window (get-window-by-name-re ".*onky.*"))
+            (make-timer
+             (lambda ()
+               (lower-window (get-window-by-name-re ".*onky.*")))
+             2))
+        nil
+        )
+    nil
+    )
+  )
+
 (defvar-setq right-edge-function
   (lambda ()
-    (raise-window (get-window-by-name-re ".*onky.*"))
-    ))
+    (on-right-edge (cdr (query-pointer)))
+))
 
 ;; ( defvar-setq top-bottom-edge-action 'none/hot-spot )
 

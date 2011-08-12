@@ -3,7 +3,7 @@ use_xft yes
 xftfont WenQuanYi Micro Hei Mono:size=11
 
 # Update interval in seconds
-update_interval 1
+update_interval 2
 
 
 # Minimum size of text area
