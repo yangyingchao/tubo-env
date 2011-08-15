@@ -101,9 +101,9 @@ AddToFunc   StartFunction
 +           I Module FvwmAuto FvwmAutoHide -menter FvwmDockerAutoEnter
 +           I Module FvwmPager
 +           I Exec exec xscreensaver
++           I Exec exec $[HOME]/.fvwm/tools/run_conky.sh
 +           I Exec exec fcitx -d
 +           I Exec exec pidgin
-+           I Exec exec $[HOME]/.fvwm/tools/run_conky.sh
 
 
 
