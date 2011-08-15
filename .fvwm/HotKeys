@@ -41,3 +41,4 @@ Key Print A N Exec exec scrot /tmp/'%Y-%m-%d.png'
 Key Print A S Exec exec gnome-screenshot -w
 
 Key t A 4 Exec exec xterm
+Key Pause A C ExitMenu
