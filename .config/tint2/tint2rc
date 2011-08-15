@@ -1,0 +1,109 @@
+#---------------------------------------------
+# TINT2 CONFIG FILE
+#---------------------------------------------
+
+#---------------------------------------------
+# BACKGROUND AND BORDER
+#---------------------------------------------
+rounded = 7
+border_width = 0
+#background_color = #000000 60
+background_color = #368AA9 100
+border_color = #ffffff 18
+
+rounded = 5
+border_width = 0
+background_color = #ffffff 40
+border_color = #ffffff 50
+
+rounded = 5
+border_width = 0
+background_color = #ffffff 18
+border_color = #ffffff 70
+
+#---------------------------------------------
+# PANEL
+#---------------------------------------------
+#panel_monitor = all
+panel_monitor = 1
+#panel_position = bottom center
+panel_size = 1280 30
+panel_position = bottom left horizontal
+panel_margin = 0 0
+panel_padding = 7 0
+panel_layer = normal
+font_shadow = 0
+panel_background_id = 1
+wm_menu = 0
+
+#---------------------------------------------
+# TASKBAR
+#---------------------------------------------
+#taskbar_mode = multi_desktop
+taskbar_mode = single_desktop
+taskbar_padding = 2 3 2
+taskbar_background_id = 0
+
+#---------------------------------------------
+# TASKS
+#---------------------------------------------
+task_icon = 1
+task_text = 1
+task_width = 200
+task_centered = 1
+task_padding = 6 3
+#task_font = sans 7
+task_font = sans 10
+task_font_color = #4B1F0C 70
+#task_active_font_color = #FBFFD8 95
+task_active_font_color = #4F335A 95
+task_background_id = 3
+task_active_background_id = 2
+
+#---------------------------------------------
+# SYSTRAYBAR
+#---------------------------------------------
+systray_padding = 0 4 5
+systray_background_id = 0
+
+#---------------------------------------------
+# CLOCK
+#---------------------------------------------
+time1_format = %H:%M
+time1_font = sans 10
+#time2_format = %A %d %B
+time2_format = %B %d %A
+time2_font = sans 8
+clock_font_color = #ffffff 76
+clock_padding = 1 0
+clock_background_id = 0
+#clock_lclick_command = xclock
+clock_rclick_command = orage
+
+#---------------------------------------------
+# BATTERY
+#---------------------------------------------
+battery = 1
+battery_low_status = 10
+battery_low_cmd = notify-send "battery low"
+bat1_font = sans 8
+bat2_font = sans 6
+battery_font_color = #ffffff 76
+battery_padding = 1 0
+battery_background_id = 0
+
+
+#---------------------------------------------
+# MOUSE ACTION ON TASK
+#---------------------------------------------
+mouse_middle = none
+mouse_right = close
+#mouse_right = close
+mouse_scroll_up = toggle
+mouse_scroll_down = iconify
+
+
+autohide = 0
+autohide_show_timeout = 0
+autohide_hide_timeout = 2
+autohide_height = 0
