@@ -48,7 +48,7 @@ DestroyFunc OnRightEdge
 AddToFunc OnRightEdge
 + I PipeRead ` [ $[pointer.y] -lt 530 ] && [ $[pointer.y] -gt 80 ] && \
     echo    "TempRaise Conky" `
-+ I PipeRead ` [ $[pointer.y] -gt $(( $[vp.height]-50 )) ]  && echo   "FuncShowDesktop" `
++ I PipeRead ` [ $[pointer.y] -gt $(( $[vp.height]-10 )) ]  && echo   "FuncShowDesktop" `
 
 # Bottom edge command:
 #        1. Show FvwmButtons,
@@ -57,7 +57,7 @@ DestroyFunc OnBottomEdge
 AddToFunc OnBottomEdge
 + I PipeRead ` [ $[pointer.x] -gt 250 ] && [ $[pointer.x] -lt $(( $[vp.width]-150 )) ] && \
     echo    "TempRaise FvwmButtons" `
-+ I PipeRead ` [ $[pointer.x] -gt $(( $[vp.width]-50 )) ] && [ $[pointer.y] -gt 800 ] && \
++ I PipeRead ` [ $[pointer.x] -gt $(( $[vp.width]-10 )) ] && [ $[pointer.y] -gt 800 ] && \
     echo    "FuncShowDesktop" `
 
 
