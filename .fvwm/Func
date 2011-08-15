@@ -85,6 +85,14 @@ AddToFunc               FuncFvwmIconifyToggle
 +                       I TestRc (NoMatch) FuncFvwmIconifyTrue
 
 
+DestroyFunc             FuncShowDesktop
+AddToFunc               FuncShowDesktop
++                      I All (AcceptsFocus CurrentPage !Iconic !Shaded, !FvwmButtons, !"xdaliclock" !"*Desk *" !"*FvwmDocker*" !"Tild*" !"*sv*")Iconify
+
+DestroyFunc             FuncShowWindowList
+AddToFunc               FuncShowWindowList
++                      I Windowlist (CurrentPage) NoDeskSort, SelectOnRelease, Meta_L,CurrentAtEnd, IconifiedAtEnd
+
 #################### Lock screen. ##############
 DestroyFunc             FuncFvwmLockScreen
 AddToFunc               FuncFvwmLockScreen

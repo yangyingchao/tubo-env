@@ -6,7 +6,7 @@ Colorset 21 fg White, bg #7ea2b8,  hi Black, sh Green
 
 MenuStyle * MenuColorset 20, ActiveColorset 21
 MenuStyle * Hilight3DOff, HilightBack
-MenuStyle * PopupOffset 0 100, PopupDelay 300
+MenuStyle * PopupOffset 0 100, PopupDelay 80
 MenuStyle * BorderWidth 0
 MenuStyle * TitleUnderlines1
 MenuStyle * TrianglesSolid
@@ -18,7 +18,6 @@ Menustyle * Font "StringEncoding=utf-8:xft:WenQuanYi Micro Hei:Medium:Size=12:en
 
 
 #DestroyMenu recreate MenuFvwmRoot
-#AddToMenu MenuFvwmRoot "FVWM 菜单@macosx/menudebian.png@"  Title Top
 DestroyMenu MenuFvwmRoot
 AddToMenu  "MenuFvwmRoot@macosx/menudebian.png@"
 + "%actions/menu.png%   菜单"   Exec exec notify-send "Menus of FVWM!"
