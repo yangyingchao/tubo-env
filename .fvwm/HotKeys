@@ -38,7 +38,8 @@ Key L A 4 FuncFvwmLockScreen
 Key L A CM FuncFvwmLockScreen
 
 Key Print A N Exec exec scrot /tmp/'%Y-%m-%d.png'
-Key Print A S Exec exec gnome-screenshot -w
+Key Print A S Exec exec scrot "/tmp/$[w.id]_%H-%M-%S.png"
+Key Print A M Exec exec scrot -s "/tmp/$[w.id]_%H-%M-%S.png"
 
 Key t A 4 Exec exec xterm
 Key Pause A C ExitMenu

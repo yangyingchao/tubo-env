@@ -174,13 +174,14 @@
                     (or (getenv "CFLAGS") "-Wall -g  ")
                     file)
           (if (or (equal (file-name-extension buffer-file-name) "tex")
-                   (equal (file-name-extension buffer-file-name) "TEX"))
-               (format "pdflatex %s" file )
+                  (equal (file-name-extension buffer-file-name) "TEX"))
+              (format "pdflatex %s" file )
             (if (or (equal (file-name-extension buffer-file-name) "sh")
                     (equal (file-name-extension buffer-file-name) "SH"))
                 (format "./%s" file)
-                )
-               )
+              nil
+              )
+            )
           )
         ))))
 
@@ -190,7 +191,11 @@
   (save-some-buffers t)
   (setq compilation-read-command nil)
   ;; (compile (compile-command))
-  (compile (make-command))
+  (if (make-command)
+      (compile (make-command))
+    (compile compile-command)
+    )
+
   (setq compilation-read-command t))
 
 (defun open-makefile ()

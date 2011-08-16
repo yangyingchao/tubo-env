@@ -7,11 +7,11 @@ SetEnv fvwm_decor $[HOME]/.fvwm/icons/decoration
 
 # Edge Settings
 EdgeResistance -1
-EdgeThickness 1
 Style * EdgeMoveDelay 250
 Style * EdgeMoveResistance 20
 EdgeScroll 0 0
 EwmhBaseStruts 0 0 0 0
+EdgeThickness 1
 
 
 EdgeCommand Top OnTopEdge $[pointer.x] $[pointer.y]
