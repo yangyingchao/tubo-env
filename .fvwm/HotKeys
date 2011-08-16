@@ -43,3 +43,8 @@ Key Print A M Exec exec scrot -s "/tmp/$[w.id]_%H-%M-%S.png"
 
 Key t A 4 Exec exec xterm
 Key Pause A C ExitMenu
+
+Key XF86Mail A A Exec exec sylpheed
+key XF86AudioLowerVolume 	A A Exec exec amixer set Master 10%-
+key XF86AudioRaiseVolume 	A A Exec exec amixer set Master 10%+
+key XF86AudioMute 		A A Exec exec amixer set Master toggle

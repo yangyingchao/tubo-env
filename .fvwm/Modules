@@ -103,6 +103,7 @@ Style xdaliclock !Title, Sticky, WindowListSkip,!Handles,StaysOnBottom
 Style Google-chrome !Title
 Style google-chrome !Title
 Style chromium-browser !Title
+Style chromium !Title
 
 
 

@@ -103,6 +103,7 @@ AddToFunc               FuncFvwmLockScreen
 
 DestroyFunc StartFunction
 AddToFunc   StartFunction
++           I Exec exec xmodmap $[HOME]/.Xmodmap
 +           I Exec exec fvwm-root --dither --retain-pixmap $[HOME]/.fvwm/wallpapers/default.png
 +           I Module FvwmButtons  FvwmDock
 +           I Module FvwmAnimate
