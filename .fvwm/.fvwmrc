@@ -17,7 +17,7 @@ EwmhBaseStruts 0 0 0 0
 EdgeCommand Top OnTopEdge $[pointer.x] $[pointer.y]
 EdgeCommand Bottom  OnBottomEdge $[pointer.x] $[pointer.y]
 EdgeCommand Right OnRightEdge $[pointer.x] $[pointer.y]
-EdgeCommand Left OnTopEdge $[pointer.x] $[pointer.y]
+EdgeCommand Left OnLeftEdge $[pointer.x] $[pointer.y]
 
 
 DestroyFunc TempRaise
@@ -41,6 +41,15 @@ AddToFunc OnTopEdge
     echo "FuncShowWindowList"`
 + I PipeRead `[ $[pointer.x]  -gt 850 ] && [ $[pointer.x]  -lt $(( $[vp.width]-150 )) ] && [ $[pointer.y] -lt 30 ] && echo "TempRaise FvwmPager"`
 
+# Left Edge command:
+#        1. Popup window list (top left corner),
+#        2. show root menu (left bottom corner).
+DestroyFunc OnLeftEdge
+AddToFunc OnLeftEdge
+
++ I PipeRead `[ $[pointer.x]  -lt 30 ] && [ $[pointer.y] -lt 30 ] && \
+    echo "FuncShowWindowList"`
+
 # Right edge command:
 #         1. show conky,
 #         2. show desktop (right bottom corner).
@@ -52,14 +61,14 @@ AddToFunc OnRightEdge
 
 # Bottom edge command:
 #        1. Show FvwmButtons,
-#        2. Show desktop (right bottom corner).
+#        2. Show desktop (right bottom corner),
+#        3. Popup root menu (left bottom corner).
 DestroyFunc OnBottomEdge
 AddToFunc OnBottomEdge
-+ I PipeRead ` [ $[pointer.x] -gt 250 ] && [ $[pointer.x] -lt $(( $[vp.width]-150 )) ] && \
++ I PipeRead `[ $[pointer.x] -gt 250 ] && [ $[pointer.x] -lt $(( $[vp.width]-150 )) ] && \
     echo    "TempRaise FvwmButtons" `
 + I PipeRead ` [ $[pointer.x] -gt $(( $[vp.width]-10 )) ] && [ $[pointer.y] -gt 800 ] && \
     echo    "FuncShowDesktop" `
-
 
 # use IgnoreModifiers to fix the NumLock bug(?)
 IgnoreModifiers L25

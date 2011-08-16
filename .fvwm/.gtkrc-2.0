@@ -1,7 +1,7 @@
 # -- THEME AUTO-WRITTEN BY gtk-theme-switch2 DO NOT EDIT
 include "/usr/share/themes/Aurora/gtk-2.0/gtkrc"
 
-gtk-icon-theme-name="MacIcon"
+gtk-icon-theme-name="default"
 gtk-cursor-theme-name="default"
 
 gtk-color-scheme = "base_color:#ffffff\nfg_color:#000000\ntooltip_fg_color:#000000\nselected_bg_color:#7da1b7\nselected_fg_color:#204a87\ntext_color:#3C3C3C\nbg_color:#c7c7c7\ntooltip_bg_color:#C4C4C4\nlink_color:#7EA2B8"
