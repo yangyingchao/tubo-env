@@ -725,11 +725,14 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
 (defconst r_comments "^[ \t/\\*][/\\*]+"
   "Regular expression to match a commentted field.")
 
+(defconst r_struct_func "^[ \t]*\\(.+\\)\(\\*\\(.*\\)\)\(.*\);"
+  "Regular expression to match a function decleration in a struct.")
+
 (defconst attr_str "
 <f%d>+%s : %s\\l|\\" "nil")
 
 (defconst attr_func "
-<f%d>-%s : %s\\l|\\" "nil")
+<f%d>-%s() : %s\\l|\\" "nil")
 
 (defun yyc/datastruct-to-dot (start end)
   "generate c++ function definition and insert it into `buffer'"
@@ -744,7 +747,7 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
          (var-defination (buffer-substring-no-properties start end))
          )
     (defun iter (pos)
-      (if (string-match r_name var-defination pos)
+      (if (string-match r_name var-defination pos) ;; Decleration, struct
           (progn
             (setq counter (+ counter 1))
             (setq struct-name
@@ -754,7 +757,7 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
             (setq tmp_str
                   (format yyc/dot-node-head struct-name struct-name))
             (iter (match-end 0)))
-        (if (string-match r_attr_str var-defination pos)
+        (if (string-match r_struct_func var-defination pos) ;; Function
             (progn
               (setq var-type
                     (match-string 1 var-defination))
@@ -762,8 +765,8 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
                     (match-string 2 var-defination))
               (setq next-begin (match-end 0))
               (if (or
-                   (string-match r_func_l var-type 0) ;Skip function.
-                   (string-match r_func_r var-name 0)
+                   ;; (string-match r_func_l var-type 0) ;Skip function.
+                   ;; (string-match r_func_r var-name 0)
                    (string-match r_comments var-type 0) ;Comments
                    )
                   nil
@@ -771,10 +774,31 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
                   (setq counter (+ counter 1))
                   (setq tmp_str
                         (concat tmp_str
-                                (format attr_str
+                                (format attr_func
                                         counter var-name var-type)))))
               (iter next-begin))
-          nil)))
+          (if (string-match r_attr_str var-defination pos)
+              (progn
+                (setq var-type
+                      (match-string 1 var-defination))
+                (setq var-name
+                      (match-string 2 var-defination))
+                (setq next-begin (match-end 0))
+                (if (or
+                     ;; (string-match r_func_l var-type 0) ;Skip function.
+                     ;; (string-match r_func_r var-name 0)
+                     (string-match r_comments var-type 0) ;Comments
+                     )
+                    nil
+                  (progn
+                    (setq counter (+ counter 1))
+                    (setq tmp_str
+                          (concat tmp_str
+                                  (format attr_str
+                                          counter var-name var-type)))))
+                (iter next-begin))
+            nil)
+          )))
     (save-excursion
       (iter 0)
       (set-buffer (get-buffer-create "tmp.dot"))
