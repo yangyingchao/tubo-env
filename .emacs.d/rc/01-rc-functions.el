@@ -725,9 +725,11 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
 (defconst r_comments "^[ \t/\\*][/\\*]+"
   "Regular expression to match a commentted field.")
 
-(defconst r_struct_func "^[ \t]*\\(.+\\)\(\\*\\(.*\\)\)\(.*\);"
-  "Regular expression to match a function decleration in a struct.")
 
+(defconst r_struct_func
+  "^[ \t]*\\(.+?\\)[ \t]*\(\\*\\(.*?\\)\)[ \t]*(\\(?:.\\|
+\\)*?);"
+  "Regular expression to match a function decleration in a struct.")
 (defconst attr_str "
 <f%d>+%s : %s\\l|\\" "nil")
 
@@ -763,10 +765,9 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
                     (match-string 1 var-defination))
               (setq var-name
                     (match-string 2 var-defination))
+              (message (format "AAA: %s" var-name))
               (setq next-begin (match-end 0))
               (if (or
-                   ;; (string-match r_func_l var-type 0) ;Skip function.
-                   ;; (string-match r_func_r var-name 0)
                    (string-match r_comments var-type 0) ;Comments
                    )
                   nil
@@ -783,10 +784,9 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
                       (match-string 1 var-defination))
                 (setq var-name
                       (match-string 2 var-defination))
+                (message (format "BBBB: %s" var-name))
                 (setq next-begin (match-end 0))
                 (if (or
-                     ;; (string-match r_func_l var-type 0) ;Skip function.
-                     ;; (string-match r_func_r var-name 0)
                      (string-match r_comments var-type 0) ;Comments
                      )
                     nil
