@@ -36,6 +36,7 @@ ICON_PATHS          = ["/usr/share/pixmaps", "/usr/share/icons/hicolor",
 #             +-----------+
 #             |    .      |
 #             +-----------+
+
 fvwm_menu     = {}
 img_data      = {}
 CATEGORY_LIST = ["Office", "Graphics", "System", "Engineering" "Utility",
