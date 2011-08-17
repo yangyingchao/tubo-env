@@ -1,152 +1,152 @@
 [Program]
-# Font
+# 字体
 Font=
-# Menu Font
+# 菜单字体
 MenuFont=
-# Font Locale to display
+# 字体区域
 FontLocale=zh_CN.UTF-8
-# Record File of Input
+# 记录文件
 RecordFile=
-# Use System Tray Icon
+# 使用系统托盘
 UseTray=True
-# Use DBus to display UI (Require KIMPanel)
+# 使用DBus来显示界面(需要KIMPanel)
 UseDBus=False
-# Enable Addons to Fcitx
+# 在Fcitx启用附加组件
 EnableAddons=True
-# Seconds sleep before fcitx really start
+# Fcitx真正启动前延迟的秒数
 DelayStart=0
 
 [Output]
-# Use English Punc After a Number
+# 数字后跟半角符号
 HalfPuncAfterNumber=True
-# Action after press enter
+# 回车键操作
 EnterAction=Commit
-# Action after press SemiColon
+# 分号键操作
 SemiColonAction=QuickPhrase
-# Input English Character if you input upper case
+# 大写时输入英文
 InputEngByCapitalChar=True
-# Convert Punc to Chinese Punc
+# 转换中文标点
 ConvertPunc=True
-# Disable Paging in Legend Mode
+# 联想模式禁用翻页
 LegendModeDisablePaging=True
-# Send inputed Text if Switch to English Mode
+# 快速切换英文模式时上屏
 SendTextWhenSwitchEng=False
 
 [Appearance]
-# Candidate Word Number
+# 候选词个数
 CandidateWordNumber=8
-# Main Window Hide Mode
+# 主窗口隐藏模式
 MainWindowHideMode=Auto
-# Show Input Window In the center of screen
+# 输入窗口显示在正中
 CenterInputWindow=False
-# Show Input Window After Trigger Input Mode
+# 切换输入时显示输入条
 ShowInputWindowAfterTriggering=True
-# Show Point After Index
+# 序号后加点
 ShowPointAfterIndex=True
-# Show Input Speed
+# 显示输入速度
 ShowInputSpeed=True
-# Show Version
+# 显示版本
 ShowVersion=True
-# Show Hint Window while ENV is not correctly configured.
+# 环境未配置正确时显示提示窗口
 ShowHintWindow=False
-# Skin Name in use
+# 皮肤名称
 SkinType=default
 
 [Hotkey]
-# Hot key of Triggering Input Method
+# 快捷键: 切换输入法
 TriggerKey=SHIFT_SPACE
-# Hotkey of Switching Chinese and English Mode
+# 快捷键: 切换中英文输入
 ChnEngSwitchKey=L_CTRL
-# Double click Switch Key to Change Mode
+# 双击中英文切换键时切换
 DoubleSwitchKey=False
-# Interval of Two Key Input
+# 输入间隔
 TimeInterval=250
-# Hotkey of Switching Follow Cursor Mode
+# 快捷键: 切换光标跟随
 FollowCursorKey=
-# Hotkey of Hiding Main Window
+# 快捷键: 隐藏主窗口
 HideMainWindowKey=CTRL_ALT_H
-# Hotkey of Switching Virtual Keyboard
-#VKSwitchKey=CTRL_ALT_K
-# Hotkey of Switching Traditional Chinese Input Mode On.
+# 快捷键: 切换软键盘
+VKSwitchKey=CTRL_ALT_K
+# 快捷键: 切换简繁体中文输入
 TraditionalChnSwitchKey=CTRL_ALT_F
-# Hotkey of Switching Legend Mode
+# 快捷键: 切换联想模式
 LegendSwitchKey=
-# Hotkey of Looking up the Corresponding pinyin of Word.
-#LookupPinyinKey=CTRL_ALT_E
-# Hotkey of Switching Full Width Character Mode
-#FullWidthSwitchKey=SHIFT_SPACE
-# Hotkey of Switch Chinese Punc Mode
-#ChnPuncSwitchKey=ALT_SPACE
-# Hotkey of Going Prev Page
+# 快捷键: 反查拼音
+LookupPinyinKey=CTRL_ALT_E
+# 快捷键: 切换全角
+FullWidthSwitchKey=SHIFT_SPACE
+# 快捷键: 切换中英文标点
+ChnPuncSwitchKey=ALT_SPACE
+# 快捷键: 前一页
 PrevPageKey=-
-# Hotkey of Going Next Page
+# 快捷键: 后一页
 NextPageKey==
-# Hotkey to Choose Second and Third Candidate Word
+# 快捷键: 选择第二第三候选词
 SecondThirdCandWordKey=SHIFT
-# Hotkey of Saving All Config and Input History
-#SaveAllKey=CTRL_ALT_S
-# Hotkey of Switching Recording Mode
-#SetRecordingKey=CTRL_ALT_J
-# Hotkey of Reseting Recording Mode
-#ResetRecordingKey=CTRL_ALT_A
+# 快捷键: 保存配置及输入历史
+SaveAllKey=CTRL_ALT_S
+# 快捷键: 切换记录模式
+SetRecordingKey=CTRL_ALT_J
+# 快捷键: 重置记录模式
+ResetRecordingKey=CTRL_ALT_A
 
 [InputMethod]
-# Pinyin Priority Order, Zero to Disable
+# 拼音输入法优先级，0为禁用
 PinyinOrder=1
-# Shuangpin Priority Order, Zero to Disable
+# 双拼输入法优先级，0为禁用
 ShuangpinOrder=1
-# Default Shuangpin Schema
+# 默认双拼方案
 DefaultShuangpinSchema=自然码
-# Quwei Priority Order, Zero to Disable
+# 区位输入法优先级，0为禁用
 QuweiOrder=0
-# Table Priority Order, Zero to Disable
+# 码表输入法优先级，0为禁用
 TableOrder=1
-# Give the tips of Phrase
+# 提示词库中词组
 PhraseTips=True
 
 [Pinyin]
-# Use Complete Pinyin
+# 使用完整拼音
 UseCompletePinyin=False
-# Auto Create Phrase
+# 自动组词
 AutoCreatePhrase=True
-# Save Auto Created Phrase
+# 保存自动词组
 SaveAutoPhrase=False
-# Hotkey of Adding Frequent Word
+# 快捷键: 添加常用字
 AddFreqWordKey=CTRL_8
-# Hotkey of Deleting Frequent Word
+# 快捷键: 删除常用字
 DeleteFreqWordKey=CTRL_7
-# Hotkey of Delete User Phrase
+# 快捷键: 删除用户词组
 DeleteUserPhraseKey=CTRL_DELETE
-# Hotkey of Inputing Word From Phrase
+# 快捷键: 以词定字
 InputWordFromPhraseKey=[]
-# Rule of Candidate Word Order
+# 候选字顺序
 BaseOrder=AdjustFreq
-# Rule of Candidate Phrase Order
+# 候选词顺序
 PhraseOrder=AdjustFast
-# Rule of Frequent Word Order
+# 常用字顺序
 FreqOrder=AdjustNo
-# Fuzzy an and ang
+# 模糊an和ang
 FuzzyAnAng=False
-# Fuzzy en and eng
+# 模糊en和eng
 FuzzyEnEng=False
-# Fuzzy ian and iang
+# 模糊ian和iang
 FuzzyIanIang=False
-# Fuzzy in and ing
+# 模糊in和ing
 FuzzyInIng=False
-# Fuzzy ou and u
+# 模糊ou和u
 FuzzyOuU=False
-# Fuzzy uan and uang
+# 模糊uan和uang
 FuzzyUanUang=False
-# Fuzzy c and ch
+# 模糊c和ch
 FuzzyCCh=False
-# Fuzzy f and h
+# 模糊f和h
 FuzzyFH=False
-# Fuzzy l and n
+# 模糊l和n
 FuzzyLN=False
-# Fuzzy s and sh
+# 模糊s和sh
 FuzzySSH=False
-# Fuzzy z and zh
+# 模糊z和zh
 FuzzyZZH=False
-# Fix misstype gn/ng
+# 修复拼音中ng和gn的输入错误
 Misstype=False
 
