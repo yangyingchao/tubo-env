@@ -692,12 +692,14 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
 
  ;; Function used to add fields of struct into a dot file (for Graphviz).
 
+;;;;; Dot templates
+
 (defconst yyc/dot-head "subgraph cluster_%s {
     node [shape=record fontsize=12 fontname=Courier style=filled];
     color = lightgray;
     style=filled;
     label = \"Struct %s\";
-    edge[color=\"#2e3436\"];"
+    edge[color=\"brown\"];"
   "Header part of dot file.")
 (defconst yyc/dot-tail "
 }"
@@ -711,10 +713,18 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
 \"];"
   "Format of node.")
 
-(defconst r_attr_str "[ \t]+\\(.*+\\)[ \t]+\\(.*?\\);\\([ \t]*/[/\\*].*\\)?$"
+(defconst attr_str "
+<f%d>+%s : %s\\l|\\" "nil")
+
+(defconst attr_func "
+<f%d>-%s() : %s\\l|\\" "nil")
+
+;;;;; Regular expressions to match a field of a struct.
+
+(defconst r_attr_str "[ \t]+\\(.*+\\)[ \t]+\\(.*?\\);\\([ \t]*/[/\\*].]*\\)?$"
   "Regular expression for matching struct fields.")
 
-(defconst r_name "\\_<\\(typedef[ \t]+\\)?struct[ \t]+\\(.*\\)?[ \t]*{"
+(defconst r_name "\\_<\\(typedef[ \t]+\\)?struct[ \t]+\\(.*\\)?[ \t]*"
   "Regular expression for mating struct name")
 
 (defconst r_func_l "\(.*"
@@ -730,11 +740,35 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
   "^[ \t]*\\(.+?\\)[ \t]*\(\\*\\(.*?\\)\)[ \t]*(\\(?:.\\|
 \\)*?);"
   "Regular expression to match a function decleration in a struct.")
-(defconst attr_str "
-<f%d>+%s : %s\\l|\\" "nil")
 
-(defconst attr_func "
-<f%d>-%s() : %s\\l|\\" "nil")
+(defconst r_match_semicol
+  (rx (+? anything) ";"))
+
+(defconst r_match_attr
+  (rx (+? (not (any "(" ")" "{" "}"))) ";"))
+
+(defconst r_match_func
+  (rx (+? (or alnum "_" blank)) "(*" (+? (or alnum "_")) ")"
+      (zero-or-more blank) "(" (*? anything) ");"))
+
+(defconst r_match_tag
+  (rx (zero-or-more blank) (zero-or-one "typedef" (one-or-more  blank))
+      "struct" (zero-or-more (or alnum "_" blank))
+      (zero-or-one "
+") (zero-or-more blank) "{"))
+
+(defun get_struct_tag (decleration)
+  "Abstract decleration from a string"
+  (if (string-match r_name decleration 0)
+      (match-string 2 decleration)
+    nil))
+
+(defun skip(msg x)
+  (if x
+      (message (format "Skip invalid syntax for function: %s." msg))
+  (message (format "Skip invalid syntax for struct field: %s." msg))
+  )
+)
 
 (defun yyc/datastruct-to-dot (start end)
   "generate c++ function definition and insert it into `buffer'"
@@ -743,62 +777,72 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
          (var-name "")
          (var-type "")
          (counter 0)
+         (next-begin 0)
+         (pos-cur 0)
          (struct-name "")
          (header-str "")
-         (next-begin 0)
+         (pos-end 0)
          (var-defination (buffer-substring-no-properties start end))
+         (item_str "")
          )
     (defun iter (pos)
-      (if (string-match r_name var-defination pos) ;; Decleration, struct
+      (if (string-match r_match_tag var-defination pos) ;; Declerad a struct
           (progn
-            (setq counter (+ counter 1))
-            (setq struct-name
-                  (match-string 2 var-defination))
+            (setq pos-end (match-end 0))
+            (setq item_str (substring var-defination pos pos-end))
+            (setq struct-name (get_struct_tag item_str))
             (setq header-str
                   (format yyc/dot-head struct-name struct-name))
             (setq tmp_str
                   (format yyc/dot-node-head struct-name struct-name))
-            (iter (match-end 0)))
-        (if (string-match r_struct_func var-defination pos) ;; Function
-            (progn
-              (setq var-type
-                    (match-string 1 var-defination))
-              (setq var-name
-                    (match-string 2 var-defination))
-              (message (format "AAA: %s" var-name))
-              (setq next-begin (match-end 0))
-              (if (or
-                   (string-match r_comments var-type 0) ;Comments
-                   )
-                  nil
-                (progn
-                  (setq counter (+ counter 1))
-                  (setq tmp_str
-                        (concat tmp_str
-                                (format attr_func
-                                        counter var-name var-type)))))
-              (iter next-begin))
-          (if (string-match r_attr_str var-defination pos)
+            (setq pos-cur (1+ pos-end))
+            (iter pos-cur))
+        (progn
+          (if (string-match r_match_semicol var-defination pos)
               (progn
-                (setq var-type
-                      (match-string 1 var-defination))
-                (setq var-name
-                      (match-string 2 var-defination))
-                (message (format "BBBB: %s" var-name))
-                (setq next-begin (match-end 0))
-                (if (or
-                     (string-match r_comments var-type 0) ;Comments
-                     )
-                    nil
+                (setq pos-end (match-end 0))
+                (setq item_str (substring var-defination pos pos-end))
+                (if (string-match r_match_func item_str 0) ;; Function
+                    (progn
+                      (if (string-match r_struct_func item_str 0)
+                          (progn
+                            (setq var-type
+                                  (match-string 1 item_str))
+                            (setq var-name
+                                  (match-string 2 item_str))
+                            (setq next-begin (match-end 0))
+                            (if (string-match r_comments var-type 0) ;Comments
+                                nil
+                              (progn
+                                (setq counter (+ counter 1))
+                                (setq tmp_str
+                                      (concat tmp_str
+                                              (format attr_func
+                                                      counter var-name var-type))))))
+                        (skip item_str t)
+                        )
+                      )
                   (progn
-                    (setq counter (+ counter 1))
-                    (setq tmp_str
-                          (concat tmp_str
-                                  (format attr_str
-                                          counter var-name var-type)))))
-                (iter next-begin))
-            nil)
-          )))
+                    (if (equal (string-match r_match_attr item_str 0) 0)
+                        (progn
+                          (if (string-match r_attr_str item_str 0)
+                              (progn
+                                (setq var-type
+                                      (match-string 1 item_str))
+                                (setq var-name
+                                      (match-string 2 item_str))
+                                (if (string-match r_comments var-type 0)
+                                    nil
+                                  (progn
+                                    (setq counter (+ counter 1))
+                                    (setq tmp_str
+                                          (concat tmp_str
+                                                  (format attr_str
+                                                          counter var-name
+                                                          var-type))))))
+                            (skip item_str nil)))
+                      (skip item_str nil))))
+                (iter pos-end))))))
     (save-excursion
       (iter 0)
       (set-buffer (get-buffer-create "tmp.dot"))
@@ -818,4 +862,3 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
 
 (provide '01-rc-functions)
 ;;; emacs-rc-functions.el ends here
-
