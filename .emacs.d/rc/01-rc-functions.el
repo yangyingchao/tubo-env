@@ -760,7 +760,7 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
 (defun get_struct_tag (decleration)
   "Abstract decleration from a string"
   (if (string-match r_name decleration 0)
-      (match-string 2 decleration)
+        (car (split-string (match-string 2 decleration) "{"))
     nil))
 
 (defun skip(msg x)
