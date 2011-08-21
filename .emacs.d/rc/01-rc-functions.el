@@ -770,7 +770,7 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
   )
 )
 
-(defun yyc/datastruct-to-dot (start end)
+(defun yyc/struct-to-dot (start end)
   "generate c++ function definition and insert it into `buffer'"
   (interactive "rp")
   (let* ((tmp_str "")
