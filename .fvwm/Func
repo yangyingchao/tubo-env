@@ -105,10 +105,10 @@ DestroyFunc StartFunction
 AddToFunc   StartFunction
 +           I Exec exec xmodmap $[HOME]/.Xmodmap
 +           I Exec exec fvwm-root --dither --retain-pixmap $[HOME]/.fvwm/wallpapers/default.png
-+           I Module FvwmButtons  FvwmDock
 +           I Module FvwmAnimate
 +           I Module FvwmAuto FvwmAutoHide -menter FvwmDockerAutoEnter
-+           I Module FvwmPager
++           I Module FvwmButtons  FvwmDock
++           I Module FvwmPager 0 3
 +           I Exec exec xscreensaver
 +           I Exec exec $[HOME]/.fvwm/tools/run_conky.sh
 +           I Exec exec fcitx -d
@@ -119,9 +119,9 @@ AddToFunc   StartFunction
 # fcitx and pidgin does not need to be killed: only one instance will be created.
 DestroyFunc  ExitFunction
 AddToFunc    ExitFunction
++            I KillModule FvwmPager
 +            I KillModule FvwmButtons
 +            I KillModule FvwmAnimate
-+            I KillModule FvwmPager
 +            I KillModule FvwmAuto
 
 

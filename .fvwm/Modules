@@ -4,35 +4,51 @@ Style FvwmBanner  StaysOnTop
 Style FvwmForm  StaysOnTop
 
 ############################### Pager #####################################
-DeskTopSize 4x1
+DeskTopSize 2x2
 
-Colorset 40 fg #839eb0, bg #839eb0, hi #839eb0, sh #839eb0, RootTransparent buffer, Tint #4584b5 0
-Colorset 41 fg #839eb0, bg #839eb0, hi #839eb0, sh #839eb0, RootTransparent buffer, Tint #4584b5 0
+Colorset 40 fg #839eb0, bg #839eb0, hi black, sh #839eb0, RootTransparent buffer, Tint #4584b5 0
 
 Style FvwmPager NoTitle, Sticky, WindowListSkip, CirculateSkipIcon, CirculateSkip, BorderWidth 1, BorderColorset 5, NoHandles, NeverFocus, StaysOnBottom
 
+
 DestroyModuleConfig FvwmPager: *
-*FvwmPager: BalloonBorderWidth 1
-*FvwmPager: BalloonColorset    * 0
-*FvwmPager: BalloonFont "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
-*FvwmPager: BalloonYOffset     +2
-*FvwmPager: Balloons           All
-*FvwmPager: BorderWidth     1
-*FvwmPager: Colorset        * 40
-*FvwmPager: DesktopScale    22
-*FvwmPager: Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
-*FvwmPager: Geometry        +865+2
-*FvwmPager: HilightColorset * 41
+
+*FvwmPager: Geometry        +900+2
+*FvwmPager: Rows        		1
+*FvwmPager: Rows 				4
+*FvwmPager: Columns 1
+
+*FvwmPager: SolidSeparators
+*FvwmPager: BorderWidth     	1
+*FvwmPager: Colorset        	* 40
+# *FvwmPager: Hilight #cab3ca
+*FvwmPager: HilightColorset 	* 40
+
+*FvwmPager: DesktopScale    	22
 *FvwmPager: MiniIcons
-*FvwmPager: MoveThreshold   0
-*FvwmPager: NoSeparators
-*FvwmPager: Rows        1
-*FvwmPager: ShapeLabels
+*FvwmPager: MoveThreshold   	0
+*FvwmPager: NoShapeLabels
 *FvwmPager: SloppyFocus
-*FvwmPager: SmallFont "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
+
 *FvwmPager: UseSkipList
 *FvwmPager: WindowBorderWidth 1
 *FvwmPager: WindowColorsets   2 0
+
+*FvwmPager: Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
+*FvwmPager: SmallFont "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
+
+*FvwmPager: Label 0 Main
+*FvwmPager: Label 1 Internet
+*FvwmPager: Label 2 Program
+*FvwmPager: Label 3 Amusement
+
+*FvwmPager: Balloons			All
+*FvwmPager: BalloonBorderWidth  1
+*FvwmPager: BalloonBack         #c7c7c7
+*FvwmPager: BalloonBorderColor  #c7c7c7
+*FvwmPager: BalloonFore         Black
+*FvwmPager: BalloonYOffset		+2
+*FvwmPager: BalloonFont "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
 
 
 ################# WindowMenu Options ################################
@@ -204,5 +220,4 @@ Style Google-chrome !Title
 Style google-chrome !Title
 Style chromium-browser !Title
 Style chromium !Title
-
 
