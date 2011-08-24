@@ -1,14 +1,3 @@
-DestroyFunc             MoveAndGotoPage
-AddToFunc               MoveAndGotoPage
-+                       I GotoPage $*
-+                       I MoveToPage $*
-
-DestroyFunc             GotoPageAndFocus
-AddToFunc               GotoPageAndFocus
-+                       I GotoPage $*
-+                       I Current (CurrentPage,!backgroundxterm*) Break
-+                       I Prev (CurrentPage,AcceptsFocus) FlipFocus NoWarp
-
 DestroyFunc             GotoRightDesk
 AddToFunc               GotoRightDesk
 +                       I GotoDesk 1
@@ -161,7 +150,7 @@ AddToFunc               ExitMenu
 +                       I *Exitmenu: Line center
 +                       I *Exitmenu: Line center
 +                       I *Exitmenu: Line center
-+                       I *Exitmenu: Text "确认要退出么？"
++                       I *Exitmenu: Text "确认退出么？"
 +                       I *Exitmenu: Line center
 +                       I *Exitmenu: Line center
 +                       I *Exitmenu: Line center
@@ -169,24 +158,19 @@ AddToFunc               ExitMenu
 +                       I *Exitmenu: Line center
 +                       I *Exitmenu: Line center
 +                       I *Exitmenu: Line center
++                       I *Exitmenu: Button quit " 取消" ^[
++                       I *Exitmenu: Command Nop
 +                       I *Exitmenu: Button quit " 重启" ^[
 +                       I *Exitmenu: Command Exec sudo reboot
 +                       I *Exitmenu: Button quit " 关机" ^[
 +                       I *Exitmenu: Command Exec sudo halt
-+                       I *Exitmenu: Button quit " 注销!" ^M
-+                       I *Exitmenu: Command Quit
 +                       I *Exitmenu: Line center
-+                       I *Exitmenu: Button quit " 运行..." ^[
-+                       I *Exitmenu: Command Exec grun
++                       I *Exitmenu: Button quit " 重载桌面" ^[
++                       I *Exitmenu: Command Restart
 +                       I *Exitmenu: Button quit " 列出进程" ^[
 +                       I *Exitmenu: Command Exec xterm  -fg green -bg black -e top
-+                       I *Exitmenu: Line center
-+                       I *Exitmenu: Button quit " 重新载入 fvwm" ^[
-+                       I *Exitmenu: Command Restart
-+                       I *Exitmenu: Button quit " 锁住屏幕" ^[
-+                       I *Exitmenu: Command  Exec xscreensaver-command  -lock
-+                       I *Exitmenu: Button quit " 取消" ^[
-+                       I *Exitmenu: Command Nop
++                       I *Exitmenu: Button quit " 注销" ^[
++                       I *Exitmenu: Command Quit
 +                       I *Exitmenu: Line center
 +                       I *Exitmenu: Line center
 +                       I Module FvwmForm Exitmenu
