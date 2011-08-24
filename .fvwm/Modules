@@ -1,3 +1,8 @@
+# styles for fvwm modules.
+Style Fvwm* NoTitle,Sticky,BorderWidth 6, CirculateSkipIcon, CirculateSkip
+Style FvwmBanner  StaysOnTop
+Style FvwmForm  StaysOnTop
+
 ############################### Pager #####################################
 DeskTopSize 4x1
 
@@ -12,7 +17,7 @@ DestroyModuleConfig FvwmPager: *
 *FvwmPager: BalloonFont "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
 *FvwmPager: BalloonYOffset     +2
 *FvwmPager: Balloons           All
-*FvwmPager: Borderwidth     0
+*FvwmPager: BorderWidth     1
 *FvwmPager: Colorset        * 40
 *FvwmPager: DesktopScale    22
 *FvwmPager: Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
@@ -96,17 +101,6 @@ Mouse 3 R A WindowList NoGeometry
 
 
 
-# Specific Styles.
-
-Style trayer !Title, Sticky, WindowListSkip,!Handles,StaysOnBottom
-Style Trayer !Title, Sticky, WindowListSkip,!Handles,StaysOnBottom
-Style xdaliclock !Title, Sticky, WindowListSkip,!Handles,StaysOnBottom
-Style Google-chrome !Title
-Style google-chrome !Title
-Style chromium-browser !Title
-Style chromium !Title
-
-
 
 ############## Buttons & TaskBar
 
@@ -115,8 +109,9 @@ Colorset 51 fg #ffffff, bg #7f7f7f, hi gray, sh gray, RootTransparent buffer, Ic
 
 
 
-Style FvwmButtons NoTitle, StaysOnBottom, Sticky, WindowListSkip, CirculateSkipIcon, CirculateSkip
-Style FvwmButtons HandleWidth 2, NeverFocus, Layer 1
+Style FvwmButtons HandleWidth 2, NoHandles, FixedPosition, CirculateHit, \
+    NeverFocus, WindowListSkip, !Iconifiable, Fixedsize, NoTitle,\
+	StaysOnBottom, Sticky, CirculateSkipIcon, CirculateSkip
 
 
 DestroyModuleConfig FvwmDock: *
@@ -168,7 +163,7 @@ DestroyModuleConfig FvwmDock: *
 DestroyDecor DefaultDecor
 AddToDecor DefaultDecor
 + TitleStyle Centered \
-             Height 26 \
+             Height 28 \
              InActive (TiledPixmap decoration/titlebar-mid-inactive.png -- Flat) \
              Active   (TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
 + ButtonStyle All InActive ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
@@ -198,5 +193,16 @@ Style DefaultStyle \
       Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
 
 Style * UseStyle DefaultStyle
+
+
+# Specific Styles.
+
+Style trayer !Title, Sticky, WindowListSkip,!Handles,StaysOnBottom
+Style Trayer !Title, Sticky, WindowListSkip,!Handles,StaysOnBottom
+Style xdaliclock !Title, Sticky, WindowListSkip,!Handles,StaysOnBottom
+Style Google-chrome !Title
+Style google-chrome !Title
+Style chromium-browser !Title
+Style chromium !Title
 
 

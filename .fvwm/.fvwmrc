@@ -87,11 +87,6 @@ SnapGrid 1 1
 OpaqueMoveSize -1 # all window moves as solid.
 ColorMapFocus FollowsFocus
 
-# styles for fvwm modules.
-Style Fvwm* NoTitle,Sticky,BorderWidth 6, CirculateSkipIcon, CirculateSkip
-Style FvwmBanner  StaysOnTop
-Style FvwmButtons HandleWidth 0, NoHandles, FixedPosition, Icon toolbox.xpm, CirculateHit,NeverFocus, WindowListSkip,!Iconifiable, Fixedsize
-Style FvwmForm  StaysOnTop
 Style * Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
 IconFont "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
 
