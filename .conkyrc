@@ -19,8 +19,8 @@ default_outline_color black
 own_window_colour 262626
 
 #position
-gap_x 1030
-gap_y 4
+# gap_x 1030
+# gap_y 4
 alignment top_left
 
 # set to yes if you want all text to be in uppercase

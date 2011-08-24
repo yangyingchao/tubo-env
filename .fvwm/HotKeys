@@ -1,12 +1,12 @@
 ############## root window #######3
 # Pager
-Key 1 A 4 MoveToPage 0 0
-Key 2 A 4 MoveToPage 1 0
-Key 3 A 4 MoveToPage 2 0
-Key 4 A 4 MoveToPage 3 0
+Key 1 A 4 MoveToDesk 0 0
+Key 2 A 4 MoveToDesk 0 1
+Key 3 A 4 MoveToDesk 0 2
+Key 4 A 4 MoveToDesk 0 3
 
-Key Right A CM GotoRightPage
-Key Left A CM GotoLeftPage
+Key Right A CM GotoRightDesk
+Key Left A CM GotoLeftDesk
 
 
 # Minimal windows.

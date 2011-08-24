@@ -4,7 +4,7 @@ Style FvwmBanner  StaysOnTop
 Style FvwmForm  StaysOnTop
 
 ############################### Pager #####################################
-DeskTopSize 2x2
+DeskTopSize 1x1
 
 Colorset 40 fg #839eb0, bg #839eb0, hi black, sh #839eb0, RootTransparent buffer, Tint #4584b5 0
 
@@ -13,15 +13,13 @@ Style FvwmPager NoTitle, Sticky, WindowListSkip, CirculateSkipIcon, CirculateSki
 
 DestroyModuleConfig FvwmPager: *
 
-*FvwmPager: Geometry        +900+2
-*FvwmPager: Rows        		1
-*FvwmPager: Rows 				4
-*FvwmPager: Columns 1
+PipeRead `pos=$(($[vp.width]-365)); echo "*FvwmPager: Geometry +$pos+2"`
+*FvwmPager: Rows 				1
+*FvwmPager: Columns             4
 
 *FvwmPager: SolidSeparators
 *FvwmPager: BorderWidth     	1
 *FvwmPager: Colorset        	* 40
-# *FvwmPager: Hilight #cab3ca
 *FvwmPager: HilightColorset 	* 40
 
 *FvwmPager: DesktopScale    	22
@@ -37,10 +35,10 @@ DestroyModuleConfig FvwmPager: *
 *FvwmPager: Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
 *FvwmPager: SmallFont "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
 
-*FvwmPager: Label 0 Main
-*FvwmPager: Label 1 Internet
-*FvwmPager: Label 2 Program
-*FvwmPager: Label 3 Amusement
+*FvwmPagerLabel 0 Main
+*FvwmPagerLabel 1 Office
+*FvwmPagerLabel 2 Terms
+*FvwmPagerLabel 3 Others
 
 *FvwmPager: Balloons			All
 *FvwmPager: BalloonBorderWidth  1
@@ -114,7 +112,6 @@ Mouse 1 W M FuncMoveOrMaximize
 Mouse 1 W M FuncMoveOrMaximize
 Mouse 3 R A WindowList NoGeometry
 Mouse 3 R A WindowList NoGeometry
-
 
 
 
@@ -220,4 +217,10 @@ Style Google-chrome !Title
 Style google-chrome !Title
 Style chromium-browser !Title
 Style chromium !Title
+Style conky PositionPlacement 80 8
+
+# Classified apps.
+Style emacs StartsOnDesk 0
 Style revolution StartsOnDesk 1
+Style xterm StartsOnDesk 2
+Style sakura StartsOnDesk 2

@@ -9,15 +9,15 @@ AddToFunc               GotoPageAndFocus
 +                       I Current (CurrentPage,!backgroundxterm*) Break
 +                       I Prev (CurrentPage,AcceptsFocus) FlipFocus NoWarp
 
-DestroyFunc             GotoRightPage
-AddToFunc               GotoRightPage
-+                       I GotoPage +1p 0
+DestroyFunc             GotoRightDesk
+AddToFunc               GotoRightDesk
++                       I GotoDesk 1
 +                       I Current (CurrentPage,!backgroundxterm*) Break
 +                       I Prev (CurrentPage,AcceptsFocus) FlipFocus NoWarp
 
-DestroyFunc             GotoLeftPage
-AddToFunc               GotoLeftPage
-+                       I GotoPage -1p 0
+DestroyFunc             GotoLeftDesk
+AddToFunc               GotoLeftDesk
++                       I GotoDesk -1
 +                       I Current (CurrentPage,!backgroundxterm*) Break
 +                       I Prev (CurrentPage,AcceptsFocus) FlipFocus NoWarp
 
@@ -108,7 +108,7 @@ AddToFunc   StartFunction
 +           I Module FvwmAnimate
 +           I Module FvwmAuto FvwmAutoHide -menter FvwmDockerAutoEnter
 +           I Module FvwmButtons  FvwmDock
-+           I Module FvwmPager 0 3
++           I Module FvwmPager 3 0
 +           I Exec exec xscreensaver
 +           I Exec exec $[HOME]/.fvwm/tools/run_conky.sh
 +           I Exec exec fcitx -d

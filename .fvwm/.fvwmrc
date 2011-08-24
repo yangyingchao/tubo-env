@@ -39,7 +39,7 @@ DestroyFunc OnTopEdge
 AddToFunc OnTopEdge
 + I PipeRead `[ $[pointer.x]  -lt 30 ] && [ $[pointer.y] -lt 30 ] && \
     echo "FuncShowWindowList"`
-+ I PipeRead `[ $[pointer.x]  -gt 850 ] && [ $[pointer.x]  -lt $(( $[vp.width]-250 )) ] && [ $[pointer.y] -lt 30 ] && echo "TempRaise FvwmPager"`
++ I PipeRead `[ $[pointer.x]  -gt $(( $[vp.width] - 370 )) ] && [ $[pointer.x] -lt $(( $[vp.width] - 130 )) ] && [ $[pointer.y] -lt 30 ] && echo "TempRaise FvwmPager"`
 
 # Left Edge command:
 #        1. Popup window list (top left corner),
