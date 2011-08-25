@@ -698,7 +698,7 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
     node [shape=record fontsize=12 fontname=Courier style=filled];
     color = lightgray;
     style=filled;
-    label = \"Struct %s\";
+    label = \"%s %s\";
     edge[color=\"brown\"];"
   "Header part of dot file.")
 (defconst yyc/dot-tail "
@@ -707,7 +707,7 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
 (defconst yyc/dot-node-head
   "
     node_%s[shape=record
-            label=\"<f0>*** STRUCT %s ***|\\"
+            label=\"<f0>*** %s %s ***|\\"
   "Format of node.")
 (defconst yyc/dot-node-tail "
 \"];"
@@ -724,7 +724,7 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
 (defconst r_attr_str "[ \t]+\\(.*+\\)[ \t]+\\(.*?\\);\\([ \t]*/[/\\*].]*\\)?$"
   "Regular expression for matching struct fields.")
 
-(defconst r_name "\\_<\\(typedef[ \t]+\\)?struct[ \t]+\\(.*\\)?[ \t]*"
+(defconst r_name "\\_<\\(typedef[ \t]+\\)?\\(class\\|struct\\|union\\)[ \t]+\\(.*\\)?[ \t]*"
   "Regular expression for mating struct name")
 
 (defconst r_func_l "\(.*"
@@ -753,15 +753,17 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
 
 (defconst r_match_tag
   (rx (zero-or-more blank) (zero-or-one "typedef" (one-or-more  blank))
-      "struct" (zero-or-more (or alnum "_" blank))
+      (or "struct" "class" "union") (zero-or-more (or alnum "_" blank))
       (zero-or-one "
 ") (zero-or-more blank) "{"))
 
 (defun get_struct_tag (decleration)
   "Abstract decleration from a string"
   (if (string-match r_name decleration 0)
-        (car (split-string (match-string 2 decleration) "{"))
-    nil))
+      (list (match-string 2 decleration)
+       (car (split-string (match-string 3 decleration) "{")))
+
+    '("" "")))
 
 (defun skip(msg x)
   (if x
@@ -779,7 +781,8 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
          (counter 0)
          (next-begin 0)
          (pos-cur 0)
-         (struct-name "")
+         (pname "")
+         (ptype "")
          (header-str "")
          (pos-end 0)
          (var-defination (buffer-substring-no-properties start end))
@@ -790,11 +793,12 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
           (progn
             (setq pos-end (match-end 0))
             (setq item_str (substring var-defination pos pos-end))
-            (setq struct-name (get_struct_tag item_str))
+            (setq ptype (car (get_struct_tag item_str)))
+            (setq pname (nth 1 (get_struct_tag item_str)))
             (setq header-str
-                  (format yyc/dot-head struct-name struct-name))
+                  (format yyc/dot-head pname ptype pname))
             (setq tmp_str
-                  (format yyc/dot-node-head struct-name struct-name))
+                  (format yyc/dot-node-head pname ptype pname))
             (setq pos-cur (1+ pos-end))
             (iter pos-cur))
         (progn
