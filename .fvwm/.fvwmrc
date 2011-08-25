@@ -55,7 +55,7 @@ AddToFunc OnLeftEdge
 #         2. show desktop (right bottom corner).
 DestroyFunc OnRightEdge
 AddToFunc OnRightEdge
-+ I PipeRead ` [ $[pointer.y] -lt 300 ] && [ $[pointer.y] -gt 50 ] && \
++ I PipeRead ` [ $[pointer.y] -lt 450 ] && [ $[pointer.y] -gt 200 ] && \
     echo    "TempRaise Conky" `
 + I PipeRead ` [ $[pointer.y] -gt $(( $[vp.height]-10 )) ]  && echo   "FuncShowDesktop" `
 

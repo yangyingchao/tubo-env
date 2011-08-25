@@ -7,6 +7,7 @@ Style FvwmForm  StaysOnTop
 DeskTopSize 1x1
 
 Colorset 40 fg #839eb0, bg #839eb0, hi black, sh #839eb0, RootTransparent buffer, Tint #4584b5 0
+Colorset 41 fg black, bg #e9b96e, hi green, sh yellow, RootTransparent buffer, Tint #4584b5 0
 
 Style FvwmPager NoTitle, Sticky, WindowListSkip, CirculateSkipIcon, CirculateSkip, BorderWidth 1, BorderColorset 5, NoHandles, NeverFocus, StaysOnBottom
 
@@ -20,7 +21,7 @@ PipeRead `pos=$(($[vp.width]-365)); echo "*FvwmPager: Geometry +$pos+2"`
 *FvwmPager: SolidSeparators
 *FvwmPager: BorderWidth     	1
 *FvwmPager: Colorset        	* 40
-*FvwmPager: HilightColorset 	* 40
+*FvwmPager: HilightColorset 	* 41
 
 *FvwmPager: DesktopScale    	22
 *FvwmPager: MiniIcons
@@ -36,8 +37,8 @@ PipeRead `pos=$(($[vp.width]-365)); echo "*FvwmPager: Geometry +$pos+2"`
 *FvwmPager: SmallFont "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
 
 *FvwmPagerLabel 0 Main
-*FvwmPagerLabel 1 Office
-*FvwmPagerLabel 2 Terms
+*FvwmPagerLabel 1 Terms
+*FvwmPagerLabel 2 Office
 *FvwmPagerLabel 3 Others
 
 *FvwmPager: Balloons			All
@@ -221,8 +222,7 @@ Style conky PositionPlacement 80 8
 
 # Classified apps.
 Style emacs StartsOnDesk 0
-Style revolution StartsOnDesk 1
-Style Sylpheed StartsOnDesk 1
-Style xterm StartsOnDesk 2
-Style sakura StartsOnDesk 2
+Style Evolution StartsOnDesk 2
+Style Sylpheed StartsOnDesk 2
+Style sakura StartsOnDesk 1
 Style Audacious StartsOnDesk 3
