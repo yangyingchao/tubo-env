@@ -2,7 +2,6 @@
 #
 # Author: Yang, Ying-chao@gmail.com, 07-11-2011
 #
-notify-send $PWD
 ps aux | grep conky | grep -v grep | grep -v run_conky
 if [ $? -eq 0 ]; then
     notify-send "Conky hash been started."
