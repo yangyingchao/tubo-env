@@ -2,8 +2,10 @@
 # --
 #ifdef DEBUG
 #define PDEBUG(fmt, args...)                                \
-    printf("%s(%d)-%s:\t",__FILE__,__LINE__,__FUNCTION__);  \
-    printf("\033[31m"fmt"\033[0m", ##args);
+    do {                                                        \
+        printf("%s(%d)-%s:\t",__FILE__,__LINE__,__FUNCTION__);  \
+        printf("\033[31m"fmt"\033[0m", ##args);                 \
+    } while(0)
 #else
 #define PDEBUG(fmt, args...)  ;
 #endif
