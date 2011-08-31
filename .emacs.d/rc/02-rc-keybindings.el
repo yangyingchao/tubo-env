@@ -39,8 +39,9 @@
 (require 'attentions)
 (global-set-key (kbd "<C-f7>") 'attentions-toggle)
 
-(global-set-key (kbd "<C-f9>") 'bookmark-jump)
-(global-set-key [f9] 'bookmark-set)
+;; f9,
+(global-set-key [f9] 'next-error)
+(global-set-key (kbd "<C-f9>") 'previous-error)
 ; f10 show menu.
 (global-set-key (kbd "<C-f10>") 'bookmark-bmenu-list)
 ;;;; f11 was used when compiling source codes.
