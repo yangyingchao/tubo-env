@@ -408,7 +408,7 @@
 
 (defvar conf-mode-list nil "List of files need to be treated as conf-mode")
 (setq conf-mode-list '("\\.\\(?:\\(?:doxy\\(?:gen\\)?\\)\\)\\_>"
-                       "\\.rc$"
+                       "rc$"
                        ".*\\.fvwm/.*"
                          ))
 

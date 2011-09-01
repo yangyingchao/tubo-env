@@ -22,9 +22,6 @@
 (global-semantic-mru-bookmark-mode 1)
 (global-semantic-show-parser-state-mode 1)
 (global-semanticdb-minor-mode 1)
-
-(global-semantic-mru-bookmark-mode 1)
-
 (global-semantic-idle-completions-mode 1)
 (global-semantic-idle-scheduler-mode 1)
 (global-semantic-idle-summary-mode 1)
@@ -58,6 +55,31 @@
   '("speedbar" .
     speedbar-frame-mode)
   [calendar])
+
+(defvar mru-tag-stack '()
+  "Tag stack, when jumping to new tag, current tag will be stored here,
+and when jumping back, it will be removed.")
+
+(defun yyc/goto-func (pt)
+  "Store current postion and call (semantic-ia-fast-jump)"
+  (interactive "d")
+  (let* ((tag (semantic-mrub-find-nearby-tag pt)))
+    (message (format "PT: %d, point: %d" pt (point)))
+
+    (if tag
+      (let ((sbm (semantic-bookmark (semantic-tag-name tag)
+                                    :tag tag)))
+        (semantic-mrub-update sbm pt 'mark)
+        (add-to-list 'mru-tag-stack sbm)
+        (semantic-ia-fast-jump pt))
+      (error "No tag to go!"))))
+
+(defun yyc/return-func()
+  "Return to previous tag."
+  (interactive)
+  (if (car mru-tag-stack)
+      (semantic-mrub-switch-tags (pop mru-tag-stack))
+    (error "TagStack is empty!")))
 
 ;; C mode
 
@@ -219,9 +241,6 @@
 
  ;; *************************** TAGS Database Settings *********************
 
-;;;; GNU global does not play with python, as a result, cscope is involved.
-(require 'xcscope)
-
 ;;;; xgtags settings.
 
 (require 'xgtags)
@@ -253,7 +272,6 @@
   ;;;; Commonly keybingdings, etags style.
   (global-set-key (kbd "<C-M-.>") 'xgtags-find-with-grep)
   (global-set-key (kbd "<C-M-;>") 'xgtags-find-rtag)
-  ;;;; Cscope style
   (local-set-key "\C-css" 'xgtags-find-symbol)
   (local-set-key "\C-csd" 'xgtags-find-tag)
   (local-set-key "\C-csc" 'xgtags-find-rtag)
@@ -261,7 +279,6 @@
   (local-set-key "\C-csi" 'xgtags-find-with-idutils)
   (local-set-key "\C-csn" 'xgtags-select-next-tag)
   (local-set-key "\C-csp" 'xgtags-select-prev-tag)
-  (local-set-key "\C-csu" 'xgtags-pop-stack)
   (local-set-key "\C-csU" 'yyc/update-tag)
 )
 
@@ -341,32 +358,6 @@
             (pymacs-load "ropemacs" "rope-")
             (setq ropemacs-enable-autoimport t)
             (rope-open-project "~/.emacs.d/database/python/")
-            (local-set-key "\C-css" 'cscope-find-this-symbol)
-            (local-set-key "\C-csd" 'cscope-find-global-definition)
-            (local-set-key "\C-csg" 'cscope-find-global-definition)
-            (local-set-key "\C-csG" 'cscope-find-global-definition-no-prompting)
-            (local-set-key "\C-csc" 'cscope-find-functions-calling-this-function)
-            (local-set-key "\C-csC" 'cscope-find-called-functions)
-            (local-set-key "\C-cst" 'cscope-find-this-text-string)
-            (local-set-key "\C-cse" 'cscope-find-egrep-pattern)
-            (local-set-key "\C-csf" 'cscope-find-this-file)
-            (local-set-key "\C-csi" 'cscope-find-files-including-file)
-            (local-set-key "\C-csb" 'cscope-display-buffer)
-            (local-set-key "\C-csB" 'cscope-display-buffer-toggle)
-            (local-set-key "\C-csn" 'cscope-next-symbol)
-            (local-set-key "\C-csN" 'cscope-next-file)
-            (local-set-key "\C-csp" 'cscope-prev-symbol)
-            (local-set-key "\C-csP" 'cscope-prev-file)
-            (local-set-key "\C-csu" 'cscope-pop-mark)
-            (local-set-key "\C-csa" 'cscope-set-initial-directory)
-            (local-set-key "\C-csA" 'cscope-unset-initial-directory)
-            (local-set-key "\C-csL" 'cscope-create-list-of-files-to-index)
-            (local-set-key "\C-csI" 'cscope-index-files)
-            (local-set-key "\C-csE" 'cscope-edit-list-of-files-to-index)
-            (local-set-key "\C-csW" 'cscope-tell-user-about-directory)
-            (local-set-key "\C-csS" 'cscope-tell-user-about-directory)
-            (local-set-key "\C-csT" 'cscope-tell-user-about-directory)
-            (local-set-key "\C-csD" 'cscope-dired-directory)
             (local-set-key [(f1)] 'python-describe-symbol)
             ))
 
@@ -563,7 +554,9 @@
   (local-set-key "\C-cR" 'semantic-symref)
   (local-set-key "\C-cb" 'semantic-mrub-switch-tags)
   (local-set-key "\C-c\C-j" 'semantic-complete-jump)
-  (local-set-key "\C-cj" 'semantic-ia-fast-jump)
+  (local-set-key "\C-cj" 'yyc/goto-func)
+  (local-set-key [S-f12] 'yyc/return-func)
+  (local-set-key [M-S-f12] 'yyc/return-func)
   (local-set-key "\C-cp" 'semantic-ia-show-doc)
   (local-set-key "\C-cr" 'semantic-symref-symbol)
   (local-set-key [(control return)] 'semantic-ia-complete-symbol)

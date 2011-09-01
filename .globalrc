@@ -1,0 +1,56 @@
+default:\
+	:tc=gtags:
+#---------------------------------------------------------------------
+# Configuration for gtags(1)
+# See gtags(1).
+#---------------------------------------------------------------------
+common:\
+	:skip=GPATH,GTAGS,GRTAGS,GSYMS,HTML/,HTML.pub/,html/,tags,TAGS,ID,y.tab.c,y.tab.h,.notfunction,cscope.out,.gdbinit,SCCS/,RCS/,CVS/,CVSROOT/,{arch}/,.svn/,.git/,.cvsrc,.cvsignore,.gitignore,.cvspass,.cvswrappers,.deps/,autom4te.cache/,.snprj/,.hg/,.hgignore,.hgtags,.bzr/:\
+	:langmap=c\:.c.h,yacc\:.y,asm\:.s.S,java\:.java,cpp\:.c++.cc.cpp.cxx.hxx.hpp.C.H,php\:.php.php3.phtml,lisp\:.el,python\:.py:
+
+#
+# [gtags-parser]
+#
+# This command is distributed as part of GLOBAL.
+# The %s is replaced with the path of source file.
+# You need not use --langmap=xxx option. Gtags-parser(1) get the value
+# from environment variable.
+#
+gtags:\
+	:tc=common:\
+	:GTAGS=gtags-parser -dt %s:\
+	:GRTAGS=gtags-parser -dtr %s:\
+	:GSYMS=gtags-parser -dts %s:
+
+
+#
+# plugin parser
+#
+exuberant-ctags|plugin-example|Example of function layer plugin parser:\
+	:tc=common:extractmethod:\
+	:langmap=c\:.c.h,yacc\:.y,asm\:.s.S,java\:.java,cpp\:.c++.cc.cpp.cxx.hxx.hpp.C.H,php\:.php.php3.phtml:\
+	:langmap=awk\:.awk,ruby\:.rb,perl\:.pl,python\:.py,lisp\:.el,vim\:.vim,sh\:.sh:\
+	:gtags_parser=c\:/usr/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=yacc\:/usr/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=asm\:/usr/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=java\:/usr/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=cpp\:/usr/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=php\:/usr/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=fortran\:/usr/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=pascal\:/usr/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=lisp\:/usr/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=scheme\:/usr/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=awk\:/usr/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=ruby\:/usr/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=perl\:/usr/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=python\:/usr/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=vim\:/usr/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=sh\:/usr/lib/gtags/exuberant-ctags.la:
+
+
+python_global_tags:\
+	:suffixes=py,pyw:\
+    :skip=GPATH,GTAGS,GRTAGS,GSYMS,HTML/,HTML.pub/,html/,tags,TAGS,ID,y.tab.c,y.tab.h,.notfunction,cscope.out,.gdbinit,SCCS/,RCS/,CVS/,CVSROOT/,{arch}/,.svn/,.git/,.cvsrc,.cvsignore,.gitignore,.cvspass,.cvswrappers,.deps/,autom4te.cache/,.snprj/,.hg/,.hgignore,.hgtags,.bzr/:\
+ 	:GTAGS=python_global_tags.py %s: \
+	:GRTAGS=gtags-parser -dtr %s:\
+	:GSYMS=gtags-parser -dts %s:
