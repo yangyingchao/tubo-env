@@ -60,21 +60,39 @@
   "Tag stack, when jumping to new tag, current tag will be stored here,
 and when jumping back, it will be removed.")
 
-(defun yyc/goto-func (pt)
-  "Store current postion and call (semantic-ia-fast-jump)"
+(defun yc/store-mru-tag (pt)
+  "Store tag info into mru-tag-stack"
   (interactive "d")
   (let* ((tag (semantic-mrub-find-nearby-tag pt)))
-    (message (format "PT: %d, point: %d" pt (point)))
-
     (if tag
-      (let ((sbm (semantic-bookmark (semantic-tag-name tag)
-                                    :tag tag)))
-        (semantic-mrub-update sbm pt 'mark)
-        (add-to-list 'mru-tag-stack sbm)
-        (semantic-ia-fast-jump pt))
-      (error "No tag to go!"))))
+        (let ((sbm (semantic-bookmark (semantic-tag-name tag)
+                                      :tag tag)))
+          (semantic-mrub-update sbm pt 'mark)
+          (add-to-list 'mru-tag-stack sbm)
+          )
+      (error "No tag to go!")))
+  )
 
-(defun yyc/return-func()
+(defun yc/goto-func (pt)
+  "Store current postion and call (semantic-ia-fast-jump)"
+  (interactive "d")
+  (yc/store-mru-tag pt)
+  (semantic-ia-fast-jump pt)
+)
+
+(defun yc/goto-func-any (pt)
+  "Store current postion and call (semantic-ia-fast-jump)"
+  (interactive "d")
+  (yc/store-mru-tag pt)
+  (semantic-complete-jump)
+  )
+
+(defun yc/symref (pt)
+  (interactive "d")
+  (yc/store-mru-tag pt)
+  (semantic-symref))
+
+(defun yc/return-func()
   "Return to previous tag."
   (interactive)
   (if (car mru-tag-stack)
@@ -89,7 +107,7 @@ and when jumping back, it will be removed.")
   (list ".." "../include" "../inc" "../common" "../public" "."
         "../.." "../../include" "../../inc" "../../common" "../../public"))
 
-(defun yyc/add-common-includes ( )
+(defun yc/add-common-includes ( )
   "Add common includes"
   (mapc (lambda (dir)
           (semantic-add-system-include dir 'c++-mode)
@@ -110,12 +128,12 @@ and when jumping back, it will be removed.")
                  :filename header))
               files))))
 
-(defun yyc/add-semantic-symbol (symbol)
+(defun yc/add-semantic-symbol (symbol)
   "Add symbol to semantic-lex-c-preprocessor-symbol-map"
   (add-to-list 'semantic-lex-c-preprocessor-symbol-map symbol)
   )
 
-(defun yyc/add-wx-support ()
+(defun yc/add-wx-support ()
   "Add wxwidget related files."
   (let* ((wx-base-dir "/usr/include/wx-2.8")
          (wx-symbol-list (list '("WXDLLEXPORT" . "")
@@ -130,13 +148,13 @@ and when jumping back, it will be removed.")
     (semantic-add-system-include wx-base-dir 'c++-mode)
 
     ;; preprocessor macro
-    (mapc 'yyc/add-semantic-symbol
+    (mapc 'yc/add-semantic-symbol
           wx-symbol-list)
     (DE-imply-includes-in-directory (concat wx-base-dir "/wx/gtk"))
     ))
 
 
-(defun yyc/add-qt-support ( )
+(defun yc/add-qt-support ( )
   "Add qt related files."
   (let* ((qt4-base-dir "/usr/include/qt4")
          (qt4-gui-dir (concat qt4-base-dir "/QtGui"))
@@ -157,7 +175,7 @@ and when jumping back, it will be removed.")
                  '("Q_CORE_EXPORT" . ""))
     ))
 
-(defun yyc/add-gtk-support ( )
+(defun yc/add-gtk-support ( )
   "Add gtk related files."
   (let ((gtk-related-includes (list
                                "/usr/include/bits"
@@ -168,12 +186,12 @@ and when jumping back, it will be removed.")
             (semantic-add-system-include dir 'c-mode))
           gtk-related-includes)))
 
-(yyc/add-common-includes)
+(yc/add-common-includes)
 
 ;;;; XXX: It does not work, don't know why!
-;; (yyc/add-wx-support)
-;; (yyc/add-qt-support)
-;; (yyc/add-gtk-support)
+;; (yc/add-wx-support)
+;; (yc/add-qt-support)
+;; (yc/add-gtk-support)
 
 ;;;; TAGS Menu
 (defun my-semantic-hook ()
@@ -199,7 +217,7 @@ and when jumping back, it will be removed.")
 (push (expand-file-name "~/.emacs.d/templates/srecode") srecode-map-load-path)
 ;;;; Customized functions to generate code quickly.
 
-(defun yyc/insert-single-comment ()
+(defun yc/insert-single-comment ()
   "Insert signle line of comment using srecode"
   (interactive)
   (insert " /* */")
@@ -254,7 +272,7 @@ and when jumping back, it will be removed.")
    (goto-char (point-max))
    (pop-to-buffer cur-buffer))
 
-(defun yyc/update-tag ()
+(defun yc/update-tag ()
   (interactive)
   (let ((up-process nil))
     (if xgtags-mode
@@ -262,12 +280,12 @@ and when jumping back, it will be removed.")
           (setq cur-buffer (buffer-name))
           (message "start to global -uv")
           (setq up-process
-                (start-process "yyc/update-tag" "*Messages*" "global" "-uv"))
+                (start-process "yc/update-tag" "*Messages*" "global" "-uv"))
           (set-process-sentinel up-process 'on-process-terminate)))))
 
 
   ;;;; "Setup key-binding for xgtags"
-(defun yyc/xgtags-hook-func ()
+(defun yc/xgtags-hook-func ()
   "My keybingdings for xgtag mode and cscope mode"
   ;;;; Commonly keybingdings, etags style.
   (global-set-key (kbd "<C-M-.>") 'xgtags-find-with-grep)
@@ -279,10 +297,10 @@ and when jumping back, it will be removed.")
   (local-set-key "\C-csi" 'xgtags-find-with-idutils)
   (local-set-key "\C-csn" 'xgtags-select-next-tag)
   (local-set-key "\C-csp" 'xgtags-select-prev-tag)
-  (local-set-key "\C-csU" 'yyc/update-tag)
+  (local-set-key "\C-csU" 'yc/update-tag)
 )
 
-(add-hook 'xgtags-mode-hook 'yyc/xgtags-hook-func)
+(add-hook 'xgtags-mode-hook 'yc/xgtags-hook-func)
 
 
  ;; *************************** Python Settings ****************************
@@ -445,7 +463,7 @@ and when jumping back, it will be removed.")
 
 ;; 输入 inc , 可以自动提示输入文件名称,可以自动补全.
 
-(defun yyc/filter-include-dirs ()
+(defun yc/filter-include-dirs ()
   "remove non-existed dirs from input-list"
   (setq inc-list nil)
   (mapc (lambda (inc-dir)
@@ -468,7 +486,7 @@ and when jumping back, it will be removed.")
                                      (directory-files
                                       dir nil
                                       "\\(\\.h\\)?"))
-                                   (yyc/filter-include-dirs)
+                                   (yc/filter-include-dirs)
 ))))
   ">")
 
@@ -488,7 +506,7 @@ and when jumping back, it will be removed.")
 ;;;; C-mode-hooks .
 
 ;;;; Function to change settings for tab.
-(defun yyc/toggle-tab-mode ()
+(defun yc/toggle-tab-mode ()
   "Function to change tabs quickly"
   (interactive)
   (if indent-tabs-mode
@@ -528,7 +546,7 @@ and when jumping back, it will be removed.")
 
 ;;;; Common Program settings
 
-(defun yyc/basic-prog-keybinding ()
+(defun yc/basic-prog-keybinding ()
   "Some Basic keybinds fro programming"
   (interactive)
   (local-set-key  [(return)] 'newline-and-indent)
@@ -551,22 +569,23 @@ and when jumping back, it will be removed.")
   (local-set-key "\C-c}" 'semantic-ia-complete-symbol-menu)
   (local-set-key "\C-cJ" 'semantic-analyze-proto-impl-toggle)
   (local-set-key "\C-cP" 'semantic-ia-show-summary)
-  (local-set-key "\C-cR" 'semantic-symref)
+  (local-set-key "\C-cR" 'yc/symref)
   (local-set-key "\C-cb" 'semantic-mrub-switch-tags)
-  (local-set-key "\C-c\C-j" 'semantic-complete-jump)
-  (local-set-key "\C-cj" 'yyc/goto-func)
-  (local-set-key [S-f12] 'yyc/return-func)
-  (local-set-key [M-S-f12] 'yyc/return-func)
-  (local-set-key "\C-cp" 'semantic-ia-show-doc)
+  (local-set-key "\C-c\C-j" 'yc/goto-func-any)
+  (local-set-key "\C-cj" 'yc/goto-func)
   (local-set-key "\C-cr" 'semantic-symref-symbol)
+  (local-set-key [S-f12] 'yc/return-func)
+  (local-set-key [M-S-f12] 'yc/return-func)
+  (local-set-key (kbd "C-x SPC") 'yc/store-mru-tag)
+  (local-set-key "\C-cp" 'semantic-ia-show-doc)
   (local-set-key [(control return)] 'semantic-ia-complete-symbol)
 
   ;;;; Keybindings for srecode
   (local-set-key "\C-cdf" 'srecode-document-insert-function-comment)
   (local-set-key "\C-cdh" 'header-make)
-  (local-set-key "\C-cds" 'yyc/insert-single-comment)
+  (local-set-key "\C-cds" 'yc/insert-single-comment)
 
-  (local-set-key "\C-cl" 'yyc/list-attentions)
+  (local-set-key "\C-cl" 'yc/list-attentions)
   ;;;; Others
   (local-set-key "\C-c\C-h" 'sourcepair-load)
   (local-set-key "\C-x\C-h" 'sourcepair-load)
@@ -575,7 +594,7 @@ and when jumping back, it will be removed.")
 
 (require 'cflow-mode)
 
-(defun yyc/cflow-function (function-name)
+(defun yc/cflow-function (function-name)
   "Get call graph of inputed function. "
   (interactive (list (car (senator-jump-interactive "Function name: "
                                                     nil nil nil))))
@@ -593,7 +612,7 @@ and when jumping back, it will be removed.")
     (cflow-mode)))
 
 
-(defun yyc/show-prog-keywords ()
+(defun yc/show-prog-keywords ()
   ;; highlight additional keywords
   (font-lock-add-keywords
    nil
@@ -604,7 +623,7 @@ and when jumping back, it will be removed.")
   (font-lock-add-keywords nil '(("^[^\n]\\{120\\}\\(.*\\)$" 1
                                  font-lock-warning-face t))))
 
-(defun yyc/add-senator-expand-to-hippie ()
+(defun yc/add-senator-expand-to-hippie ()
   "Add senator-try-expand-semantic to hippie-try-functions-list.
 This can be done automatically, But I'd like to put this
 senator-try-expand-semantic after yas/hippie-try-expand."
@@ -636,19 +655,19 @@ senator-try-expand-semantic after yas/hippie-try-expand."
 
 (defun my-program-hook ()
   ;; Enable hide-ifdef-mode
-  (yyc/show-prog-keywords)
-  (yyc/basic-prog-keybinding)
-  (yyc/add-senator-expand-to-hippie)
+  (yc/show-prog-keywords)
+  (yc/basic-prog-keybinding)
+  (yc/add-senator-expand-to-hippie)
   (setup-program-keybindings)
   (program-mode-auto-pair)
   (local-set-key (kbd "'") 'skeleton-pair-insert-maybe)
-  (local-set-key "\C-ct" 'yyc/cflow-function)
+  (local-set-key "\C-ct" 'yc/cflow-function)
   )
 
 (defun my-lisp-hook ()
   ;; Enable hide-ifdef-mode
-  (yyc/show-prog-keywords)
-  (yyc/basic-prog-keybinding)
+  (yc/show-prog-keywords)
+  (yc/basic-prog-keybinding)
   (setup-program-keybindings)
   (program-mode-auto-pair)
   (local-set-key  [(tab)] 'indent-or-complete)
@@ -724,7 +743,7 @@ senator-try-expand-semantic after yas/hippie-try-expand."
                 minor-mode-map-alist)))
 
 (setq flymake-allowed-file-name-masks '())
-(defun yyc/flymake-disable ()
+(defun yc/flymake-disable ()
   "Disable flymake mode. It's really borering when reading kernel code."
   (interactive)
   (setq flymake-allowed-file-name-masks '())
@@ -732,7 +751,7 @@ senator-try-expand-semantic after yas/hippie-try-expand."
   )
 
 
-(defun yyc/flymake-enable ()
+(defun yc/flymake-enable ()
   "Enable flymake mode"
   (interactive)
   (setq flymake-allowed-file-name-masks '())
@@ -911,7 +930,7 @@ Use CREATE-TEMP-F for creating temp copy."
 ;;;;;;;; Configurations of PowerShell-mode ;;;;;;;;
 (require 'powershell-mode)
 
-(defun yyc/pws-find-tag (function)
+(defun yc/pws-find-tag (function)
   "Find defination of function under current poin"
   (interactive
    (let* ((fn (thing-at-point 'symbol))
@@ -941,7 +960,7 @@ Use CREATE-TEMP-F for creating temp copy."
       (goto-char (point-min))
       )))
 
-(defun yyc/pws-get-help (function)
+(defun yc/pws-get-help (function)
   "Display the documentation of FUNCTION (a symbol)."
   (interactive
    (let ((fn (thing-at-point 'symbol))
@@ -965,11 +984,11 @@ Use CREATE-TEMP-F for creating temp copy."
 (add-hook 'powershell-mode-hook
           (lambda()
             (progn
-              (yyc/show-prog-keywords)
+              (yc/show-prog-keywords)
               (program-mode-auto-pair)
-              (yyc/basic-prog-keybinding)
-              (local-set-key [(f1)] 'yyc/pws-get-help)
-              (local-set-key [(meta .)] 'yyc/pws-find-tag)
+              (yc/basic-prog-keybinding)
+              (local-set-key [(f1)] 'yc/pws-get-help)
+              (local-set-key [(meta .)] 'yc/pws-find-tag)
               )))
 
 

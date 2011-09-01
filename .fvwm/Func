@@ -1,12 +1,14 @@
 DestroyFunc             GotoRightDesk
 AddToFunc               GotoRightDesk
 +                       I GotoDesk 1
++                       I SetEnv fvwm_cur_desk $[desk.n]
 +                       I Current (CurrentPage,!backgroundxterm*) Break
 +                       I Prev (CurrentPage,AcceptsFocus) FlipFocus NoWarp
 
 DestroyFunc             GotoLeftDesk
 AddToFunc               GotoLeftDesk
 +                       I GotoDesk -1
++                       I SetEnv fvwm_cur_desk $[desk.n]
 +                       I Current (CurrentPage,!backgroundxterm*) Break
 +                       I Prev (CurrentPage,AcceptsFocus) FlipFocus NoWarp
 
@@ -82,6 +84,16 @@ DestroyFunc             FuncShowWindowList
 AddToFunc               FuncShowWindowList
 +                      I Windowlist (CurrentPage) NoDeskSort, SelectOnRelease, Meta_L,CurrentAtEnd, IconifiedAtEnd
 
+
+DestroyFunc             FuncRestoreDesk
+AddtoFunc               FuncRestoreDesk
++ I GotoDesk 0 $[fvwm_cur_desk]
+
+DestroyFunc             FuncStoreDesk
+AddtoFunc               FuncStoreDesk
++ I SetEnv fvwm_cur_desk $[desk.n]
++ I Exec exec notify-send "FuncStoreDesk: $[fvwm_cur_desk]"
+
 #################### Lock screen. ##############
 DestroyFunc             FuncFvwmLockScreen
 AddToFunc               FuncFvwmLockScreen
@@ -102,6 +114,7 @@ AddToFunc   StartFunction
 +           I Exec exec $[HOME]/.fvwm/tools/run_conky.sh $[vp.width]
 +           I Exec exec fcitx -d
 +           I Exec exec pidgin
++           I Module FvwmEvent
 
 
 

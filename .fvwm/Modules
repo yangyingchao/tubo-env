@@ -36,8 +36,8 @@ PipeRead `pos=$(($[vp.width]-365)); echo "*FvwmPager: Geometry +$pos+2"`
 *FvwmPager: Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
 *FvwmPager: SmallFont "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
 
-*FvwmPagerLabel 0 MainAp
-*FvwmPagerLabel 1 Remote
+*FvwmPagerLabel 0 Main
+*FvwmPagerLabel 1 Remo
 *FvwmPagerLabel 2 Office
 *FvwmPagerLabel 3 Others
 
@@ -49,6 +49,13 @@ PipeRead `pos=$(($[vp.width]-365)); echo "*FvwmPager: Geometry +$pos+2"`
 *FvwmPager: BalloonYOffset		+2
 *FvwmPager: BalloonFont "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
 
+
+
+################# FvwmEvents #######################################
+DestroyModuleConfig FvwmEvent: *
+*FvwmEvent: Cmd
+*FvwmEvent: destroy_window FuncRestoreDesk
+# *FvwmEvent: add_window FuncStoreDesk
 
 ################# WindowMenu Options ################################
 
