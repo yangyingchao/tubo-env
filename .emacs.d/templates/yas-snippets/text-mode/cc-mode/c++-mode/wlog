@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name : WRITE_LOG
+# --
+WRITE_LOG("${1:%s}\\r\\n"${1:$(if (string-match "%" text) "," "\);")
+}$2${1:$(if (string-match "%" text) "\);" "")}

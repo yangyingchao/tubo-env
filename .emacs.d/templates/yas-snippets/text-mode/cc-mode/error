@@ -1,0 +1,3 @@
+# -*- mode: snippet -*-
+# --
+handle_error(${1:msg});

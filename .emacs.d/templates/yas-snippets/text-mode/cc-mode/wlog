@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name : LOG_WARRNING
+# --
+LOG_WARRNING("${1:%s}\\n"${1:$(if (string-match "%" text) "," "\);")
+}$2${1:$(if (string-match "%" text) "\);" "")}
