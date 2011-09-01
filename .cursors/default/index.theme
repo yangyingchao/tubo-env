@@ -1,4 +1,5 @@
 [Icon Theme]
 Name=default
-Comment=Macbuntu-Cursors based on Shere Khan X
-Example=left_ptr_watch
+Comment= Converted with ms2sd - Converted by sd2xc-2.3.pl
+Example=left_ptr
+Inherits=core

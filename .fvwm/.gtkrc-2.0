@@ -4,7 +4,7 @@ include "/usr/share/themes/Aurora/gtk-2.0/gtkrc"
 gtk-icon-theme-name="default"
 gtk-cursor-theme-name="default"
 
-gtk-color-scheme = "base_color:#ffffff\nfg_color:#000000\ntooltip_fg_color:#000000\nselected_bg_color:#7da1b7\nselected_fg_color:#204a87\ntext_color:#3C3C3C\nbg_color:#c7c7c7\ntooltip_bg_color:#C4C4C4\nlink_color:#7EA2B8"
+gtk_color_scheme = "fg_color:#000000\nbg_color:#dee3f3\nbase_color:#FCFCFC\ntext_color:#1A1A1A\nselected_bg_color:#4B7AB4\nselected_fg_color:#FCFCFC\ntooltip_bg_color:#f1f0fa\ntooltip_fg_color:#000000\nlink_color:#7EA2B8"
 
 gtk-icon-sizes = "panel-menu=22,22:gtk-button=16,16"
 gtk-menu-popup-delay = 40
