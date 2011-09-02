@@ -76,9 +76,9 @@
   (set-face-attribute 'mode-line-buffer-id nil
                       :foreground "navy"
                       :bold t)
-  (set-face-attribute 'mode-line-inactive nil
+  (set-face-attribute 'mode-line nil
                       :foreground "black"
-                      :background "gray75")
+                      :background "#dee7f7")
   (set-face-attribute 'mode-line-inactive nil
                       :foreground "gray20"
                       :background "gray90")

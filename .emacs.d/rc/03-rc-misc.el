@@ -46,7 +46,8 @@
                             (other-frame 0)))
 (require 'sb-texinfo)
 (eval-after-load "speedbar" '(load-library "sb-texinfo"))
-(add-hook 'texinfo-mode-hook (lambda () (require 'sb-texinfo)))
+(require 'sb-html)
+(eval-after-load "speedbar" '(load-library "sb-html"))
 
 (require 'sr-speedbar)
 (global-set-key [f7] 'sr-speedbar-toggle);f7打开/关闭speedbar
@@ -359,14 +360,14 @@
   (browse-url-generic (or (w3m-anchor)
                           (w3m-image))))
 
-(defun yyc/load-w3m ()
+(defun yc/load-w3m ()
   "Load configurations about w3m"
   (interactive)
   (w3m)
   )
 
 (defvar bn nil "nil")
-(defun yyc/w3m-open-this-page ()
+(defun yc/w3m-open-this-page ()
   "Call w3m to open this html file"
   (interactive)
   (setq bn (buffer-file-name))
@@ -384,8 +385,8 @@
 (define-key w3m-mode-map  "\C-c\C-o" 'w3m-open-current-page-in-gui)
 (define-key w3m-mode-map (kbd "j") 'next-line)
 (define-key w3m-mode-map (kbd "k") 'previous-line)
-(global-set-key (kbd "<C-f8>") 'yyc/load-w3m)
-(global-set-key (kbd "<C-S-f8>") 'yyc/w3m-open-this-page)
+(global-set-key (kbd "<C-f8>") 'yc/load-w3m)
+(global-set-key (kbd "<C-S-f8>") 'yc/w3m-open-this-page)
 
 
  ;; *********************** graphviz dot mode ***********

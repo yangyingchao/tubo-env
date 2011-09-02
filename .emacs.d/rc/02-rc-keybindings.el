@@ -83,8 +83,8 @@
 (global-set-key [end]  'home-end-end)
 (global-set-key [home] 'home-end-home)
 
-(global-set-key "\C-c;" 'yyc/comment-dwim-line)
-(global-set-key "\C-c:" 'yyc/comment-dwim-line)
+(global-set-key "\C-c;" 'yc/comment-dwim-line)
+(global-set-key "\C-c:" 'yc/comment-dwim-line)
 
 ;;; ### Doc-view ###
 ;;; --- 文档阅读器

@@ -4,7 +4,7 @@
 gtk-icon-theme-name="default"
 gtk-cursor-theme-name="default"
 
-gtk-color-scheme = "fg_color:#000000\nbg_color:#c7c7c7\nbase_color:#ffffff\ntext_color:#3C3C3C\nselected_bg_color:#7da1b7\nselected_fg_color:#204a87\ntooltip_bg_color:#efefff\ntooltip_fg_color:#000000\nlink_color:#7EA2B8"
+gtk-color-scheme = "fg_color:#000000\nbg_color:#c7c7c7\nbase_color:#ffffff\ntext_color:#3C3C3C\nselected_bg_color:#7da1b7\nselected_fg_color:#204a87\ntooltip_bg_color:#eff3ff\ntooltip_fg_color:#000000\nlink_color:#7EA2B8"
 
 gtk-icon-sizes = "panel-menu=22,22:gtk-button=16,16"
 gtk-menu-popup-delay = 40
@@ -167,7 +167,7 @@ style "theme-wider" = "theme-default"
 
 style "theme-button" = "theme-wider"
 {
-    bg[NORMAL]   =  shade (1.16,"#e7efff")
+    bg[NORMAL]   =  shade (1.16,@bg_color)
     bg[ACTIVE]   =  shade (0.84,@bg_color)
     bg[PRELIGHT] =  mix(0.93, shade (1.11,@bg_color), shade (1.04,@selected_bg_color))
     bg[SELECTED] =  shade (1.10,@selected_bg_color)
@@ -271,14 +271,8 @@ style "theme-progressbar"
     fg[PRELIGHT]  		= @selected_fg_color
 }
 
-style "theme-tooltips" = "theme-wider"
+style "theme-combo" = "theme-button"
 {
-    bg[NORMAL]    =  @tooltip_bg_color
-    fg[NORMAL]    =  @tooltip_fg_color
-    text[NORMAL]  =  @tooltip_fg_color
-}
-
-style "theme-combo" = "theme-button" {
     xthickness = 4
     ythickness = 4
 }
@@ -353,11 +347,12 @@ style "theme-toolbar"
 }
 
 style "tooltips" {
-    xthickness = 4
-    ythickness = 4
-    bg[NORMAL]        = "#efefff"
-    fg[NORMAL]        = @tooltip_fg_color
-    bg[SELECTED]      = "#000000"
+    xthickness   = 4
+    ythickness   = 4
+    bg[NORMAL]   = shade(1.068, @tooltip_bg_color)
+    bg[SELECTED] = "#000000"
+    fg[NORMAL]   = @tooltip_fg_color
+    text[NORMAL] = @tooltip_fg_color
 }
 
 style "theme-menu"
@@ -421,10 +416,6 @@ widget_class "*<GtkNotebook>*<GtkViewport>" style "theme-notebook"
 widget_class "*<GtkNotebook>.<GtkLabel>*" style "theme-notebook" #for tabs
 widget_class "*<GtkCombo>*"    style "theme-combo"
 widget_class "*<GtkComboBox>*<GtkButton>"    style "theme-combo-box"
-
-# tooltips stuff
-
-# treeview stuff
 widget_class "*<GtkCList>.<GtkButton>*" 	style "theme-tree"
 widget_class "*<GtkCTree>.<GtkButton>*" 	style "theme-tree"
 widget_class "*<GtkCTree>.<GtkButton>*<GtkArrow>" 	style "theme-tree-arrow"

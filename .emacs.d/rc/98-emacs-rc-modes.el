@@ -21,7 +21,7 @@
 (setq reftex-plug-into-AUCTeX t)
 (setq-default TeX-master nil)
 
-(defun yyc/insert-new-item ()
+(defun yc/insert-new-item ()
   "description"
   (interactive)
   (move-end-of-line 1)
@@ -37,7 +37,7 @@
                              (LaTeX-math-mode)
                              (turn-on-reftex)
                              (local-set-key (kbd "<C-return>")
-                                            'yyc/insert-new-item)
+                                            'yc/insert-new-item)
                              ))
 
 ;; (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
@@ -67,29 +67,29 @@
 (define-key TeX-mode-map "\C-c;"    'TeX-comment-region)
 (define-key TeX-mode-map "\C-c:"    'TeX-uncomment-region)
 
-(defun yyc/latex-mode-hook ()
+(defun yc/latex-mode-hook ()
   "Hooks for latex mode."
   (interactive)
   (auto-fill-mode nil)
-  (yyc/show-prog-keywords)
+  (yc/show-prog-keywords)
   (tex-mode-auto-pair)
   (LaTeX-math-mode)
   (turn-on-reftex)
   (flyspell-mode)
   )
 
-(add-hook 'LaTeX-mode-hook 'yyc/latex-mode-hook)
+(add-hook 'LaTeX-mode-hook 'yc/latex-mode-hook)
 
  ;; ****************************** HTML Mode ******************************
 
-(defun yyc/html-newline ()
+(defun yc/html-newline ()
   "New line, add <br> into the end of line."
   (interactive)
   (insert "<br />")
   (newline-and-indent)
   )
 
-(defun yyc/html-newph ()
+(defun yc/html-newph ()
   "New line, add <br> into the end of line."
   (interactive)
   (newline-and-indent)
@@ -103,7 +103,7 @@
 (defvar fmt nil "nil")
 (defvar fmt_len nil "nil")
 
-(defun yyc/html-txt-format (fmt)
+(defun yc/html-txt-format (fmt)
   "Format a text string (from start to end )into some format definded as fmt."
   (setq fmt_len (length fmt))
   (message "%d" fmt_len)
@@ -114,34 +114,34 @@
   (yank)
   )
 
-(defun yyc/html-txt-bd (start end)
+(defun yc/html-txt-bd (start end)
   "<strong></strong>"
   (interactive "rp")
   (kill-region start end)
-  (yyc/html-txt-format "strong")
+  (yc/html-txt-format "strong")
   )
 
-(defun yyc/html-txt-pre (start end)
+(defun yc/html-txt-pre (start end)
   "<pre></pre>"
   (interactive "rp")
   (kill-region start end)
-  (yyc/html-txt-format "pre")
+  (yc/html-txt-format "pre")
   )
-(defun yyc/html-txt-tt (start end)
+(defun yc/html-txt-tt (start end)
   "<pre></pre>"
   (interactive "rp")
   (kill-region start end)
-  (yyc/html-txt-format "tt")
+  (yc/html-txt-format "tt")
   )
 
-(defun yyc/html-txt-pha (start end)
+(defun yc/html-txt-pha (start end)
   "<p></p>"
   (interactive "rp")
   (kill-region start end)
-  (yyc/html-txt-format "p")
+  (yc/html-txt-format "p")
   )
 
-(defun yyc/html-txt-col (start end)
+(defun yc/html-txt-col (start end)
   "Add colour."
   (interactive "rp")
   (kill-region start end)
@@ -153,7 +153,7 @@
   (yank)
   )
 
-(defun yyc/small-font (start end)
+(defun yc/small-font (start end)
   "Add colour."
   (interactive "rp")
   (kill-region start end)
@@ -164,13 +164,13 @@
   (previous-line)
   (yank)
   )
-(defun yyc/html-ws ()
+(defun yc/html-ws ()
   "White Space."
   (interactive)
   (insert "&nbsp; ")
   )
 
-(defun yyc/remove-hrefs ()
+(defun yc/remove-hrefs ()
   "Funtion to remove hyperlinks quickly"
   (interactive)
   (while (re-search-forward "<a href=.*?\">\\(.*?>\\)</a>" nil t)
@@ -181,7 +181,7 @@
 (defvar b64_cmd nil "Command to execute")
 (defvar b64_content nil "nil")
 
-(defun yyc/insert-b64-img (fn)
+(defun yc/insert-b64-img (fn)
   "description"
   (interactive "fImage to insert:\n")
   (setq fn_ext_name (file-name-extension fn))
@@ -195,17 +195,17 @@
 
 (defun my-html-mode-hooks ()
   "html mode hooks."
-  (local-set-key (kbd "<C-return>") 'yyc/html-newline)
-  (local-set-key (kbd "<C-M-return>") 'yyc/html-newph)
-  (local-set-key (kbd "C-c <SPC>") 'yyc/html-ws)
-  (local-set-key (kbd "C-c b") 'yyc/html-txt-bd)
-  (local-set-key (kbd "C-c p") 'yyc/html-txt-pre)
-  (local-set-key (kbd "C-c P") 'yyc/html-txt-pha)
-  (local-set-key (kbd "C-c t") 'yyc/html-txt-tt)
-  (local-set-key (kbd "C-c c") 'yyc/html-txt-col)
-  (local-set-key (kbd "C-c i") 'yyc/insert-b64-img)
-  (local-set-key (kbd "C-c s") 'yyc/small-font)
-  (yyc/basic-prog-keybinding)
+  (local-set-key (kbd "<C-return>") 'yc/html-newline)
+  (local-set-key (kbd "<C-M-return>") 'yc/html-newph)
+  (local-set-key (kbd "C-c <SPC>") 'yc/html-ws)
+  (local-set-key (kbd "C-c b") 'yc/html-txt-bd)
+  (local-set-key (kbd "C-c p") 'yc/html-txt-pre)
+  (local-set-key (kbd "C-c P") 'yc/html-txt-pha)
+  (local-set-key (kbd "C-c t") 'yc/html-txt-tt)
+  (local-set-key (kbd "C-c c") 'yc/html-txt-col)
+  (local-set-key (kbd "C-c i") 'yc/insert-b64-img)
+  (local-set-key (kbd "C-c s") 'yc/small-font)
+  (yc/basic-prog-keybinding)
   (auto-complete-mode)
   (html-autoview-mode nil)
   (setq html-autoview-mode nil)
@@ -261,7 +261,7 @@
 
 ;;; Key bingdings
 
-(defun yyc/show-pomodoro-keywords ()
+(defun yc/show-pomodoro-keywords ()
   "Pomodoro Keywords, used by pomodoro technique "
   (interactive)
   ;; highlight additional keywords
@@ -275,7 +275,7 @@
   (font-lock-add-keywords nil '(("^[^\n]\\{120\\}\\(.*\\)$" 1
                                  font-lock-warning-face t))))
 
-(defun yyc/org-mode-hooks ()
+(defun yc/org-mode-hooks ()
   "Functions will run when entering org-mode"
   (interactive)
   (org-defkey org-mode-map "\C-cl" 'org-store-link)
@@ -284,12 +284,12 @@
   (org-defkey org-mode-map (kbd "<C-tab>") 'indent-or-complete)
   (org-defkey org-mode-map [(control ?,)]     'backward-page)
   (base-auto-pair)
-  (yyc/show-pomodoro-keywords)
+  (yc/show-pomodoro-keywords)
   (setq fill-column 120)
   (flyspell-mode)
   )
 
-(add-hook 'org-mode-hook 'yyc/org-mode-hooks)
+(add-hook 'org-mode-hook 'yc/org-mode-hooks)
 
  ;; *************************** Wiki Mode ******************************
 (autoload 'wikipedia-mode "wikipedia-mode"nil t)
@@ -340,7 +340,7 @@
   (setq ispell-skip-html t)
   (hs-minor-mode 1)
   (base-auto-pair)
-  (yyc/basic-prog-keybinding)
+  (yc/basic-prog-keybinding)
   )
 
 (add-hook 'nxml-mode-hook 'my-nxml-mode-hook)
@@ -372,15 +372,15 @@
 
  ;; **************************** Text Mode ***************************
 
-(defun yyc/txt-mode-hook ()
+(defun yc/txt-mode-hook ()
   "My hooks for txt-mode."
   (interactive)
-  (define-key text-mode-map "\C-c\C-e" 'yyc/txt-to-png)
+  (define-key text-mode-map "\C-c\C-e" 'yc/txt-to-png)
   (setq fill-column 120)
   )
 
-(add-hook 'text-mode-hook 'yyc/txt-mode-hook)
-(add-hook  'artist-mode-init 'yyc/txt-mode-hook)
+(add-hook 'text-mode-hook 'yc/txt-mode-hook)
+(add-hook  'artist-mode-init 'yc/txt-mode-hook)
 
 
  ;; ************************** ChangeLog *****************************
@@ -412,13 +412,13 @@
                        ".*\\.fvwm/.*"
                          ))
 
-(defun yyc/add-to-mode-alist (reg-exp)
+(defun yc/add-to-mode-alist (reg-exp)
   "Add regexp to mode"
   (add-to-list 'auto-mode-alist
                (cons reg-exp 'conf-mode))
   )
 
-(mapc 'yyc/add-to-mode-alist conf-mode-list)
+(mapc 'yc/add-to-mode-alist conf-mode-list)
 
 
 

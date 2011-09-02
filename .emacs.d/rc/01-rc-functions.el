@@ -322,7 +322,7 @@ Uses `current-date-time-format' for the formatting the date/time."
   (interactive)
   (insert (format-time-string current-year-format (current-time))))
 
-(defun yyc/insert-current-buffername ()
+(defun yc/insert-current-buffername ()
   "insert the current time (1-week scope) into the current buffer."
   (interactive)
   (insert (buffer-file-name (current-buffer)))
@@ -391,7 +391,7 @@ Uses `current-date-time-format' for the formatting the date/time."
       (goto-char after-point)
       (c-indent-line))))
 
-(setq yyc/trailing-whitespace-modes '(c++-mode
+(setq yc/trailing-whitespace-modes '(c++-mode
                                       c-mode
                                       haskell-mode
                                       emacs-lisp-mode
@@ -399,12 +399,12 @@ Uses `current-date-time-format' for the formatting the date/time."
                                       python-mode
                                       scheme-mode
                                       erlang-mode))
-(defun yyc/trailing-whitespace-hook ()
-  (when (member major-mode yyc/trailing-whitespace-modes)
+(defun yc/trailing-whitespace-hook ()
+  (when (member major-mode yc/trailing-whitespace-modes)
     (delete-trailing-whitespace)))
 
 ;; clean trailing whitespaces automatically
-(add-hook 'before-save-hook 'yyc/trailing-whitespace-hook)
+(add-hook 'before-save-hook 'yc/trailing-whitespace-hook)
 (add-hook 'after-save-hook
           #'(lambda ()
               (and (save-excursion
@@ -419,19 +419,19 @@ Uses `current-date-time-format' for the formatting the date/time."
                     (concat "Saved as script: " buffer-file-name)))))
 
 ;;;; Untabify
-(setq yyc/untabify-modes '(haskell-mode
+(setq yc/untabify-modes '(haskell-mode
                            scheme-mode
                            erlang-mode
                            python-mode
                            clojure-mode
                            text-mode))
 
-(defun yyc/untabify-hook ()
-  (when (member major-mode yyc/untabify-modes)
+(defun yc/untabify-hook ()
+  (when (member major-mode yc/untabify-modes)
     (untabify (point-min) (point-max))))
 
 ;;;; untabify some modes
-(add-hook 'before-save-hook 'yyc/untabify-hook)
+(add-hook 'before-save-hook 'yc/untabify-hook)
 
 ;;;; Shift regiion to left or right quickly.
 
@@ -542,7 +542,7 @@ Uses `current-date-time-format' for the formatting the date/time."
            (let ((mark-even-if-inactive transient-mark-mode))
              (indent-region (region-beginning) (region-end) nil))))))
 
-(defun yyc/txt-to-png ()
+(defun yc/txt-to-png ()
   "Change a txt file into png file using ditaa"
   (interactive)
   (let* ((fname (buffer-file-name))
@@ -589,7 +589,7 @@ Uses `current-date-time-format' for the formatting the date/time."
                       (font-spec :family "Microsoft YaHei" :size 16)))
   )
 
-(defun yyc/comment-dwim-line (&optional arg)
+(defun yc/comment-dwim-line (&optional arg)
   "Replacement for the comment-dwim command. If no region is selected and
 current line is not blank and we are not at the end of the line, then
 comment current line. Replaces default behaviour of comment-dwim, when it
@@ -601,7 +601,7 @@ inserts comment at the end of the line."
        (line-beginning-position) (line-end-position))
 	(comment-dwim arg)))
 
-(global-set-key "\M-;" 'yyc/comment-dwim-line)
+(global-set-key "\M-;" 'yc/comment-dwim-line)
 
 (defvar test_var nil "nil")
 
@@ -615,7 +615,7 @@ inserts comment at the end of the line."
 
 (defvar num nil "nil")
 (defvar fmt nil "nil")
-(defun yyc/insert-line-num (prefix)
+(defun yc/insert-line-num (prefix)
   "description "
   (interactive "sInput Prefix")
   (if (= (string-to-char prefix) 0)
@@ -681,7 +681,7 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
        "BASE" "" startup-hooks)))
   )
 
-(defun yyc/list-attentions ()
+(defun yc/list-attentions ()
   "List lines that need attentions, such as lines which include XXX or FIXME et.al."
   (interactive)
   (let ((wds "\"FIX|FIXME|TODO|BUG|XXX|YYC|HACK|zq|jimmy\""))
@@ -694,22 +694,22 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
 
 ;;;;; Dot templates
 
-(defconst yyc/dot-head "subgraph cluster_%s {
+(defconst yc/dot-head "subgraph cluster_%s {
     node [shape=record fontsize=12 fontname=Courier style=filled];
     color = lightgray;
     style=filled;
     label = \"%s %s\";
     edge[color=\"brown\"];"
   "Header part of dot file.")
-(defconst yyc/dot-tail "
+(defconst yc/dot-tail "
 }"
   "Tail part of dot")
-(defconst yyc/dot-node-head
+(defconst yc/dot-node-head
   "
     node_%s[shape=record
             label=\"<f0>*** %s %s ***|\\"
   "Format of node.")
-(defconst yyc/dot-node-tail "
+(defconst yc/dot-node-tail "
 \"];"
   "Format of node.")
 
@@ -772,7 +772,7 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
   )
 )
 
-(defun yyc/struct-to-dot (start end)
+(defun yc/struct-to-dot (start end)
   "generate c++ function definition and insert it into `buffer'"
   (interactive "rp")
   (let* ((tmp_str "")
@@ -796,9 +796,9 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
             (setq ptype (car (get_struct_tag item_str)))
             (setq pname (nth 1 (get_struct_tag item_str)))
             (setq header-str
-                  (format yyc/dot-head pname ptype pname))
+                  (format yc/dot-head pname ptype pname))
             (setq tmp_str
-                  (format yyc/dot-node-head pname ptype pname))
+                  (format yc/dot-node-head pname ptype pname))
             (setq pos-cur (1+ pos-end))
             (iter pos-cur))
         (progn
@@ -855,7 +855,7 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
       (insert  header-str tmp_str )
       (goto-char (point-max))
       (delete-char -1)
-      (insert "<f999>\\"yyc/dot-node-tail yyc/dot-tail)
+      (insert "<f999>\\"yc/dot-node-tail yc/dot-tail)
       )
     (if (one-window-p)
         (split-window-vertically))
