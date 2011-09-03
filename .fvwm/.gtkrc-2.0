@@ -266,9 +266,9 @@ style "theme-tree-arrow"
 style "theme-progressbar"
 {
     font_name  = "Bold"
-    bg[NORMAL]   =  shade (1.20,@bg_color)
+    bg[NORMAL]   =  shade (1.20,@selected_bg_color)
     bg[SELECTED] = @selected_bg_color
-    fg[PRELIGHT]  		= @selected_fg_color
+    fg[PRELIGHT]  		= shade (1.20,"#006184")
 }
 
 style "theme-combo" = "theme-button"
@@ -343,7 +343,7 @@ style "theme-toolbar"
 {
     xthickness = 2
     ythickness = 2
-    bg[NORMAL] =  shade (1.0,"#e7efff")
+    bg[NORMAL] =  shade (1.0,"#f7f3f7")
 }
 
 style "tooltips" {
