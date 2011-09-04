@@ -60,6 +60,7 @@
   "Tag stack, when jumping to new tag, current tag will be stored here,
 and when jumping back, it will be removed.")
 
+
 (defun yc/store-mru-tag (pt)
   "Store tag info into mru-tag-stack"
   (interactive "d")
@@ -575,6 +576,7 @@ and when jumping back, it will be removed.")
   (local-set-key "\C-cj" 'yc/goto-func)
   (local-set-key "\C-cr" 'semantic-symref-symbol)
   (local-set-key [S-f12] 'yc/return-func)
+  (local-set-key [S-f8] 'yc/return-func)
   (local-set-key [M-S-f12] 'yc/return-func)
   (local-set-key (kbd "C-x SPC") 'yc/store-mru-tag)
   (local-set-key "\C-cp" 'semantic-ia-show-doc)

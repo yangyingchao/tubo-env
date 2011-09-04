@@ -1,10 +1,10 @@
-# -- THEME AUTO-WRITTEN BY gtk-theme-switch2 DO NOT EDIT
-
-
 gtk-icon-theme-name="default"
 gtk-cursor-theme-name="default"
 
 gtk-color-scheme = "fg_color:#000000\nbg_color:#c7c7c7\nbase_color:#ffffff\ntext_color:#3C3C3C\nselected_bg_color:#7da1b7\nselected_fg_color:#204a87\ntooltip_bg_color:#eff3ff\ntooltip_fg_color:#000000\nlink_color:#7EA2B8"
+
+
+#rgba = TRUE
 
 gtk-icon-sizes = "panel-menu=22,22:gtk-button=16,16"
 gtk-menu-popup-delay = 40
@@ -118,29 +118,44 @@ style "theme-default"
     ####################
     # Color Definitions
     ####################
-    bg[NORMAL]        = @bg_color
-    bg[PRELIGHT]      = shade (1.02, @bg_color)
-    bg[SELECTED]      = @selected_bg_color
-    bg[INSENSITIVE]   = shade (0.95, @bg_color)
-    bg[ACTIVE]        = shade (0.9, @bg_color)
+    color["gray0"]= @bg_color # "#EFF3F7"
+    color["gray1"]= mix(0.5,@bg_color, "#C8D8D8") #"#DFE7EF"
+    color["gray2"]= mix(0.5,@bg_color, "#A8B8B8") #"#CFD7DF"
+    color["gray3"]= mix(0.5,@bg_color, "#90B0B8") # "#C7D3DF"
+    color["gray4"]= mix(0.5,@bg_color, "#709098") # "#B6C3CF"
+    color["gray5"]= mix(0.5,@bg_color, "#507088") # "#A6B2C7"
+    color["gray6"]= mix(0.5,@bg_color, "#183050") #"#8692A6"
+    color["blue0"] = mix(0.3, @selected_bg_color, "#E8F8FF") # "#cee3ff"
+    color["blue1"] = mix(0.3, @selected_bg_color, "#C0DAFF") # "#adcfff"
+    color["blue2"] = @selected_bg_color # "#7BAAE7"
+    color["blue3"] = mix(0.5, @selected_bg_color, "#396AC5" ) # "#5A8AD6"
+    color["blue4"] = mix(0.5, @selected_bg_color, "#0C50a0") # "#427dc6"
 
     fg[NORMAL]        = @fg_color
     fg[PRELIGHT]      = @fg_color
-    fg[SELECTED]      = @selected_fg_color
-    fg[INSENSITIVE]   = darker (@bg_color)
+    fg[SELECTED]      = "#FFFFFF"
+    fg[INSENSITIVE]   = "#000000"
     fg[ACTIVE]        = @fg_color
+
+
+    bg[NORMAL]        = @bg_color
+    bg[SELECTED]      = @selected_bg_color
+    bg[ACTIVE]        = @gray1
+    bg[INSENSITIVE]   = @gray2
+    bg[PRELIGHT]      = @gray1
+
+
+    base[NORMAL]      = @base_color
+    base[PRELIGHT]    = shade (0.98, @bg_color)
+    base[SELECTED]    = @blue4
+    base[INSENSITIVE] = shade (0.97, @bg_color)
+    base[ACTIVE]      = @gray3
 
     text[NORMAL]      = @text_color
     text[PRELIGHT]    = @text_color
     text[SELECTED]    = @selected_fg_color
-    text[INSENSITIVE] = shade (0.8, @bg_color)
+    text[INSENSITIVE] = @text_color
     text[ACTIVE]      = darker (@text_color)
-
-    base[NORMAL]      = @base_color
-    base[PRELIGHT]    = shade (0.98, @bg_color)
-    base[SELECTED]    = @selected_bg_color
-    base[INSENSITIVE] = shade (0.97, @bg_color)
-    base[ACTIVE]      = shade (0.94, @bg_color)
 
     engine "aurora"
     {
@@ -219,19 +234,6 @@ style "theme-paned" {
 }
 
 
-style "theme-panel"{
-#	fg[NORMAL] = shade (1.1, @bg_color)
-#    bg[NORMAL] = shade (0.2, @bg_color)
-#	bg[PRELIGHT] = @selected_bg_color
-    # Menu
-    fg[PRELIGHT] = @selected_fg_color
-    #bg[SELECTED] = @selected_bg_color
-    font_name  = "Bold 9"
-    text[PRELIGHT] = @selected_fg_color
-    #text[SELECTED] = @selected_bg_color
-	#text[NORMAL] = shade (1.1, @bg_color)
-}
-
 
 style "theme-menu"
 {
@@ -260,16 +262,8 @@ style "theme-tree-arrow"
 {
     bg[NORMAL]   =  mix(0.70, shade (0.60,@bg_color), shade (0.80,@selected_bg_color))
     bg[PRELIGHT] =  mix(0.80, @bg_color, @selected_bg_color)
-
 }
 
-style "theme-progressbar"
-{
-    font_name  = "Bold"
-    bg[NORMAL]   =  shade (1.20,@selected_bg_color)
-    bg[SELECTED] = @selected_bg_color
-    fg[PRELIGHT]  		= shade (1.20,"#006184")
-}
 
 style "theme-combo" = "theme-button"
 {
@@ -334,9 +328,14 @@ style "theme-separator-menu-item"
 
 style "theme-menubar"
 {
-    xthickness = 0
-    ythickness = 0
-    bg[NORMAL] = shade (1.0,"#dee7f7")
+  bg[NORMAL] = shade (1.0,"#dee7f7")
+  fg[ACTIVE] = "#02050B"
+  fg[NORMAL] =  "#0D0E0E"
+  fg[PRELIGHT] = "#02050B"
+  text[NORMAL] = "#0D0E0E"
+
+  xthickness			= 1
+  ythickness			= 1
 }
 
 style "theme-toolbar"
@@ -373,16 +372,38 @@ style "theme-menu-item"
     fg[PRELIGHT] 	 =  @selected_fg_color
 }
 
-style "theme-menubar-item"
+style "theme-menubar-item" = "theme-default"
 {
+  xthickness			= 0
+  ythickness			= 0
+
 	xthickness = 4
 	ythickness = 4
   # font_name  = "Bold 9"
     # fg[NORMAL] 	 =  @selected_fg_color
     # fg[PRELIGHT] 	 =  @selected_fg_color
     # fg[INSENSITIVE] 	 =  shade (0.60,@selected_fg_color)
-    text[PRELIGHT] 	 =  "#000000"
-    text[INSENSITIVE] 	 =  "#000000"
+    # text[PRELIGHT] 	 =  "#000000"
+    # text[INSENSITIVE] 	 =  "#000000"
+}
+
+style "gtktreeview" = "theme-default"
+{
+    # make unfocused items have different text color
+    text[ACTIVE]    = "#FFFFFF"
+	text[SELECTED]  = "#FFFFFF"
+    fg[PRELIGHT]  		= shade (1.20,"#006184")
+}
+
+style "theme-progressbar"
+{
+    font_name  = "Bold"
+    bg[NORMAL]   =  shade (1.20,@selected_bg_color)
+    bg[SELECTED] = @selected_bg_color
+    fg[PRELIGHT]  		= shade (1.20,"#006184")
+    text[PRELIGHT]       = "#ffffff"
+    xthickness            		= 1
+    ythickness            		= 1
 }
 
 # widget styles
@@ -391,19 +412,22 @@ class "GtkWidget"       style "theme-default"
 class "GtkCalendar"     style "theme-calendar"
 class "GtkEntry"        style "theme-entry"
 class "GtkFrame"        style "theme-frame"
-class "GtkMenu"         style "theme-menu"
 class "GtkMenuBar"      style "theme-menubar"
-class "GtkPaned"        style "theme-paned"
 class "GtkProgressBar"  style "theme-progressbar"
 class "GtkRange"        style "theme-range"
 class "GtkScale"        style "theme-scale"
 class "GtkSeparator"    style "theme-wide"
 class "GtkToolbar"      style "theme-toolbar"
-class "PanelApp*" 		style "theme-toolbar"
-class "PanelToplevel*" 	style "theme-toolbar"
+class "GtkTreeView*" style "gtktreeview"
+
+class "GtkMenu"         style "theme-menu"
+class "GtkImageMenuItem" style "theme-menubar-item"
+class "GtkMenuItem"   	style "theme-menubar-item"
+class "GtkTearoffMenuItem"				style "theme-menubar-item"
+widget_class "*MenuItem*" 				style "theme-menubar-item"
+widget_class "*<GtkMenuBar>.<GtkMenuItem>*" style "theme-menubar-item"
 
 widget_class "*<GtkMenuItem>*" style "theme-menu-item"
-widget_class "*<GtkMenuBar>.<GtkMenuItem>*" style "theme-menubar-item"
 widget_class "*<GtkSeparatorMenuItem>*" style "theme-separator-menu-item"
 widget_class "*<GtkButton>"      style "theme-button"
 widget_class "*<GtkCheckButton>" style  "theme-check-radio-buttons"
@@ -425,6 +449,60 @@ widget_class "*<GtkMenuBar>.<GtkMenuItem>*" style "theme-menubar-item"
 widget_class "*<GtkTreeView>.<GtkButton>*" style "theme-tree"
 widget_class "*<GtkTreeView>.<GtkButton>*<GtkArrow>" style "theme-tree-arrow"
 
-widget "*PanelWidget*" 					style "theme-toolbar"
 widget "gtk-tooltip*"  style "tooltips"
+
+
+style "PanelFrame"
+{
+  xthickness = 1
+  ythickness = 1
+}
+
+style "theme-panel"
+{
+  xthickness            			= 2
+  ythickness            			= 0
+
+  fg[NORMAL]		= @text_color
+  fg[PRELIGHT]		= @text_color
+  fg[ACTIVE]		= @text_color
+  fg[SELECTED]		= "#000000"
+  fg[INSENSITIVE]	= "#8A857C"
+
+  text[NORMAL]		= "#000000"
+  text[PRELIGHT]	= "#000000"
+  text[ACTIVE]		= "#000000"
+  text[SELECTED]	= "#000000"
+  text[INSENSITIVE]	= "#8A857C"
+}
+
+
+style "panelbuttons-black"
+{
+
+  fg[NORMAL] = @text_color
+  fg[PRELIGHT]		= @text_color
+  fg[ACTIVE]		= @text_color
+  fg[SELECTED]		= @text_color
+  fg[INSENSITIVE]	= @text_color
+
+  xthickness	= 2
+  ythickness	= 1
+
+  GtkWidget::focus_padding = 2
+}
+
+
+class "GtkPaned"                    style "theme-paned"
+class "Panel*" 						style "PanelFrame"
+class "PanelApp*" 					style "theme-panel"
+class "PanelToplevel*" 				style "theme-panel"
+widget "*PanelApplet*" 				style:highest  "theme-panel"
+widget "*PanelWidget*" 				style:highest  "theme-panel"
+widget_class "*Mail*" 				style "theme-panel"
+widget_class "*Notif*" 				style "theme-panel"
+widget_class "*PanelButton*." 		style "panelbuttons-black"
+widget_class "*notif*" 				style "theme-panel"
+widget_class "Panel*GtkButton"		style:highest  "panelbuttons-black"
+widget_class "Panel*GtkToggleButton"			style:highest  "panelbuttons-black"
 

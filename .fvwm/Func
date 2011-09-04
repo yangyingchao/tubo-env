@@ -61,7 +61,7 @@ AddtoFunc               Fullscreen-Stop
 
 DestroyFunc             FuncFvwmIconifyTrue
 AddToFunc               FuncFvwmIconifyTrue
-+                       I All (AcceptsFocus CurrentPage !Iconic !Shaded, !FvwmButtons, !"xdaliclock" !"*Desk *" !"*Desk *" !"*FvwmDocker*") State 1
++                       I All (AcceptsFocus CurrentPage !Iconic !Shaded, !FvwmButtons, !"wmclock" !"*Desk *" !"*Desk *" !"*FvwmDocker*") State 1
 
 +                       I All (State 1) Iconify True
 
@@ -78,7 +78,7 @@ AddToFunc               FuncFvwmIconifyToggle
 
 DestroyFunc             FuncShowDesktop
 AddToFunc               FuncShowDesktop
-+                      I All (AcceptsFocus CurrentPage !Iconic !Shaded, !FvwmButtons, !"xdaliclock" !"*Desk *" !"*FvwmDocker*" !"Tild*" !"*sv*")Iconify
++                      I All (AcceptsFocus CurrentPage !Iconic !Shaded, !FvwmButtons, !"wmclock" !"*Desk *" !"*FvwmDocker*" !"Tild*" !"*sv*")Iconify
 
 DestroyFunc             FuncShowWindowList
 AddToFunc               FuncShowWindowList
@@ -121,6 +121,7 @@ AddToFunc   StartFunction
 # fcitx and pidgin does not need to be killed: only one instance will be created.
 DestroyFunc  ExitFunction
 AddToFunc    ExitFunction
++            I Exec exec kill -9 wmclock
 +            I KillModule FvwmPager
 +            I KillModule FvwmButtons
 +            I KillModule FvwmAnimate
