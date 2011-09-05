@@ -645,6 +645,8 @@ inserts comment at the end of the line."
 (setq-default ediff-ignore-similar-regions t)
 (setq ediff-split-window-function 'split-window-horizontally)
 
+(defvar cbuffer nil "nil")
+
 (defun my-ediff-revision (&optional file startup-hooks)
   "Run Ediff by comparing versions of a file.
 The file is an optional FILE argument or the file entered at the prompt.
@@ -718,9 +720,11 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
 (defconst r_func_r ".*\)"
   "Regular expression to match a function")
 
-(defconst r_comments "^[ \t/\\*][/\\*]+"
-  "Regular expression to match a commentted field.")
 
+(defconst r_comments
+  (rx line-start (zero-or-more blank) (or "//" "/*")
+      (zero-or-more anything) line-end)
+  "Regular expression to match a commentted field.")
 
 (defconst r_struct_func
   "^[ \t]*\\(.+?\\)[ \t]*\(\\*\\(.*?\\)\)[ \t]*(\\(?:.\\|
@@ -801,14 +805,18 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
                             (setq var-name
                                   (match-string 2 item_str))
                             (setq next-begin (match-end 0))
-                            (if (string-match r_comments var-type 0) ;Comments
-                                nil
-                              (progn
+                            (if (or (string-match r_comments var-type 0)
+                                    (string-match r_comments var-name 0))
+                                (message
+                                 (format "Skipped comment: %s"
+                                         item_str))
+                                 (progn
                                 (setq counter (+ counter 1))
                                 (setq tmp_str
                                       (concat tmp_str
                                               (format attr_func
-                                                      counter var-name var-type))))))
+                                                      counter var-name
+                                                      var-type))))))
                         (skip item_str t)
                         )
                       )
@@ -821,8 +829,11 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
                                       (match-string 1 item_str))
                                 (setq var-name
                                       (match-string 2 item_str))
-                                (if (string-match r_comments var-type 0)
-                                    nil
+                                (if (or (string-match r_comments var-type 0)
+                                        (string-match r_comments var-name 0))
+                                    (message
+                                     (format "Skipped comment: %s"
+                                             item_str ))
                                   (progn
                                     (setq counter (+ counter 1))
                                     (setq tmp_str

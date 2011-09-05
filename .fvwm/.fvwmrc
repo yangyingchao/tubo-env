@@ -40,14 +40,13 @@ DestroyFunc OnTopEdge
 AddToFunc OnTopEdge
 + I PipeRead `[ $[pointer.x]  -lt 30 ] && [ $[pointer.y] -lt 30 ] && \
     echo "FuncShowWindowList"`
-+ I PipeRead `[ $[pointer.x]  -gt $(( $[vp.width] - 370 )) ] && [ $[pointer.x] -lt $(( $[vp.width] - 130 )) ] && [ $[pointer.y] -lt 30 ] && echo "TempRaise FvwmPager"`
++ I PipeRead `[ $[pointer.x]  -gt $(( $[vp.width] - 370 )) ] && [ $[pointer.x] -lt $(( $[vp.width] - 130 )) ] && echo "TempRaise FvwmPager"`
 
 # Left Edge command:
 #        1. Popup window list (top left corner),
 #        2. show root menu (left bottom corner).
 DestroyFunc OnLeftEdge
 AddToFunc OnLeftEdge
-
 + I PipeRead `[ $[pointer.x]  -lt 30 ] && [ $[pointer.y] -lt 30 ] && \
     echo "FuncShowWindowList"`
 
@@ -58,7 +57,7 @@ DestroyFunc OnRightEdge
 AddToFunc OnRightEdge
 + I PipeRead ` [ $[pointer.y] -lt 450 ] && [ $[pointer.y] -gt 200 ] && \
     echo    "TempRaise Conky" `
-+ I PipeRead ` [ $[pointer.y] -gt $(( $[vp.height]-10 )) ]  && echo   "FuncShowDesktop" `
++ I PipeRead ` [ $[pointer.y] -gt $(( $[vp.height] - 30 )) ]  && echo  "FuncShowDesktop" `
 
 # Bottom edge command:
 #        1. Show FvwmButtons,
@@ -68,7 +67,7 @@ DestroyFunc OnBottomEdge
 AddToFunc OnBottomEdge
 + I PipeRead `[ $[pointer.x] -gt 250 ] && [ $[pointer.x] -lt $(( $[vp.width]-150 )) ] && \
     echo    "TempRaise FvwmButtons" `
-+ I PipeRead ` [ $[pointer.x] -gt $(( $[vp.width]-10 )) ] && [ $[pointer.y] -gt 800 ] && \
++ I PipeRead ` [ $[pointer.x] -gt $(( $[vp.width] - 30 )) ] && \
     echo    "FuncShowDesktop" `
 
 # use IgnoreModifiers to fix the NumLock bug(?)
@@ -113,7 +112,6 @@ Colorset 8 fg #f0f0f0, bg #ececec, hi #ffffff, sh #ffffff, RootTransparent buffe
 Colorset 10 fg #074bba, fgsh #ffffff, bg #ffffff, sh #ffffff, hi #ffffff, RootTransparent, Tint #ffffff 60
 Colorset 11 RootTransparent, Tint #ffffff , IconAlpha 100
 Colorset 12 RootTransparent, Tint #ffffff 60, fg #074bba, fgsh #ffffff, bg #ffffff, sh #ffffff, hi #ffffff
-Colorset 13 fg #000000, Pixmap decoration/title_bar1.png
 
 Colorset 100 fg #ffffff, bg gray, hi gray, sh gray, RootTransparent buffer, Tint
 

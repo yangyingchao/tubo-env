@@ -5,6 +5,9 @@ AddToFunc               GotoRightDesk
 +                       I Current (CurrentPage,!backgroundxterm*) Break
 +                       I Prev (CurrentPage,AcceptsFocus) FlipFocus NoWarp
 
+Key Right A CM GotoRightDesk
+
+
 DestroyFunc             GotoLeftDesk
 AddToFunc               GotoLeftDesk
 +                       I GotoDesk -1
@@ -12,38 +15,14 @@ AddToFunc               GotoLeftDesk
 +                       I Current (CurrentPage,!backgroundxterm*) Break
 +                       I Prev (CurrentPage,AcceptsFocus) FlipFocus NoWarp
 
-
-DestroyFunc             AutoHide
-AddToFunc               AutoHide
-+                       I ThisWindow ($0) Deschedule $[w.id]
-+                       I TestRc (!Match) Deschedule -$[w.id]
-+                       I ThisWindow ($0) ThisWindow (shaded) AutohideShow $1 $3
-+                       I TestRc (!Match) All ($0, !shaded) AutohideHide $2 $3
-
-DestroyFunc             AutohideShow
-AddToFunc               AutohideShow
-+                       I Schedule $0 -$[w.id] WindowShade $1 off
-+                       I Schedule $0 -$[w.id] Raise
-+                       I Schedule $0 -$[w.id] Deschedule $[w.id]
-+                       I Schedule $0 -$[w.id] Deschedule -$[w.id]
-
-DestroyFunc             AutohideHide
-AddToFunc               AutohideHide
-+                       I Schedule $0 $[w.id] WindowShade $1 on
-+                       I Schedule $0 $[w.id] Deschedule $[w.id]
-+                       I Schedule $0 $[w.id] Deschedule -$[w.id]
-
-DestroyFunc             FuncDockLaunch
-AddToFunc               FuncDockLaunch
-+                       C Any ($1) Next ($1) WindowListFunc
-+                       C TestRc (NoMatch) Exec $0
-+                       H Any ($1) WindowList ($1) Rectangle +$2+$3 0 -100m CurrentAtEnd UseListSkip SortByClass NoCurrentDeskTitle
-+                       D Exec $0
+Key Left A CM GotoLeftDesk
 
 DestroyFunc             FuncFullScreen
 AddtoFunc               FuncFullScreen
 +                       I Current (State 0) Fullscreen-Stop
 +                       I TestRc Current (Maximizable) Fullscreen-Start
+
+Key F A 4 FuncFullScreen
 
 DestroyFunc             Fullscreen-Start
 AddtoFunc               Fullscreen-Start
@@ -75,10 +54,15 @@ AddToFunc               FuncFvwmIconifyToggle
 +                       I All (State 1) State 1 False
 +                       I TestRc (NoMatch) FuncFvwmIconifyTrue
 
+Key D A 4 FuncFvwmIconifyToggle
+
 
 DestroyFunc             FuncShowDesktop
 AddToFunc               FuncShowDesktop
 +                      I All (AcceptsFocus CurrentPage !Iconic !Shaded, !FvwmButtons, !"wmclock" !"*Desk *" !"*FvwmDocker*" !"Tild*" !"*sv*")Iconify
+
+Key D A CM FuncShowDesktop
+
 
 DestroyFunc             FuncShowWindowList
 AddToFunc               FuncShowWindowList
@@ -101,6 +85,9 @@ AddToFunc               FuncFvwmLockScreen
 +                       I TestRc (NoMatch) Exec xscreensaver -no-splash &
 +                       I Exec xscreensaver-command -lock
 
+Key L A 4 FuncFvwmLockScreen
+Key L A CM FuncFvwmLockScreen
+
 
 DestroyFunc StartFunction
 AddToFunc   StartFunction
@@ -118,7 +105,8 @@ AddToFunc   StartFunction
 
 
 
-# fcitx and pidgin does not need to be killed: only one instance will be created.
+# fcitx and pidgin does not need to be killed: only one instance will be
+# created.
 DestroyFunc  ExitFunction
 AddToFunc    ExitFunction
 +            I Exec exec kill -9 wmclock

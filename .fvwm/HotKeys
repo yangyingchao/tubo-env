@@ -5,17 +5,9 @@ Key 2 A 4 MoveToDesk 0 1
 Key 3 A 4 MoveToDesk 0 2
 Key 4 A 4 MoveToDesk 0 3
 
-Key Right A CM GotoRightDesk
-Key Left A CM GotoLeftDesk
-
 
 # Minimal windows.
-Key D A 4 FuncFvwmIconifyToggle
-Key D A CM All (AcceptsFocus CurrentPage !Iconic !Shaded, !FvwmButtons, !"xdaliclock" !"*Desk *" !"*FvwmDocker*" !"Tild*" !"*sv*")Iconify
-
-Key F A 4 FuncFullScreen
 Key space A 4 Maximize
-
 Key F1 A 4 Exec wcmd
 Key F2 A 4 Exec devhelp
 Key F3 A 4 Exec goldendict
@@ -33,9 +25,7 @@ Key Tab A M WindowList (CurrentPage) Root c c NoDeskSort, SelectOnRelease Meta_L
 Key r A CM Exec exec grun
 Key t A MC Exec sakura
 
-# Lock screens
-Key L A 4 FuncFvwmLockScreen
-Key L A CM FuncFvwmLockScreen
+#### Screenshots
 
 Key Print A N Exec exec scrot $[HOME]/tmp/root_$(date +"%Y-%m-%d_%H-%M-%S")".png"
 Key Print A S Exec exec import -window $[w.id] $[HOME]/tmp/$[w.resource]_$(date +"%Y-%m-%d_%H-%M-%S")".png"

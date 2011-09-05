@@ -43,7 +43,7 @@ PipeRead `pos=$(($[vp.width]-365)); echo "*FvwmPager: Geometry +$pos+2"`
 
 *FvwmPager: Balloons			All
 *FvwmPager: BalloonBorderWidth  1
-*FvwmPager: BalloonBack         #c7c7c7
+*FvwmPager: BalloonBack         #eff3ff
 *FvwmPager: BalloonBorderColor  #c7c7c7
 *FvwmPager: BalloonFore         Black
 *FvwmPager: BalloonYOffset		+2
