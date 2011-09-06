@@ -367,7 +367,7 @@ style "theme-menu-item"
 {
     xthickness = 3
     ythickness = 3
-    bg[NORMAL] = shade (1.0,"#dee7f7")
+    bg[NORMAL] = shade (1.0,"#f0f0f0")
     text[PRELIGHT] 	 =  @selected_fg_color
     fg[PRELIGHT] 	 =  @selected_fg_color
 }
