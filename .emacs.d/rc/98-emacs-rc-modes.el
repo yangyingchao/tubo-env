@@ -410,6 +410,7 @@
 (setq conf-mode-list '("\\.\\(?:\\(?:doxy\\(?:gen\\)?\\)\\)\\_>"
                        "rc$"
                        ".*\\.fvwm/.*"
+                       "\\.service$"
                          ))
 
 (defun yc/add-to-mode-alist (reg-exp)

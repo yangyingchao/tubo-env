@@ -93,6 +93,12 @@ and when jumping back, it will be removed.")
   (yc/store-mru-tag pt)
   (semantic-symref))
 
+(defun yc/symref-symbol (sym)
+  (interactive (list (car (senator-jump-interactive "Symrefs for: "
+                                                    nil nil nil))))
+  (yc/store-mru-tag (point))
+  (semantic-symref-symbol sym))
+
 (defun yc/return-func()
   "Return to previous tag."
   (interactive)
@@ -570,11 +576,11 @@ and when jumping back, it will be removed.")
   (local-set-key "\C-c}" 'semantic-ia-complete-symbol-menu)
   (local-set-key "\C-cJ" 'semantic-analyze-proto-impl-toggle)
   (local-set-key "\C-cP" 'semantic-ia-show-summary)
-  (local-set-key "\C-cR" 'yc/symref)
   (local-set-key "\C-cb" 'semantic-mrub-switch-tags)
   (local-set-key "\C-c\C-j" 'yc/goto-func-any)
   (local-set-key "\C-cj" 'yc/goto-func)
-  (local-set-key "\C-cr" 'semantic-symref-symbol)
+  (local-set-key "\C-cR" 'yc/symref)
+  (local-set-key "\C-cr" 'yc/symref-symbol)
   (local-set-key [S-f12] 'yc/return-func)
   (local-set-key [S-f8] 'yc/return-func)
   (local-set-key [M-S-f12] 'yc/return-func)
@@ -752,6 +758,20 @@ senator-try-expand-semantic after yas/hippie-try-expand."
   (flymake-mode nil)
   )
 
+(defun yc/prepare-makefile (path)
+  "Prepare makefile for flyspell."
+  (if (file-exists-p path)
+      (let ((cbuffer (get-buffer-create (format "%s_pre" path))))
+        (set-buffer cbuffer)
+        (insert-file-contents path)
+        (goto-char (point-max))
+        (insert "\ncheck-syntax:
+	g++ $(CHK_SOURCES)")
+        (write-region (point-min) (point-max) path nil)
+        (kill-buffer cbuffer))
+    nil)
+  )
+
 
 (defun yc/flymake-enable ()
   "Enable flymake mode"
@@ -807,13 +827,15 @@ senator-try-expand-semantic after yas/hippie-try-expand."
                     "-I../../public"
                     source))))
     (defun flymake-init-find-makfile-dir (source-file-name)
-      "Find Makefile, store its dir in buffer data and return its dir, if found."
+      "Find Makefile, store its dir in buffer data and return its dir, if
+            found."
       (let* ((source-dir (file-name-directory source-file-name))
              (buildfile-dir nil))
         (catch 'found
           (dolist (makefile flymake-makefile-filenames)
             (let ((found-dir (flymake-find-buildfile makefile source-dir)))
               (when found-dir
+                ;; (yc/prepare-makefile (format "%s%s" found-dir makefile))
                 (setq buildfile-dir found-dir)
                 (setq flymake-base-dir buildfile-dir)
                 (throw 'found t)))))
