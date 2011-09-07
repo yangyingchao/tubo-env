@@ -6,7 +6,7 @@ WidePunc=True
 # 输入后联想词组
 UseRemind=False
 # 当前输入法
-IMIndex=9
+IMIndex=1
 # 在客户端窗口中显示预编辑字符串
 PreeditStringInClientWindow=True
 

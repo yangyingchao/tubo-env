@@ -282,14 +282,14 @@ are the string substitutions (see `format')."
 
 (defcustom flymake-allowed-file-name-masks
   '(("\\.\\(?:c\\(?:pp\\|xx\\|\\+\\+\\)?\\|CC\\)\\'" flymake-simple-make-gcc-init)
-    ("\\.\\(?:h\\(?:pp\\)?\\)\\'" flymake-master-make-gcc-header-init flymake-master-cleanup)
+    ;; ("\\.\\(?:h\\(?:pp\\)?\\)\\'" flymake-master-make-gcc-header-init flymake-master-cleanup)
     ("\\.py\\'" flymake-pyflakes-init)
     ("\\.xml\\'" flymake-xml-init)
     ("\\.html?\\'" flymake-xml-init)
     ("\\.cs\\'" flymake-simple-make-init)
     ("\\.p[ml]\\'" flymake-perl-init)
     ("\\.php[345]?\\'" flymake-php-init)
-    ("\\.h\\'" flymake-master-make-header-init flymake-master-cleanup)
+    ;; ("\\.h\\'" flymake-master-make-header-init flymake-master-cleanup)
     ("\\.java\\'" flymake-simple-make-java-init flymake-simple-java-cleanup)
     ("[0-9]+\\.tex\\'" flymake-master-tex-init flymake-master-cleanup)
     ("\\.tex\\'" flymake-simple-tex-init)
@@ -1799,7 +1799,7 @@ Use CREATE-TEMP-F for creating temp copy."
             (progn
               (goto-char (point-max))
               (insert (format "\ncheck-syntax:
-	%s $(CHK_SOURCES) -Wall -Wextra -pedantic -fsyntax-only"  cc))
+	%s $(CHK_SOURCES) -Wall -fsyntax-only"  cc))
               (write-region (point-min) (point-max) path nil)))
           (kill-buffer cbuffer))
       t)))
@@ -1811,8 +1811,6 @@ Use CREATE-TEMP-F for creating temp copy."
   (let ((cc (if (string= (file-name-extension source) "c") "gcc" "g++")))
     (list cc
           (list "-Wall"
-                "-Wextra"
-                "-pedantic"
                 "-fsyntax-only"
                 "-I.."
                 "-I../include"
