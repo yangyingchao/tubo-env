@@ -670,6 +670,7 @@ senator-try-expand-semantic after yas/hippie-try-expand."
   (program-mode-auto-pair)
   (local-set-key (kbd "'") 'skeleton-pair-insert-maybe)
   (local-set-key "\C-ct" 'yc/cflow-function)
+  (flyspell-prog-mode)
   )
 
 (defun my-lisp-hook ()

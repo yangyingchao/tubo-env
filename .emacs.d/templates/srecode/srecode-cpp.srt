@@ -238,6 +238,7 @@ template doxygen-function :indent :blank
  * {{DOC}}{{^}}{{#ARGS}}
  *
  * @param {{NAME}} - {{DOC}}{{/ARGS}}
+ *
  * @return {{TYPE}}
  */
 ----
