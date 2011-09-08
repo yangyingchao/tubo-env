@@ -56,7 +56,7 @@ def gen_img_data():
     for path in ICON_PATHS:
         if os.path.islink(path):
             path = os.path.realpath(path)
-        log_print("\t Processing icon directory: %s"%path)
+        print("\t Processing icon directory: %s"%path)
         os.path.walk(path, process_img, None)
 
 def process_img(arg, dirname, filenames):
@@ -73,14 +73,13 @@ def process_img(arg, dirname, filenames):
             key = os.path.basename(path).split(".")[0].lower()
             img_data[key] = path
 
-
 def process_desktop_entries(arg, dirname, filenames):
     """
     Parse each file in this subdir, store information into fvwm_menu;
     """
     for filename in filenames:
         path = os.path.join(dirname, filename)
-        log_print ("Processing %s"%path)
+        print ("Processing %s"%path)
         if os.path.isdir(path):
             continue
         else:
@@ -156,6 +155,7 @@ def find_icon(name, menu_type=1):
         elif name == "audiovideo":
             name = "multimedia"
         name = "applications-%s.png"%name
+        print "Name: ", name
 
     pos = name.rfind(".")
     if pos != -1:
@@ -169,7 +169,7 @@ def find_icon(name, menu_type=1):
 if __name__ == '__main__':
 
     if len(sys.argv) > 1:
-        verbose = False
+        verbose = True
 
     print "Generating image database ..."
     gen_img_data()
@@ -183,12 +183,21 @@ if __name__ == '__main__':
     print "Writing new menu items for fvwm..."
     content = open(menu_template_head).read() # Head of template
     ### Generate categories.
+    try:
+        os.system("rm -rf ~/.fvwm/icons/apps/*")
+    except  :
+        print "Execption when deleting old icons:"
+
     for key in fvwm_menu.keys():
         icon_path = find_icon(key.lower(), 0)
         icon_out = ""
 
         if len(icon_path):
-            icon_out = os.path.join(fvwm_icon_home, os.path.basename(icon_path));
+            icon_out = os.path.join(fvwm_icon_home,
+                                    os.path.basename(icon_path));
+            if not icon_out.endswith(".png"):
+                pos = icon_out.rfind(".")
+                icon_out = icon_out[:pos] + ".png"
             os.system("convert -background none -resize 24x24 %s %s"%(icon_path, icon_out))
 
         content += '+ "%%%s%%%s" Popup Menu%s\n'%(icon_out, key, key)
