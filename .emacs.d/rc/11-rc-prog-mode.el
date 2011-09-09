@@ -533,23 +533,24 @@ and when jumping back, it will be removed.")
 
 
 
-(require 'auto-header)
-(if (string-match "ITC-208024" system-name)
+(when (try-require  'auto-header)
+  (if (string-match "ITC-208024" system-name)
+      (progn
+        (setq header-copyright-notice
+              (format "INVENTEC corporation (c)%s all rights reserved."
+                      (format-time-string "%Y" (current-time)))
+              )
+        (setq header-email-address "Yang.Ying-chao@inventectj.com")
+        )
     (progn
       (setq header-copyright-notice
-            (format "INVENTEC corporation (c)%s all rights reserved."
-                    (format-time-string "%Y" (current-time)))
-            )
-      (setq header-email-address "Yang.Ying-chao@inventectj.com")
-      )
-  (progn
-    (setq header-copyright-notice
-          (format "%s Yang, Ying-chao"
-                  (format-time-string "%Y" (current-time))))
-    (setq header-email-address "yangyingchao@gmail.com")
+            (format "%s Yang, Ying-chao"
+                    (format-time-string "%Y" (current-time))))
+      (setq header-email-address "yangyingchao@gmail.com")
 
+      )
     )
-    )
+  )
 
 ;;;; Common Program settings
 
@@ -620,13 +621,17 @@ and when jumping back, it will be removed.")
     (cflow-mode)))
 
 
+
 (defun yc/show-prog-keywords ()
   ;; highlight additional keywords
   (font-lock-add-keywords
-   nil
-   '(("\\(@bug\\|@todo\\|\\(\\<\\(BUG\\|FIX\\(ME\\)?\\|HACK\\|TODO\\|XXX\\|YYC\\|yyc\\)\\)\\):?" 1
-      font-lock-warning-face t)))
-  (font-lock-add-keywords nil '(("\\<\\(DONE\\):" 1 font-lock-doc-face t)))
+   nil '(("\\<\\(\\(@bug\\|FIX\\(?:ME\\)?\\|TODO\\|YYC\\|yyc\\)\\)\\>"
+          1  font-lock-warning-face t)))
+
+  (font-lock-add-keywords
+   nil '(("\\<\\(DONE\\):" 1 font-lock-doc-face t)))
+
+
   ;; highlight too long lines
   (font-lock-add-keywords nil '(("^[^\n]\\{120\\}\\(.*\\)$" 1
                                  font-lock-warning-face t))))
@@ -673,6 +678,7 @@ senator-try-expand-semantic after yas/hippie-try-expand."
   (flyspell-prog-mode)
   )
 
+
 (defun my-lisp-hook ()
   ;; Enable hide-ifdef-mode
   (yc/show-prog-keywords)
@@ -680,6 +686,10 @@ senator-try-expand-semantic after yas/hippie-try-expand."
   (setup-program-keybindings)
   (program-mode-auto-pair)
   (local-set-key  [(tab)] 'indent-or-complete)
+
+  (font-lock-add-keywords
+   'emacs-lisp-mode '(("\\<\\(add-to-list\\|try-require\\|add-hook\\)\\>"
+          1 font-lock-keyword-face t)))
   )
 
 (add-hook 'c-mode-common-hook 'my-program-hook)
