@@ -30,6 +30,7 @@ Key t A MC Exec sakura
 Key Print A N Exec exec scrot $[HOME]/tmp/root_$(date +"%Y-%m-%d_%H-%M-%S")".png"
 Key Print A S Exec exec import -window $[w.id] $[HOME]/tmp/$[w.resource]_$(date +"%Y-%m-%d_%H-%M-%S")".png"
 Key Print A M Exec exec import $[HOME]/tmp/$[w.resource]_p_$(date +"%Y-%m-%d_%H-%M-%S")".png"
+Key Print A CM Exec exec scrot -d 2 $[HOME]/tmp/root_$(date +"%Y-%m-%d_%H-%M-%S")".png"
 
 
 Key t A 4 Exec exec xterm
