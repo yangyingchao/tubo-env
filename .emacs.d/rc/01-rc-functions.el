@@ -861,5 +861,28 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
     )
   (message "Finished, please refer to *tmp.dot* buffer."))
 
+
+;;;; Function and macro to add an regular expression string formed by (rx)
+;;;; macro into specified face.
+
+(defun yc/rx-no-group (x)
+  (let ((pos nil)
+        (shy-group-symbol (rx "\\(?:" )))
+    (setq pos (string-match  shy-group-symbol x))
+    (if pos
+        (concat
+         (substring x 0 (+ pos 2))
+         (substring x (+ pos 4))
+         )
+      x)))
+
+(defmacro yc/add-keyword (sym type)
+  `(font-lock-add-keywords
+    nil (list
+         (list (yc/rx-no-group ,sym)
+               1 ,type t
+               )))
+  )
+
 (provide '01-rc-functions)
 ;;; emacs-rc-functions.el ends here

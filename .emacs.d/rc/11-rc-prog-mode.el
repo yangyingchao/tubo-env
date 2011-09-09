@@ -622,19 +622,25 @@ and when jumping back, it will be removed.")
 
 
 
+(defvar yc/common-warn-words
+  (rx bow
+      (or "todo" "fix" "fixme" "yyc" "@bug"
+          "TODO" "FIX" "FIXME" "YYC" "@BUG" "TODOLIST")
+      eow)
+  "Commonly used warnning words")
+
+
 (defun yc/show-prog-keywords ()
   ;; highlight additional keywords
-  (font-lock-add-keywords
-   nil '(("\\<\\(\\(@bug\\|FIX\\(?:ME\\)?\\|TODO\\|YYC\\|yyc\\)\\)\\>"
-          1  font-lock-warning-face t)))
+  (yc/add-keyword yc/common-warn-words 'font-lock-warning-face)
 
   (font-lock-add-keywords
    nil '(("\\<\\(DONE\\):" 1 font-lock-doc-face t)))
 
-
   ;; highlight too long lines
   (font-lock-add-keywords nil '(("^[^\n]\\{120\\}\\(.*\\)$" 1
-                                 font-lock-warning-face t))))
+                                 font-lock-warning-face t)))
+  )
 
 (defun yc/add-senator-expand-to-hippie ()
   "Add senator-try-expand-semantic to hippie-try-functions-list.
@@ -679,6 +685,10 @@ senator-try-expand-semantic after yas/hippie-try-expand."
   )
 
 
+(defvar yc/lisp-keywords
+  (rx bow (or "add-to-list" "try-require" "add-hook" "autoload") eow)
+  "My Lisp keywords")
+
 (defun my-lisp-hook ()
   ;; Enable hide-ifdef-mode
   (yc/show-prog-keywords)
@@ -686,10 +696,7 @@ senator-try-expand-semantic after yas/hippie-try-expand."
   (setup-program-keybindings)
   (program-mode-auto-pair)
   (local-set-key  [(tab)] 'indent-or-complete)
-
-  (font-lock-add-keywords
-   'emacs-lisp-mode '(("\\<\\(add-to-list\\|try-require\\|add-hook\\)\\>"
-          1 font-lock-keyword-face t)))
+  (yc/add-keyword yc/lisp-keywords 'font-lock-keyword-face)
   )
 
 (add-hook 'c-mode-common-hook 'my-program-hook)
