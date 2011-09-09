@@ -697,7 +697,7 @@ senator-try-expand-semantic after yas/hippie-try-expand."
 (autoload 'flymake-find-file-hook "flymake" "" t)
 (add-hook 'find-file-hook 'flymake-find-file-hook)
 (setq flymake-gui-warnings-enabled nil)
-(setq flymake-log-level 1)
+(setq flymake-log-level 0)
 (setq flymake-master-file-dirs
       '("." "./src" "../src" "../../src"
         "./source" "../source" "../../source"
@@ -710,15 +710,31 @@ senator-try-expand-semantic after yas/hippie-try-expand."
 (defun yc/flymake-disable ()
   "Disable flymake mode. It's really borering when reading kernel code."
   (interactive)
+  (setq flymake-allowed-file-name-masks '())
   (flymake-mode nil))
 
 
 (defun yc/flymake-enable ()
   "Enable flymake mode"
   (interactive)
+  (setq flymake-allowed-file-name-masks
+        '(("\\.\\(?:c\\(?:pp\\|xx\\|\\+\\+\\)?\\|CC\\)\\'" flymake-simple-make-gcc-init)
+          ;; ("\\.\\(?:h\\(?:pp\\)?\\)\\'" flymake-master-make-gcc-header-init flymake-master-cleanup)
+          ("\\.py\\'" flymake-pyflakes-init)
+          ("\\.xml\\'" flymake-xml-init)
+          ("\\.html?\\'" flymake-xml-init)
+          ("\\.cs\\'" flymake-simple-make-init)
+          ("\\.p[ml]\\'" flymake-perl-init)
+          ("\\.php[345]?\\'" flymake-php-init)
+          ("[0-9]+\\.tex\\'" flymake-master-tex-init flymake-master-cleanup)
+          ("\\.tex\\'" flymake-simple-tex-init)
+          ("\\.idl\\'" flymake-simple-make-init)
+          ))
   (flymake-mode t))
 
+(setq flymake-allowed-file-name-masks '()) ;; Disable flymake by default.
 
+
 
 (add-to-list 'auto-mode-alist '("\\.ebuild$" . shell-script-mode))
 
@@ -809,6 +825,18 @@ senator-try-expand-semantic after yas/hippie-try-expand."
 
 
 ;;;;;;;;; Emacs-lisp mode ;;;;;;;;;;;;;;
+
+(if (try-require 'sawfish)
+    (progn
+      (autoload 'sawfish-mode "sawfish" "sawfish-mode" t)
+      (setq auto-mode-alist
+            (cons '("\\.sawfishrc$"  . sawfish-mode) auto-mode-alist)
+            auto-mode-alist
+            (cons '("\\.jl$"         . sawfish-mode) auto-mode-alist)
+            auto-mode-alist
+            (cons '("\\.sawfish/rc$" . sawfish-mode) auto-mode-alist)))
+  (message "Failed to load sawfish.")
+  )
 
  ;;;;;;;;;;;;;;;; For wxwidgets ;;;;;;;;;;;;;;;;;;;;;
 

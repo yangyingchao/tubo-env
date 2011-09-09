@@ -4,7 +4,7 @@ FullWidth=False
 # 使用全角标点
 WidePunc=True
 # 输入后联想词组
-UseRemind=True
+UseRemind=False
 # 当前输入法
 IMIndex=1
 # 在客户端窗口中显示预编辑字符串

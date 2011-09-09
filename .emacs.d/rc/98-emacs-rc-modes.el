@@ -412,12 +412,15 @@
                        ".*\\.fvwm/.*"
                        "\\.service$"
                          ))
-
 (defun yc/add-to-mode-alist (reg-exp)
   "Add regexp to mode"
   (add-to-list 'auto-mode-alist
                (cons reg-exp 'conf-mode))
   )
+
+(add-to-list 'auto-mode-alist
+             '("^/etc/init\.d/.*" . sh-mode))
+
 
 (mapc 'yc/add-to-mode-alist conf-mode-list)
 
