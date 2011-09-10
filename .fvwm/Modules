@@ -163,16 +163,13 @@ DestroyModuleConfig FvwmDock: *
         Icon        dock/gimp_48.png, \
         ActiveIcon  dock/gimp_64.png, \
         Action(Mouse 1) `exec exec gimp`)
-*FvwmDock:  (5x8+31+0, ActionOnPress, \
+*FvwmDock:  (5x7+31+0, ActionOnPress, \
         Icon        dock/virtualbox_48.png, \
         ActiveIcon  dock/virtualbox_64.png, \
         Action(Mouse 1) `exec exec VirtualBox`)
-*FvwmDock: (5x2+40+1, Swallow(NoClose, UseOld) \
-           `stalonetray` `Exec exec stalonetray --geometry 120x50 -p`)
-*FvwmDock (5x1+40+3, Swallow (NoClose, UseOld)\
-       `FvwmApplet-DigitalClock` `Module FvwmScript $[fvwm_script]/DigitalClock`)
-# *FvwmDock (5x7+37+0, Swallow(Respawn, NoHints) wmclock `Exec exec wmclock`)
-
+*FvwmDock (5x7+37+0, Swallow(Respawn, NoHints) wmclock `Exec exec wmclock`)
+*FvwmDock: (5x7+44, Swallow(NoClose, UseOld) \
+          `stalonetray` `Exec exec stalonetray --geometry 100x50 -p`)
 ############################# Decor ###########################################
 
 DestroyDecor DefaultDecor
