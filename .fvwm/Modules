@@ -155,14 +155,6 @@ DestroyModuleConfig FvwmDock: *
         Icon        dock/mail_48.png, \
         ActiveIcon  dock/mail_64.png, \
         Action(Mouse 1) `exec exec evolution`)
-# *FvwmDock:  (5x7+19+0, ActionOnPress, \
-#         Icon        dock/devhelp_48.png, \
-#         ActiveIcon  dock/devhelp_64.png, \
-#         Action(Mouse 1) `exec exec devhelp`)
-# *FvwmDock:  (5x7+25+0, ActionOnPress, \
-#         Icon        dock/goldendict_48.png, \
-#         ActiveIcon  dock/goldendict_64.png, \
-#         Action(Mouse 1) `exec exec goldendict`)
 *FvwmDock:  (5x7+19+0, ActionOnPress, \
         Icon        dock/ooo_48.png, \
         ActiveIcon  dock/ooo_64.png, \
@@ -171,16 +163,16 @@ DestroyModuleConfig FvwmDock: *
         Icon        dock/gimp_48.png, \
         ActiveIcon  dock/gimp_64.png, \
         Action(Mouse 1) `exec exec gimp`)
-*FvwmDock:  (5x7+31+0, ActionOnPress, \
+*FvwmDock:  (5x8+31+0, ActionOnPress, \
         Icon        dock/virtualbox_48.png, \
         ActiveIcon  dock/virtualbox_64.png, \
         Action(Mouse 1) `exec exec VirtualBox`)
-*FvwmDock (5x7+37+0, Swallow(Respawn, NoHints) wmclock `Exec exec wmclock`)
-*FvwmDock: (5x7+44, Swallow(NoClose, UseOld) \
-          `stalonetray` `Exec exec stalonetray --geometry 100x50 -p`)
+*FvwmDock: (5x2+40+1, Swallow(NoClose, UseOld) \
+           `stalonetray` `Exec exec stalonetray --geometry 120x50 -p`)
+*FvwmDock (5x1+40+3, Swallow (NoClose, UseOld)\
+       `FvwmApplet-DigitalClock` `Module FvwmScript $[fvwm_script]/DigitalClock`)
+# *FvwmDock (5x7+37+0, Swallow(Respawn, NoHints) wmclock `Exec exec wmclock`)
 
-*FvwmDock: (5x7+50, Swallow(NoClose, UseOld) \
-          `aaa` `Exec exec display /home/yyc/.icons/default/status/22/gpm-primary-charged.png`)
 ############################# Decor ###########################################
 
 DestroyDecor DefaultDecor

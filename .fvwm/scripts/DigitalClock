@@ -1,0 +1,35 @@
+WindowTitle {FvwmApplet-DigitalClock}
+WindowSize  150 20		# Taille
+Font "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=8:encoding=zh_CN.UTF-8"
+
+Init
+ Begin
+  Set $MainColorset=41
+  ChangeColorset 0 41
+  ChangeColorset 1 41
+  Set $tmp = (GetOutput {exec date "+%b %e, %a,%R"} 1 -1)
+  ChangeTitle 1 $tmp
+End
+
+PeriodicTasks
+ Begin
+  If (RemainderOfDiv (GetTime) 30)==0 Then
+  Begin
+    Set $tmp = (GetOutput {exec date "+%b %e, %a, %R"} 1 -1)
+    ChangeTitle  1 $tmp
+  End
+End
+
+Widget 1
+Property
+ Position 0 0
+ Size 125 20
+ Type ItemDraw
+ Flags NoReliefString
+ Title {}
+Main
+ Case message of
+  SingleClic :
+  Begin
+  End
+End

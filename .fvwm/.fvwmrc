@@ -5,6 +5,7 @@ ImagePath $[HOME]/.fvwm/icons:+
 SetEnv fvwm_icon_size 160
 SetEnv fvwm_decor $[HOME]/.fvwm/icons/decoration
 SetEnv fvwm_cur_desk 0
+SetEnv fvwm_script $[HOME]/.fvwm/scripts
 
 # Edge Settings
 EdgeResistance -1
