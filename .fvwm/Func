@@ -100,7 +100,7 @@ AddToFunc   StartFunction
 +           I Exec exec xscreensaver
 +           I Exec exec $[HOME]/.fvwm/tools/run_conky.sh $[vp.width]
 +           I Exec exec fcitx -d
-#+           I Exec exec pidgin
++           I Exec exec pidgin
 +           I Module FvwmEvent
 
 
