@@ -357,7 +357,7 @@ style "theme-separator-menu-item"
 
 style "theme-menubar"
 {
-  bg[NORMAL] = shade (1.0,"#dee7f7")
+  bg[NORMAL] = shade (1.0,@bg_color)
   fg[ACTIVE] = "#02050B"
   fg[NORMAL] =  "#0D0E0E"
   fg[PRELIGHT] = "#02050B"
@@ -387,7 +387,7 @@ style "theme-menu"
 {
     xthickness = 0
     ythickness = 0
-    bg[NORMAL] = shade (1.0,"#dee7f7")
+    bg[NORMAL] = shade (1.0,@bg_color)
     text[PRELIGHT] 	 =  @selected_fg_color
     fg[PRELIGHT] 	 =  @selected_fg_color
 }
@@ -396,7 +396,7 @@ style "theme-menu-item"
 {
     xthickness = 3
     ythickness = 3
-    bg[NORMAL] = shade (1.0,"#dee7f7")
+    bg[NORMAL] = shade (1.0,@bg_color)
     text[PRELIGHT] 	 =  @selected_fg_color
     fg[PRELIGHT] 	 =  @selected_fg_color
 }

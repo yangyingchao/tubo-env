@@ -174,29 +174,47 @@ DestroyModuleConfig FvwmDock: *
 
 DestroyDecor DefaultDecor
 AddToDecor DefaultDecor
-+ TitleStyle Centered \
-             Height 28 \
-             InActive (TiledPixmap decoration/titlebar-mid-inactive.png -- Flat) \
-             Active   (TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
-+ ButtonStyle All InActive ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
-+ ButtonStyle All Active ( TiledPixmap decoration/titlebar-mid-focused.png -- Flat )
++ TitleStyle InActive Colorset 9
++ TitleStyle Active Colorset 10
++ TitleStyle Centered
++ TitleStyle -- flat
++ TitleStyle Height 22
 
-+ BorderStyle Colorset 4 -- Flat HiddenHandles NoInset
++ BorderStyle -- HiddenHandles
++ BorderStyle -- Flat
+
+# Menu
+# + ButtonStyle 1 Inactive Pixmap decoration/button-gray.png
+# + ButtonStyle 1 ActiveUp Pixmap decoration/button-red-icon.png
+# + ButtonStyle 1 ActiveDown Pixmap decoration/button-red.png
+
 + ButtonStyle 1 AllActive (MiniIcon) AllInactive (MiniIcon)
-+ ButtonStyle 2 ActiveUp (Pixmap $[fvwm_decor]/button-close.png) \
-               ActiveDown (Pixmap $[fvwm_decor]/button-close-focus.png) \
-               Inactive (Pixmap $[fvwm_decor]/button-close-inactive.png)
-+ ButtonStyle 4 ActiveUp (Pixmap $[fvwm_decor]/button-max.png) \
-               ActiveDown (Pixmap $[fvwm_decor]/button-max-focus.png) \
-               Inactive (Pixmap $[fvwm_decor]/button-max-inactive.png)
-+ ButtonStyle 6 ActiveUp (Pixmap $[fvwm_decor]/button-min.png) \
-               ActiveDown (Pixmap $[fvwm_decor]/button-min-focus.png) \
-               Inactive (Pixmap $[fvwm_decor]/button-min-inactive.png)
-+ ButtonStyle 1 - Clear
-+ ButtonStyle 2 - Clear
-+ ButtonStyle 4 - Clear MWMDecorMax
-+ ButtonStyle 6 - Clear MWMDecorMin
-+ ButtonStyle All -- Flat UseTitleStyle
+
+# Close
++ ButtonStyle 2 Inactive Pixmap decoration/button-close-inactive.png
++ ButtonStyle 2 ActiveUp Pixmap decoration/button-close.png
++ ButtonStyle 2 ActiveDown Pixmap decoration/button-close-pressed.png
+
+# Maximize
++ ButtonStyle 4 Inactive Pixmap decoration/button-maximize-inactive.png
++ ButtonStyle 4 ActiveUp Pixmap decoration/button-maximize.png
++ ButtonStyle 4 ActiveDown Pixmap decoration/button-maximize-pressed.png
+#+ BorderStyle Colorset 4 -- Flat HiddenHandles NoInset
+
+
+# Minimize
++ ButtonStyle 6 Inactive Pixmap decoration/button-minimize-inactive.png
++ ButtonStyle 6 ActiveUp Pixmap decoration/button-minimize.png
++ ButtonStyle 6 ActiveDown Pixmap decoration/button-minimize-pressed.png
+
++ ButtonStyle All -- UseTitleStyle
++ ButtonStyle All -- flat
+
+Style * HandleWidth 1, BorderWidth 1
+Style * Colorset                9, \
+        BorderColorset          9, \
+        HilightColorset         10, \
+        HilightBorderColorset   10
 
 Style DefaultStyle \
       UseDecor DefaultDecor, HandleWidth 2, BorderWidth 2, \

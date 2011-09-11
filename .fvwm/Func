@@ -89,10 +89,19 @@ Key L A 4 FuncFvwmLockScreen
 Key L A CM FuncFvwmLockScreen
 
 
+# Set the specified wallpaper using available programs
+DestroyFunc Wallpaper-Set
+AddToFunc Wallpaper-Set
++ I Test (x habak) Exec habak -ms $*
++ I TestRc (False) Test (x Esetroot) Exec Esetroot -scale $*
++ I TestRc (False) Test (x hsetroot) Exec hsetroot -fill $*
++ I SavePreferences LastChoosenWallpaper "Wallpaper-Set \"$*\""
+
 DestroyFunc StartFunction
 AddToFunc   StartFunction
 +           I Exec exec xmodmap $[HOME]/.Xmodmap
-+           I Exec exec fvwm-root --dither --retain-pixmap $[HOME]/.fvwm/wallpapers/default.png
++           I Wallpaper-Set $[HOME]/.fvwm/wallpapers/default.jpg
+#+           I Exec exec habak -ms $[HOME]/.fvwm/wallpapers/default.png
 +           I Module FvwmAnimate
 +           I Module FvwmAuto FvwmAutoHide -menter FvwmDockerAutoEnter
 +           I Module FvwmButtons  FvwmDock
@@ -137,8 +146,6 @@ AddToFunc               FuncDestroyOnHold
 +                       C Schedule 100 Close
 +                       H Destroy
 +                       H Beep
-
-Colorset                9 fg Black, Translucent White 75, hi Black, sh Black
 
 DestroyFunc             ExitMenu
 AddToFunc               ExitMenu
@@ -226,3 +233,5 @@ AddToFunc               SSHList
 +                       I *SSHList: Line center
 +                       I Module FvwmForm SSHList
 Style                   "SSHList" NoTitle
+
+

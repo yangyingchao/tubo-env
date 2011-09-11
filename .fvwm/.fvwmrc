@@ -95,6 +95,7 @@ DefaultLayers 0 4 6
 
 ## colormaps
 Colorset 0 RootTransparent, Tint #ffffff 0, IconAlpha 60
+
 Colorset 0 fg #ffffff, bg #ececec, hi gray, sh gray, RootTransparent buffer, Tint #ececec 0
 Colorset 1 RootTransparent, Tint #ffffff 50
 Colorset 1 fg #ffffff, bg #ececec, hi gray, sh gray, RootTransparent buffer, Tint #ececec 0, IconAlpha 80
@@ -106,11 +107,20 @@ Colorset 4 fg #63656e, bg black, RootTransparent buffer, Tint #b5b2ff 60
 Colorset 4 fg #bfbfbf, bg #bfbfbf, hi #bfbfbf, sh #bfbfbf, RootTransparent buffer, Tint #ececec 0
 Colorset 5 fg #ffffff, bg gray60, hi gray, sh gray, RootTransparent buffer, Tint #ececec 0
 Colorset 6 RootTransparent, Tint #ffffff 0, IconAlpha 99
-Colorset 6 fg #ffffff, bg #ececec, hi gray, sh gray, RootTransparent buffer, Tint #ececec 50
 Colorset 6 fg white, bg black, RootTransparent buffer, Tint #e4e5c7 90
 Colorset 7 fg #ffffff, bg gray, hi gray, sh gray, RootTransparent buffer, Tint #ececec 0
 Colorset 8 fg #f0f0f0, bg #ececec, hi #ffffff, sh #ffffff, RootTransparent buffer, Tint #ececec 0
-Colorset 10 fg #074bba, fgsh #ffffff, bg #ffffff, sh #ffffff, hi #ffffff, RootTransparent, Tint #ffffff 60
+
+Colorset 9 \
+Foreground "black", Background "#c7c7c7", \
+Hilight "lightgray", Shadow "gray", \
+Tint "black" 20, RootTransparent
+
+Colorset 10 \
+Foreground "yellow", Background "#839eb0", \
+Hilight "black", Shadow "black", \
+Tint "white" 15
+
 Colorset 11 RootTransparent, Tint #ffffff , IconAlpha 100
 Colorset 12 RootTransparent, Tint #ffffff 60, fg #074bba, fgsh #ffffff, bg #ffffff, sh #ffffff, hi #ffffff
 
