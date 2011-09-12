@@ -12,8 +12,6 @@ xterm*scrollBar: false
 xterm*rightScrollBar: true
 xterm*loginshell: true
 xterm*cursorBlink: true
-xterm*background:  black
-xterm*foreground:  gray
 xterm.borderLess: true
 xterm.cursorBlink: true
 
