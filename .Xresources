@@ -5,6 +5,31 @@ Xft.hintstyle: hintfull
 Xft.rgba: rgb
 
 xterm*faceName: WenQuanYi Micro Hei Mono:pixelsize=14
-XTerm*scrollBar: false
-XTerm*saveLines: 5000
+xTerm*scrollBar: false
+xTerm*saveLines: 5000
+xterm.termName: xterm-256color
+xterm*scrollBar: false
+xterm*rightScrollBar: true
+xterm*loginshell: true
+xterm*cursorBlink: true
+xterm*background:  black
+xterm*foreground:  gray
+xterm.borderLess: true
+xterm.cursorBlink: true
 
+*xterm*color0: #2e3436
+*xterm*color1: #cc0000
+*xterm*color2: #4e9a06
+*xterm*color3: #c4a000
+*xterm*color4: #3465a4
+*xterm*color5: #75507b
+*xterm*color6: #0b939b
+*xterm*color7: #d3d7cf
+*xterm*color8: #555753
+*xterm*color9: #ef2929
+*xterm*color10: #8ae234
+*xterm*color11: #fce94f
+*xterm*color12: #729fcf
+*xterm*color13: #ad7fa8
+*xterm*color14: #00f5e9
+*xterm*color15: #eeeeec
