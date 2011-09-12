@@ -121,7 +121,11 @@ Foreground "yellow", Background "#839eb0", \
 Hilight "black", Shadow "black", \
 Tint "white" 15
 
-Colorset 11 RootTransparent, Tint #ffffff , IconAlpha 100
+Colorset 11 \
+Foreground "black", Background "#c7c7c7", \
+Hilight "lightgray", Shadow "gray", \
+Tint "black" 20, RootTransparent
+
 Colorset 12 RootTransparent, Tint #ffffff 60, fg #074bba, fgsh #ffffff, bg #ffffff, sh #ffffff, hi #ffffff
 
 Colorset 100 fg #ffffff, bg gray, hi gray, sh gray, RootTransparent buffer, Tint
@@ -130,7 +134,7 @@ Colorset 100 fg #ffffff, bg gray, hi gray, sh gray, RootTransparent buffer, Tint
 DefaultFont "StringEncoding=utf-8:xft:Microsoft YaHei:size=10:encoding=zh_CN.UTF-8"
 DefaultColorset 0
 
-Style * IconBox 1000x600+30+30, IconFill top left, IconGrid 32 32 IconSize 64 64
+Style * IconBox 1000x600+30+30, IconFill top left, IconGrid 32 32 IconSize 64 64, BorderWidth 0
 Style *	SnapAttraction 10 SameType Screen
 Style * !IconTitle, StickyIcon
 Style * BorderColorset 100, HilightBorderColorset 100

@@ -123,12 +123,9 @@ Mouse 3 R A WindowList NoGeometry
 
 
 
-############## Buttons & TaskBar
-
+############## Buttons
 Colorset 50 fg #ffffff, bg #4584b5, hi gray, sh gray, RootTransparent buffer, IconAlpha 75, Tint #4584b5 0
 Colorset 51 fg #ffffff, bg #7f7f7f, hi gray, sh gray, RootTransparent buffer, IconAlpha 100, Tint #4584b5 0
-
-
 
 Style FvwmButtons HandleWidth 2, NoHandles, FixedPosition, CirculateHit, \
     NeverFocus, WindowListSkip, !Iconifiable, Fixedsize, NoTitle,\
@@ -140,8 +137,8 @@ DestroyModuleConfig FvwmDock: *
 *FvwmDock:  Colorset    50
 *FvwmDock:  Rows        5
 *FvwmDock:  Columns     52
-*FvwmDock:  Geometry    600x75+350-5
-*FvwmDock:  Padding     0 0
+*FvwmDock:  Geometry    650x75+330-5
+*FvwmDock:  Padding     1 1
 *FvwmDock:  Frame       0
 *FvwmDock:  (5x7+1+0, ActionOnPress, \
         Icon        dock/filemanager_48.png, \
@@ -170,6 +167,7 @@ DestroyModuleConfig FvwmDock: *
 *FvwmDock (5x7+37+0, Swallow(Respawn, NoHints) wmclock `Exec exec wmclock`)
 *FvwmDock: (5x7+44, Swallow(NoClose, UseOld) \
           `stalonetray` `Exec exec stalonetray --geometry 100x50 -p`)
+
 ############################# Decor ###########################################
 
 DestroyDecor DefaultDecor
@@ -180,16 +178,9 @@ AddToDecor DefaultDecor
 + TitleStyle -- flat
 + TitleStyle Height 22
 
-+ BorderStyle -- HiddenHandles
-+ BorderStyle -- Flat
-
-# Menu
-# + ButtonStyle 1 Inactive Pixmap decoration/button-gray.png
-# + ButtonStyle 1 ActiveUp Pixmap decoration/button-red-icon.png
-# + ButtonStyle 1 ActiveDown Pixmap decoration/button-red.png
++ BorderStyle Colorset 4 -- Flat HiddenHandles NoInset
 
 + ButtonStyle 1 AllActive (MiniIcon) AllInactive (MiniIcon)
-
 # Close
 + ButtonStyle 2 Inactive Pixmap decoration/button-close-inactive.png
 + ButtonStyle 2 ActiveUp Pixmap decoration/button-close.png
@@ -199,7 +190,6 @@ AddToDecor DefaultDecor
 + ButtonStyle 4 Inactive Pixmap decoration/button-maximize-inactive.png
 + ButtonStyle 4 ActiveUp Pixmap decoration/button-maximize.png
 + ButtonStyle 4 ActiveDown Pixmap decoration/button-maximize-pressed.png
-#+ BorderStyle Colorset 4 -- Flat HiddenHandles NoInset
 
 
 # Minimize
@@ -209,12 +199,6 @@ AddToDecor DefaultDecor
 
 + ButtonStyle All -- UseTitleStyle
 + ButtonStyle All -- flat
-
-Style * HandleWidth 1, BorderWidth 1
-Style * Colorset                9, \
-        BorderColorset          9, \
-        HilightColorset         10, \
-        HilightBorderColorset   10
 
 Style DefaultStyle \
       UseDecor DefaultDecor, HandleWidth 2, BorderWidth 2, \
