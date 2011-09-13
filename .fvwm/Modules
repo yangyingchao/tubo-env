@@ -37,8 +37,8 @@ PipeRead `pos=$(($[vp.width]-365)); echo "*FvwmPager: Geometry +$pos+2"`
 *FvwmPager: SmallFont "StringEncoding=utf-8:xft:Microsoft YaHei:Medium:Size=12:encoding=zh_CN.UTF-8"
 
 *FvwmPagerLabel 0 Main
-*FvwmPagerLabel 1 Remo
-*FvwmPagerLabel 2 Office
+*FvwmPagerLabel 1 Office
+*FvwmPagerLabel 2 Remo
 *FvwmPagerLabel 3 Others
 
 *FvwmPager: Balloons			All
@@ -222,12 +222,14 @@ Style conky PositionPlacement 80 8
 
 # Classified apps.
 Style emacs StartsOnDesk 0
+Style sakura StartsOnDesk 0
 
-Style rdesktop StartsOnDesk 1
+Style Evolution StartsOnDesk 1
+Style Sylpheed StartsOnDesk 1
 Style Pidgin StartsOnDesk 1
 
-Style Evolution StartsOnDesk 2
-Style Sylpheed StartsOnDesk 2
 
-Style sakura StartsOnDesk 3
+Style rdesktop StartsOnDesk 2
+
+
 Style Audacious StartsOnDesk 3

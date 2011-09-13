@@ -534,6 +534,7 @@ and when jumping back, it will be removed.")
 
 
 (when (try-require  'auto-header)
+  (setq header-max-search (* fill-column 2))
   (if (string-match "ITC-208024" system-name)
       (progn
         (setq header-copyright-notice
@@ -541,6 +542,9 @@ and when jumping back, it will be removed.")
                       (format-time-string "%Y" (current-time)))
               )
         (setq header-email-address "Yang.Ying-chao@inventectj.com")
+        ( setq header-field-list
+               '(copyright filename description update up_head up_sep
+                           icreated yc/sep issues))
         )
     (progn
       (setq header-copyright-notice
@@ -551,6 +555,8 @@ and when jumping back, it will be removed.")
       )
     )
   )
+
+
 
 ;;;; Common Program settings
 

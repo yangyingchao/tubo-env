@@ -1,6 +1,6 @@
 ;;; auto-header.el --- Support for automatically updated file headers.
 
-;; Copyright (C) 1996, 1998, 1999, 2000, 2010,  Espen Skoglund.
+;; Copyright (C) 1996, 1998, 1999, 2000, 2010-2011,  Espen Skoglund.
 
 ;; Author: Espen Skoglund <esk@ira.uka.de>
 ;; Keywords: file headers
@@ -122,13 +122,13 @@ The `header-set-entry' function may be used to add new valid field types or
 change existing types.  \\[header-list-fields] will display a list of
 valid types."
   :type '(repeat (choice
-                  (const :tag "Filename" filename)
                   (const :tag "Copyright notice" copyright)
+                  (const :tag "Filename" filename)
                   (const :tag "Description" description)
                   (const :tag "Author" author)
                   (const :tag "Created at" created)
-                  (const :tag "Modified at" modified)
-                  (const :tag "Modified by" modified_by)
+                  ;; (const :tag "Modified at" modified)
+                  ;; (const :tag "Modified by" modified_by)
                   (const :tag "Blank line" blank)))
   :group 'auto-header)
 
@@ -213,7 +213,8 @@ The short version of the header style is the default.")
   '((filename  . header-update-filename)
     (modified  . header-update-modified)
     (counter   . header-update-count)
-    (copyright . header-update-copyright))
+    (copyright . header-update-copyright)
+    (icreated  . header-update-icreated))
   "Alist of functions to call when updating header fields.")
 
 (defvar header-max-search 1500
@@ -221,19 +222,25 @@ The short version of the header style is the default.")
 order to find whatever we are looking for in the header.")
 
 (defvar header-fields
-  '(("copyright" .   ("Copyright:" header-copyright-notice))
+  '(("copyright" .   (nil header-copyright-notice))
+    ("update"    .   ("Update:" ""))
+    ("up_head" .     ("Date         Name            Reason" ""))
+    ("up_sep"    .   ("========== ================= ====================================="   ""))
     ("filename" .    ("Filename:" (file-name-nondirectory (buffer-file-name))))
     ("filepath" .    ("File path:" (header-get-filepath)))
     ("version" .     ("Version:" ""))
+    ("yc/sep"   .    (nil ""))
     ("description" . ("Description:" ""))
     ("author" .      ("Author:" (header-get-author)))
     ("created" .     ("Created at:" (current-time-string
 				     (nth 6 (file-attributes
 					     (buffer-file-name))))))
+    ("icreated" .     (nil (header-get-icreated)))
+    ("issues" . ("Known issues:" "") )
     ("modified" .    ("Modified at:" ""))
     ("modified_by" . ("Modified by:" ""))
     ("status" .      ("Status:" "Experimental, do not distribute."))
-    ("update" .      ("Update count:" "0"))
+    ;; ("update" .      ("Update count:" "0"))
     ("cvsid" .       (nil "$Id: auto-header.el,v 1.5 2002/11/26 12:53:18 dave Exp $"))
     ("cvslog" .      (nil "$Log: auto-header.el,v $"))
     ("cvslog" .      (nil "Revision 1.5  2002/11/26 12:53:18  dave"))
@@ -259,7 +266,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA."))
 (defvar header-comment-strings
   ;;(major-mode      . (cstart cstop lipre fill))
   '((c-mode          . ("/*"   "*/"  " *"   "*"))
-    (c++-mode        . ("//"   ""    "//"   "="))
+    (c++-mode        . ("/*"   "*/"  " *"   ""))
+    ;; (c++-mode        . ("//"   ""    "//"   "="))
     (eiffel-mode     . ("--"   ""    "--"   "-"))
     (emacs-lisp-mode . (";"    ""    ";;"   ";"))
     (html-mode       . ("<!--" "-->" " ---" "-"))
@@ -350,38 +358,42 @@ contains entries of the form:
 
 (defun header-init (&optional nomsg)
   ;; Set comment style according to current major-mode.
-  (let* ((mm major-mode) cs)
-    (setq cs (if (assoc mm header-comment-strings)
-		 (cdr (assoc mm header-comment-strings))
-	       (if (not nomsg)
-		   (message (concat "No header comment style spciefied for "
-				    "current mode.  Using default.")))
-	       (cdr (assoc 'default header-comment-strings))))
+  (let* ((mm major-mode)
+         (cs nil))
+    (setq cs
+          (if (assoc mm header-comment-strings)
+              (cdr (assoc mm header-comment-strings))
+            (if (not nomsg)
+                (message (concat "No header comment style spciefied for "
+                                 "current mode.  Using default.")))
+            (cdr (assoc 'default header-comment-strings))))
     (setq header-comment-begin (nth 0 cs)
-	  header-comment-end   (nth 1 cs)
-	  header-line-prefix   (nth 2 cs)
-	  header-comment-char  (nth 3 cs)
-	  header-initialized-mode major-mode)
+          header-comment-end   (nth 1 cs)
+          header-line-prefix   (nth 2 cs)
+          header-comment-char  (nth 3 cs)
+          header-initialized-mode major-mode)
     (setq header-comment-begin-re (header-regexpify header-comment-begin)
-	  header-comment-end-re   (header-regexpify header-comment-end)
-	  header-line-prefix-re   (header-regexpify header-line-prefix)
-	  header-comment-char-re  (header-regexpify header-comment-char))))
+          header-comment-end-re   (header-regexpify header-comment-end)
+          header-line-prefix-re   (header-regexpify header-line-prefix)
+          header-comment-char-re  (header-regexpify header-comment-char))))
 
 (defun header-exists-p ()
   ;; Return t if there exist a header in the current buffer, nil otherwise.
   (save-excursion
     (beginning-of-buffer)
     (if (looking-at "^#!")
-	(forward-line 1))
+        (forward-line 1))
     (if (looking-at "^<\\\?php")
-	(forward-line 1))
+        (forward-line 1))
     (if (not (equal header-initialized-mode major-mode))
-	(header-init t))
-    (and (search-forward-regexp (concat "^" header-comment-begin-re
-					header-comment-char-re "+" "$")
-				header-max-search t)
-	 (or (forward-line 1) t)
-	 (looking-at (concat header-line-prefix-re " ")))))
+        (header-init t))
+    (and (search-forward-regexp
+          (concat "^" header-comment-begin-re
+                  header-comment-char-re "+" "$")
+          header-max-search t)
+
+         (or (forward-line 1) t)
+         (looking-at (concat header-line-prefix-re " ")))))
 
 ;;;###autoload
 (defun header-set-entry (name string contents)
@@ -425,58 +437,71 @@ the default header contents."
   "Inserts a header at the top of the current buffer.  A prefix argument
 forces the header to be inserted even if there already exists a header."
   (interactive "P")
-  (if (not (equal header-initialized-mode major-mode))
-      (header-init))
-  (if (and (not force) (header-exists-p))
-      (message "Header already exists.")
-    (beginning-of-buffer)
-    (if (looking-at "^#!")
-	(forward-line 1))
-    (if (looking-at "^<\\\?php")
-	(forward-line 1))
-    (insert header-comment-begin
-	    (make-string (- header-line-width (length header-comment-begin))
-			 (string-to-char header-comment-char))
-	    "\n")
-    (mapcar 'header-insert-field header-field-list)
-    (insert header-line-prefix
-	    (make-string (- header-line-width (length header-comment-end)
-			    (length header-line-prefix))
-			 (string-to-char header-comment-char))
-	    header-comment-end "\n")))
+  (let ((yc/comment-begin nil)
+        (yc/comment-end nil))
+    (if (not (equal header-initialized-mode major-mode))
+        (header-init))
+    (if (and (not force) (header-exists-p))
+        (message "Header already exists.")
+      (progn
+
+        (if (= 0 (length header-comment-char))
+            (progn
+              (setq yc/comment-begin header-comment-begin)
+              (setq yc/comment-end   (format " %s" header-comment-end))
+              )
+          (progn
+            (setq yc/comment-begin
+                  (make-string (- header-line-width
+                                  (length header-comment-begin))
+                               (string-to-char header-comment-char)))
+          (setq yc/comment-end
+                (make-string (- header-line-width
+                                (length header-comment-begin))
+                             (string-to-char header-comment-char)))))
+
+        (beginning-of-buffer)
+        (if (looking-at "^#!") ;; Skipt interprator.
+            (forward-line 1))
+        (if (looking-at "^<\\\?php")
+            (forward-line 1))
+        (insert yc/comment-begin "\n")
+        (mapcar 'header-insert-field header-field-list)
+        (insert header-line-prefix "\n" yc/comment-end "\n\n")))))
 
 ;;;###autoload
 (defun header-insert-field (field)
   "Insert a header field into to current buffer."
   (interactive (list (completing-read "Field: " header-fields)))
-
   (and (symbolp field) (setq field (symbol-name field)))
   (if (not (equal header-initialized-mode major-mode))
       (header-init t))
 
+  (message (format "YC: %s" field))
   (let* ((fieldent (assoc field header-fields))
-	 (pretext (car (cdr fieldent)))
-	 (content (eval (car (cdr (cdr fieldent)))))
-	 (spaces (- header-fieldtext-width (length pretext))))
+         (pretext (car (cdr fieldent)))
+         (content (eval (car (cdr (cdr fieldent)))))
+         (spaces (- header-fieldtext-width (length pretext))))
 
     ;; Insert the new line
     (beginning-of-line)
     (cond ((null pretext)
-	   ;; Insert ordinary (possibly multiline) text
-	   (mapcar '(lambda (line)
-		      (insert header-line-prefix " " line "\n"))
-		   (header-split-string content "\n")))
-	  (t
-	   ;; Insert header line
-	   (insert header-line-prefix " " pretext
-		   (make-string (if (< spaces 0) 0 spaces) ? )
-		   content "\n"))))
+           ;; Insert ordinary (possibly multiline) text
+           (mapcar '(lambda (line)
+                      (message (format "YC: %s" line))
+                      (insert header-line-prefix " " line "\n"))
+                   (header-split-string content "\n")))
+          (t
+           ;; Insert header line
+           (insert header-line-prefix " " pretext
+                   (make-string (if (< spaces 0) 0 spaces) ? )
+                   content "\n"))))
   (if (interactive-p)
       (progn
-	(backward-char 1)
-	(or (eq auto-fill-function 'header-fill-function)
-	    (setq header-old-fill-function auto-fill-function))
-	(setq auto-fill-function 'header-fill-function))))
+        (backward-char 1)
+        (or (eq auto-fill-function 'header-fill-function)
+            (setq header-old-fill-function auto-fill-function))
+        (setq auto-fill-function 'header-fill-function))))
 
 (defun header-get-author ()
   "Make a string containing ``Full name <Email address>''."
@@ -507,33 +532,47 @@ The part added to the filename is the path which comes after any ``src'' or
     (save-excursion
       (beginning-of-buffer)
       (if (search-forward (concat header-line-prefix " "
-				  (car (cdr (assoc field header-fields))))
-			  header-max-search t)
-	  (setq pos (point))))
+                                  (car (cdr (assoc field header-fields))))
+                          header-max-search t)
+          (setq pos (point))))
     (if (not pos)
-	(and (interactive-p)
-	     (message "Unable to find `%s' field." field) nil)
+        (and (interactive-p)
+             (message "Unable to find `%s' field." field) nil)
       (goto-char pos)
-      (forward-char 1)
-      (skip-chars-forward " \t")
+      ;; (forward-char 1)
+      (skip-chars-backward " \t")
       (if (interactive-p)
-	  (progn
-	    (or (eq auto-fill-function 'header-fill-function)
-		(setq header-old-fill-function auto-fill-function))
-	    (setq auto-fill-function 'header-fill-function)))
+          (progn
+            (or (eq auto-fill-function 'header-fill-function)
+                (setq header-old-fill-function auto-fill-function))
+            (setq auto-fill-function 'header-fill-function)))
       t)))
+
+(defun yc/format-string (str)
+  "description"
+  (format "	%s" str)
+  )
+
+(defun header-get-icreated ()
+  "Update the `modified' and `modified_by' part of the header."
+  (format "%s\t%s\tCreate"
+          (format-time-string current-date-format (current-time))
+          header-full-name)
+  )
 
 (defun header-update-modified ()
   "Update the `modified' and `modified_by' part of the header."
   (save-excursion
     (if (header-goto-field 'modified)
-	(progn
-	  (delete-region (point) (progn (end-of-line) (point)))
-	  (insert (current-time-string))))
+        (progn
+          (message (format "YC: %s" (current-time-string)))
+          (delete-region (point) (progn (end-of-line) (point)))
+          (insert (yc/format-string (current-time-string)))))
     (if (header-goto-field 'modified_by)
-	(progn
-	  (delete-region (point) (progn (end-of-line) (point)))
-	  (insert (header-get-author))))))
+        (progn
+          (delete-region (point) (progn (end-of-line) (point)))
+          (message (format "YC: %s" (header-get-author)))
+          (insert (yc/format-string (header-get-author)))))))
 
 ;;;###autoload
 (defun header-update-count ()
@@ -555,11 +594,12 @@ The part added to the filename is the path which comes after any ``src'' or
     (if (header-goto-field 'filename)
 	(progn
 	  (delete-region (point) (progn (end-of-line) (point)))
-	  (insert (file-name-nondirectory (buffer-file-name)))))
+	  (insert (yc/format-string
+               (file-name-nondirectory (buffer-file-name))))))
     (if (header-goto-field 'filepath)
 	(progn
 	  (delete-region (point) (progn (end-of-line) (point)))
-	  (insert (header-get-filepath))))))
+	  (insert (yc/format-string (header-get-filepath)))))))
 
 
 (defun header-update-copyright ()

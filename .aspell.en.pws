@@ -1,4 +1,4 @@
-personal_ws-1.1 en 81 
+personal_ws-1.1 en 82 
 wxPython
 Makefile
 px
@@ -41,6 +41,7 @@ SRC
 CodingStyle
 kana
 IP
+INVENTEC
 Screenshot
 progn
 SSF
