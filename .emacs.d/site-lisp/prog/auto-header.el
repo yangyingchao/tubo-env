@@ -265,7 +265,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA."))
 
 (defvar header-comment-strings
   ;;(major-mode      . (cstart cstop lipre fill))
-  '((c-mode          . ("/*"   "*/"  " *"   "*"))
+  '((c-mode          . ("/*"   "*/"  " *"   ""))
     (c++-mode        . ("/*"   "*/"  " *"   ""))
     ;; (c++-mode        . ("//"   ""    "//"   "="))
     (eiffel-mode     . ("--"   ""    "--"   "-"))
@@ -448,17 +448,23 @@ forces the header to be inserted even if there already exists a header."
         (if (= 0 (length header-comment-char))
             (progn
               (setq yc/comment-begin header-comment-begin)
-              (setq yc/comment-end   (format " %s" header-comment-end))
+              (setq yc/comment-end  (concat " " header-comment-end))
               )
           (progn
             (setq yc/comment-begin
-                  (make-string (- header-line-width
+                  (format "%s%s" header-comment-begin
+                          (make-string (- header-line-width
                                   (length header-comment-begin))
-                               (string-to-char header-comment-char)))
+                               (string-to-char header-comment-char))))
           (setq yc/comment-end
+                (format "%s%s"
                 (make-string (- header-line-width
                                 (length header-comment-begin))
-                             (string-to-char header-comment-char)))))
+                             (string-to-char header-comment-char))
+                header-comment-end)
+                )
+                )
+          )
 
         (beginning-of-buffer)
         (if (looking-at "^#!") ;; Skipt interprator.
