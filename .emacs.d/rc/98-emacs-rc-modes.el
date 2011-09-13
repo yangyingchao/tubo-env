@@ -426,6 +426,7 @@
 
 
 
-
+(when (try-require 'logviewer)
+  (message "logviewr mode enable."))
 (provide '98-emacs-rc-modes)
 ;;;;; emacs-rc-modes.el ends here
