@@ -549,10 +549,11 @@ and when jumping back, it will be removed.")
         )
     (progn
       (setq header-copyright-notice
-            (format "%s Yang, Ying-chao"
+            (format "Copyright (C) %s, Yang, Ying-chao"
                     (format-time-string "%Y" (current-time))))
       (setq header-email-address "yangyingchao@gmail.com")
-
+      (setq header-field-list
+             '(copyright filename description author gpl))
       )
     )
   )
@@ -633,7 +634,7 @@ and when jumping back, it will be removed.")
   (rx bow
       (or "todo" "fix" "fixme" "yyc" "@bug"
           "TODO" "FIX" "FIXME" "YYC" "@BUG" "TODOLIST")
-      eow)
+      (zero-or-one ":") eow)
   "Commonly used warnning words")
 
 
@@ -704,6 +705,10 @@ senator-try-expand-semantic after yas/hippie-try-expand."
   (program-mode-auto-pair)
   (local-set-key  [(tab)] 'indent-or-complete)
   (yc/add-keyword yc/lisp-keywords 'font-lock-keyword-face)
+  (make-local-variable 'header-field-list)
+  (setq header-field-list
+        '(lisp_desc blank copyright blank author blank n_emacs gpl
+                    blank e_comment blank))
   )
 
 (add-hook 'c-mode-common-hook 'my-program-hook)

@@ -259,6 +259,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA."))
+    ("lisp_desc" . (nil
+                    (format "%s --- Simple description"
+                                   (file-name-nondirectory (buffer-file-name)))))
+    ("n_emacs" . (nil "This file is NOT part of GNU Emacs."))
+    ("e_comment" . (nil "Commentary:"))
     ("blank" .       ("" "")))
   "List of header fields -- their text and their default value.")
 

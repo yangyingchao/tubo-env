@@ -1,21 +1,58 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Filename:	logviewer.el
-;; Version:
-;; Description:   Simple viewer of logs.
+;; logviewer.el --- Simple log viewer.
+;;
+;; Copyright (C) 2011, Yang, Ying-chao
+;;
 ;; Author:        Yang, Ying-chao <yangyingchao@gmail.com>
-;; Created at:    Tue Sep 13 22:23:45 2011
-;; TODO
-;;     1. Add function to filt LOGs of special level.
+;;
+;; This file is NOT part of GNU Emacs.
+;;
+;; This program is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License
+;; as published by the Free Software Foundation; either version 2
+;; of the License, or (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program; if not, write to the Free Software
+;; Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+;;
+;; Commentary:
+;;
+;;   This is a simple log viewer, with syntax highlight.
+;;
+;;   To use logviewer, you should put logviewer.el into the top of load-path
+;; of emacs, the add following lines into your .emacs:
+;; (require 'logviewer)
+;;
+;;   When log files are huge, it will try to split huge logs into small ones
+;; to speed up loading. In that case, you can press "n" & "p" to go to next
+;; part (or previous part) to the log file. You can custom variable
+;; logviewer-split-line to proper number to control the size of the slice of
+;; huge file.
+;;
+;; TODO:
+;;   Add support of log filtering, ie, show logs whos level is higher than
+;; some specified one.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
+
+;; Code
 ;; custom hooks
 (defvar logviewer-mode-hook nil)
 
 ;; default mode map, really simple
 (defvar logviewer-mode-map
   (let ((logviewer-mode-map (make-keymap)))
-    (define-key logviewer-mode-map "n" (lambda () (interactive) (logviewer-next-file t)))
-    (define-key logviewer-mode-map "p" (lambda () (interactive) (logviewer-next-file nil)))
+    (define-key logviewer-mode-map "n"
+      (lambda () (interactive) (logviewer-next-file t)))
+    (define-key logviewer-mode-map "p"
+      (lambda () (interactive) (logviewer-next-file nil)))
     logviewer-mode-map)
   "Keymap for PS major mode")
 
@@ -59,9 +96,25 @@
   )
 
 
-(defvar split-line 50000 "Lines when trying to split files.")
+(defvar logviewer-split-line 50000 "Lines when trying to split files.")
 (defvar Logviewer-current-file nil
   "Log file viewed by logviewer")
+
+(defun logviewer-process-sentinel (process event)
+  "description"
+  (when (memq (process-status process) '(signal exit))
+    (let* ((exit-status       (process-exit-status process))
+           (command           (process-command process))
+           (source-buffer     (process-buffer process))
+           )
+
+      (condition-case err
+          (delete-process process)
+        (error
+         (let ((err-str (format "Error in process sentinel: %s"
+                                 (error-message-string err))))
+           (message err-str)))))))
+
 
 ;;;; Overrite function provied by Emacs itself.
 (defun abort-if-file-too-large (size op-type filename)
@@ -70,6 +123,7 @@ OP-TYPE specifies the file operation being performed (for message to user)."
   (let* ((re-log-str (rx (or "LOG" "log" "Log")))
          (log-cache (expand-file-name "~/.emacs.d/log_cache"))
          (cur-file nil)
+         (process nil)
          (filename-base (file-name-sans-extension
                          (file-name-nondirectory filename)))
          (out-file-prefix (format "%s/%s" log-cache filename-base)))
@@ -93,14 +147,18 @@ OP-TYPE specifies the file operation being performed (for message to user)."
                       (call-process-shell-command "rm" nil "*Messages*" nil
                                     "-rf"
                                     (format "%s*" out-file-prefix))
-                      (start-process "Split-process" "*Messages*"
-                                     "split"  "--suffix-length=3" "-d" "-l"
-                                     (format "%s" split-line)
-                                     (expand-file-name filename)
-                                     out-file-prefix)
+                      (setq process
+                            (start-process "Split-process" "*Messages*"
+                                           "split"  "--suffix-length=3"
+                                           "-d" "-l"
+                                           (format "%s" logviewer-split-line)
+                                           (expand-file-name filename)
+                                           out-file-prefix))
+                      (set-process-sentinel process
+                                            'logviewer-process-sentinel)
 
                       (while (not (file-exists-p Logviewer-current-file))
-                        (sleep-for 1))
+                        (sleep-for 0.5))
 
                       (set-buffer (get-buffer-create filename-base))
                       (toggle-read-only 0)
@@ -108,6 +166,7 @@ OP-TYPE specifies the file operation being performed (for message to user)."
                       (insert-file-contents Logviewer-current-file nil)
                       (switch-to-buffer filename-base)
                       (toggle-read-only 1)
+                      (add-to-list 'recentf-list filename)
                       (logviewer-mode)
                       (error "See this instead")
                       )
@@ -153,18 +212,26 @@ if direc = t, it returns next file, or it returns previous file"
   (let ((next-file nil))
     (if (string-match "log_cache" Logviewer-current-file)
         (progn
-          (toggle-read-only 0)
           (setq next-file (get-next-file dir))
-          (message (format "Now viewing: %s" next-file))
-          (erase-buffer)
-          (insert-file-contents next-file nil)
-          (setq Logviewer-current-file next-file)
-          (toggle-read-only 1)
-          )
-      (error "This is the whole file")
-      )
-    )
-  )
+          (if (file-exists-p next-file)
+              (progn
+                (message (format "Now viewing: %s" next-file))
+                (toggle-read-only 0)
+                (erase-buffer)
+                (insert-file-contents next-file nil)
+                (setq Logviewer-current-file next-file)
+                (toggle-read-only 1))
+            (progn
+              (let ((msg nil))
+                (if dir
+                  (setq msg (concat "Tail of log reached. File "
+                                    next-file " does not exist!" ))
+                  (setq msg (concat "Head of log reached. File "
+                                    next-file " does not exist!" )))
+                (error msg))
+              )
+            ))
+      (error "This is the whole file"))))
 
 (defun logviewer-setup-imenu ()
   "Installs logviewer-imenu-expression."
