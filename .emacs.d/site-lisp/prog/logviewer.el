@@ -252,6 +252,8 @@ if direc = t, it returns next file, or it returns previous file"
   (set (make-local-variable 'font-lock-defaults)
        '(logviewer-font-lock-keywords))
   (toggle-read-only t)
+  (if (not Logviewer-current-file)
+  (setq Logviewer-current-file (buffer-file-name)))
   (run-hooks 'logviewer-mode-hook))
 
 (add-to-list 'auto-mode-alist '("\\.log\\'" .
