@@ -30,7 +30,7 @@
      . font-lock-builtin-face)
     (,(rx symbol-start
           (group (*? not-newline) (+ digit) ":" (+ digit) ":" (+ digit))
-          (1+ space) (group (1+ (or word blank))) (? "["(* digit) "]")":")
+          (1+ space) (group (1+ (or alnum "-" "_"  blank))) (? "["(* digit) "]")":")
      (1 font-lock-builtin-face) (2 font-lock-variable-name-face))
     (,(rx symbol-start
           (group (or "ERROR" "FATAL" "error" "fatal" )) ":"
@@ -63,8 +63,6 @@
   ;; imenu doc says these 3 are buffer-local by default
   (setq imenu-generic-expression logviewer-imenu-expressions)
   (imenu-add-menubar-index)
-  (require 'which-func t)
-  (which-function-mode t)
   )
 
 (defun logviewer-mode ()
