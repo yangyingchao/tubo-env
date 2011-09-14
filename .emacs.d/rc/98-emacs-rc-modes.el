@@ -412,21 +412,21 @@
                        ".*\\.fvwm/.*"
                        "\\.service$"
                          ))
-(defun yc/add-to-mode-alist (reg-exp)
-  "Add regexp to mode"
-  (add-to-list 'auto-mode-alist
-               (cons reg-exp 'conf-mode))
-  )
 
 (add-to-list 'auto-mode-alist
              '("^/etc/init\.d/.*" . sh-mode))
 
-
-(mapc 'yc/add-to-mode-alist conf-mode-list)
+(mapc (lambda (arg)
+        (yc/add-to-mode-alist arg 'conf-mode))
+      conf-mode-list)
 
 
 
 (when (try-require 'logviewer)
-  (message "logviewr mode enable."))
+  (mapc (lambda (arg)
+          (yc/add-to-mode-alist arg 'logviewer-mode))
+        '("\\messages\\'" "\\(LOG\\|Log\\|log\\)\\.txt")
+
+))
 (provide '98-emacs-rc-modes)
 ;;;;; emacs-rc-modes.el ends here

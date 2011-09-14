@@ -10,7 +10,7 @@
   (ido-mode 'buffer)
   ;;(ido-mode)
   (setq ido-enable-flex-matching t) ;; enable fuzzy matching
-  (define-key ctl-x-map "\C-v" 'ido-find-file))
+  (define-key ctl-x-map "\C-f" 'ido-find-file))
 
 (require 'make-mode)
 (autoload 'makefile-mode "makefile-mode" nil t)

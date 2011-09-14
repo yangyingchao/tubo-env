@@ -884,5 +884,17 @@ Uses `vc.el' or `rcs.el' depending on `ediff-version-control-package'."
                )))
   )
 
+
+
+
+(defun yc/add-to-mode-alist (reg-exp mode)
+  "Add regexp to mode"
+  (add-to-list 'auto-mode-alist
+               (cons reg-exp mode))
+  )
+
+
+
+
 (provide '01-rc-functions)
 ;;; emacs-rc-functions.el ends here

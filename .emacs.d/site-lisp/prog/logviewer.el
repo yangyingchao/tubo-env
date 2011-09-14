@@ -14,8 +14,8 @@
 ;; default mode map, really simple
 (defvar logviewer-mode-map
   (let ((logviewer-mode-map (make-keymap)))
-    ;;    (define-key logviewer-mode-map "\r" 'logviewer-indent-line)
-    ;; (define-key logviewer-mode-map "\t" 'logviewer-indent-line)
+    (define-key logviewer-mode-map "n" (lambda () (interactive) (logviewer-next-file t)))
+    (define-key logviewer-mode-map "p" (lambda () (interactive) (logviewer-next-file nil)))
     logviewer-mode-map)
   "Keymap for PS major mode")
 
@@ -26,10 +26,10 @@
     ;; Date & time.
     (,(rx line-start
           (*? not-newline) (+ digit) ":" (+ digit) ":" (+ digit)
-          )
+          (? "." (+ digit)))
      . font-lock-builtin-face)
     (,(rx symbol-start
-          (group (*? not-newline) (+ digit) ":" (+ digit) ":" (+ digit))
+          (group (*? not-newline) (+ digit) ":" (+ digit) ":" (+ digit) (? "." (+ digit)))
           (1+ space) (group (1+ (or alnum "-" "_"  blank))) (? "["(* digit) "]")":")
      (1 font-lock-builtin-face) (2 font-lock-variable-name-face))
     (,(rx symbol-start
@@ -57,6 +57,115 @@
   '((nil "^\\(?:[fF]unction\\|Add-Class\\)\\s-+\\([-a-z0-9A-Z_^:.]+\\)[^-a-z0-9A-Z_^:.]" 1))
   "alist of regexp identifying the start of logviewer definitions"
   )
+
+
+(defvar split-line 50000 "Lines when trying to split files.")
+(defvar Logviewer-current-file nil
+  "Log file viewed by logviewer")
+
+;;;; Overrite function provied by Emacs itself.
+(defun abort-if-file-too-large (size op-type filename)
+  "If file SIZE larger than `large-file-warning-threshold', allow user to abort.
+OP-TYPE specifies the file operation being performed (for message to user)."
+  (let* ((re-log-str (rx (or "LOG" "log" "Log")))
+         (log-cache (expand-file-name "~/.emacs.d/log_cache"))
+         (cur-file nil)
+         (filename-base (file-name-sans-extension
+                         (file-name-nondirectory filename)))
+         (out-file-prefix (format "%s/%s" log-cache filename-base)))
+    (if (and  large-file-warning-threshold size
+              (> size large-file-warning-threshold))
+        (if (string-match re-log-str filename) ;; This is logfile.
+            (if (y-or-n-p
+                 (format "LogFile %s is large (%dMB), really %s? "
+                         (file-name-nondirectory filename)
+                         (/ size 1048576) op-type))
+                (if (and (string= op-type "open")
+                         (executable-find "split"))
+                    (progn
+                      (if (file-exists-p log-cache)
+                          nil
+                        (mkdir log-cache t))
+                      (setq Logviewer-current-file
+                            (format "%s000" out-file-prefix))
+
+                      (message (format "%s*" out-file-prefix))
+                      (call-process-shell-command "rm" nil "*Messages*" nil
+                                    "-rf"
+                                    (format "%s*" out-file-prefix))
+                      (start-process "Split-process" "*Messages*"
+                                     "split"  "--suffix-length=3" "-d" "-l"
+                                     (format "%s" split-line)
+                                     (expand-file-name filename)
+                                     out-file-prefix)
+
+                      (while (not (file-exists-p Logviewer-current-file))
+                        (sleep-for 1))
+
+                      (set-buffer (get-buffer-create filename-base))
+                      (toggle-read-only 0)
+                      (erase-buffer)
+                      (insert-file-contents Logviewer-current-file nil)
+                      (switch-to-buffer filename-base)
+                      (toggle-read-only 1)
+                      (logviewer-mode)
+                      (error "See this instead")
+                      )
+                  nil
+                  (error "Aborted")
+                  )
+              (when  (not (y-or-n-p
+                           (format "YC: File %s is large (%dMB), really %s? "
+                                   (file-name-nondirectory filename)
+                                   (/ size 1048576) op-type)))
+                (error "Aborted"))
+              )
+          )
+      )))
+
+(defun get-next-file (cc)
+  "Get next file, or previous file.
+if direc = t, it returns next file, or it returns previous file"
+  (let ((filename-pre nil)
+        (filename-sub nil)
+        (filename Logviewer-current-file)
+        (filename-sub-num 0)
+        (sub-len 0)
+        (new-seq 0)
+        (fmt "")
+        (pre-rx (rx line-start (group (+? not-newline))
+                    (group (+ digit)) line-end)))
+    (if (string-match pre-rx filename)
+        (progn
+          (setq filename-pre (match-string 1 filename))
+          (setq filename-sub (match-string 2 filename))
+          (setq sub-len (length filename-sub))
+          (if cc
+              (setq new-seq (1+ (string-to-number filename-sub)))
+            (setq new-seq (1- (string-to-number filename-sub)))
+            )
+          (format (format "%%s%%0%dd" sub-len)
+                  filename-pre new-seq))
+      (error "Failed to parse filename"))))
+
+(defun logviewer-next-file (dir)
+  "view next/previous file"
+  (let ((next-file nil))
+    (if (string-match "log_cache" Logviewer-current-file)
+        (progn
+          (toggle-read-only 0)
+          (setq next-file (get-next-file dir))
+          (message (format "Now viewing: %s" next-file))
+          (erase-buffer)
+          (insert-file-contents next-file nil)
+          (setq Logviewer-current-file next-file)
+          (toggle-read-only 1)
+          )
+      (error "This is the whole file")
+      )
+    )
+  )
+
 (defun logviewer-setup-imenu ()
   "Installs logviewer-imenu-expression."
   (require 'imenu t)
@@ -75,10 +184,9 @@
   (use-local-map logviewer-mode-map)
   (set (make-local-variable 'font-lock-defaults)
        '(logviewer-font-lock-keywords))
+  (toggle-read-only t)
   (run-hooks 'logviewer-mode-hook))
 
 (add-to-list 'auto-mode-alist '("\\.log\\'" .
-                                logviewer-mode))
-(add-to-list 'auto-mode-alist '("\\messages\\'" .
                                 logviewer-mode))
 (provide 'logviewer)

@@ -537,6 +537,7 @@ and when jumping back, it will be removed.")
   (setq header-max-search (* fill-column 2))
   (if (string-match "ITC-208024" system-name)
       (progn
+        (setq header-max-search 1)
         (setq header-copyright-notice
               (format "INVENTEC corporation (c)%s all rights reserved."
                       (format-time-string "%Y" (current-time)))
