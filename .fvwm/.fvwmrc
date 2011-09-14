@@ -116,6 +116,7 @@ Foreground "black", Background "#c7c7c7", \
 Hilight "lightgray", Shadow "gray", \
 Tint "black" 20, RootTransparent
 
+### 839eb0
 Colorset 10 \
 Foreground "yellow", Background "#839eb0", \
 Hilight "black", Shadow "black", \
@@ -134,11 +135,10 @@ Colorset 100 fg #ffffff, bg gray, hi gray, sh gray, RootTransparent buffer, Tint
 DefaultFont "StringEncoding=utf-8:xft:Microsoft YaHei:size=10:encoding=zh_CN.UTF-8"
 DefaultColorset 0
 
-Style * IconBox 1000x600+30+30, IconFill top left, IconGrid 32 32 IconSize 64 64, BorderWidth 0
+Style * IconBox 1000x600+30+30, IconFill top left, IconGrid 32 32, IconSize 48x48
+
 Style *	SnapAttraction 10 SameType Screen
-Style * !IconTitle, StickyIcon
 Style * BorderColorset 100, HilightBorderColorset 100
-Style * PositionPlacement Center
 Style * Button 1, Button 2, Button 4, Button 6
 Style * CascadePlacement
 Style * ClickToFocus, MouseFocusClickRaises
@@ -147,19 +147,20 @@ Style * DecorateTransient
 Style * FPGrabFocus
 Style * FPGrabFocusTransient, FPReleaseFocusTransient
 Style * HintOverride, DecorateTransient, NoPPosition
-Style * IconSize 48 48
-Style * IconTitle, IndexedIconName
 Style * IconTitleColorset 0, HilightIconTitleColorset 3
 Style * IconTitleRelief 0
 Style * MWMFunctions, MWMDecor, HintOverride
 Style * NoIconTitle
+Style * PositionPlacement Center
 Style * ResizeOpaque
 Style * SloppyFocus, ClickToFocus
 Style * SmartPlacement
+Style * IndexedIconName
 Style * StickyIcon
 Style * TileCascadePlacement
 Style * VariablePPosition
 Style * WindowShadeSteps 20
+style * ResizeHintOverride
 
 
 *FvwmAnimate: Effect None

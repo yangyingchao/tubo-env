@@ -1,3 +1,8 @@
+! % xrdb -load ~/.Xresources
+! ! % xrdb -query
+! ! % xrdb -symbol
+! ! % xrdb -merge ~/.Xresources
+!
 Xft.antialias: 1
 Xft.dpi: 96
 Xft.hinting: 1
@@ -14,12 +19,13 @@ xterm*loginshell: true
 xterm*cursorBlink: true
 xterm.borderLess: true
 xterm.cursorBlink: true
+xterm*background:  #eeeeec
 
-*xterm*color0: #2e3436
+*xterm*color0: #000000
 *xterm*color1: #cc0000
 *xterm*color2: #4e9a06
 *xterm*color3: #c4a000
-*xterm*color4: #3465a4
+*xterm*color4: #729fcf
 *xterm*color5: #75507b
 *xterm*color6: #0b939b
 *xterm*color7: #d3d7cf
@@ -27,7 +33,7 @@ xterm.cursorBlink: true
 *xterm*color9: #ef2929
 *xterm*color10: #8ae234
 *xterm*color11: #fce94f
-*xterm*color12: #729fcf
+*xterm*color12: #3465a4
 *xterm*color13: #ad7fa8
 *xterm*color14: #00f5e9
 *xterm*color15: #eeeeec

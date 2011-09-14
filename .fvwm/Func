@@ -24,6 +24,35 @@ AddtoFunc               FuncFullScreen
 
 Key F A 4 FuncFullScreen
 
+
+DestroyFunc		MyMoveDown
+AddToFunc       MyMoveDown
++               I Piperead ` echo Move "$[w.x]p w10"`
+
+Key Down A M MyMoveDown
+
+DestroyFunc		MyMoveUp
+AddToFunc       MyMoveUp
++               I Piperead ` echo Move "$[w.x]p w-10"`
+
+Key Up A M MyMoveUp
+
+DestroyFunc		MyMoveLeft
+AddToFunc       MyMoveLeft
++               I Piperead ` echo Move "w-10 $[w.y]p"`
+
+Key Left A M MyMoveLeft
+
+
+DestroyFunc		MyMoveRight
+AddToFunc       MyMoveRight
++               I Piperead ` echo Move "w10 $[w.y]p"`
+
+Key Right A M MyMoveRight
+
+
+
+
 DestroyFunc             Fullscreen-Start
 AddtoFunc               Fullscreen-Start
 +                       I WindowStyle NoTitle,HandleWidth 0,FixedSize,FixedPosition
@@ -233,5 +262,6 @@ AddToFunc               SSHList
 +                       I *SSHList: Line center
 +                       I Module FvwmForm SSHList
 Style                   "SSHList" NoTitle
+
 
 
