@@ -97,7 +97,7 @@
 
 
 (defvar logviewer-split-line 50000 "Lines when trying to split files.")
-(defvar Logviewer-current-file nil
+(defvar logviewer-current-file nil
   "Log file viewed by logviewer")
 
 (defun logviewer-process-sentinel (process event)
@@ -140,7 +140,7 @@ OP-TYPE specifies the file operation being performed (for message to user)."
                       (if (file-exists-p log-cache)
                           nil
                         (mkdir log-cache t))
-                      (setq Logviewer-current-file
+                      (setq logviewer-current-file
                             (format "%s000" out-file-prefix))
 
                       (message (format "%s*" out-file-prefix))
@@ -157,13 +157,13 @@ OP-TYPE specifies the file operation being performed (for message to user)."
                       (set-process-sentinel process
                                             'logviewer-process-sentinel)
 
-                      (while (not (file-exists-p Logviewer-current-file))
+                      (while (not (file-exists-p logviewer-current-file))
                         (sleep-for 0.5))
 
                       (set-buffer (get-buffer-create filename-base))
                       (toggle-read-only 0)
                       (erase-buffer)
-                      (insert-file-contents Logviewer-current-file nil)
+                      (insert-file-contents logviewer-current-file nil)
                       (switch-to-buffer filename-base)
                       (toggle-read-only 1)
                       (add-to-list 'recentf-list filename)
@@ -182,12 +182,13 @@ OP-TYPE specifies the file operation being performed (for message to user)."
           )
       )))
 
+
 (defun get-next-file (cc)
   "Get next file, or previous file.
 if direc = t, it returns next file, or it returns previous file"
   (let ((filename-pre nil)
         (filename-sub nil)
-        (filename Logviewer-current-file)
+        (filename logviewer-current-file)
         (filename-sub-num 0)
         (sub-len 0)
         (new-seq 0)
@@ -210,7 +211,7 @@ if direc = t, it returns next file, or it returns previous file"
 (defun logviewer-next-file (dir)
   "view next/previous file"
   (let ((next-file nil))
-    (if (string-match "log_cache" Logviewer-current-file)
+    (if (string-match "log_cache" logviewer-current-file)
         (progn
           (setq next-file (get-next-file dir))
           (if (file-exists-p next-file)
@@ -219,7 +220,7 @@ if direc = t, it returns next file, or it returns previous file"
                 (toggle-read-only 0)
                 (erase-buffer)
                 (insert-file-contents next-file nil)
-                (setq Logviewer-current-file next-file)
+                (setq logviewer-current-file next-file)
                 (toggle-read-only 1))
             (progn
               (let ((msg nil))
@@ -252,8 +253,8 @@ if direc = t, it returns next file, or it returns previous file"
   (set (make-local-variable 'font-lock-defaults)
        '(logviewer-font-lock-keywords))
   (toggle-read-only t)
-  (if (not Logviewer-current-file)
-  (setq Logviewer-current-file (buffer-file-name)))
+  (set (make-local-variable 'logviewer-current-file)
+       (buffer-file-name))
   (run-hooks 'logviewer-mode-hook))
 
 (add-to-list 'auto-mode-alist '("\\.log\\'" .
