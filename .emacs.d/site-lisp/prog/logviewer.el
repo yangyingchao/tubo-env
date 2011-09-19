@@ -163,7 +163,7 @@ OP-TYPE specifies the file operation being performed (for message to user)."
                                            out-file-prefix))
                       (set-process-sentinel process
                                             'logviewer-process-sentinel)
-
+                      (push filename recentf-list )
                       (while (not (file-exists-p logviewer-current-file))
                         (sleep-for 0.5))
 
@@ -173,7 +173,6 @@ OP-TYPE specifies the file operation being performed (for message to user)."
                       (insert-file-contents logviewer-current-file nil)
                       (switch-to-buffer filename-base)
                       (toggle-read-only 1)
-                      (add-to-list 'recentf-list filename)
                       (logviewer-mode)
                       (error "See this instead")
                       )
@@ -251,7 +250,6 @@ if direc = t, it returns next file, or it returns previous file"
         (progn
           (setq next-file (car n-list))
           (setq bname (nth 1 n-list))
-          (message (format  "AAAAAAA %s" bname))
           (if (file-exists-p next-file)
               (progn
                 (message (format "Now viewing: %s" next-file))

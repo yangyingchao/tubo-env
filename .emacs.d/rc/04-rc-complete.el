@@ -222,8 +222,10 @@
   "Complete if point is at end of a word, otherwise indent line."
   (interactive)
   (if (looking-at "\\>")
-      (hippie-expand nil)
-    (indent-for-tab-command)
+        (hippie-expand nil)
+    (progn
+      (indent-for-tab-command)
+      (message "DDDDDDDDD"))
     ))
 
 (provide '04-rc-complete)

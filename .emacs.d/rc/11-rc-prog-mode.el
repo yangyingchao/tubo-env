@@ -607,6 +607,7 @@ and when jumping back, it will be removed.")
   (local-set-key "\C-c\C-h" 'sourcepair-load)
   (local-set-key "\C-x\C-h" 'sourcepair-load)
   (local-set-key "\C-c\C-r" 'semantic-symref)
+  (local-set-key (kbd "<M-return>") 'semantic-complete-inline-done)
   )
 
 (require 'cflow-mode)
