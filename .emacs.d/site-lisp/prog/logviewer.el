@@ -272,6 +272,48 @@ if direc = t, it returns next file, or it returns previous file"
   )
 
 
+(defconst logviewer-levels
+  '("FATAL" "ERROR" "WARRNING" "INFO" "DEBUG"))
+
+(defun get-lvl-str (num)
+  "description"
+  (let ((x (/ num 2))
+        (lst nil))
+    (while (>= x 0 )
+      (message "%d" x)
+      (setq x (1- x))
+      (add-to-list  'lst (nth x logviewer-levels))
+      )
+    lst
+    )
+  )
+
+
+(defun logviewer-get-filter (lvl)
+  "Get filter beyond LVL."
+  (if (or (>= lvl 10)
+          (<  lvl  0))
+      (error "Level shold be between 0 ~9")
+    (progn
+      (let ((reg-str "\\<\\("))
+        (mapc
+         (lambda(x)
+           (setq reg-str (concat reg-str x "\\|"))
+           )
+         (get-lvl-str lvl))
+        (setq reg-str (concat (substring reg-str 0 (- (length reg-str) 3 ))
+                              "\\):"))))))
+
+(defun logviewer-set-filter (lvl)
+  "Set and show result of filter lvl"
+  (interactive "nShow level:")
+  (message "Level: %d" lvl)
+  (let ((logviewer-filter (logviewer-get-filter lvl)))
+    (message "String: %s" logviewer-filter)
+
+    )
+  )
+
 (defun logviewer-setup-imenu ()
   "Installs logviewer-imenu-expression."
   (require 'imenu t)
@@ -291,6 +333,10 @@ if direc = t, it returns next file, or it returns previous file"
   (set (make-local-variable 'font-lock-defaults)
        '(logviewer-font-lock-keywords))
   (toggle-read-only t)
+  (if logviewer-current-file
+      nil
+    (setq logviewer-current-file (buffer-file-name))
+      )
   (run-hooks 'logviewer-mode-hook))
 
 (add-to-list 'auto-mode-alist '("\\.log\\'" .

@@ -537,7 +537,6 @@ and when jumping back, it will be removed.")
   (setq header-max-search (* fill-column 2))
   (if (string-match "ITC-208024" system-name)
       (progn
-        (setq header-max-search 1)
         (setq header-copyright-notice
               (format "INVENTEC corporation (c)%s all rights reserved."
                       (format-time-string "%Y" (current-time)))
@@ -633,7 +632,7 @@ and when jumping back, it will be removed.")
 
 (defvar yc/common-warn-words
   (rx bow
-      (or "todo" "fix" "fixme" "yyc" "@bug" "XXX"
+      (or "todo" "fix" "fixme" "yyc" "@bug" "XXX" "Fixme" "FixMe"
           "TODO" "FIX" "FIXME" "YYC" "@BUG" "TODOLIST")
       (zero-or-one ":") eow)
   "Commonly used warnning words")

@@ -398,7 +398,8 @@ contains entries of the form:
           header-max-search t)
 
          (or (forward-line 1) t)
-         (looking-at (concat header-line-prefix-re " ")))))
+         (looking-at (concat header-line-prefix-re " "))))
+  )
 
 ;;;###autoload
 (defun header-set-entry (name string contents)
