@@ -50,9 +50,16 @@
 (defvar logviewer-mode-map
   (let ((logviewer-mode-map (make-keymap)))
     (define-key logviewer-mode-map "n"
-      (lambda () (interactive) (logviewer-next-file t)))
+      (lambda (&optional arg)
+        (interactive "^p")
+        (or arg (setq arg 1))
+        (logviewer-next-part t arg)))
     (define-key logviewer-mode-map "p"
-      (lambda () (interactive) (logviewer-next-file nil)))
+      (lambda (&optional arg)
+        (interactive "^p")
+        (or arg (setq arg 1))
+        (logviewer-next-part nil arg)))
+    (define-key logviewer-mode-map "R" 'logviewer-reload-file)
     logviewer-mode-map)
   "Keymap for PS major mode")
 
@@ -183,7 +190,27 @@ OP-TYPE specifies the file operation being performed (for message to user)."
       )))
 
 
-(defun get-next-file (cc)
+
+(defun logviewer-is-tmpfile ()
+  "See whether current file is a temporary file or not."
+  (if (string-match "log_cache" logviewer-current-file)
+      t
+    nil
+    )
+  )
+
+(defun logviewer-reload-file ()
+  "Reload current file."
+  (interactive)
+  (let ((pt (point)))
+    (toggle-read-only 0)
+    (erase-buffer)
+    (insert-file-contents logviewer-current-file nil)
+    (toggle-read-only 1)
+    (goto-char pt)
+    (message "Readload finished.")))
+
+(defun get-next-slice (num cc)
   "Get next file, or previous file.
 if direc = t, it returns next file, or it returns previous file"
   (let ((filename-pre nil)
@@ -193,6 +220,7 @@ if direc = t, it returns next file, or it returns previous file"
         (sub-len 0)
         (new-seq 0)
         (fmt "")
+        (bname (buffer-name))
         (pre-rx (rx line-start (group (+? not-newline))
                     (group (+ digit)) line-end)))
     (if (string-match pre-rx filename)
@@ -201,19 +229,29 @@ if direc = t, it returns next file, or it returns previous file"
           (setq filename-sub (match-string 2 filename))
           (setq sub-len (length filename-sub))
           (if cc
-              (setq new-seq (1+ (string-to-number filename-sub)))
-            (setq new-seq (1- (string-to-number filename-sub)))
+              (setq new-seq (+ (string-to-number filename-sub) num))
+            (setq new-seq (- (string-to-number filename-sub) num)))
+          (if (string-match (rx (group (+? anything)) "-P" (+ digit)) bname)
+              (setq bname (match-string 1 bname))
             )
-          (format (format "%%s%%0%dd" sub-len)
-                  filename-pre new-seq))
+          (list (format (format "%%s%%0%dd" sub-len)
+                        filename-pre new-seq)
+                (format "%s-P%d" bname new-seq)))
       (error "Failed to parse filename"))))
 
-(defun logviewer-next-file (dir)
+
+(defun logviewer-next-part (dir &optional arg)
   "view next/previous file"
-  (let ((next-file nil))
-    (if (string-match "log_cache" logviewer-current-file)
+  (interactive "^p")
+  (or arg (setq arg 1))
+  (let ((n-list (get-next-slice arg dir))
+        (next-file nil)
+        (bname nil))
+    (if (logviewer-is-tmpfile)
         (progn
-          (setq next-file (get-next-file dir))
+          (setq next-file (car n-list))
+          (setq bname (nth 1 n-list))
+          (message (format  "AAAAAAA %s" bname))
           (if (file-exists-p next-file)
               (progn
                 (message (format "Now viewing: %s" next-file))
@@ -221,18 +259,20 @@ if direc = t, it returns next file, or it returns previous file"
                 (erase-buffer)
                 (insert-file-contents next-file nil)
                 (setq logviewer-current-file next-file)
-                (toggle-read-only 1))
+                (toggle-read-only 1)
+                (rename-buffer bname))
             (progn
               (let ((msg nil))
                 (if dir
-                  (setq msg (concat "Tail of log reached. File "
+                  (setq msg (concat "Head of log reached. File "
                                     next-file " does not exist!" ))
                   (setq msg (concat "Head of log reached. File "
-                                    next-file " does not exist!" )))
-                (error msg))
-              )
-            ))
-      (error "This is the whole file"))))
+                                    next-file " does not exist!" ))
+                  )
+                (error msg)))))
+      (error "This is the whole file")))
+  )
+
 
 (defun logviewer-setup-imenu ()
   "Installs logviewer-imenu-expression."
@@ -253,8 +293,6 @@ if direc = t, it returns next file, or it returns previous file"
   (set (make-local-variable 'font-lock-defaults)
        '(logviewer-font-lock-keywords))
   (toggle-read-only t)
-  (set (make-local-variable 'logviewer-current-file)
-       (buffer-file-name))
   (run-hooks 'logviewer-mode-hook))
 
 (add-to-list 'auto-mode-alist '("\\.log\\'" .

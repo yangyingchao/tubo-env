@@ -632,16 +632,21 @@ and when jumping back, it will be removed.")
 
 (defvar yc/common-warn-words
   (rx bow
-      (or "todo" "fix" "fixme" "yyc" "@bug"
+      (or "todo" "fix" "fixme" "yyc" "@bug" "XXX"
           "TODO" "FIX" "FIXME" "YYC" "@BUG" "TODOLIST")
       (zero-or-one ":") eow)
   "Commonly used warnning words")
+
+(defvar yc/common-keyword-words
+  (rx bow (or "PDEBUG") (zero-or-one ":") eow)
+
+  "Commonly used keyword")
 
 
 (defun yc/show-prog-keywords ()
   ;; highlight additional keywords
   (yc/add-keyword yc/common-warn-words 'font-lock-warning-face)
-
+  (yc/add-keyword yc/common-keyword-words 'font-lock-builtin-face)
   (font-lock-add-keywords
    nil '(("\\<\\(DONE\\):" 1 font-lock-doc-face t)))
 

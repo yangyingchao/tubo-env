@@ -149,6 +149,15 @@
           (message "NO COMPILATION ERRORS!"))))
 
 
+(defcustom user-defined-opts nil "")
+(defun get-user-defined-opts ()
+  "description"
+  (if user-defined-opts
+      user-defined-opts
+    ""
+      )
+  )
+
 (defun make-command()
   (if   (or (file-exists-p "makefile")
             (file-exists-p "Makefile"))
@@ -158,20 +167,23 @@
               (equal (file-name-extension buffer-file-name) "cpp")
               )
           (progn
-            (format "%s %s %s -o %s"
+            (format "%s %s %s %s -o %s"
                     (or (getenv "CC") "g++")
-                    (or (getenv "CPPFLAGS")"-Wall -g ") file
+                    (or (getenv "CPPFLAGS")"-Wall -g ")
+                    (get-user-defined-opts)
+                    file
                     (file-name-sans-extension file)
                     ))
         (if (or (equal (file-name-extension buffer-file-name) "c")
                 (equal (file-name-extension buffer-file-name) "C")
                 )
-            (format "%s -o %s %s %s %s %s"
+            (format "%s -o %s %s %s %s %s %s"
                     (or (getenv "CC") "gcc")
                     (file-name-sans-extension file)
                     (or (getenv "GTKFLAGS") "-Wall -g ")
                     (or (getenv "CPPFLAGS")"-DDEBUG=9  ")
                     (or (getenv "CFLAGS") "-Wall -g  ")
+                    (get-user-defined-opts)
                     file)
           (if (or (equal (file-name-extension buffer-file-name) "tex")
                   (equal (file-name-extension buffer-file-name) "TEX"))
