@@ -275,12 +275,13 @@ if direc = t, it returns next file, or it returns previous file"
 (defconst logviewer-levels
   '("FATAL" "ERROR" "WARRNING" "INFO" "DEBUG"))
 
+(defvar logviewer-filter-level 9 "nil")
+
 (defun get-lvl-str (num)
   "description"
   (let ((x (/ num 2))
         (lst nil))
     (while (>= x 0 )
-      (message "%d" x)
       (setq x (1- x))
       (add-to-list  'lst (nth x logviewer-levels))
       )
@@ -295,23 +296,56 @@ if direc = t, it returns next file, or it returns previous file"
           (<  lvl  0))
       (error "Level shold be between 0 ~9")
     (progn
-      (let ((reg-str "\\<\\("))
+      (let ((reg-str "\\\\<\\\\("))
         (mapc
          (lambda(x)
-           (setq reg-str (concat reg-str x "\\|"))
+           (setq reg-str (concat reg-str x "\\\\|"))
            )
          (get-lvl-str lvl))
         (setq reg-str (concat (substring reg-str 0 (- (length reg-str) 3 ))
-                              "\\):"))))))
+                              "\\\\):"))))))
+
+(defvar logviewer-filter-list nil "nil")
+
+(defun logviewer-iter (content reg-str pos)
+  ""
+  (message reg-str)
+  (if (string-match reg-str content pos)
+      (progn
+        (let ((pos-end (match-end 0))
+              (pos1 nil)
+              (pos2 nil))
+          (move-beginning-of-line 1)
+          (setq pos1 (point))
+          (move-end-of-line 1)
+          (setq pos2 (point))
+          (message (format "%d:%d" pos1 pos2))
+          (add-to-list logviewer-filter-list (list pos1 pos2))
+          (logviewer-iter content reg-str pos)
+          )
+        )
+      )
+  )
 
 (defun logviewer-set-filter (lvl)
   "Set and show result of filter lvl"
   (interactive "nShow level:")
-  (message "Level: %d" lvl)
-  (let ((logviewer-filter (logviewer-get-filter lvl)))
-    (message "String: %s" logviewer-filter)
-
-    )
+  (if (or (>= lvl 10)
+          (<  lvl  0))
+      (error "Level shold be between 0 ~9")
+    (if (>= lvl 9)
+        (outline-flag-region (point-min) (point-max) nil)
+      (progn
+        (let ((logviewer-filter (logviewer-get-filter lvl))
+              (content (buffer-substring-no-properties
+                        (point-min) (point-max))))
+          (message "A")
+          (outline-flag-region (point-min) (point-max) t)
+          (message "B")
+          (logviewer-iter content logviewer-filter 0)
+          (message "C")
+          (princ logviewer-filter-list)
+          ))))
   )
 
 (defun logviewer-setup-imenu ()
