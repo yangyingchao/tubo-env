@@ -44,6 +44,7 @@
 ;;;; Garbage Collection
 (setq-default garbage-collection-messages t)
 (setq-default gc-cons-threshold 99999999)
+(setq-default max-lisp-eval-depth 5000)
 
 ;;;; 时间和日期
 (display-time-mode 1)

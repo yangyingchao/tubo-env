@@ -35,9 +35,6 @@
 ;; logviewer-split-line to proper number to control the size of the slice of
 ;; huge file.
 ;;
-;; TODO:
-;;   Add support of log filtering, ie, show logs whos level is higher than
-;; some specified one.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -60,6 +57,7 @@
         (or arg (setq arg 1))
         (logviewer-next-part nil arg)))
     (define-key logviewer-mode-map "R" 'logviewer-reload-file)
+    (define-key logviewer-mode-map "F" 'logviewer-set-filter)
     logviewer-mode-map)
   "Keymap for PS major mode")
 
@@ -292,61 +290,85 @@ if direc = t, it returns next file, or it returns previous file"
 
 (defun logviewer-get-filter (lvl)
   "Get filter beyond LVL."
-  (if (or (>= lvl 10)
-          (<  lvl  0))
-      (error "Level shold be between 0 ~9")
-    (progn
-      (let ((reg-str "\\\\<\\\\("))
-        (mapc
-         (lambda(x)
-           (setq reg-str (concat reg-str x "\\\\|"))
-           )
-         (get-lvl-str lvl))
-        (setq reg-str (concat (substring reg-str 0 (- (length reg-str) 3 ))
-                              "\\\\):"))))))
-
-(defvar logviewer-filter-list nil "nil")
-
-(defun logviewer-iter (content reg-str pos)
-  ""
-  (message reg-str)
-  (if (string-match reg-str content pos)
+  (if (string= lvl "FATAL")
       (progn
-        (let ((pos-end (match-end 0))
-              (pos1 nil)
-              (pos2 nil))
+        (setq logviewer-filter-level 1)
+        (rx bow "FATAL:"))
+
+    (if (string= lvl "ERROR")
+      (progn
+        (setq logviewer-filter-level 3)
+        (rx bow (or "FATAL" "ERROR") ":"))
+      (if (string= lvl "WARRNING")
+          (progn
+            (setq logviewer-filter-level 7)
+            (rx bow (or "FATAL" "ERROR" "WARRNING") ":"))
+        (if (string= lvl "INFO")
+            (progn
+              (setq logviewer-filter-level 9)
+              (rx bow (or "FATAL" "ERROR" "WARRNING" "INFO") ":")  ))
+        )
+      )
+    )
+  )
+
+(defvar logviewer-filter-list '() "nil")
+
+(defun logviewer-iter (reg-str)
+  ""
+  (if (search-forward-regexp reg-str (point-max) t)
+      (progn
+        (let ((pos1)
+              (pos2))
           (move-beginning-of-line 1)
           (setq pos1 (point))
           (move-end-of-line 1)
           (setq pos2 (point))
-          (message (format "%d:%d" pos1 pos2))
-          (add-to-list logviewer-filter-list (list pos1 pos2))
-          (logviewer-iter content reg-str pos)
+          (cons pos1 pos2)
+          (add-to-list 'logviewer-filter-list (cons pos1 pos2))
+          (logviewer-iter reg-str)
           )
         )
+    nil
       )
   )
 
-(defun logviewer-set-filter (lvl)
+(defun logviewer-set-filter ()
   "Set and show result of filter lvl"
-  (interactive "nShow level:")
-  (if (or (>= lvl 10)
-          (<  lvl  0))
-      (error "Level shold be between 0 ~9")
-    (if (>= lvl 9)
+  (interactive)
+  (setq logviewer-filter-list nil)
+  (let ((lvl nil)
+        (cur-lvl   logviewer-filter-level ))
+    (setq lvl (completing-read "Filter Level: " logviewer-levels))
+    (if (string= lvl "DEBUG")
         (outline-flag-region (point-min) (point-max) nil)
       (progn
         (let ((logviewer-filter (logviewer-get-filter lvl))
               (content (buffer-substring-no-properties
                         (point-min) (point-max))))
-          (message "A")
+          (if (< cur-lvl logviewer-filter-level)
+              (outline-flag-region (point-min) (point-max) nil)
+            )
+
+          (goto-char (point-min))
+          (logviewer-iter logviewer-filter)
+
           (outline-flag-region (point-min) (point-max) t)
-          (message "B")
-          (logviewer-iter content logviewer-filter 0)
-          (message "C")
-          (princ logviewer-filter-list)
-          ))))
+          (if (> (length logviewer-filter-list) 0)
+              (let ((i 0)
+                    (len (length logviewer-filter-list))
+                    (frange))
+                (while (< i len)
+                  (setq frange (nth i logviewer-filter-list))
+                  (outline-flag-region (car frange) (1+ (cdr frange)) nil)
+                  (setq i (1+ i))
+                  ))
+            )
+          )))
+    )
   )
+
+
 
 (defun logviewer-setup-imenu ()
   "Installs logviewer-imenu-expression."
