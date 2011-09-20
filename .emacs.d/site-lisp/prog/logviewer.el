@@ -66,6 +66,10 @@
 (defvar logviewer-font-lock-keywords
   `(
     ;; Date & time.
+    (,(rx symbol-start
+          (group (or "ERROR" "FATAL" "error" "fatal" "WARNING" "warning")) ":"
+          (group (+ (*? not-newline))) line-end)
+     (1 font-lock-warning-face) (2 font-lock-comment-face))
     (,(rx line-start
           (*? not-newline) (+ digit) ":" (+ digit) ":" (+ digit)
           (? "." (+ digit)))
@@ -74,18 +78,15 @@
           (group (*? not-newline) (+ digit) ":" (+ digit) ":" (+ digit) (? "." (+ digit)))
           (1+ space) (group (1+ (or alnum "-" "_"  blank))) (? "["(* digit) "]")":")
      (1 font-lock-builtin-face) (2 font-lock-variable-name-face))
-    (,(rx symbol-start
-          (group (or "ERROR" "FATAL" "error" "fatal" "WARNING" "warning")) ":"
-          (group (+ (*? not-newline))) line-end)
-    (1 font-lock-warning-face) (2 font-lock-comment-face))
+
     (,(rx symbol-start
           (group (or "info" "INFO" )) ":"
           (group (+ (*? not-newline))) line-end)
-     (1 font-lock-function-name-face) (2 font-lock-doc-face))
+     (1 font-lock-function-name-face))
     (,(rx symbol-start
           (group (or "DEBUG" "debug" )) ":"
           (group (+ (*? not-newline))) line-end)
-     (1 font-lock-keyword-face) (2 font-lock-string-face))
+     (1 font-lock-keyword-face) (2 font-lock-doc-face))
     )
   )
 
