@@ -75,7 +75,7 @@
           (1+ space) (group (1+ (or alnum "-" "_"  blank))) (? "["(* digit) "]")":")
      (1 font-lock-builtin-face) (2 font-lock-variable-name-face))
     (,(rx symbol-start
-          (group (or "ERROR" "FATAL" "error" "fatal" )) ":"
+          (group (or "ERROR" "FATAL" "error" "fatal" "WARNING" "warning")) ":"
           (group (+ (*? not-newline))) line-end)
     (1 font-lock-warning-face) (2 font-lock-comment-face))
     (,(rx symbol-start
