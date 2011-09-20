@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# --
+
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont[BoldFont=SimHei,ItalicFont=KaiTi_GB2312]{SimSun}
+\setsansfont[BoldFont=SimHei]{KaiTi_GB2312}
+\setmonofont{Microsoft YaHei}
+
+\begin{document}
+世界,你好!
+\end{document}
