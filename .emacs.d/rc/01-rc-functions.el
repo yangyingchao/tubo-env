@@ -187,7 +187,7 @@
                     file)
           (if (or (equal (file-name-extension buffer-file-name) "tex")
                   (equal (file-name-extension buffer-file-name) "TEX"))
-              (format "pdflatex %s" file )
+              (format "xelatex %s" file )
             (if (or (equal (file-name-extension buffer-file-name) "sh")
                     (equal (file-name-extension buffer-file-name) "SH"))
                 (format "./%s" file)
