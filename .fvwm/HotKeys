@@ -8,6 +8,7 @@ Key 4 A 4 MoveToDesk 0 3
 
 # Minimal windows.
 Key space A 4 Maximize
+Key space A M Iconify
 Key F1 A 4 Exec wcmd
 Key F2 A 4 Exec devhelp
 Key F3 A 4 Exec goldendict
