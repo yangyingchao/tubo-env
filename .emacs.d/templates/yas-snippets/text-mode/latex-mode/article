@@ -118,6 +118,28 @@
 
 %=================== 正文 ======================%
 
+% \zihao{0}  初号字 English \\
+% \zihao{-0} 小初号 English \\
+% \zihao{1}  一号字 English \\
+% \zihao{-1} 小一号 English \\
+% \zihao{2}  二号字 English \\
+% \zihao{-2} 小二号 English \\
+% \zihao{3}  三号字 English \\
+% \zihao{-3} 小三号 English \\
+% \zihao{4}  四号字 English \\
+% \zihao{-4} 小四号 English \\
+% \zihao{5}  五号字 English \\
+% \zihao{-5} 小五号 English \\
+% \zihao{6}  六号字 English \\
+% \zihao{-6} 小六号 English \\
+% \zihao{7}  七号字 English \\
+% \zihao{8}  八号字 English \\
+
+% \songti| & {\songti 宋体} \\
+% \heiti| & {\heiti 黑体} \\
+% \fangsong| & {\fangsong 仿宋} \\
+% \kaishu| & {\kaishu 楷书}
+
 
 %================= 参考文件 ======================%
 \newpage
