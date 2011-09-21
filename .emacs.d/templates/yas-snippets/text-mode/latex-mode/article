@@ -2,8 +2,12 @@
 # --
 \documentclass[11pt]{article}
 
-
 \usepackage{ctex}
+
+\setmainfont[BoldFont=SimHei,ItalicFont=KaiTi_GB2312]{SimSun}
+\setsansfont[BoldFont=SimHei]{KaiTi_GB2312}
+\setmonofont{Monaco}
+
 \setCJKmainfont[BoldFont={SimHei},ItalicFont={KaiTi_GB2312}]{SimSun}
 \setCJKsansfont{SimHei}
 \setCJKmonofont{FangSong_GB2312}
