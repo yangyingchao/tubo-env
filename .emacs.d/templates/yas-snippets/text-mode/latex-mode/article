@@ -1,14 +1,23 @@
 # -*- mode: snippet -*-
 # --
 \documentclass[11pt]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+
+
+\usepackage{ctex}
+\setCJKmainfont[BoldFont={SimHei},ItalicFont={KaiTi_GB2312}]{SimSun}
+\setCJKsansfont{SimHei}
+\setCJKmonofont{FangSong_GB2312}
+\setCJKfamilyfont{zhsong}{SimSun}
+\setCJKfamilyfont{zhhei}{SimHei}
+\setCJKfamilyfont{zhkai}{KaiTi_GB2312}
+\setCJKfamilyfont{zhfs}{FangSong_GB2312}
+
+% \usepackage[utf8]{inputenc}
 \usepackage{longtable}
 \usepackage{float}
 \usepackage{wrapfig}
 \usepackage{soul}
 \usepackage{amssymb}
-\usepackage{CJKutf8}
 \usepackage{amsmath}
 \usepackage{booktabs, longtable}
 \usepackage{caption2}
@@ -24,7 +33,6 @@
 \usepackage{textcomp}
 \usepackage{times}
 \usepackage{xcolor}
-\usepackage[T1]{fontenc}
 \usepackage[dvips]{graphicx}
 \usepackage{titlesec,titletoc}
 \usepackage[unicode=true]{hyperref}
@@ -39,7 +47,7 @@
   breaklines=true,
   captionpos=b,
   commentstyle=\color{olive},
-  directivestyle=\color{blue},
+  % directivestyle=\color{blue},
   extendedchars=false,
   % frame=single,%shadowbox
   framerule=0pt,
@@ -91,8 +99,8 @@
 %=============== End Package Area ==================%
 
 \begin{document}
-\begin{CJK}{UTF8}{gbsn}
-\CJKindent
+% \begin{CJK}{UTF8}{gbsn}
+% \CJKindent
 
 %=================== 标题 ======================%
 \title{${1:title}}
@@ -112,5 +120,5 @@
 % \bibliographystyle{unsrt}
 % \bibliography{refs}
 \newpage
-\end{CJK}
+% \end{CJK}
 \end{document}
