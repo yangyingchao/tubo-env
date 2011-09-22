@@ -1,17 +1,25 @@
-DestroyFunc             GotoRightDesk
-AddToFunc               GotoRightDesk
-+                       I GotoDesk 1
-+                       I SetEnv fvwm_cur_desk $[desk.n]
-+                       I Current (CurrentPage,!backgroundxterm*) Break
-+                       I Prev (CurrentPage,AcceptsFocus) FlipFocus NoWarp
+DestroyFunc GotoRightDesk
+AddToFunc   GotoRightDesk
++           I SetEnv fvwm_cur_desk $[desk.n]
++           I Test (EnvMatch fvwm_cur_desk 3) \
+            Piperead `echo SetEnv fvwm_cur_desk 0`
++           I TestRc (NoMatch)  \
+            Piperead `echo SetEnv fvwm_cur_desk $(( $[desk.n] + 1 ))`
++           I GotoDesk 0 $[fvwm_cur_desk]
++           I Current (CurrentPage,!backgroundxterm*) Break
++           I Prev (CurrentPage,AcceptsFocus) FlipFocus NoWarp
 
 Key Right A CM GotoRightDesk
 
 
-DestroyFunc             GotoLeftDesk
-AddToFunc               GotoLeftDesk
-+                       I GotoDesk -1
-+                       I SetEnv fvwm_cur_desk $[desk.n]
+DestroyFunc GotoLeftDesk
+AddToFunc   GotoLeftDesk
++           I SetEnv fvwm_cur_desk $[desk.n]
++           I Test (EnvMatch fvwm_cur_desk 0) \
+            Piperead `echo SetEnv fvwm_cur_desk 3`
++           I TestRc (NoMatch)  \
+            Piperead `echo SetEnv fvwm_cur_desk $(( $[desk.n] - 1 ))`
++           I GotoDesk 0 $[fvwm_cur_desk]
 +                       I Current (CurrentPage,!backgroundxterm*) Break
 +                       I Prev (CurrentPage,AcceptsFocus) FlipFocus NoWarp
 
