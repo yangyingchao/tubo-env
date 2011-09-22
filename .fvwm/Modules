@@ -214,22 +214,25 @@ Style * UseStyle DefaultStyle
 Style trayer !Title, Sticky, WindowListSkip,!Handles,StaysOnBottom
 Style Trayer !Title, Sticky, WindowListSkip,!Handles,StaysOnBottom
 Style WMClock !Title, Sticky, WindowListSkip,!Handles,StaysOnBottom
-#Style Google-chrome !Title
-#Style google-chrome !Title
-#Style chromium-browser !Title
-#Style chromium !Title
 Style conky PositionPlacement 80 8
 
 # Classified apps.
 Style emacs StartsOnDesk 0
 Style sakura StartsOnDesk 0
 
+# Office/Communicating Softwares
 Style Evolution StartsOnDesk 1
 Style Sylpheed StartsOnDesk 1
 Style Pidgin StartsOnDesk 1
 
+Style libreoffice-startcenter StartsOnDesk 1
 
+
+# Remote desktops & Entainments.
 Style rdesktop StartsOnDesk 2
 Style Remmina StartsOnDesk 2
+Style Virtualbox StartsOnDesk 2
+Style Audacious StartsOnDesk 2
 
-Style Audacious StartsOnDesk 3
+# Wined apps
+Style Wine StartsOnDesk 3

@@ -2,9 +2,19 @@
 # --
 \documentclass[red,slidestop,compress,mathserif]{beamer}
 % ===================Package Area================== %
-\usepackage{CJKutf8}
 \usetheme{lankton-keynote}
 \usecolortheme{lily}
+
+\usepackage{ctex}
+\setCJKmainfont[BoldFont={SimHei},ItalicFont={KaiTi_GB2312}]{SimSun}
+\setCJKsansfont{SimHei}
+\setCJKmonofont{SimSun}
+
+\setCJKfamilyfont{zhsong}{SimSun}
+\setCJKfamilyfont{zhhei}{SimHei}
+\setCJKfamilyfont{zhkai}{KaiTi_GB2312}
+\setCJKfamilyfont{zhfs}{FangSong_GB2312}
+
 \usepackage{amsmath}
 \usepackage{booktabs, longtable}
 \usepackage{cmap}
@@ -14,11 +24,8 @@
 \usepackage{indentfirst}
 \usepackage{latexsym}
 \usepackage{listings}
-\usepackage{pxfonts}
-\usepackage{textcomp}
 \usepackage{times}
 \usepackage{xcolor}
-\usepackage[T1]{fontenc}
 
 \lstset{                        %Settings for listings package.
   language=[ANSI]{C},
@@ -45,8 +52,9 @@
   title=\lstname
 }
 
+\beamertemplateballitem
+
 \begin{document}
-\begin{CJK}{UTF8}{gbsn}
   %% ------------------------------------------
   \title{${1:title}}
   \author{杨英超}
@@ -64,6 +72,5 @@
     \frametitle{}
   \end{frame}
 
-\end{CJK}
 \end{document}
 
