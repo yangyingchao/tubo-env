@@ -209,6 +209,18 @@ Style DefaultStyle \
 Style * UseStyle DefaultStyle
 
 
+DestroyDecor TransDecor
+AddToDecor TransDecor
++ BorderStyle Colorset 100 -- Flat HiddenHandles NoInset
+Style TransStyle \
+      UseDecor TransDecor, HandleWidth 2, BorderWidth 2, \
+      ForeColor gray32, BackColor gray40, \
+      HilightFore black, HilightBack gray70,\
+      Font "StringEncoding=utf-8:xft:Microsoft YaHei:Normal:Size=9:encoding=zh_CN.UTF-8"
+
+Style Fvwm* UseStyle TransStyle
+
+
 # Specific Styles.
 
 Style trayer !Title, Sticky, WindowListSkip,!Handles,StaysOnBottom

@@ -97,16 +97,11 @@ DefaultLayers 0 4 6
 Colorset 0 RootTransparent, Tint #ffffff 0, IconAlpha 60
 
 Colorset 0 fg #ffffff, bg #ececec, hi gray, sh gray, RootTransparent buffer, Tint #ececec 0
-Colorset 1 RootTransparent, Tint #ffffff 50
 Colorset 1 fg #ffffff, bg #ececec, hi gray, sh gray, RootTransparent buffer, Tint #ececec 0, IconAlpha 80
-Colorset 2 RootTransparent, Tint #ffffff 90, fg #074bba, fgsh #ffffff, bg #ffffff, sh #ffffff, hi #ffffff
 Colorset 2 fg #ffffff, bg #7f7f7f, hi gray, sh gray, RootTransparent buffer, Tint #ececec 0
-Colorset 3 fg #074bba, bg #ffffff, fgsh #ffffff, sh #ffffff, hi #ffffff
 Colorset 3 fg #bfbfbf, bg #bfbfbf, hi #bfbfbf, sh #bfbfbf, RootTransparent buffer, Tint #ececec 0
-Colorset 4 fg #63656e, bg black, RootTransparent buffer, Tint #b5b2ff 60
-Colorset 4 fg #bfbfbf, bg #bfbfbf, hi #bfbfbf, sh #bfbfbf, RootTransparent buffer, Tint #ececec 0
+Colorset 4 fg #bfbfbf, bg #bfbfbf, hi #bfbfbf, sh #bfbfbf
 Colorset 5 fg #ffffff, bg gray60, hi gray, sh gray, RootTransparent buffer, Tint #ececec 0
-Colorset 6 RootTransparent, Tint #ffffff 0, IconAlpha 99
 Colorset 6 fg white, bg black, RootTransparent buffer, Tint #e4e5c7 90
 Colorset 7 fg #ffffff, bg gray, hi gray, sh gray, RootTransparent buffer, Tint #ececec 0
 Colorset 8 fg #f0f0f0, bg #ececec, hi #ffffff, sh #ffffff, RootTransparent buffer, Tint #ececec 0

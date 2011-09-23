@@ -25,6 +25,24 @@ AddToFunc   GotoLeftDesk
 
 Key Left A CM GotoLeftDesk
 
+DestroyFunc GotoFirstDesk
+AddToFunc   GotoFirstDesk
++           I GotoDesk 0 0
++           I SetEnv fvwm_cur_desk $[desk.n]
++           I Current (CurrentPage,!backgroundxterm*) Break
++           I Prev (CurrentPage,AcceptsFocus) FlipFocus NoWarp
+
+Key Up A CM GotoFirstDesk
+
+DestroyFunc GotoLastDesk
+AddToFunc   GotoLastDesk
++           I GotoDesk 0 3
++           I SetEnv fvwm_cur_desk $[desk.n]
++           I Current (CurrentPage,!backgroundxterm*) Break
++           I Prev (CurrentPage,AcceptsFocus) FlipFocus NoWarp
+
+Key Down A CM GotoLastDesk
+
 DestroyFunc             FuncFullScreen
 AddtoFunc               FuncFullScreen
 +                       I Current (State 0) Fullscreen-Stop
