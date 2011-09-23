@@ -109,7 +109,7 @@ Colorset 8 fg #f0f0f0, bg #ececec, hi #ffffff, sh #ffffff, RootTransparent buffe
 Colorset 9 \
 Foreground "black", Background "#c7c7c7", \
 Hilight "lightgray", Shadow "gray", \
-Tint "black" 20, RootTransparent
+Tint "#babdb6" 60, RootTransparent
 
 ### 839eb0
 Colorset 10 \

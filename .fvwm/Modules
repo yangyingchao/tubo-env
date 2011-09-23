@@ -168,7 +168,7 @@ DestroyModuleConfig FvwmDock: *
 *FvwmDock: (5x7+44, Swallow(NoClose, UseOld) \
           `stalonetray` `Exec exec stalonetray --geometry 100x50 -p`)
 
-############################# Decor ###########################################
+############################# Decor ##########################################
 
 DestroyDecor DefaultDecor
 AddToDecor DefaultDecor
