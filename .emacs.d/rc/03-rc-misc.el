@@ -416,5 +416,10 @@
 (jka-compr-update)
 
 (setq mail-default-directory "/tmp/")
+
+
+(try-require 'sudo-save)
+
+
 (provide '03-rc-misc)
 ;;;;; emacs-rc-misc.el ends here
