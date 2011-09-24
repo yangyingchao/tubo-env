@@ -219,6 +219,7 @@ Style TransStyle \
       Font "StringEncoding=utf-8:xft:Microsoft YaHei:Normal:Size=9:encoding=zh_CN.UTF-8"
 
 Style Fvwm* UseStyle TransStyle
+Style FvwmForm UseStyle DefaultStyle
 
 
 # Specific Styles.

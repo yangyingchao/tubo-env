@@ -99,21 +99,26 @@ Colorset 0 RootTransparent, Tint #ffffff 0, IconAlpha 60
 Colorset 0 fg #ffffff, bg #ececec, hi gray, sh gray, RootTransparent buffer, Tint #ececec 0
 Colorset 1 fg #ffffff, bg #ececec, hi gray, sh gray, RootTransparent buffer, Tint #ececec 0, IconAlpha 80
 Colorset 2 fg #ffffff, bg #7f7f7f, hi gray, sh gray, RootTransparent buffer, Tint #ececec 0
-Colorset 3 fg #bfbfbf, bg #bfbfbf, hi #bfbfbf, sh #bfbfbf, RootTransparent buffer, Tint #ececec 0
-Colorset 4 fg #bfbfbf, bg #bfbfbf, hi #bfbfbf, sh #bfbfbf
+Colorset 3 fg #c4c4c4, bg #c4c4c4, hi #c4c4c4, sh #c4c4c4, RootTransparent buffer, Tint #ececec 0
+
+Colorset 4 \
+Foreground "#c4c4c4", Background "#4286c5", \
+Hilight "black", Shadow "black", \
+Tint "white" 15
+
 Colorset 5 fg #ffffff, bg gray60, hi gray, sh gray, RootTransparent buffer, Tint #ececec 0
 Colorset 6 fg white, bg black, RootTransparent buffer, Tint #e4e5c7 90
 Colorset 7 fg #ffffff, bg gray, hi gray, sh gray, RootTransparent buffer, Tint #ececec 0
 Colorset 8 fg #f0f0f0, bg #ececec, hi #ffffff, sh #ffffff, RootTransparent buffer, Tint #ececec 0
 
 Colorset 9 \
-Foreground "black", Background "#c7c7c7", \
-Hilight "lightgray", Shadow "gray", \
+Foreground "black", Background "#9eb8e0", \
+Hilight "#lightgray" Shadow "gray", \
 Tint "#babdb6" 60, RootTransparent
 
 ### 839eb0
 Colorset 10 \
-Foreground "yellow", Background "#839eb0", \
+Foreground "yellow", Background "#4286c5", \
 Hilight "black", Shadow "black", \
 Tint "white" 15
 
