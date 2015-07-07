@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: advice-remove
+# key: advr
+# --
+(advice-remove '${1:ORIG_FUNC} ${2:#'yc/$1-adv})

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: spw
+# key: spw
+# --
+spawn $0

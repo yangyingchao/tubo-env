@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: with_as
+# key: wa
+# --
+with ${1:expr} as ${2:alias}:
+     $0

@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: defconst
+# key: dfc
+# --
+(defconst ${1:name}
+$0$>
+"${3:Descriptions.}"$>
+)

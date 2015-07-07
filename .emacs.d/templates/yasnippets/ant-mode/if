@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: if
+# key: if
+# --
+<if>
+${1:COND}$>
+<then>$>
+${2:ACTION1}$>
+</then>$>
+<else>$>
+${3:ACTION2}$>
+</else>$>
+</if>

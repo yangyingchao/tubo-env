@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: enum
+# key: eu
+# --
+${1:nd}_${2:}[label="$2"];

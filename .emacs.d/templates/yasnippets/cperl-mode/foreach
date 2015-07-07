@@ -1,0 +1,6 @@
+# name: foreach ... { ... }
+# key: foe
+# --
+foreach my \$${1:x} (@${2:array}) {$>
+    $0$>
+}$>

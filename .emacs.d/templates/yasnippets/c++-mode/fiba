@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: fiba
+# key: fiba
+# --
+auto ${3:iter} = ${4:array}.${5:b}${5:$(cond
+    ((string-match "^b" yas-text) "egin")
+    ((string-match "^r" yas-text) "begin")
+    (t ""))}();$>
+auto  end = $4.${5:$(cond
+    ((string-match "^b" yas-text) "end")
+    ((string-match "^r" yas-text) "rend")
+    (t ""))}();$>
+for (; $3 != end; ++$3) {
+$0$>
+}

@@ -1,0 +1,4 @@
+# name: setq
+# key: setq
+# --
+(setq ${1:var} ${2:val})

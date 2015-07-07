@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: stringify
+# key: fmt
+# --
+JSON.stringify($0);

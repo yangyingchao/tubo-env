@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: set_directory_properties
+# --
+set_directory_properties($0)

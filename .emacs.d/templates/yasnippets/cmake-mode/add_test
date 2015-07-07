@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: add_test
+# --
+add_test($0)

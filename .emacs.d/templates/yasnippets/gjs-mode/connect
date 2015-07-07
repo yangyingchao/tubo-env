@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: connect
+# key: conn
+# --
+connect('${1:signal}', $0);

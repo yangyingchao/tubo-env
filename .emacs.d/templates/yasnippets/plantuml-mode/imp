@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Implements
+# key: imp
+# --
+${1:Interface} -> ${2:instance} [arrowtail=empty style=dashed dir=back];

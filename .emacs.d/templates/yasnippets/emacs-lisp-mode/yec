@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: yc/eval-cost
+# key: yec
+# --
+(yc/eval-cost
+"${1:name}"$>
+$0)$>

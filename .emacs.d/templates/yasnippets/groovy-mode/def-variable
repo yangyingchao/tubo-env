@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# contributor: Peter Urbak <peter@dragonwasrobot.com>
+# key: defv
+# name: def-variable
+# --
+def $1 = $2
+$0

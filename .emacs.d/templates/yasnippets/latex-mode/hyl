@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+#contributor : Rodrigo Setti <rodrigosetti@gmail.com>
+#name : hyperlink
+# --
+\hyperlink{${1:link}}{${2:name}}

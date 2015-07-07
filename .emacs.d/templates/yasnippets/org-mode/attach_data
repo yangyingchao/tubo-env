@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: attach_data
+# key: atd
+# --
+[[../assets/data/${1:file}][$0]]

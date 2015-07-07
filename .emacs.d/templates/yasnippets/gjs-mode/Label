@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Label
+# key: lbl
+# --
+Gtk.Label({label:'${2:label}'});

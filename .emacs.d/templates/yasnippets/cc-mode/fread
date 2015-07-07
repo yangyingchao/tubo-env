@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: fread
+# key: fread
+# --
+size_t ${1:got} = fread(${2:ptr}, ${3:size_per_op}, ${4:total_size}, ${5:stream});

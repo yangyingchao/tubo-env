@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: install
+# --
+install(`(ivy-read "Choose Target:" '("TARGETS"
+                                      "FILES"
+                                      "PROGRAMS"
+                                      "DIRECTORY"
+                                      "SCRIPT"
+                                      "CODE"
+                                      "EXPORT"
+                                      ))` $0)

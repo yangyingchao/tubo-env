@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: #[derive(Trait)]
+# key: drv
+# --
+#[derive(${1:Type}${1:$(cond
+                        ((string-match "^D" yas-text) "ebug")
+                        (t ""))})]

@@ -1,0 +1,11 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: shared_ptr
+# key: shp
+# --
+${1:s}${1:$(cond
+        ((string-match "^st" yas-text) "d::shared_ptr<")
+        ((string-match "^sh" yas-text) "ared_ptr<")
+        ((string-match "^t" yas-text) "r1:shared_ptr<")
+        ((string-match "^b" yas-text) "oost::shared_ptr<")
+        (t "hared_ptr<")
+)}${2:T}> $0

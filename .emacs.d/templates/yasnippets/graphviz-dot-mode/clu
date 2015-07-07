@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# --
+subgraph cluster_${1:Name} {
+color = invis;$>
+style=filled;$>
+rank=same;$>
+label = "${2: }";$>
+edge[color="brown"  style=dashed];$>
+$1_entry[label = "${3:name}" shape=ellipse color="#4e9a06" style=filled];$>
+$1_exit[label="Return" shape="ellipse" color="#ce5c00"];
+}

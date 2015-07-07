@@ -1,0 +1,81 @@
+# -*- mode: snippet -*-
+# --
+% !TEX program = xelatex
+% !Mode:: "TeX:UTF-8"
+\documentclass[11pt]{article}$>
+\usepackage{ctex}$>
+% \usepackage[noindent]{ctex}
+\setCJKmainfont[BoldFont={SimHei},ItalicFont={KaiTi_GB2312}]{SimSun}
+\setCJKsansfont{SimHei}
+\setCJKmonofont{SimSun}
+\setCJKfamilyfont{zhsong}{SimSun}$>
+\setCJKfamilyfont{zhhei}{SimHei}
+\setCJKfamilyfont{zhkai}{KaiTi_GB2312}
+\setCJKfamilyfont{zhfs}{FangSong_GB2312}
+% \setmainfont{Times New Roman}$>
+% \setmonofont{Monaco}
+\usepackage{longtable}$>
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{soul}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{booktabs, longtable}
+\usepackage{caption2}
+\usepackage{cite}
+\usepackage{cmap}
+\usepackage{enumerate}
+\usepackage{fancybox}
+\usepackage{flafter}
+\usepackage{indentfirst}
+\usepackage{latexsym}
+\usepackage{listings}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage[dvips]{graphicx}
+\usepackage{titlesec,titletoc}
+\usepackage[colorlinks,linkcolor=red,anchorcolor=blue,citecolor=green, unicode=true]{hyperref}
+\usepackage[top=1in, bottom=1in, left=1.25in, right=1.25in]{geometry}
+\DeclareGraphicsExtensions{.eps,.ps,.eps.gz,.ps.gz,.eps.Z}
+\lstset{                        %Settings for listings package.$>
+language=[ANSI]{C},$>
+% backgroundcolor=\color{lightgray},$>
+basicstyle=\footnotesize,$>
+breakatwhitespace=false,$>
+breaklines=true,$>
+captionpos=b,$>
+commentstyle=\color{red!50!green!50!blue!50},$>
+directivestyle=\color{blue},$>
+extendedchars=false,$>
+frame=shadowbox,$>
+framerule=0pt,$>
+keywordstyle=\color{blue}\bfseries,$>
+morekeywords={*,define,*,include...},$>
+numbersep=5pt,$>
+rulesepcolor=\color{red!20!green!20!blue!20},$>
+showspaces=false,$>
+showstringspaces=false,$>
+showtabs=false,$>
+numbers=left, %none$>
+stepnumber=0, %2$>
+stringstyle=\color{purple},$>
+tabsize=4,$>
+title=\lstname$>
+}
+%=============== End Package Area ==================%$>
+\begin{document}$>
+%=================== 标题 ======================%
+\title{${1:title}}
+\author{杨英超}
+\maketitle
+%=================== 目录 ======================%$>
+\newpage
+\tableofcontents
+\newpage
+%=================== 正文 ======================%$>
+%================= 参考文件 ======================%$>
+\newpage
+% \bibliographystyle{unsrt}
+% \bibliography{refs}
+\newpage
+\end{document}

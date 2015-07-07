@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name : sprintf
+# key: spn
+# --
+sprintf(${1:DEST}, "${2:%s}\\n"${2:$(if (string-match "%" yas-text) ", " "\);")
+}$3${2:$(if (string-match "%" yas-text) "\);" "")}

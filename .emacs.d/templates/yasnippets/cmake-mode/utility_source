@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: utility_source
+# --
+utility_source($0)

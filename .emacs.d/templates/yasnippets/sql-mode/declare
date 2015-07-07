@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: DECLARE
+# key: dec
+# --
+DECLARE ${1:name} ${2:type};

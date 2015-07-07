@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: else
+# key: else
+# --
+ELSE ${1:result}$>

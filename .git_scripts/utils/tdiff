@@ -1,0 +1,13 @@
+#!/bin/bash
+#
+# Author: Yang, Ying-chao@gmail.com, 2015-09-07
+#
+shift 5
+
+which p4merge > /dev/null 2>&1
+if [ $? -ne 0 ] || [ -z $DISPLAY ]; then
+    vimdiff "$@"
+else
+    p4merge "$@"
+fi
+

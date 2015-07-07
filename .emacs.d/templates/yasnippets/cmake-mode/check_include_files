@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: check_include_files
+# key: cif
+# --
+check_include_files(${1:header} HAVE_${1:$(upcase
+(replace-regexp-in-string(regexp-quote "/") "_"
+(replace-regexp-in-string(regexp-quote "\\.") "_" yas-text t t) t t)
+)})

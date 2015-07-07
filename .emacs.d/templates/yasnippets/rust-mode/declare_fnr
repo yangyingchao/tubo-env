@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: declare_fnr
+# key: dcr
+# --
+fn ${1:name}(&self${2:}) -> ${3:Type};

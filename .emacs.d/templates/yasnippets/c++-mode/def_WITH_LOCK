@@ -1,0 +1,16 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: def_WITH_LOCK
+# key: DFW
+# --
+// usage:
+//
+// WITH_LOCK_EBGIN(std::mutex, my_lock)
+//    do_works...
+// WITH_LOCK_END
+
+#define WITH_LOCK_BEGIN(TYPE, NAME) \
+do { \
+std::lock_guard<TYPE> guard(NAME);$>
+
+#define WITH_LOCK_END() \
+} while(0)

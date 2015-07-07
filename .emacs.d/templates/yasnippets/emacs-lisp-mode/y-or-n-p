@@ -1,0 +1,6 @@
+#contributor: Xah Lee (XahLee.org)
+#name: y-or-n-p
+#key: y-or-n-p
+#key: yon
+# --
+(yes-or-no-p "${1PROMPT}")

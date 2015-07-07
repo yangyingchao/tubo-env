@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# key:src
+# --
+#+BEGIN_SRC ${1:c++} -r $2${2:$(
+cond
+((string-match ":$" yas-text) "hidden" )
+((string-match ":h$" yas-text) "idden" )
+((string-match ":hi$" yas-text) "dden" )
+(t ""))}
+$0
+#+END_SRC

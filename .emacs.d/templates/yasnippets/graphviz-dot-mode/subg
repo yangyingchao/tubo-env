@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: subgraph
+# key: sbg
+# --
+subgraph  {
+color=invis;$>
+style=filled;$>
+rank=same;$>
+$1$>
+}

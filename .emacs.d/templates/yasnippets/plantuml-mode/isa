@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: isa ( A is-a B, A inherits from B)
+# key: isa
+# --
+${1:Parent} -> ${2:child} [arrowtail=empty style=solid dir=back];

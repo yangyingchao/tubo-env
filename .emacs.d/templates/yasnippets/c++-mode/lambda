@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: lambda
+# key: lmb
+# --
+[$1]($2) {
+$0$>
+}

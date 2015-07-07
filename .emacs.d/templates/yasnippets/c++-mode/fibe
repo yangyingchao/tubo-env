@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: fibe
+# key: fibe
+# --
+for (auto it = ${1:CONTAINER}.begin(); it != $1.end();$2){
+$0
+}

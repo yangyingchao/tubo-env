@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Import....
+# key: gimp
+# --
+const Lang = imports.lang;
+const Gtk = imports.gi.Gtk;
+

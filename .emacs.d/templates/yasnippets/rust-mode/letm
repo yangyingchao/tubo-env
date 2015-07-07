@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: let mut var = expression;
+# key: lm
+# --
+let mut ${1:var} = ${2:expression};

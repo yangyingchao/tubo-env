@@ -1,0 +1,9 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: auto_ptr
+# key: aup
+# --
+${1:a}${1:$(cond
+        ((string-match "^a" yas-text) "uto_ptr<")
+        ((string-match "^s" yas-text) "td::auto_ptr<")
+        (t "uto_ptr<")
+)}${2:T}> $0

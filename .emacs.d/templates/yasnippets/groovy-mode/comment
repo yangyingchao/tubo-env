@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# contributor: Peter Urbak <peter@dragonwasrobot.com>
+# key: /*
+# name: comment-region
+# --
+/* $0 */

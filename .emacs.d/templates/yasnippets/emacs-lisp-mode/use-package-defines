@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: :defines
+# key: :dfn
+# group: use-package
+# --
+:defines $0

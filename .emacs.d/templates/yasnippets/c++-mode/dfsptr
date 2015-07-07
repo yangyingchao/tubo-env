@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: dfsptr
+# key: dfsptr
+# --
+#define SHOW_PTR(X)                                                     \
+do {                                                                 \\$>
+printf("Var: %s, Ptr: %p, RealPtr: %p, Use count: %ld\n",       \\$>
+#X, &X, X.get(), X.use_count());                         \\$>
+} while (0)$>

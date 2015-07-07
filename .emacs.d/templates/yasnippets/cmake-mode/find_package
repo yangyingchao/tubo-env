@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: find_package
+# --
+find_package($0)

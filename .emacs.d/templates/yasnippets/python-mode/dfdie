@@ -1,0 +1,14 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: defun die
+# key: dfdie
+# --
+# import  traceback
+def die(fmt, *args):
+    stack = traceback.extract_stack(None, 2)[0]
+    try:
+        msg = fmt%args
+    except:
+        msg = "Failed to format string.."
+    finally:
+        print("(%s:%d -- %s): %s"%(stack[0], stack[1], stack[2], msg))
+    sys.exit(1)

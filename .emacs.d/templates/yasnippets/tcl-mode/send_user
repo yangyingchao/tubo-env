@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: send_user
+# key: seu
+# --
+send_user "$0\n"

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "NAME: $(git config user.name)"
+git log --author=$(git config user.name) --since="1 weeks ago" --pretty=format:"%C(yellow)Commit: %H%n%n %s%n%n %b%n%n"

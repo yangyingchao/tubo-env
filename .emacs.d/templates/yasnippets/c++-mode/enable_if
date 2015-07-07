@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: enable_if
+# key: eni
+# --
+std::enable_if<${1:_Cond}, ${2:_Tp}> $0

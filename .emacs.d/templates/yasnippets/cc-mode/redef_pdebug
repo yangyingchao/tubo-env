@@ -1,0 +1,17 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: redef_pdebug
+# key: rdfbg
+# --
+#if defined(PDEBUG)
+#undef PDEBUG
+#endif /*End of if PDEBUG*/
+#define PDEBUG(fmt, ...)\\$>
+do {\\$>
+const char *file = __FILE__, *ptr; \\$>
+const char* end = file + strlen(file);\\$>
+while ((ptr = strchr(file, '/')) && ++ptr < end) {\\$>
+file = ptr;\\$>
+}\\$>
+fprintf(stderr, "%lX: %s:%04d -- %s: " fmt, pthread_self(), file, __LINE__,\\$>
+__FUNCTION__, ##__VA_ARGS__);\\$>
+} while (0)

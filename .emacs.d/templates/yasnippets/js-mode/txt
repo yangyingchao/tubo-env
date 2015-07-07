@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: txt
+# key: txt
+# --
+document.getElementById("$1").value = "$2";

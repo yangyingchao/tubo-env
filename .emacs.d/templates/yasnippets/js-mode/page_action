@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: page_action
+# key: pa
+# --
+"browser_action" :{
+$1$>
+}

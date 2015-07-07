@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: ttest
+# key: ttest
+# --
+// XXX: Test begin, to test ${1:target}.
+$0$>
+// XXX: End of test

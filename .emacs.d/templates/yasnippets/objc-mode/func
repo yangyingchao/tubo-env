@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# --
+${1:+} (${2:type})${3:FuncName} {
+$0$>
+}

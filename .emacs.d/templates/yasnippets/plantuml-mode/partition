@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: partition
+# key: par
+# --
+partition ${1:LABEL} {
+$0
+}

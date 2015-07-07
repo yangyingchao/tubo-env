@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# --
+check-syntax:
+gcc ${1:Source} -Wall$>

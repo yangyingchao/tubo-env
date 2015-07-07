@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# --
+% Clear background
+\ClearShipoutPicture

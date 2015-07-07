@@ -1,0 +1,29 @@
+# -*- mode: snippet -*-
+# --
+CC=gcc
+COMMON_FLAGS=-Wall -O2 -g -DDEBUG
+CFLAGS= $(COMMON_FLAGS) -std=c99
+CXX=g++
+CPPFLAGS= $(COMMON_FLAGS) -std=c++11
+
+LDFLAGS=
+OBJS=$0
+TARGET=${1:main}
+
+%.d: %.c
+	@set -e; rm -f $@;
+    $(CC) $(CFLAGS) -MM -MT $*.o $(CFLAGS) $< > $@.$$$$;
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@;
+	rm -f $@.$$$$
+%.d: %.cpp$>
+	@set -e; rm -f $@;
+    $(CXX) $(CPPFLAGS) -MM -MT $*.o $(CPPFLAGS) $< > $@.$$$$;
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@;
+	rm -f $@.$$$$
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CC)  $^ -o $@ $(CPPFLAGS) $(LDFLAGS)
+
+clean:
+	-rm -f $(TARGET) $(OBJS) $(OBJS:.o=.d)

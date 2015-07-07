@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: echo
+# key: echo
+# --
+echo "$0"$>

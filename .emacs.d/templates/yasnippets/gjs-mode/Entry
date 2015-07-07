@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Gtk.Entry
+# key: entry
+# --
+Gtk.Entry()

@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# --
+@interface ${1:ClassName} : ${2:BaseClass}
+{
+// Instance Variables$>
+${3:InstanceVariable}$>
+}
+// Method and property.
+${4:ProtoTypes}
+@end

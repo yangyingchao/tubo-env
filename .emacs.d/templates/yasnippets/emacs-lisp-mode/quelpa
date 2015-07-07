@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: :quelpa
+# key: :que
+# --
+:quelpa (${1:pkg} :fetcher ${2:github} :repo "$0")

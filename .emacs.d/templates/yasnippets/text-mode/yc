@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: yc
+# key: yc
+# --
+`(yas-with-comment "yyc, (>>DATE<<), ")`

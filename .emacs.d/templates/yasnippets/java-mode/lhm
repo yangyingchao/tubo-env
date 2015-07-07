@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: LinkedHashMap
+# key: lhm
+# --
+LinkedHashMap<${1:K}, ${2:V}> $0;

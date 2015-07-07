@@ -1,0 +1,30 @@
+# -*- mode: snippet -*-
+# name: file
+# --
+file(`(ivy-read "Choose" '("GLOB"
+                           "GLOB_RECURSE"
+                           "CREATE_LINK"
+                           "DOWNLOAD"
+                           "GENERATE OUTPUT"
+                           "GET_RUNTIME_DEPENDENCIES"
+                           "LOCK"
+                           "MAKE_DIRECTORY"
+                           "READ"
+                           "READ_SYMLINK"
+                           "RELATIVE_PATH"
+                           "RENAME"
+                           "SIZE"
+                           "STRINGS"
+                           "TIMESTAMP"
+                           "UPLOAD"
+                           "COPY"
+                           "INSTALL"
+                           "REMOVE"
+                           "REMOVE_RECURSE"
+                           "TOUCH"
+                           "TOUCH_NOCREATE"
+                           "TO_CMAKE_PATH"
+                           "TO_NATIVE_PATH"
+                           "WRITE"
+                           "APPEND")
+                )` ${VAR} $0)

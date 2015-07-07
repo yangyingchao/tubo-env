@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: expect_ne (google-test)
+# key: gen
+# --
+EXPECT_NE($1, $2);

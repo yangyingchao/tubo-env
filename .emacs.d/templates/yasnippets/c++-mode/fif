@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: find_if
+# key: fif
+# --
+find_if(${1:start}, $2${1:$(if (string-match "\.begin\(\)" yas-text) ".end()" "")}, ${3:functor});

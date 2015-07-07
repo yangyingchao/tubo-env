@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: getopts
+# key: opts
+# --
+while getopts ${1:opts} var; do$>
+case \$var in$>
+${2:opt})$>
+$0$>
+;;$>
+*)$>
+;;$>
+esac$>
+done
+shift $(($OPTIND - 1))$>

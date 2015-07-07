@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: memcpy
+# key: mmc
+# --
+memcpy(${1:dest}, ${2:src}, ${3:size});

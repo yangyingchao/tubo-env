@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: site_name
+# --
+site_name($0)

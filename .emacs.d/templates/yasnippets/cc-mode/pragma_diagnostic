@@ -1,0 +1,10 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: pragma_diagnostic
+# key: prd
+# --
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Waddress"
+
+// This line should be moved to end of tile
+#pragma GCC diagnostic pop

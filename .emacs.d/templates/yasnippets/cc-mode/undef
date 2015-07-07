@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: undef
+# key: udf
+# --
+#undef $0

@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: mode
+# key: mdl
+# --
+`(unless
+     (save-excursion
+       (goto-char (point-at-bol))
+       (looking-at-p (rx (*? nonl) "-*- mode: " (group (+? nonl)) " -*-" (*? nonl)))
+       )
+
+   (insert (yas-with-comment (format "-*- mode: %s -*-" (substring (symbol-name major-mode) 0 -5))))
+   )`

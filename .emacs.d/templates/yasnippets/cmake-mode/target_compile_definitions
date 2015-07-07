@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: target_compile_definitions
+# --
+target_compile_definitions(${1:TARGET}
+${2:PU}${2:$(cond
+          ((string-match "^PU" yas-text) "BLIC")
+          ((string-match "^PR" yas-text) "IVATE")
+          ((string-match "^I"  yas-text) "NTERFACE")
+          (t ""))} $0)

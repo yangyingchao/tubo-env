@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: use-package
+# key: usp
+# group: use-package
+# --
+(use-package ${1:pkg}
+$0)$>

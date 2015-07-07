@@ -1,0 +1,21 @@
+# -*- mode: snippet -*-
+# --
+Options options = new Options();
+String appName = $0;
+options.addOption("h", "help", false, "Print this usage information");$>
+CommandLineParser parser = null;$>
+CommandLine commandLine = null;
+try$>
+{
+parser = new BasicParser();$>
+commandLine = parser.parse(options, args);$>
+if (commandLine.hasOption('h'))$>
+{$>
+usage(appName, options);$>
+}$>
+}
+catch (ParseException e)
+{
+System.err.println("You provided wrong arguments");$>
+usage(appName, options);$>
+}

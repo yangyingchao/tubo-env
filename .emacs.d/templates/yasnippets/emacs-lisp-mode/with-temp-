@@ -1,0 +1,10 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: with-temp
+# key: with
+# --
+(with-temp-${1:b}${1:$(cond
+((string-match "^b" yas-text) "uffer")
+((string-match "^f" yas-text) "ile")
+((string-match "^m" yas-text) "essage")
+(t ""))}${1:$(if (string-match "f" yas-text) " " "")}$2$>
+$0)$>

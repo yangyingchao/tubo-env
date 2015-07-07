@@ -1,0 +1,167 @@
+// -*- mode: js -*-
+{
+    "layer": "bottom",
+    "position": "top",
+    "height": 25,
+    "modules-left": ["sway/workspaces",  "sway/mode"],
+    "modules-center": ["sway/window"],
+    "modules-right": ["custom/mpv",
+                      "tray", "pulseaudio", "cpu", "memory", "temperature",
+                      "network#wireless",   "network#ethernet",
+                      "battery","idle_inhibitor", "clock"],
+
+    "sway/mode": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
+
+    "sway/workspaces": {
+        "format": "{name}",
+        "disable-scroll": true
+    },
+
+    "sway/window": {
+        "max-length": 120,
+        "tooltip": false
+    },
+
+
+    "tray": {
+        "icon-size": 24,
+        "spacing": 10
+    },
+    "clock": {
+        "tooltip": false,
+        "interval": 1,
+        "format": "{:%I:%M %p}",
+        "format-alt": " {:%d %B %Y, %A}"
+    },
+    "cpu": {
+        "format": " {usage:2}%",
+        "tooltip": false
+    },
+    "memory": {
+        "format": " {}%",
+        "tooltip": false
+    },
+    "temperature": {
+        "critical-threshold": 80,
+        "format": "{icon} {temperatureC}",
+        "format-icons": [
+            "", // Icon: temperature-empty
+            "", // Icon: temperature-quarter
+            "", // Icon: temperature-half
+            "", // Icon: temperature-three-quarters
+            ""  // Icon: temperature-full
+        ]
+    },
+    "battery": {
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{capacity}% {icon}",
+        "format-charging": "",
+        "format-plugged": "",
+        "format-icons": [
+            "",
+			"",
+			"",
+			"",
+			""
+        ],
+        "on-click":"~/.config/polybar/upower.sh -n",
+        "tooltip": false
+    },
+
+    "network#wireless": {
+        "interval": 10,
+        "interface" : "wlp5s0",
+        "format-wifi": "直",
+        "format-linked": "睊",
+        "format-disconnected": "睊",
+        "format-alt": "{ifname}: {ipaddr}/{cidr}",
+        "on-click-middle": "foot 'sudo nmtui'",
+        "tooltip": false
+    },
+    "network#ethernet": {
+        "interval": 10,
+        "interface" : "enp4s0",
+        "format-ethernet": "",
+        "format-linked": "",
+        "format-disconnected": "",
+        "format-alt": "{ifname}: {ipaddr}/{cidr}",
+        "on-click-middle": "alacritty -e 'nmtui'",
+        "tooltip": false
+    },
+    "pulseaudio": {
+        "tooltip": false,
+        "format": "{icon} {volume}%",
+        "format-bluetooth": "{icon}{volume}%",
+        "format-muted": "ﱝ",
+        "format-source": "{volume}%",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphones": "",
+            "handsfree": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "scroll-step" : 5,
+		"on-click": "pavucontrol",
+        "on-click-middle": "amixer -D pulse sset Master toggle",
+        "on-click-right": "blueman-manager"
+    },
+
+    "idle_inhibitor": {
+        "tooltip": false,
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "",
+            "deactivated": ""
+        }
+    },
+
+     "mpd": {
+        "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon} {title} ",
+        "format-disconnected": "",
+        "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
+        "unknown-tag": "N/A",
+        "interval": 2,
+        "consume-icons": {
+            "on": " "
+        },
+        "random-icons": {
+            "off": "",
+            "on": " "
+        },
+        "repeat-icons": {
+            "on": " "
+        },
+        "single-icons": {
+            "on": "1 "
+        },
+        "state-icons": {
+            "paused": "",
+            "playing": ""
+        },
+         "on-click" : "mpc toggle",
+         "on-click-right" : "mpc next",
+         "on-click-middle" : "ario",
+         "tooltip" : false
+    },
+
+    "custom/mpv": {
+        "tooltip" : false,
+        "format": " {} ",
+        "exec": "~/.config/waybar/player-mpv-tail.py -t 42",
+        "on-click": "~/.config/waybar/player-mpv-tail.py -p pause",
+        "on-click-middle":  "~/.config/waybar/player-mpv-tail.py -p playlist-pos -1",
+        "on-click-right":  "~/.config/waybar/player-mpv-tail.py -p playlist-pos +1",
+        "on-scroll-up":  "~/.config/waybar/player-mpv-tail.py -p time-pos -10",
+        "on-scroll-down":  "~/.config/waybar/player-mpv-tail.py -p time-pos +10",
+    }
+}

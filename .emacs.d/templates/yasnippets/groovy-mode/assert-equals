@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# contributor: Peter Urbak <peter@dragonwasrobot.com>
+# key: asseq
+# name: assert equals
+# --
+assert $1 == $2
+$0

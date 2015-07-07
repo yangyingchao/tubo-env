@@ -1,0 +1,22 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: def-udf
+# key: dfudf
+# --
+/*
+  Usage:
+
+  DROP FUNCTION ${1:func};
+  CREATE FUNCTION $1 RETURNS ${2:S}${2:$(cond ((string= "S" yas-text) "TRING")
+                  ((string= "I" yas-text) "NTEGER")
+                  ((string= "R" yas-text) "EAL")
+                  (t "")
+                  )} SONAME 'libxxx.so';
+ */
+my_bool $1_init(UDF_INIT *initid, UDF_ARGS *args, char *message);
+void $1_deinit(UDF_INIT *initid);
+${2:$(cond ((string= "S" yas-text) "char*")
+                  ((string= "I" yas-text) "long long")
+                  ((string= "R" yas-text) "double")
+                  (t "")
+                  )}
+$1(UDF_INIT *initid, UDF_ARGS *args, ${2:$(if (string= "S" yas-text) "char *result, unsigned long *length," "")}char *is_null, char *error);

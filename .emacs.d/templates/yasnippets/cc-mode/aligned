@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: aligned
+# key: ali
+# --
+__attribute__((aligned ($1)))

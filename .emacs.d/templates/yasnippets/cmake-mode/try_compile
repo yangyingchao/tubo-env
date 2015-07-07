@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: try_compile
+# --
+try_compile($0)

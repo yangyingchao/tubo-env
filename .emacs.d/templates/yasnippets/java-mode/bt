@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: bt
+# key: bt
+# --
+StackTraceElement[] stacks = Thread.currentThread().getStackTrace();
+for (StackTraceElement stack : stacks) {
+Log.e("TDEBUG", "\t" + stack.toString());$>
+}

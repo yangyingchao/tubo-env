@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: catch
+# key: catch
+# --
+(catch '${1:p-found}
+$0
+(setq $2 value)
+(throw '$1 value))$>

@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: reinterpret_cast
+# key: rca
+# --
+reinterpret_cast<${1:T}>(${2:variable})

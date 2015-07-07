@@ -1,0 +1,10 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: timer
+# key: tmr
+# --
+probe timer.${1:m}${1:$(cond ((string-match "^m" yas-text) "s")
+                             ((string-match "^j" yas-text) "iffies")
+                             (t ""))}(${2:100})
+{
+$0$>
+}

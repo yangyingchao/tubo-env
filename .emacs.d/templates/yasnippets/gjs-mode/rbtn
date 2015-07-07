@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: RadioButton
+# key: rbtn
+# --
+Gtk.RadioButton({label: "${1:label}"})

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# --
+/* XXX: debug fucntion, added by yyc. */
+# define PDEBUG(fmt, args...)						\
+printk( KERN_DEBUG "yyc: %s(%d)-%s:\t", __FILE__, __LINE__,	\\$>
+__FUNCTION__);						\\$>
+printk("\033[31m"fmt"\033[0m", ##args);$>

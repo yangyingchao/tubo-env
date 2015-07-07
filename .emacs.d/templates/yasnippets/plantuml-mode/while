@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: while
+# key: while
+# --
+while(${1:COND}) is (${2:lable})
+:$0
+endwhile(${3:lable2})

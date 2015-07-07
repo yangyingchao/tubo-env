@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: if-const
+# key: ic
+# --
+if constexpr (${1:COND}) {
+$0
+}

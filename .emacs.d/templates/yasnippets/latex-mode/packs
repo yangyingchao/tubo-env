@@ -1,0 +1,27 @@
+# -*- mode: snippet -*-
+# --
+\documentclass[a4paper,11pt]{article}
+\usepackage{indentfirst} %Indent the first line.$>
+\usepackage{textcomp}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{flafter}
+\usepackage{booktabs, longtable}
+\usepackage{pxfonts}
+\usepackage{cite}
+\usepackage{enumerate}
+\usepackage{cmap}
+\usepackage{subfig}
+\usepackage{ctex}
+\usepackage[ps2pdf, bookmarks, pdfview={FitH}, pdfstartview={FitH}]{hyperref}
+% Main Article begins here ...$>
+\begin{document}$>
+\title{${1:Title}}$>
+\maketitle$>
+\newpage$>
+\tableofcontents$>
+\newpage$>
+\end{document}$>

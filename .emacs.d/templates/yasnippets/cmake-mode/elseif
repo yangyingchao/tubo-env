@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: elseif
+# --
+elseif($0)

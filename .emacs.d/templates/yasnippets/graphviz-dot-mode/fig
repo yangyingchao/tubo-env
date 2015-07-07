@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# --
+digraph ${1:Name} {
+graph [truecolor bgcolor="transparent"]$>
+edge[color="#1e90ff"];$>
+$0$>
+}

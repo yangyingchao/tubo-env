@@ -1,0 +1,9 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: sequence
+# key: seq
+# --
+actor ${1:ACTOR1}
+actor ${2:ACTOR2}
+
+
+$1 -> $2: ${3:MSG}

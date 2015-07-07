@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: target_link_libraries
+# --
+target_link_libraries(${1:TARGET} ${2:DEPS})

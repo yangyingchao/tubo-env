@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: using_alias
+# key: ual
+# --
+using ${1:ALIAS} = ${2:REAL};

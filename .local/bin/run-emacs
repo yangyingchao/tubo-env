@@ -1,0 +1,262 @@
+#!/bin/bash
+#
+# Author: Yang,Ying-chao <yangyingchao@gmail.com>, 2016-09-18
+#
+###
+### Run emacs.
+###
+### Usage:
+###   run-emacs [OPTIONS] file:line
+###
+### Options:
+###   -N        Start new emacs instance (ignore running servers)
+###   -D        Show debug log
+###   -h        Show this message
+###   -n		Don't wait for the server to return
+###   -t 		Open a new Emacs frame on the current terminal
+###   -c    	Create a new frame instead of trying to use the current Emacs frame
+
+source ~/.local/bin/common.sh
+
+export LC_CTYPE=zh_CN.UTF-8
+export LC_ALL=
+
+# if [ -f /opt/rh/devtoolset-9/enable ]; then
+#     TOOLSET=/opt/rh/devtoolset-9/root/usr
+#     source /opt/rh/devtoolset-9/enable
+#     export LD_LIBRARY_PATH=${TOOLSET}/lib:${TOOLSET}/lib64:${LD_LIBRARY_PATH}
+# fi
+
+ARCH=`uname`
+
+function die ()
+{
+    set +xe
+    echo ""
+    echo "================================ DIE ==============================="
+    echo "$@"
+    echo "Call stack:"
+    local n=$((${#BASH_LINENO[@]}-1))
+    local i=0
+    while [ $i -lt $n ]; do
+        local line=${BASH_LINENO[i]}
+        local func=${FUNCNAME[i+1]}
+
+        i=$((i+1))
+
+        echo "    [$i] -- line $line -- $func"
+    done
+    echo "================================ END ==============================="
+    exit 1
+}
+
+function help() {
+    sed -rn 's/^### ?//;T;p' "$0"
+}
+
+# find emacs client, based on EMACS
+function find-emacsclient ()
+{
+    echo "OK"
+}
+
+# check if emacs is available.
+# When environment variable EMACS is set, use it if it exists (executable), or report error.
+function prepare-executable ()
+{
+    if [ -n "${EMACS}" ]; then
+        which ${EMACS} >/dev/null 2>&1
+        if [ $? -ne 0 ]; then
+            die "User specified emacs ${EMACS} does not exist!"
+        else
+            # TODO: check EMACSCLIENT...
+            return 0
+        fi
+    fi
+
+    for suffix in "-pgtk-native" "-native" ""; do
+        EMACS=emacs${suffix}
+        PDEBUG "Checking: ${EMACS}"
+        which ${EMACS} > /dev/null 2>&1
+        if [ $? -eq 0 ]; then
+            for client_suffix in "-${EMACS}" "${suffix}"; do
+                EMACSCLIENT="emacsclient${client_suffix}"
+                PDEBUG "Checking client: $EMACSCLIENT"
+                which $EMACSCLIENT >/dev/null 2>&1 && break
+            done
+            break
+        fi
+    done
+
+    if [ $ARCH = 'Darwin' ] && [ -f /Applications/Emacs.app/Contents/MacOS/Emacs ] ; then
+        EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs
+        EMACSCLIENT=/Applications/Emacs.app/Contents/MacOS/bin/emacsclient
+    fi
+
+    PDEBUG "EMACS: ${EMACS}, CLIENT: ${EMACSCLIENT}"
+
+    [ -z "$EMACS" ] &&  die "Failed to find proper emacs executable."
+
+    ### setup TERM before starting emacs, if necessary
+    # http://skybert.net/emacs/colourful-tty-emacs/
+    # https://www.gnu.org/software/emacs/manual/html_node/efaq/Colors-on-a-TTY.html
+
+    if ! [ "$TERM" = "dumb" ] && ! [[ $TERM =~ direct ]] &&  ! [[ $TERM =~ 24bits ]]; then
+        echo "Generating terminfo for xterm-24bits..."
+        sudo tic -x -o /usr/share/terminfo ~/.local/share/terminfo/xterm-24bit.src
+        export TERM=xterm-24bits
+        grep -q "xterm-24bits" ~/.zshrc.d/10-priv.zsh || \
+            echo "[[ \"$TERM\" == \"dumb\" ]] || export TERM=xterm-24bits" >> ~/.zshrc.d/10-priv.zsh
+    fi
+}
+
+_is_emacs_daemon_started () {
+    netstat -nl 2> /dev/null | awk '{print $NF}' | grep -q "emacs.*server"
+}
+
+_is_emacs_window_exist () {
+    _is_emacs_daemon_started && \
+        $EMACSCLIENT -e '(>= (length (visible-frame-list)) 2 )' | grep -q -x t
+}
+
+_raise_emacs() {
+    PDEBUG "Rasing emacs instance: ARCH: ${ARCH}, WAYLAND: ${WAYLAND_DISPLAY}, DISPLAY: ${DISPLAY}"
+    if [ $ARCH = 'Linux' ]; then
+        if [ -n "$WAYLAND_DISPLAY" ]; then
+            ~/.config/sway/scripts/workspace_util.sh find emacs
+        elif [ -n "$DISPLAY" ]; then
+            which wmctrl > /dev/null 2>&1 && wmctrl -xa "emacs.Emacs"
+        fi
+    elif [ $ARCH = 'Darwin' ]; then
+        osascript -e 'tell application "Emacs" to activate'
+    else
+        echo "Unsupported platform"
+    fi
+}
+
+function ensure_emacs_started ()
+{
+    _is_emacs_daemon_started && return 0
+    if [ $? -ne 0 ] ; then
+        $EMACS --daemon || die "Failed to start emacs"
+    fi
+
+    echo "Waiting emacs to be started..."
+    counter=1
+    while [ 1 ]; do
+        _is_emacs_daemon_started
+        if [ $? -ne 0 ]; then
+            if [ ${counter > 15} ]; then
+                die "Emacs did not start in 15 seconds...."
+            fi
+
+            echo "        ${counter}"
+            counter=$((counter+1))
+            sleep 1
+        else
+            break
+        fi
+    done
+}
+
+files=()
+function parse_files ()
+{
+    for file in $@; do
+        PDEBUG "FILE: ${file}"
+
+        if [[ "${file}" =~ org-protocol: ]]; then
+            PDEBUG "org-protocol:"
+            files+=(${file})
+        else
+            local fn=
+            local ln=
+            local cn=
+
+            fn=`echo "$file" | awk -F ":" '{print $1}'`
+            ln=`echo "$file" | awk -F ":" '{print $2}'`
+            cn=`echo "$file" | awk -F ":" '{print $3}'`
+
+            if [ -z $ln ]; then
+                files+=($fn)
+            else
+                if [ -z "$cn" ]; then
+                    files+=("+$ln" $fn)
+                else
+                    files+=("+${ln}:${cn}" $fn)
+                fi
+            fi
+        fi
+    done
+}
+
+args=()
+
+NEW_INSTANCE=
+# Get arguments passed to emacsclient.
+while getopts NhDtnc var; do
+    case $var in
+        h)
+            help
+            exit 0
+            ;;
+        D)
+            export DEBUG=1
+            DEBUG=1 ;;
+        N)
+            NEW_INSTANCE=1 ;;
+        t)
+            args+=("-t");;
+        n)
+            args+=("-n");;
+        c)
+            args+=("-c");;
+        *)
+            echo "??? $var"
+            help
+            exit 1
+            ;;
+    esac
+done
+shift $(($OPTIND - 1))
+
+prepare-executable
+
+parse_files $@
+
+if [ -n "$NEW_INSTANCE" ]; then
+    $EMACS ${files[@]}
+else
+    ensure_emacs_started
+
+    if [ -z "$args" ]; then
+        if [ "$ARCH" = 'Linux' ]; then
+            if [ -z "${WAYLAND_DISPLAY}" ] && [ -z "$DISPLAY" ]; then
+                args="-t ."
+            else
+                args="-n"
+            fi
+        elif [ "$ARCH" = 'Darwin' ]; then
+            args="-n"
+        fi
+
+    fi
+
+    gui_mode=
+    [[ "$args" =~ -t ]] || gui_mode=1
+
+
+    if [[ ! "$args" =~ -t ]]; then
+        _is_emacs_window_exist || args="$args -c"
+    fi
+
+    PDEBUG "Args to ${EMACSCLIENT}: ${args[@]} ${files[@]}"
+
+    $EMACSCLIENT ${args[@]} ${files[@]}
+
+    PDEBUG "${EMACSCLIENT} returns $?"
+
+    if [ $? -eq 0 ] && [ -n "${gui_mode}" ]; then
+        _raise_emacs
+    fi
+fi

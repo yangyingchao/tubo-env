@@ -1,0 +1,11 @@
+alias bd eshell-up $1
+alias clear clear-scrollback
+alias d  dired $1
+alias eww eww-open-file $1
+alias f  find-file $1
+alias gg magit-status
+alias l  ls -lh $*
+alias ll ls -lah $*
+alias q  exit
+alias rg rg --color=always $*
+alias rcp rsync -a -P --exclude='.ccls-cache' --exclude='.ccls_cached/'  --exclude='cmake_build_*'

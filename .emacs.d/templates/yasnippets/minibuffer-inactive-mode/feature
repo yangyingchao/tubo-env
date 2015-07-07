@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: feature
+# key: fea
+# --
+feature_$0

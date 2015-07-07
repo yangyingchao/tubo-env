@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: yc/set-mode
+# key: ysm
+# --
+(yc/set-mode '${1:xxx}-mode$>
+$0)$>

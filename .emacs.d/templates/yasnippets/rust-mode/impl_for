@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: impl Trait for Type { ... }
+# key: imf
+# --
+impl ${1:Trait} for ${2:Type} {
+    $0
+}

@@ -1,0 +1,8 @@
+#contributor: Xah Lee (XahLee.org)
+#name: save-excursion
+#key: save-excursion
+#key: se
+# --
+(save-excursion
+${1:(goto-char (point-min))}$>
+$0)$>

@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: WITH_LOCK
+# key: WLK
+# --
+WITH_LOCK_BEGIN(${1:TYPE}, ${2:NAME});
+$0
+WITH_LOCK_END();

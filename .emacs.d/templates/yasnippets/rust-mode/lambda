@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: lambda
+# key: lmb
+# --
+|${1:vars}| {
+    $0
+}

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: autoload
+# key: al
+# --
+(autoload '${1:FUNCTION} "${2:FILE}" $0  ${3:INTERACTIVE})

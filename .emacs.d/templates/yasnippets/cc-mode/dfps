@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: define psize
+# key: dfps
+# --
+#define PSIZE(X)   printf("sizeof(" #X "): %zu\n", sizeof(X))

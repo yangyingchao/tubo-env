@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: format!
+# key: fmt
+# --
+format!("${1:fmt}"${1:$(if (string-match (rx "{" (* nonl) "}") yas-text) ", " "\)")
+}$0${1:$(if (string-match (rx "{" (* nonl) "}") yas-text) "\)" "")}

@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: aux_source_directory
+# --
+aux_source_directory($0)

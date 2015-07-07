@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: guard
+# key: grd
+# --
+std::lock_guard guard(${1:var})

@@ -1,0 +1,13 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: header-guard
+# key: cgr
+# --
+ #ifdef __cplusplus
+ extern "C" {
+ #endif
+
+$0
+
+ #ifdef __cplusplus
+ }
+ #endif

@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# --
+\section{${1:name}}
+\label{s:$1}

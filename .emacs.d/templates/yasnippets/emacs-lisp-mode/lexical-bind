@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: lexical-bind
+# key: lxb
+# --
+-*- lexical-binding: t; -*-

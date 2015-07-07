@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: add_custom_target
+# --
+add_custom_target(${1:target}$>
+COMMAND ${2:\${CMAKE_COMMAND} -P \${CMAKE_CURRENT_BINARY_DIR}/cmake_custom_target.cmake)$>

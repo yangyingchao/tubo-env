@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: dfverbitim
+# key: dfver
+# --
+\defverbatim[colored]\\${1:abbrname}\{%
+$0
+\}%

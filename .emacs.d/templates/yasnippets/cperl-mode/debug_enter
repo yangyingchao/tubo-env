@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: debug_enter
+# key: dde
+# --
+dbg_enter();

@@ -1,0 +1,14 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: define-helm
+# key: dfh
+# --
+(defun ${1:FUNC} ()
+  ""
+  (interactive)
+  (let ((${2:h-source}
+         (helm-build-sync-source "${3:name}"
+           :init nil
+           :candidates $0)))
+    (helm :sources '$2
+          :buffer "*helm*"
+          :preselect nil)))

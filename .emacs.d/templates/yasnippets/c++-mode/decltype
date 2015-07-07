@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: decltype
+# key: dcl
+# --
+decltype(${1:VAR})$0

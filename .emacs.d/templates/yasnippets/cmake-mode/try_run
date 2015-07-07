@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: try_run
+# --
+try_run($0)

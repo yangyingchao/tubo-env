@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: expect
+# key: expt
+# --
+expect {
+${1:TEST}: {$>
+${0}$>
+}$>
+}

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: read
+# key: read
+# --
+size_t ${1:got} = read(${2:fd}, ${3:buf}, ${4:total_size});

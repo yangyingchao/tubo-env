@@ -1,0 +1,30 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: lane
+# key: lane
+# --
+`(let* (
+        (label-next (ivy-read "New Lane Name: " nil
+                              :caller 'counsel-colors-web))
+        (r-match-label (rx (* space)"|" (group (+ nonl))"|" (* space) (*? ascii) ))
+        label-list
+        label-curr)
+
+   (save-excursion
+     (goto-char (point-min))
+     (while (search-forward-regexp r-match-label nil t)
+       (add-to-list 'label-list (match-string 1))))
+
+   (if (looking-back r-match-label)
+       (setq label-curr (match-string 1)))
+
+   (setq label-curr
+         (ivy-read "Old Lane Name: " label-list
+                   :initial-input label-curr
+                   :caller 'counsel-colors-web))
+
+   (insert (format "|%s|\n$0" label-next))
+
+   (if (and label-curr (> (length label-curr) 0))
+       (save-excursion
+         (insert (format "\n|%s|\n"  label-curr))))
+   )`

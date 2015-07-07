@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: fn name(&self) -> Type;
+# key: dfm
+# --
+fn ${1:name}(&self${2:}) -> ${3:Type} {
+    $0
+}

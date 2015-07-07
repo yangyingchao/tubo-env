@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: eprint!("{}", value);
+# key: epr
+# --
+eprint!("${1:fmt}"${1:$(if (string-match (rx "{" (* nonl) "}") yas-text) ", " "\)")
+}$0${1:$(if (string-match (rx "{" (* nonl) "}") yas-text) "\)" "")};

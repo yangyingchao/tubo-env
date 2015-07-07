@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# --
+public static void usage(String appName, Options options)
+{
+HelpFormatter helpFormatter = new HelpFormatter();$>
+helpFormatter.printHelp(appName + "",$>
+"",$>
+options,$>
+"Thanks for using.");$>
+System.exit(1);$>
+}

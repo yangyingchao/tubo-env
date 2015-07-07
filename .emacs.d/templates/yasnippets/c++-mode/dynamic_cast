@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: dynamic_cast
+# key: dca
+# --
+dynamic_cast<${1:T}>(${2:variable})

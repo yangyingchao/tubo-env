@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: let pattern = expression;
+# key: l
+# --
+let ${1:var} = ${2:expression};

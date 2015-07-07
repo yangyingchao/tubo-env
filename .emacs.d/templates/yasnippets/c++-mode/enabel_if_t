@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: enabel_if_t
+# key: ent
+# --
+std::enable_if_t<${1:_Cond}, ${2:_Tp}> $0

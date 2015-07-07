@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: :init
+# key: :in
+# group: use-package
+# --
+:init$>
+$0
+$>

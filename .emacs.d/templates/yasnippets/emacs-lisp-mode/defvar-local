@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: defvar-local
+# key: dvl
+# --
+(defvar-local ${1:var_name} ${nil} "${Nil.}")

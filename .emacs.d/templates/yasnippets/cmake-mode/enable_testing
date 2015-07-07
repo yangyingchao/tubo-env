@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: enable_testing
+# --
+enable_testing($0)

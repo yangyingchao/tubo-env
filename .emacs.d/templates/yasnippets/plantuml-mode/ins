@@ -1,0 +1,3 @@
+# -*- mode: snippet -*-
+# --
+arrowtail=empty arrowhead=normal style=dashed dir=forward];

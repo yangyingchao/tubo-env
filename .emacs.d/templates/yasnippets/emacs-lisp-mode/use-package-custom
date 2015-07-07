@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: :custom
+# key: :cst
+# group: use-package
+# --
+:custom
+(${1:KEY} ${2:VALUE})

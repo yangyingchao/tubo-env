@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Err
+# key: err
+# --
+Err(${1:code}) => $0

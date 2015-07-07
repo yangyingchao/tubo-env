@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: withLock
+# key: wlk
+# --
+withLock($1, ${2:[]{$0}})

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: iend
+# key: iend
+# --
+auto end  = ${3:v}.end();

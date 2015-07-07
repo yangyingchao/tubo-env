@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Composition
+# key: cmp
+#组合(Composition) : 表示contains-a的关系，是一种强烈的包含关系。组合类负责被组合类的生命周期。是一种更强的聚合关系。部分不能脱离整体存在。如公司和部门的关系，没有了公司，部门也不能存在了；调查问卷中问题和选项的关系；订单和订单选项的关系。在类图使用实心的菱形表示，菱形从局部指向整体。
+# --
+${1:A} -> ${2:B} [arrowtail=diamond arrowhead=none style=solid dir=back];

@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: quote
+# key: quote
+# --
+#+BEGIN_QUOTE $2${2:$(
+cond
+((string-match ":$" yas-text) "hidden" )
+((string-match ":h$" yas-text) "idden" )
+((string-match ":hi$" yas-text) "dden" )
+(t ""))}
+$0
+#+END_QUOTE

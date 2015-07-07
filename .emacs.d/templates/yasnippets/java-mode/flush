@@ -1,0 +1,3 @@
+# -*- mode: snippet -*-
+# --
+System.out.flush();

@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: use-as
+# key: ua
+# --
+use ${1:path} as $0;

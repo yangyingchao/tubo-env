@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: add_dependencies
+# --
+add_dependencies(${1:TARGET} ${2:deps})

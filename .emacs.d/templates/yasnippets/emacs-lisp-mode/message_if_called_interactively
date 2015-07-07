@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: message_if_called_interactively
+# key: mic
+# --
+(if (called-interactively-p)
+    (message $0))

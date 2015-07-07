@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: subdir_depends
+# --
+subdir_depends($0)

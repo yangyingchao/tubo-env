@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: typemap
+# key: tmap
+# --
+%typemap(${1:type}) ${2:function} $0

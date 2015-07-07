@@ -1,0 +1,9 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: IF
+# key: if
+# --
+IF ${1:cond} THEN
+    ${2:ACTION}
+ELSE
+    ${3:ACTION}
+END FI

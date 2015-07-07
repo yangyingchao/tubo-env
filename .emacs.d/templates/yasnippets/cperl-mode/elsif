@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: elsif
+# key: elif
+# --
+elsif (${1:cond}) {$>
+    $0$>
+}$>

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: yc/autoload
+# key: yal
+# --
+(yc/autoload '${1:FUNC}$0)

@@ -1,0 +1,5 @@
+#contributor: Xah Lee (XahLee.org)
+#name: define-key
+#key: dfk
+# --
+(define-key ${1:keymap} ${2:key} $0)

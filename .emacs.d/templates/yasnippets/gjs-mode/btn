@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: button
+# key: btn
+# --
+Gtk.Button ({label: '${1:label}'});

@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: not_impl_if_ex
+# key: nie
+# --
+NOT_IMPL_IF_EX(${1:COND}, ${2:fmt}$0);

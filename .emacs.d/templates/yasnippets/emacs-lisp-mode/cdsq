@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: cdsq
+# key: cdq
+# key: cds
+# --
+(cdsq ${1:sym} ${2:val})

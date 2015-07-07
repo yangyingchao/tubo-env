@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: Typedef shared_ptr.
+# key: tptr
+# --
+typedef ${1:s}${1:$(cond
+        ((string-match "^std::s" yas-text) "hared_ptr<")
+        ((string-match "^std::a" yas-text) "uto_ptr<")
+        ((string-match "^sh" yas-text) "ared_ptr<")
+        ((string-match "^a" yas-text) "uto_ptr<")
+        ((string-match "^t" yas-text) "r1:shared_ptr<")
+        ((string-match "^b" yas-text) "oost::shared_ptr<")
+        (t "hared_ptr<")
+)}${2:T}> $2Ptr;

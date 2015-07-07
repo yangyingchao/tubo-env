@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: unique_lock
+# key: ulk
+# --
+std::unique_lock ${1:lock}(${2:mutex})

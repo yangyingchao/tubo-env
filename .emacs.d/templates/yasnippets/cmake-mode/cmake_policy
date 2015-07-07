@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: cmake_policy
+# --
+cmake_policy($0)

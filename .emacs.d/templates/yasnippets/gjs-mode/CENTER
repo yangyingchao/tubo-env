@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Gtk.WindowPosition.CENTER
+# key: center
+# --
+Gtk.WindowPosition.CENTER

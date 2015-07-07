@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: println
+# key: pri
+# --
+println '${1:msg}'

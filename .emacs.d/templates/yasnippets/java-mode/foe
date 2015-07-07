@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: foe
+# key: foe
+# --
+for (${1:Type} ${2:Var} : ${3:Vars}) {
+$0;$>
+}

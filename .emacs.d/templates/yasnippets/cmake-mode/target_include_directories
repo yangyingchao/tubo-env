@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: target_include_directories
+# --
+target_include_directories($0)

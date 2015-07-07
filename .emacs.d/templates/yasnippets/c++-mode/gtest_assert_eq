@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: assert_eq (google-test)
+# key: gae
+# --
+ASSERT_EQ($1, $2);

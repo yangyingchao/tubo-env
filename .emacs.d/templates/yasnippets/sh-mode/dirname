@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: dirname
+# key: drn
+# --
+\${$0%/*}

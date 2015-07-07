@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: define_property
+# --
+define_property($0)

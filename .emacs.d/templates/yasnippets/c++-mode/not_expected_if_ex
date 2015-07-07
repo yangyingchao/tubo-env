@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: NOT_EXPECTED_IF_EX
+# key: nee
+# --
+NOT_EXPECTED_IF_EX(${1:COND}, $0);

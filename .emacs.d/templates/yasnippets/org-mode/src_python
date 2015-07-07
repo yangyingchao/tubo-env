@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# key:prc
+# --
+#+BEGIN_SRC python -r $1${1:$(
+cond
+((string-match ":$" yas-text) "hidden" )
+((string-match ":h$" yas-text) "idden" )
+((string-match ":hi$" yas-text) "dden" )
+(t ""))}
+$0
+#+END_SRC

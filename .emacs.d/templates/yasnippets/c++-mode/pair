@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: pair
+# key: pair
+# --
+pair<${1:1st}, ${2:2nd}>

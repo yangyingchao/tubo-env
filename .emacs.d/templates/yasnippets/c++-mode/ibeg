@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: ibeg
+# key: ibeg
+# --
+auto iter = ${3:v}.begin();

@@ -1,0 +1,10 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: project
+# key: prj
+# --
+\item $1
+\begin{itemize}
+\item \textbf{项目描述：}
+\item \textbf{开发工具：}
+\item \textbf{项目职责：}
+\end{itemize}

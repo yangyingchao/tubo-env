@@ -1,0 +1,5 @@
+#contributor: Xah Lee (XahLee.org)
+#name: format
+#key: fmt
+# --
+(format "${1:fmt}" $0)

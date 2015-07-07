@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: get_target_property
+# --
+get_target_property($0)

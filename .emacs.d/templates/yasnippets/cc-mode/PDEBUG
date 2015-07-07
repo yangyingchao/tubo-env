@@ -1,0 +1,4 @@
+# key: ddd
+# --
+PDEBUG("${1:%s}\\n"${1:$(if (string-match "%" yas-text) ", " "\);")
+}$2${1:$(if (string-match "%" yas-text) "\);" "")}$>

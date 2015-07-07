@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: make_directory
+# --
+make_directory($0)

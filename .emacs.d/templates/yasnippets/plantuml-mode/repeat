@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: repeat
+# key: rep
+# --
+repeat
+:$0;
+repeat while (${1:condition}?)

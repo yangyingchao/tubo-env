@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: __unicode__
+# key: un
+# --
+def __unicode__(self):
+    $0

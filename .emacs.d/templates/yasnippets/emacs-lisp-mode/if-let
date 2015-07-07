@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: if-let
+# key: il
+# --
+(if-let (${1:VAR} ${2:VALUE})
+    ${3:THEN}
+    $0)

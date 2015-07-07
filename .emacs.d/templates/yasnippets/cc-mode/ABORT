@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: ABORT
+# key: ABORT
+# key: AB
+# --
+ABORT("${1:%s}\\n"${1:$(if (string-match "%" yas-text) ", " "\);")
+}$2${1:$(if (string-match "%" yas-text) "\);" "")}$>

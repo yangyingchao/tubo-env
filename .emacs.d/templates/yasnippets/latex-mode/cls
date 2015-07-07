@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: cls
+# key: cls
+# --
+\begin{columns}
+$1$>
+\end{columns}

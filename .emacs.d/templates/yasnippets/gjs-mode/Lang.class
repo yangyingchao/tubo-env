@@ -1,0 +1,25 @@
+# -*- mode: snippet -*-
+# name: Lang.class
+# key: lcl
+# --
+Lang.Class ({
+Name: '${1:name}',$>
+// Create the Application itself$>
+_init: function() {$>
+this.application = new Gtk.Application();$>
+// Connect 'activate' and 'startup' signals to the callback functions$>
+this.application.connect('activate', Lang.bind(this, this._onActivate));$>
+this.application.connect('startup', Lang.bind(this, this._onStartup));$>
+},$>
+// Callback function for 'activate' signal presents windows when active$>
+_onActivate: function() {$>
+this._window.present();$>
+},$>
+// Callback function for 'startup' signal builds the UI$>
+_onStartup: function() {$>
+this._buildUI ();$>
+},$>
+_buildUI: function() {$>
+$0$>
+},$>
+});

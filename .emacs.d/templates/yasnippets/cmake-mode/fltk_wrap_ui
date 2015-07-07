@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: fltk_wrap_ui
+# --
+fltk_wrap_ui($0)

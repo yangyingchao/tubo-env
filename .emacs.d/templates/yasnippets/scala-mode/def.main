@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: def.main
+# key: dfm
+# --
+def main(args: Array[String]): Unit = {$>
+  $0$>
+}$>

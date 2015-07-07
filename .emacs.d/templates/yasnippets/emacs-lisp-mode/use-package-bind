@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: :bind
+# key: :bnd
+# group : use-package
+# --
+:bind ((${1:KEY} . $0))

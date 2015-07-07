@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: random
+# key: random
+# --
+random_shuffle(${1:begin}, ${2:end});

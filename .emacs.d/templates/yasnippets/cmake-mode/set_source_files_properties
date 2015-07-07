@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: set_source_files_properties
+# --
+set_source_files_properties($0)

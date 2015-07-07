@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Provides
+# key: prov
+# --
+${1:Factory} -> ${2:instance} [arrowtail=diamond arrowhead=normal style=dashed dir=forward label="<<provide>>"];

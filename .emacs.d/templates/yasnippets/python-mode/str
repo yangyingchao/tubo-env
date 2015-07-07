@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: __str__
+# key: str
+# --
+def __str__(self):
+    $0

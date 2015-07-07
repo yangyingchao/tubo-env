@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: group
+# key: grp
+# --
+package "$1" {
+  $0
+}

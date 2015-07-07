@@ -1,0 +1,3 @@
+include $HOME/.config/sway/sway.d/*.conf
+include $HOME/.config/sway/$(hostname)/*.conf
+

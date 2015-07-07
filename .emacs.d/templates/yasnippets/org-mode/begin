@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: begin
+# key: beg
+# --
+#+BEGIN_${1:TYPE} $2${2:$(
+cond
+((string-match ":$" yas-text) "hidden" )
+((string-match ":h$" yas-text) "idden" )
+((string-match ":hi$" yas-text) "dden" )
+(t ""))}
+$0
+#+END_$1

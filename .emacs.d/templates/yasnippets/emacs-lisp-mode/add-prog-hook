@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: yc/add-prog-hook
+# key: aph
+# --
+(yc/add-prog-hook $0)

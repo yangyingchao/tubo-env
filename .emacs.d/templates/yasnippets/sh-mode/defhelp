@@ -1,0 +1,52 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: defhelp
+# key: dfh
+# --
+###
+### Brief introduction here.
+###
+### Usage:
+###   `(or (if buffer-file-name
+                   (file-name-nondirectory buffer-file-name)
+                 (buffer-name)) "my_script")` <input> <output>
+###
+### Options:
+###   <input>   Input file to read.
+###   <output>  Output file to write. Use '-' for stdout.
+###   -h        Show this message.
+###   -D        Debug mode, output debug logs.
+
+function help() {
+    sed -rn 's/^### ?//;T;p' "\$0"
+}
+
+DEBUG=
+
+function PDEBUG()
+{
+    if [ -n "\$DEBUG" ]; then
+        local n=\$((\${#BASH_LINENO[@]}-1))
+        local i=0
+        local line=\${BASH_LINENO[i]}
+        local func=\${FUNCNAME[i+1]}
+        ts=\`date "+%H:%M:%S:%N" | awk -F ":" '{print \$1":"\$2":"\$3"."%4/1000}'\`
+        echo "DEBUG: $ts: \$0:$line ($func) -- $@"
+    fi
+}
+
+while getopts hD var; do
+    case $var in
+        h)
+        help
+        exit 0
+        ;;
+        D)
+        DEBUG=1
+        ;;
+        *)
+        ;;
+    esac
+done
+shift \$((\$OPTIND - 1))
+
+$0

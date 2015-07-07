@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: option
+# --
+option(${1:OPT}
+"${2:docstring}"$>
+${3:ON})$>

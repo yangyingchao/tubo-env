@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: add_executable
+# --
+add_executable(${1:name} $0)

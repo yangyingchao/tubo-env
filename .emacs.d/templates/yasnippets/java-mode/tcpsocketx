@@ -1,0 +1,3 @@
+# -*- mode: snippet -*-
+# --
+new Socket($0)

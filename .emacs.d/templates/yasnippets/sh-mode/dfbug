@@ -1,0 +1,16 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: dfbug
+# key: dfbug
+# --
+DEBUG=
+PDEBUG()
+{
+    if [ -n "\$DEBUG" ]; then
+        local n=\$((\${#BASH_LINENO[@]}-1))
+        local i=0
+        local line=\${BASH_LINENO[i]}
+        local func=\${FUNCNAME[i+1]}
+        ts=\`date "+%H:%M:%S:%N" | awk -F ":" '{print \$1":"\$2":"\$3"."%4/1000}'\`
+        echo "DEBUG: $ts: \$0:$line ($func) -- $@"
+    fi
+}

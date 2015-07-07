@@ -1,0 +1,10 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: asm
+# key: asm
+# --
+__asm__ __volatile__ ($>
+"$0"$>
+:${1:OUTPUT}$>
+:${2:INPUT}$>
+:${3:}$>
+);$>

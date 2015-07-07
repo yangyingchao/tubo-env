@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: use_mangled_mesa
+# --
+use_mangled_mesa($0)

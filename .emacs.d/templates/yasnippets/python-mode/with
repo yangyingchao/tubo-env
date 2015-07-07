@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: with
+# key: wi
+# --
+with ${1:expr}:
+     $0

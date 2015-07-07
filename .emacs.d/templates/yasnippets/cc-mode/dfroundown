@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: dfroundown
+# key: dfrd
+# --
+#define ROUNDDOWN${1:n}(x) (((x))&~${1:$(- (string-to-number yas-text) 1)})

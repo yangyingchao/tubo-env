@@ -1,0 +1,42 @@
+# -*- mode: snippet -*-
+# name: dftracer
+# key: dftracer
+# --
+class TB_Tracer$>
+{
+public:
+TB_Tracer(const char* msg="")$>
+: m_startTime(clock()),$>
+m_lastTime(m_startTime),$>
+m_msg(msg)$>
+{$>
+fprintf(stderr, "%s --- created at: %lu\n", m_msg.c_str(), m_startTime);$>
+}$>
+void Reset()$>
+{$>
+m_startTime = clock();$>
+m_lastTime  = m_startTime;$>
+}$>
+void Trigger(const char* msg="", int line=0)$>
+{$>
+uint32 cur_time = clock();$>
+fprintf(stderr, "%s: %s(%d) --- triggered after last call: %u msec, from start: %lu mesc\n",$>
+m_msg.c_str(), msg, line, cur_time - m_lastTime, cur_time - m_startTime);$>
+m_lastTime = cur_time;$>
+}$>
+virtual ~TB_Tracer()$>
+{$>
+fprintf(stderr, "%s cost: %lu msec\n", m_msg.c_str(),$>
+clock() - m_startTime);$>
+}$>
+private:$>
+uint32 m_startTime;$>
+uint32 m_lastTime;$>
+string m_msg;$>
+};
+#define LT(X)       TB_Tracer X(__FUNCTION__)$>
+#define TT(X)       X.Trigger(__FUNCTION__, __LINE__)
+#define RT(X)       X.Reset()
+#define LTP(X)       TB_Tracer* X = new TB_Tracer*(__FUNCTION__)$>
+#define TTP(X)       X->Trigger(__FUNCTION__, __LINE__)
+#define RTP(X)       X->Reset()

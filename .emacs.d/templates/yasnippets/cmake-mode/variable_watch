@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: variable_watch
+# --
+variable_watch($0)

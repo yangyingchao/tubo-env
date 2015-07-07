@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: enum
+# key: enu
+# --
+class ${1:NAME}(enum.Enum):
+    ${2:field} = $0

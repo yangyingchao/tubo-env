@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: let var: type = expression;
+# key: lt
+# --
+let ${1:var}: ${2:type} = ${3:expression};

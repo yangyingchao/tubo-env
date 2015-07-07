@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: operator!=
+# key: op!=
+# --
+bool operator!=(const $1& other) const$0

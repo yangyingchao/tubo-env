@@ -1,0 +1,25 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: begin
+# key: beg
+# --
+`(let* ((colors (counsel-colors--web-alist))
+        (blank (make-string 10 ?\s))
+        (counsel--colors-format
+          (format "%%-%ds %%s %%s"
+                  (apply #'max 0 (mapcar #'string-width colors))))
+        (name (ivy-read "Choose Name: " nil
+                        :caller 'counsel-colors-web))
+        my-hex)
+
+
+
+   (ivy-read "Choose color: " colors
+             :require-match t
+             :history 'counsel-colors-web-history
+             :sort t
+             :action (lambda (color)
+                       (setq my-hex (get-text-property 0 'hex color)))
+             :caller 'counsel-colors-web)
+
+   (insert (format "%s:BEGIN - %s;\n\n%s:END - %s;" my-hex name my-hex name))
+   )`

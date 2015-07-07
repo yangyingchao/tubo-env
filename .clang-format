@@ -1,0 +1,13 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+PointerAlignment: Left
+UseTab: false
+TabWidth: 4
+IndentCaseLabels: false
+BreakBeforeBraces: Linux
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
+AllowShortIfStatementsOnASingleLine: false
+ColumnLimit: 78
+BreakConstructorInitializersBeforeComma: true
+AccessModifierOffset: -4

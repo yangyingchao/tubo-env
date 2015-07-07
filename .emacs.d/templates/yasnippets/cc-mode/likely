@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: likely
+# key: lk
+# --
+${1:_}${1:$(if (string-match "^_" yas-text)
+               "likely"
+               (if (string-match "^l" yas-text)
+                   "ikely" ""))}($0)

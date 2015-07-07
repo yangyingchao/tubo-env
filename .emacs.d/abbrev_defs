@@ -1,0 +1,117 @@
+;;-*-coding: utf-8;-*-
+(define-abbrev-table 'Rd-mode-abbrev-table
+  '(
+    ("`ag" "\\arguments" nil :count 0)
+    ("`al" "\\alias" nil :count 0)
+    ("`au" "\\author" nil :count 0)
+    ("`bf" "\\bold" nil :count 0)
+    ("`co" "\\code" nil :count 0)
+    ("`de" "\\describe" nil :count 0)
+    ("`dn" "\\description" nil :count 0)
+    ("`dt" "\\details" nil :count 0)
+    ("`em" "\\emph" nil :count 0)
+    ("`en" "\\enumerate" nil :count 0)
+    ("`ex" "\\examples" nil :count 0)
+    ("`fi" "\\file" nil :count 0)
+    ("`fo" "\\format" nil :count 0)
+    ("`it" "\\item" nil :count 0)
+    ("`iz" "\\itemize" nil :count 0)
+    ("`kw" "\\keyword" nil :count 0)
+    ("`li" "\\link" nil :count 0)
+    ("`me" "\\method" nil :count 0)
+    ("`na" "\\name" nil :count 0)
+    ("`no" "\\note" nil :count 0)
+    ("`re" "\\references" nil :count 0)
+    ("`sa" "\\seealso" nil :count 0)
+    ("`se" "\\section" nil :count 0)
+    ("`so" "\\source" nil :count 0)
+    ("`ss" "\\subsection" nil :count 0)
+    ("`sy" "\\synopsis" nil :count 0)
+    ("`ta" "\\tabular" nil :count 0)
+    ("`ti" "\\title" nil :count 0)
+    ("`us" "\\usage" nil :count 0)
+    ("`va" "\\value" nil :count 0)
+   ))
+
+(define-abbrev-table 'c++-mode-abbrev-table
+  '(
+    ("inc" "" skeleton-include :count 1)
+    ("inc2" "" skeleton-include-2 :count 1)
+   ))
+
+(define-abbrev-table 'c-mode-abbrev-table
+  '(
+    ("inc" "" skeleton-include :count 1)
+    ("inc2" "" skeleton-include-2 :count 2)
+   ))
+
+(define-abbrev-table 'cmake-mode-abbrev-table
+  '(
+    ("inc" "inc" skeleton-cmake-include :count 1)
+   ))
+
+(define-abbrev-table 'emacs-lisp-mode-abbrev-table
+  '(
+    ("req" "" skeleton-require :count 1)
+   ))
+
+(define-abbrev-table 'global-abbrev-table
+  '(
+    ("BRNACH" "BRANCH" nil :count 9)
+    ("Orcale" "Oracle" nil :count 9)
+    ("THanks" "Thanks" nil :count 1)
+    ("arrary" "array" nil :count 1)
+    ("atuo" "auto" nil :count 9)
+    ("avaiability" "availability" nil :count 1)
+    ("avaiable" "available" nil :count 11)
+    ("brnach" "branch" nil :count 9)
+    ("cahr" "char" nil :count 1)
+    ("chra" "char" nil :count 0)
+    ("confgiure" "configure" nil :count 0)
+    ("cosnt" "const" nil :count 1)
+    ("dager" "dagger" nil :count 0)
+    ("deisgn" "design" nil :count 2)
+    ("ehco" "echo" nil :count 1)
+    ("improt" "import" nil :count 0)
+    ("ingore" "ignore" nil :count 0)
+    ("ingored" "ignored" nil :count 0)
+    ("jsut" "just" nil :count 0)
+    ("lable" "label" nil :count 9)
+    ("madlib" "MADlib" nil :count 6)
+    ("mysql" "MySQL" nil :count 1)
+    ("nignt" "night" nil :count 0)
+    ("nihgt" "night" nil :count 0)
+    ("opitonal" "optional" nil :count 0)
+    ("orcale" "Oracle" nil :count 9)
+    ("reqest" "request" nil :count 0)
+    ("retrun" "return" nil :count 9)
+    ("retunrs" "returns" nil :count 9)
+    ("seperate" "separate" nil :count 1)
+    ("serveral" "several" nil :count 1)
+    ("seta" "setq" nil :count 2)
+    ("stirng" "string" nil :count 9)
+    ("strign" "string" nil :count 0)
+    ("szie" "size" nil :count 0)
+    ("taht" "that" nil :count 2)
+    ("tge" "the" nil :count 0)
+    ("totaly" "totally" nil :count 0)
+    ("tothe" "to the" nil :count 0)
+    ("udpate" "update" nil :count 0)
+    ("virutal" "virtual" nil :count 1)
+    ("waht" "what" nil :count 2)
+    ("warnning" "warning" nil :count 1)
+    ("warnnings" "warnings" nil :count 1)
+   ))
+
+(define-abbrev-table 'objc-mode-abbrev-table
+  '(
+    ("imp" "" skeleton-import :count 1)
+    ("inc" "" skeleton-include :count 1)
+    ("inc2" "" skeleton-include-2 :count 1)
+   ))
+
+(define-abbrev-table 'python-mode-abbrev-table
+  '(
+    ("imp" "" skeleton-python-import :count 1)
+   ))
+

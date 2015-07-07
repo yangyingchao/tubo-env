@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: log
+# key: log
+# --
+Log.${1:w}(${2:TAG}, $3);

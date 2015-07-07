@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: make_shared
+# key: mks
+# --
+std::make_shared<${1:TYPE}>($0)

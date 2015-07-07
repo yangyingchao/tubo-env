@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: elif
+# key: ef
+# --
+elif ${1:cond}:
+    $0

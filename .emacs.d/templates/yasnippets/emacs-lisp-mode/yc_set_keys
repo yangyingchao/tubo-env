@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: yc/set_keys
+# key: ysk
+# --
+(yc/set-keys `(($0)) ${1:(current-global-map)})

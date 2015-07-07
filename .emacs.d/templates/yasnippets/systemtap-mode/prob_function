@@ -1,0 +1,11 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: probe_function
+# key: pfn
+# --
+probe ${1:k}${1:$(cond ((string-match "^k" yas-text) "ernel")
+                       ((string-match "^s" yas-text) "yscall")
+                       (t ""))}.function(${2:name}).${3:c}${3:$(cond ((string-match "^c" yas-text) "all")
+                                                          ((string-match "^r" yas-text) "eturn")
+                                                          (t ""))} {
+$0$>
+}

@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: raise
+# key: rai
+# --
+raise ${1:Exception}($0)

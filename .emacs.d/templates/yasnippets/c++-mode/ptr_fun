@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: ptr_fun
+# key: pfn
+# --
+ptr_fun(${1:func})

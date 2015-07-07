@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: git-config-user
+# key: usr
+# --
+[user]
+   name=${1:yangyingchao}
+   email=$1@${2:gmail.com}

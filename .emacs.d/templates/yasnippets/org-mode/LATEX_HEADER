@@ -1,0 +1,18 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: LATEX_HEADER
+# key: lh
+# --
+#+LATEX_HEADER: \usepackage{float}
+#+LATEX_HEADER: \usepackage{setspace}
+#+LATEX_HEADER: \singlespacing
+#+LATEX_HEADER: \usepackage[margin=1in]{geometry}
+#+LATEX_HEADER: \usepackage{indentfirst}
+#+LATEX_HEADER: \usepackage{xeCJK}
+#+LATEX_HEADER: \usepackage{fontspec}
+#+LATEX_HEADER: \setsansfont[BoldFont=SimHei]{KaiTi}
+#+LATEX_HEADER: \setCJKmainfont[BoldFont=SimHei,ItalicFont=KaiTi]{SimSun}
+#+LATEX_HEADER: \setCJKmonofont{SimSun}
+#+LATEX_HEADER: \setCJKmonofont{Microsoft YaHei}
+#####+LATEX_HEADER: \setmainfont{Times New Roman}
+
+#+LATEX: \doublespacing

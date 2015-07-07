@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: note
+# key: note
+# --
+note ${1:l}${1:$(cond
+                   ((string-match "^l" yas-text) "eft")
+                   ((string-match "^r" yas-text) "ight")
+                   ((string-match "^t" yas-text) "op")
+                   ((string-match "^b" yas-text) "ottom")
+                   (t ""))}
+$0
+end note

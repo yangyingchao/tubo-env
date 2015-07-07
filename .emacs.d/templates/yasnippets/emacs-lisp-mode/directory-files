@@ -1,0 +1,5 @@
+#contributor: Xah Lee (XahLee.org)
+#name: directory-files
+#key: dirf
+# --
+(directory-files ${1:DIR} ${2:FULL:t} ${3:MATCH:nil}$0)

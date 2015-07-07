@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: case
+# key: case
+# --
+CASE ${1:expression}$>
+    WHEN ${2:value} THEN ${3:result}$>
+END$>

@@ -1,0 +1,9 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: impl<T> Trait for Type<T> { ... }
+# key: ift
+# --
+impl<${1:T}> ${2:Trait} for ${3:Type}<${1:$  (mapconcat (lambda (x)
+(s-trim (car (s-split ":" x t))))
+(s-split "," yas-text t) ", ")}> {
+    $0
+}

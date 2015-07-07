@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: memset
+# key: mms
+# --
+memset(${1:var}, ${2:0}, ${3:s}${3:$(if (and (= (length yas-text) 1)
+                                         (string-match "^s" yas-text))
+                                         "izeof(") }$4${3:$(if (and (= (length yas-text) 1)
+                  (string-match "^s" yas-text))
+                  ")" "")});

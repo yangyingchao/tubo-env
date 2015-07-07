@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: module
+# key: mod
+# --
+obj-m := ${1:hello}.o$0
+KERNELDIR ?= /lib/modules/$(shell uname -r)/build
+PWD	 := $(shell pwd)
+default:$>
+$(MAKE) -C $(KERNELDIR) M=$(PWD) modules$>
+

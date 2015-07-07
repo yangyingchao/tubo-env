@@ -1,0 +1,3 @@
+# -*- mode: snippet -*-
+# --
+node_${1:type}_array[label="{Array of $1|{<f1>$1|$1|...|}}" shape=record];

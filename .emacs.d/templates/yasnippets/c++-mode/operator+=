@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: operator+=
+# key: op+=
+# --
+${1:MyClass}& $1::operator+=(${2:const $1& rhs})$0

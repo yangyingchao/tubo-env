@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# contributor: Peter Urbak <peter@dragonwasrobot.com>
+# key: class
+# name: class
+# --
+class $1 {
+$0$>
+}

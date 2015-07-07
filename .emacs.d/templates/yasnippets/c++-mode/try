@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# --
+try {
+${1:EXPR};$>
+}
+catch (${2:exception& e}) {
+cout << "Exeception at file: " << __FILE__$>
+<< ", Line: " << __LINE__ << ", "$>
+<<  e.what() << endl;$>
+abort();$>
+}

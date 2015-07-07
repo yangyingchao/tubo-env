@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: file
+# key: file
+# --
+[[File:${1:name}]]

@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: ext
+# key: ext
+# --
+extern "C"
+{
+${1:codes}
+}

@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: variable_requires
+# --
+variable_requires($0)

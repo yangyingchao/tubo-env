@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: load-and-bind
+# key: lab
+# --
+(load-and-bind ${1:func} ${2:file}$0)

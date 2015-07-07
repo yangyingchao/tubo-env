@@ -1,0 +1,60 @@
+;;; -*- emacs-lisp -*- -*- coding: utf-8; -*-
+;;;
+;;; File: tmp.el
+;;; Author: YangYingchao <yangyingchao@gmail.com>
+;;;
+;;;
+
+(defun parse-color (content pos)
+  "description"
+  (let ((r-match-color-define (rx "<key>Ansi" (+? space) (group (+ digit))
+                                  (+? space) "Color</key>")
+                              )
+        result)
+    (if (string-match r-match-color-define content pos)
+        (let ((color (match-string 1 content))
+              (r-match-b (rx "<key>Blue Component</key>" (+? anything)
+                                "<real>" (group (+ (or digit ".")))
+                                "</real>"))
+              (r-match-g (rx "<key>Green Component</key>" (+? anything)
+                                "<real>" (group (+ (or digit ".")))
+                                "</real>"))
+              (r-match-r (rx "<key>Red Component</key>" (+? anything)
+                                "<real>" (group (+ (or digit ".")))
+                                "</real>"))
+              r g b)
+          (setq pos (match-end 0))
+          (if (string-match r-match-b content pos)
+              (let ((end (match-end 0))
+                    (tmp (* (string-to-number (match-string 1 content)) 255))
+                    )
+                (setq pos end)
+                (setq b (format "%02X" tmp)))
+            (error "failed to parse blue"))
+          (if (string-match r-match-g content pos)
+              (let ((end (match-end 0))
+                    (tmp (* (string-to-number (match-string 1 content)) 255))
+                    )
+                (setq pos end)
+                (setq g (format "%02X" tmp)))
+            (error "failed to parse green"))
+          (if (string-match r-match-r content pos)
+              (let ((end (match-end 0))
+                    (tmp (* (string-to-number (match-string 1 content)) 255))
+                    )
+                (setq pos end)
+                (setq r (format "%02X" tmp)))
+            (error "failed to parse blue"))
+          (cons (cons color (format "%s%s%s" r g b)) (parse-color content pos))
+          )
+      nil)))
+
+(let* ((content (with-temp-buffer
+                  (insert-file-contents "tStyle.plist")
+                  (buffer-substring-no-properties (point-min) (point-max))))
+       (result (parse-color content 0)))
+  (dolist (r result)
+    (message "%s -- %s" (car r) (cdr r))
+    )
+
+  )

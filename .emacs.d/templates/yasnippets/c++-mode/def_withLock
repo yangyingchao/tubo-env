@@ -1,0 +1,10 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: def_withLock
+# key: dfw
+# --
+template <typename T, typename F>
+void withLock(T& mtx, F&& func)
+{
+std::lock_guard<T> guard(mtx);$>
+func();$>
+}

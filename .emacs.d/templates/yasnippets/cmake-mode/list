@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: list
+# --
+list(${1:ACTION} ${2:LIST} ${3:VAR}$0)

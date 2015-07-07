@@ -1,0 +1,27 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: create(table/database/function/procudure)
+# key: crt
+# --
+CREATE ${1:D}${1:$(cond
+((string-match "^D" yas-text) "ATABASE")
+((string-match "^E"  yas-text) "XTENSION")
+((string-match "^FU"  yas-text) "NCTION")
+((string-match "^FO"  yas-text) "RIGIN TABLE")
+((string-match "^T"  yas-text) "ABLE")
+((string-match "^P"  yas-text) "ROCUDURE")
+((string-match "^S"  yas-text) "ERVER")
+(t ""))} IF NOT EXISTS $2${1:$(if (or (string-match "^F"  yas-text)
+                        (string-match "^P"  yas-text)
+                        (string-match "^T"  yas-text))
+"
+(
+")}$0${1:$(if (or (string-match "^F"  yas-text)
+                  (string-match "^P"  yas-text)
+                  (string-match "^T"  yas-text))
+"
+)")} ${1:$(if (string-match "^S" yas-text)
+               "FOREIGN DATA WRAPPER"
+            (if (string-match "^FO" yas-text)
+                "\nSERVER \nOPTIONS"
+                )
+                )} ;

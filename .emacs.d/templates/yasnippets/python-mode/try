@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# --
+try:
+    ${1:EXPR}
+except ${2:Exception} as e:
+    ${3:PROCESS_EXCEPTION}
+else:
+    ${4:NORMAL_PROCESS}
+finally:
+    ${5:CLEANUP}

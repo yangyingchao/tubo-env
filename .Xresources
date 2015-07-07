@@ -1,0 +1,151 @@
+! Usage:
+! % xrdb -load ~/.Xresources
+! % xrdb -query
+! % xrdb -symbol
+! % xrdb -merge ~/.Xresources
+!
+
+! Xft fonts
+Xft.antialias: true
+! Xft.dpi: 122
+Xft.hinting: true
+Xft.hintstyle: hintslight
+Xft.lcdfilter: true
+Xft.autohint: false
+Xft.rgba: rgb
+
+! *XTerm
+XTerm*faceName: Monaco:size=11
+XTerm*saveLines: 5000
+XTerm.termName: xterm-256color
+XTerm*rightScrollBar: true
+XTerm*loginshell: true
+XTerm*cursorBlink: true
+XTerm.borderLess: true
+XTerm.cursorBlink: true
+XTerm*background:#2e3436
+XTerm*foreground:white
+
+*XTer*color0: #000000
+*XTer*color1: #a40000
+*XTer*color2: #4e9a06
+*XTer*color3: #c4a000
+*XTer*color4: #729fcf
+*XTer*color5: #75507b
+*XTer*color6: #0b939b
+*XTer*color7: #d3d7cf
+*XTer*color8: #555753
+*XTer*color9: #ef2929
+*XTer*color10: #8ae234
+*XTer*color11: #fce94f
+*XTer*color12: #1e90ff ! #204a87
+*XTer*color13: #ad7fa8
+*XTer*color14: #00f5e9
+*XTer*color15: #eeeeec
+
+
+! rxvt-unicode
+URxvt*title: Rxvt-Unicode
+URxvt*termName: rxvt-256color
+URxvt.iconFile: /usr/share/icons/hicolor/scalable/apps/urxvt-terminal.svg
+
+! URxvt.tintColor:lightgray
+! URxvt*inheritPixmap: true
+! urxvt*transparent: false
+! ! urxvt*shading: 0
+
+! URxvt*depth: 0
+
+URxvt*font:   xft:Monaco:size=13:antialias=true
+URxvt*boldFont:   xft:Monaco:size=13:antialias=true
+URxvt*bolditalicFont: xft:Monaco:size=13:antialias=true
+URxvt*italicFont: xft:Monaco:size=13:antialias=true
+
+URxvt*borderLess: false
+URxvt*buffered: true
+URxvt*cutchars:  "()*,<>[]{}|'"
+URxvt*fading: 30
+URxvt*internalBorder: 5
+URxvt*preeditType: Root
+URxvt*thickness: 0
+
+! Colors
+URxvt*background: #2e3436
+URxvt*foreground: white
+! black
+URxvt*color0: #000000
+URxvt*color8: #555753
+! red
+URxvt*color1: #a40000
+URxvt*color9: #ef2929
+! green
+URxvt*color2: #7fff00
+URxvt*color10: #8ae234
+! yellow
+URxvt*color3: #c4a000
+URxvt*color11: #fce94f
+! blue
+URxvt*color4: #729fcf
+URxvt*color12: #1e90ff
+! puple
+URxvt*color5: #75507b
+URxvt*color13: #ad7fa8
+! cyan
+URxvt*color6: #0b939b
+URxvt*color14: #00f5e9
+! white
+URxvt*color15: #eeeeec
+URxvt*color7: #d3d7cf
+
+
+! Perl extension
+URxvt.perl-ext-common: default,matcher,tabbedex,selection-to-clipboard
+URxvt.url-launcher: /usr/bin/xdg-open
+URxvt.matcher.button: 1
+URxvt.colorUL: #4682B4
+
+URxvt*eightBitInput:   false
+URxvt*eightBitOutput:  true
+
+URxvt.tabbed.no-tabbedex-keys: yes
+URxvt.keysym.Mod4-t: perl:tabbedex:new_tab
+URxvt.keysym.Mod4-n: perl:tabbedex:new_window
+URxvt.keysym.Mod4-N: perl:tabbedex:new_window
+URxvt.keysym.Shift-Left: perl:tabbedex:prev_tab
+URxvt.keysym.Shift-Right: perl:tabbedex:next_tab
+URxvt.keysym.Mod4-1: perl:tabbedex:goto_tab_1
+URxvt.keysym.Mod4-2: perl:tabbedex:goto_tab_2
+URxvt.keysym.Mod4-3: perl:tabbedex:goto_tab_3
+URxvt.keysym.Mod4-4: perl:tabbedex:goto_tab_4
+URxvt.keysym.Mod4-5: perl:tabbedex:goto_tab_5
+URxvt.keysym.Mod4-6: perl:tabbedex:goto_tab_6
+URxvt.keysym.Mod4-7: perl:tabbedex:goto_tab_7
+URxvt.keysym.Mod4-8: perl:tabbedex:goto_tab_8
+URxvt.keysym.Mod4-9: perl:tabbedex:goto_tab_9
+
+URxvt.keysym.C-comma:  \033[1;5l
+URxvt.keysym.C-period: \033[1;5n
+URxvt.keysym.C-<:  \033[1;6l
+URxvt.keysym.C->: \033[1;6n
+
+URxvt.keysym.Shift-Control-comma: \033[1;6n
+
+
+URxvt.keysym.Mod4-f: searchable-scrollback:start
+URxvt.keysym.M-s: builtin:
+
+
+! scroll: auto scroll by default
+XTerm*scrollBar: false
+URxvt*scrollBar: false
+URxvt*scrollTtyOutput: false
+URxvt*scrollWithBuffer: true
+URxvt*scrollTtyKeypress: true
+URxvt*saveLines: 20000
+
+! disable scrooback buffer for secondary screen
+URxvt.secondaryScreen: 1
+URxvt.secondaryScroll: 0
+URxvt.secondaryWheel: 1
+
+Xcursor.theme: Adwaita

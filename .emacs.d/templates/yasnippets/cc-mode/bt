@@ -1,0 +1,22 @@
+# -*- mode: snippet -*-
+# name: bt
+# key: bt
+# --
+// #include <execinfo.h>
+{
+void *buffer[100];$>
+int nptrs = backtrace(buffer, SIZE);$>
+if (nptrs > 0)$>
+{$>
+char **strings = NULL;$>
+strings = backtrace_symbols(buffer, nptrs);$>
+if (strings == NULL) {$>
+perror("backtrace_symbols");$>
+exit(EXIT_FAILURE);$>
+}$>
+for (int j = 0; j < nptrs; j++) {$>
+printf("%s\n", strings[j]);$>
+}$>
+free(strings);$>
+}$>
+}

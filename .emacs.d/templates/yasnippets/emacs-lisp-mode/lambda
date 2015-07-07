@@ -1,0 +1,6 @@
+#name: lambda
+#key: lambda
+#key: lmb
+# --
+(lambda ($1)
+${2:(interactive)} $0)$>

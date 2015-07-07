@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: yc/eval-after-load
+# key: yeal
+# --
+(yc/eval-after-load
+"${1:FILE}"$>
+$0$>
+)$>

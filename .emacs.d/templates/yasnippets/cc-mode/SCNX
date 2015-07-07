@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: SCNX
+# key: sx
+# --
+SCN${1:X}${1:$(if (string-match "[Xdioux]L" yas-text)
+"EAST"$>
+(if (string-match "[Xdioux]F" yas-text)$>
+"AST"$>
+""$>
+))}$0$>

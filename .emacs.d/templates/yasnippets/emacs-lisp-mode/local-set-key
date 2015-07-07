@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: local-set-key
+# key: lsk
+# --
+(local-set-key ${1:key} $0)

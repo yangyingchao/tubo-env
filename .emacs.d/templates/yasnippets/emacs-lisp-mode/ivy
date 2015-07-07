@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: ivy-read
+# key: ivr
+# --
+(ivy-read ${1:PROMT} ${2:COLLECTION}
+            :action $0
+            )

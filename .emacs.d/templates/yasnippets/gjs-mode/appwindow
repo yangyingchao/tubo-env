@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: ApplicationWindow
+# key: appwin
+# --
+Gtk.ApplicationWindow({
+application: ${1:this.application},$>
+title: '${2:title}'$0$>
+});

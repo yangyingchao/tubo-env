@@ -1,0 +1,21 @@
+# -*- mode: snippet -*-
+# name: plantuml
+# key: uml
+# --
+#+BEGIN_SRC plantuml :file ${1:i}${1:$(if (string-match "^\.\." yas-text)
+"/assets/img"
+(if (string-match "^i" yas-text)
+"mages" ""
+))}/${2:name}-gen-`(md5 buffer-file-name)`.png$>  :cmdline -Djava.awt.headless=true  -charset UTF-8
+
+$0$>
+
+#+END_SRC
+#+CAPTION: ${3:caption}$>
+#+NAME: fig:${3:$(mapconcat 'identity (split-string yas-text (rx (not alnum))) "_")}
+#+RESULTS:
+[[file:$1${1:$(if (string-match "^\.\." yas-text)
+"/assets/img"
+(if (string-match "^i" yas-text)
+"mages" ""
+))}/$2-gen-`(md5 buffer-file-name)`.png]]

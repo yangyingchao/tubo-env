@@ -1,0 +1,9 @@
+#+TITLE: (>>FILE_NO_EXT_MINUS<<)
+#+AUTHOR: (>>USER<<)
+#+EMAIL:  (>>EMAIL<<)
+#+OPTIONS:  ^:nil H:7 num:t toc:2 \n:nil ::t |:t -:t f:t *:t tex:t d:(HIDE) tags:not-in-toc
+#+STARTUP:  align nodlcheck oddeven lognotestate (>>TEX_PREVIEW<<)
+#+SEQ_TODO: TODO(t) INPROGRESS(i) WAITING(w@) | DONE(d) CANCELED(c@)
+#+TAGS:     noexport(n)
+#+LANGUAGE: en
+#+EXCLUDE_TAGS: noexport

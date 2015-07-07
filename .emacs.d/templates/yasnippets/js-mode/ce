@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: document.createElement
+# key: ce
+# --
+document.createElement('${1:name}')

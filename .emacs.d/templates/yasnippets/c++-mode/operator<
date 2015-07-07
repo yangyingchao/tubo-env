@@ -1,0 +1,15 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: operator<
+# key: op<
+# --
+bool operator<(const $1& rhs) const$>
+{${0:if (a < rhs.a) {
+return true;
+}
+else if (a == rhs.a) {
+if (b < rhs.b) {
+return true;
+}
+return false;
+}
+return false;}}

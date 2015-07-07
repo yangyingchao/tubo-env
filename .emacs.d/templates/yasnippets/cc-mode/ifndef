@@ -1,0 +1,9 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: ifndef
+# key: ifn
+# --
+#ifndef ${1:VAR}
+${2:TODO}
+#else
+#${3:TODO}
+#endif

@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: insert
+# key: ins
+# --
+INSERT INTO ${table-name} VALUES ($0);

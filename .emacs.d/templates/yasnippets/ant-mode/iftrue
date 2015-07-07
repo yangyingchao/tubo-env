@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: iftrue
+# key: itru
+# --
+<if>
+<istrue value="\${${1:VAR}}" />$>
+<then>$>
+${2:ACTION1}$>
+</then>$>
+<else>$>
+${3:ACTION2}$>
+</else>$>
+</if>

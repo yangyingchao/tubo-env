@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: operator=
+# key: op=
+# where this is a reference to myself
+# --
+${1:MyClass}& operator=(const $1& rhs)$0

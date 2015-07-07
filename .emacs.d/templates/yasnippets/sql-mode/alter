@@ -1,0 +1,15 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: alter
+# key: alt
+# --
+ALTER TABLE ${1:name} ${2:A}${2:$(cond
+ ((string-match "^AD" yas-text) "D")
+ ((string-match "^ALG" yas-text) "ORITHM")
+ ((string-match "^ALT" yas-text) "ER")
+ ((string-match "^AL" yas-text) "TER")
+ ((string-match "^A" yas-text) "DD")
+ ((string-match "^C" yas-text) "HANGE")
+ ((string-match "^D" yas-text) "ROP")
+ ((string-match "^R" yas-text) "EMOVE")
+ ((string-match "^U" yas-text) "PGRAGE")
+ (t ""))} $0

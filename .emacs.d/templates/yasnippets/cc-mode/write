@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: write
+# key: write
+# --
+size_t ${1:written} = write(${2:fd}, ${3:buf}, ${4:total_size});

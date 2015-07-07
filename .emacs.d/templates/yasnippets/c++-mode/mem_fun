@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: mem_fun
+# key: mfn
+# --
+mem_fun(&${1:CLASS}::${2:FUN})

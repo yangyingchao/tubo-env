@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: alias
+# key: ali
+# --
+alias ${1:foo}="${2:bar}"

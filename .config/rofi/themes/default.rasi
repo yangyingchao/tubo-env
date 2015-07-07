@@ -1,0 +1,84 @@
+* {
+    columns: 1;
+    background-color: @xbg;
+    border-color: #00000000;
+    text-color: @xfg;
+    font: "WenQuanYi Micro Hei 18";
+
+    xbs:#1a74e9;
+    xfs:#f2eeed;
+    xbg:#191919cc;
+    xfg:#f2eeed;
+
+}
+
+#window {
+/*    fullscreen:true;
+	location:	 west;
+    anchor: west;*/
+    border: 0;
+    border-radius: 4px;
+    padding: 40;
+    width: 40%;
+    height: 60%;
+}
+
+#mainbox {
+    background-color: #00000000;
+    children: [inputbar, listview];
+    spacing: 10px;
+    /*margin: 20%;*/
+    padding: 20px 20px;
+    border: 1px;
+    border-color: @base0D;
+}
+
+
+#listview {
+    background-color: #00000000;
+    fixed-height: 0;
+    border: 0px;
+    spacing: 5px;
+    scrollbar: false;
+    padding: 10px 10px 0px;
+}
+
+#element {
+    background-color: #00000000;
+    border: 0;
+    border-radius: 4px;
+    padding: 3 0  3 4 ;
+}
+
+#element selected {
+    background-color: @xbs;
+    text-color: @xfs;
+}
+
+
+#inputbar {
+    children:   [ prompt,textbox-prompt-colon,entry,case-indicator ];
+    background-color: #00000000;
+}
+
+#case-indicator {
+    background-color: #00000000;
+    spacing:    0;
+}
+#entry {
+    background-color: #00000000;
+    spacing:    0;
+}
+#prompt {
+    background-color: #00000000;
+    spacing:    0;
+}
+
+#textbox-prompt-colon {
+    background-color: #00000000;
+    expand:     false;
+    str:        ":";
+    margin:     0px 0.3em 0em 0em ;
+}
+
+#element-icon { size: 3.2ch;}

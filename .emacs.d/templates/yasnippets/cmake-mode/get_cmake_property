@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: get_cmake_property
+# --
+get_cmake_property($0)

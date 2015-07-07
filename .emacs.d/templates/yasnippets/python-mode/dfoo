@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# Debug utility for python.
+# --
+import inspect
+
+def oops(fmt, *args):
+    """
+    Debug helper tool.
+    """
+    caller = "file: %s, line: %d" % inspect.stack()[1][1:3]
+    print "called by: %s"%caller
+
+    try:
+        msg = fmt%args
+    except:
+        print "Failed to format string."
+        msg = ""
+    finally:
+        print "Debug: %s"%msg

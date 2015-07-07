@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: :bind_map
+# key: :bnm
+# group: use-package
+# --
+:bind (:map ${1:map}
+(${2:KEY} . $0))

@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: string_split
+# key: string_split
+# --
+IFS=', ' read -r -a array <<< "${1:INPUT}"

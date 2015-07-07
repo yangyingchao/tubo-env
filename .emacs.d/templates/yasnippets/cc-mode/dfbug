@@ -1,0 +1,28 @@
+# name: dfbug
+# key: dfbug
+# -*- mode: snippet -*-
+# --
+#include <time.h>
+#include <stdio.h>
+
+#ifndef __THREAD__
+#ifdef _PTHREAD_H
+#define __THREAD__ (unsigned long long)pthread_self()
+#else
+#define __THREAD__ (unsigned long long)0
+#endif
+#endif
+
+#if !defined(PDEBUG)
+#define PDEBUG(fmt, ...) \\$>
+  do \\$>
+  { \\$>
+    time_t ts = time(NULL); \\$>
+    struct tm tm_tmp, *start = &tm_tmp; \\$>
+    localtime_r(&ts, start); \\$>
+    fprintf(stderr, "%02d%02d%02d %2d:%02d:%02d : [%08llX] - %s:%04d -- %s: " fmt, \\$>
+            start->tm_year % 100, start->tm_mon + 1, start->tm_mday, start->tm_hour, \\$>
+            start->tm_min, start->tm_sec, __THREAD__, __FILE__, __LINE__, __FUNCTION__, \\$>
+            ##__VA_ARGS__); \\$>
+  } while (0)
+#endif /*End of if PDEBUG*/

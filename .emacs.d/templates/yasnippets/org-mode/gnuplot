@@ -1,0 +1,47 @@
+# -*- mode: snippet -*-
+# name: gnuplot
+# key: gplot
+# --
+#+BEGIN_SRC gnuplot :var data=${1:data-table} :file ${2:i}${2:$(if (string-match "^\.\." yas-text)
+"/assets/img"
+(if (string-match "^i" yas-text)
+"mages" ""
+))}/${3:name}-gen-`(md5 buffer-file-name)`.png$>
+
+reset
+
+set term png size 1024,768
+set title "$0"
+set xlabel "XLABEL"
+set ylabel "Time (seconds)"
+set yrange[0:]
+set key on auto columnheader
+set key box linestyle -1
+set key top left
+set auto x
+
+set offset 0,0,graph 0.05,0
+
+set grid
+
+set style data histograms
+set style fill solid 1.00 border -1
+set style histogram clustered gap 1 title textcolor lt -1
+
+set linetype 1 lc rgb '#FF420E'
+set linetype 2 lc rgb '#3465A4'
+
+plot data using 2:xtic(1),\
+     '' u 3 ,\
+     '' u 0:2:2 with labels right offset -0.3,1 title '',\
+     '' u 0:3:3 with labels  left offset 0.3,1 title ''
+
+#+END_SRC
+#+CAPTION: ${4:caption}$>
+#+NAME:fig:${4:$(mapconcat 'identity (split-string yas-text (rx (not alnum))) "_")}
+#+RESULTS:
+[[file:$2${2:$(if (string-match "^\.\." yas-text)
+"/assets/img"
+(if (string-match "^i" yas-text)
+"mages" ""
+))}/$3-gen-`(md5 buffer-file-name)`.png]]

@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Some
+# key: som
+# --
+Some(${1:value})

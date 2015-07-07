@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: for (const auto& ..)
+# key: foc
+# --
+for (cons auto& ${1:elem} : ${2:data}) {
+$0$>
+}

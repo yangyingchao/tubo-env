@@ -1,0 +1,5 @@
+# name : ${ ...  } field
+# contributor : joaotavora
+# key: field
+# --
+\${${1:n}:\$($0)}

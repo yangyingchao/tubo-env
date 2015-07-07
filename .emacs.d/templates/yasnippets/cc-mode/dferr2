@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# key: dferr
+# --
+#define handle_error(fmt,...)            \\$>
+do {                                     \\$>
+    char* buf = NULL;                    \\$>
+    asprintf(&buf, fmt, ## __VA_ARGS__);\\$>
+    perror(buf);                         \\$>
+    free(buf);                           \\$>
+    exit(1);                  \\$>
+} while (0)

@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: figure
+# key: fig
+# --
+#+CAPTION: $0
+#+NAME: ${2:$(let ((name (format "fig:%s" (file-name-sans-extension yas-text)))
+      (ext (file-name-extension yas-text)))
+  (when (and (stringp ext)
+             (> (length  ext) 2))
+    (kill-new (format "[[%s]]" name)))
+  name)}
+[[${1:./i}${1:$(progn (message "template: %s" yas-text)
+(cond ((string-match "^\\./i" yas-text) "mages/")
+      ((string-match "^\\.\\." yas-text) "/assets/img/")
+      (t "FF")))}$2]]

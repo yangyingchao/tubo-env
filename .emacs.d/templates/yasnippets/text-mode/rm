@@ -1,0 +1,14 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: rm
+# key: rm
+# --
+rm:#${1:} ${2:fi}${2:$(cond
+                        ((string-match "^fe" yas-text) "at")
+                        ((string-match "^fi"  yas-text) "x")
+                        ((string-match "^d$"  yas-text) "oc")
+                        ((string-match "^s$"  yas-text) "tyle")
+                        ((string-match "^r$"  yas-text)"efactor")
+                        ((string-match "^t$"  yas-text)"est")
+                        (t ""))}: ${3:subject}
+
+$0

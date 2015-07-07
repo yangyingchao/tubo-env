@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: when
+# key: when
+# --
+WHEN ${1:value} then ${2:result}

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: string-match
+# key: strmat
+# --
+(string-match ${1:regex} ${2:content})

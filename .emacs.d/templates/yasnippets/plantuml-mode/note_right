@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: note_right
+# key: ntr
+# --
+note right
+$0
+end note

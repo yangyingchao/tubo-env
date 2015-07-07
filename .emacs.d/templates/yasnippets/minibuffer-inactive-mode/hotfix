@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: hotfix
+# key: hot
+# --
+hotfix_$0

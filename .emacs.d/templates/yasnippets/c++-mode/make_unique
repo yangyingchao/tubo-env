@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: make_unique
+# key: mku
+# --
+std::make_unique<${1:TYPE}>($0)

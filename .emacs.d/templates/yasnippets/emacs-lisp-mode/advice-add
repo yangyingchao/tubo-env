@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# name: advice-add
+# key: adva
+# --
+(defadvice! yc/$1-adv (${2:$(if (string-match "^ar" yas-text) "orig-func ")}&rest args)
+  "${2:Docs}
+ORIG-FUNC is called with ARGS."$>
+ :${2:$$(yas-choose-value '("after-until"
+"after-while"
+"after"
+"around"
+"before-until"
+"before-while"
+"before"
+"filter-args"
+"filter-return"
+"override"))}  #'${1:orig-fn}
+$0$>
+)

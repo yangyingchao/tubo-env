@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: custom-set-variables
+# key: csv
+# --
+(custom-set-variables
+'(${1:SYMBOL} ${2:VALUE})$>
+$0)$>

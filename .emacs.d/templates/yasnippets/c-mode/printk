@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name : printk
+# key: prk
+# --
+printk(${1:KERN_INFO} "${2:%s}\\n"${2:$(if (string-match "%" yas-text) "," "\);")
+}$3${2:$(if (string-match "%" yas-text) "\);" "")}

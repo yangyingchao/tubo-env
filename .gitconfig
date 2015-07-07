@@ -1,0 +1,112 @@
+# -*- mode: conf-unix -*-
+[color]
+	ui = true
+  ## If git is too slow, disable following colors.
+  # status = off
+  # ui = false
+[core]
+  whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol,blank-at-eol,space-before-tab,-blank-at-eof
+  eol=native
+  editor=vim
+  excludesfile = ~/.gitignore
+  # autocrlf = input ## For Mac and Linux
+  # autocrlf = true  ## For windows
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+[color "diff"]
+	meta = yellow
+	frag = magenta bold
+	old = red bold
+	whitespace = red reverse
+	new = green bold
+	commit = yellow bold
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+[alias]
+  st = status
+  ci = commit
+  br = branch
+  co = checkout
+  cp = cherry-pick
+  df = diff
+  dt = difftool -y
+  mt = mergetool
+  dc = diff --cached
+  lg = log -p
+  lol = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)' --abbrev-commit
+  lot = log --since=\"1 weeks ago\" --pretty=format:\"%C(yellow)Commit: %H%n%n %s%n%n %b%n%n\"
+  lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+  ls = ls-files
+  su = submodule foreach 'bash $HOME/.git_scripts/utils/utils.sh su'
+  tm = submodule foreach 'bash $toplevel/.git_scripts/utils/utils.sh tm'
+  tu = submodule foreach update --init
+
+  # Show files ignored by git:
+  ign = ls-files -o -i --exclude-standard
+
+  mg = merge -s recursive -X ignore-all-space
+
+# Need to specify file attribute to use following diff tools. such as:
+# *.doc diff=word
+# *.png diff=exif
+
+[diff "word"]
+	textconv = strings
+[diff "exif"]
+	textconv = exiftool
+[diff "binary"]
+	textconv = "hexdump"
+
+[push]
+	default = current
+
+[pull]
+    rebase = true # prefer rebase other than merge.
+
+[filter "media"]
+	clean = git-media-clean %f
+	smudge = git-media-smudge %f
+
+[merge]
+    keepBackup = false;
+	tool = p4merge
+	ff = true
+	conflictStyle = diff3
+[mergetool "p4merge"]
+	cmd = p4merge $BASE $LOCAL $REMOTE $MERGED
+    keepTemporaries = false
+    trustExitCode = false
+    keepBackup = false
+    prompt = false
+[diff]
+    tool = p4merge
+
+[difftool "p4merge"]
+    cmd = p4merge "$LOCAL" "$REMOTE"
+    keepTemporaries = false
+    trustExitCode = false
+    keepBackup = false
+[svn]
+	rmdir = true
+
+[branch]
+  autosetuprebase = always
+[magit]
+	hideCampaign = true
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+[user]
+	email = you@example.com
+	name = Your Name

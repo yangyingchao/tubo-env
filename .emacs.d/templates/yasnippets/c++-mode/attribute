@@ -1,0 +1,15 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: attribute
+# key: attr
+# --
+[[${1:}${1:$(completing-read "Choose: " '("noreturn"
+"carries_dependency"
+"deprecated"
+"deprecated("reason")"
+"fallthrough"
+"nodiscard"
+"maybe_unused"
+"likely"
+"unlikely"
+"no_unique_address"
+"optimize_for_synchronized"))}]]

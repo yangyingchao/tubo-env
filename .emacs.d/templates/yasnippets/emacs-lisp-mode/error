@@ -1,0 +1,5 @@
+#contributor: Xah Lee (XahLee.org)
+#name: error
+#key: err
+# --
+(error "$1"${1:$(if (string-match "%" yas-text) " " "")}$0)

@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: while
+# key: whi
+# --
+WHILE ${1:COND} DO
+    $0
+END WHILE

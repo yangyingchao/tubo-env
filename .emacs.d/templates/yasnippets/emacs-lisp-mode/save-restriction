@@ -1,0 +1,9 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: save-restriction
+# key: sr
+# --
+(save-restriction
+(widen)$>
+(goto-char (point-min))$>
+$0$>
+)$>

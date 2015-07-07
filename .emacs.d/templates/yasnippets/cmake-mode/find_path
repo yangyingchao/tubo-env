@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: find_path
+# --
+find_path($0)

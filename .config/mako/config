@@ -1,0 +1,39 @@
+background-color=#232323
+text-color=#FFFFFF
+width=400
+height=35
+font=WenQuanYi Micro Hei
+icon-path=/usr/share/icons/Faenza/actions/48x48/:/usr/share/icons/Faenza/apps/48x48/:/usr/share/icons/Faenza/categories/48x48/:/usr/share/icons/Faenza/devices/48x48/:/usr/share/icons/Faenza/emblems/48x48/:/usr/share/icons/Faenza/extras/48x48/:/usr/share/icons/Faenza/mimetypes/48x48/:/usr/share/icons/Faenza/places/48x48/:/usr/share/icons/Faenza/status/48x48/:/usr/share/icons/Faenza/stock/48x48/
+
+progress-color=#444444
+icons=1
+padding=20
+border-color=#dddddd
+border-size=2
+border-radius=8
+actions=1
+default-timeout=30
+
+
+# [urgency_low]
+#     # IMPORTANT: colors have to be defined in quotation marks.
+#     # Otherwise the '#' and following  would be interpreted as a comment.
+#     background="#343434"
+#     foreground="#f5f5f5"
+#     timeout = 7
+
+
+# [urgency_normal]
+#     background="#343434"
+#     foreground="#ffffff"
+#     timeout = 10
+
+
+[hidden]
+format=(and %h more)
+text-color=#777777
+
+[urgency=high]
+background-color=#c00000
+border-color=#ff0000
+

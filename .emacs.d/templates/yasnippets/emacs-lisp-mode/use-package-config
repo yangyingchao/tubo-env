@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: :config
+# key: :cfg
+# group: use-package
+# --
+:config$>
+$0
+$>

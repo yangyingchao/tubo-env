@@ -1,0 +1,3 @@
+# -*- mode: snippet -*-
+# --
+arrowhead=vee  arrowtail=box style=dashed dir=both];

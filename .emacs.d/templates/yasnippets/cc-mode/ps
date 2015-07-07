@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: PSIZE
+# key: ps
+# --
+PSIZE($1);

@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# key:nd
+# --
+node_${1:name}[label="${2:$1()}"];

@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: cmake_minimum_required
+# --
+cmake_minimum_required(VERSION ${1:3.12})

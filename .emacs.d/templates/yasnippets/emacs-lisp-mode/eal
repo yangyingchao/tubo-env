@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: eval-after-load
+# key: eal
+# --
+(eval-after-load "${1:FILE}"
+'(progn$>
+(message "Loading configuration for $1")$>
+$0$>
+))$>

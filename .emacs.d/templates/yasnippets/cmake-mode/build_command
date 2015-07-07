@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: build_command
+# --
+build_command($0)

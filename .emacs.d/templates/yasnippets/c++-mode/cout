@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: cout
+# key: cot
+# --
+std::cout << "${1:Variable} " << std::endl;

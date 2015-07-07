@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# --
+try
+{
+${1:do_some_thing}$>
+}
+catch
+{
+${2:oops}$>
+}
+finally
+{
+${3:cleanup_codes}$>
+}

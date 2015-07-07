@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: copy
+# key: cpy
+# --
+copy(${1:InIter}.begin(), $1.end(), ${2:OutIter});

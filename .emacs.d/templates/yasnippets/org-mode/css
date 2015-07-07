@@ -1,0 +1,20 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: css
+# key: css
+# --
+`(concat "#+HTML_HEAD: <style type=\"text/css\">"
+         (with-temp-buffer
+           (insert-file-contents (expand-file-name "~/.emacs.d/templates/assets/css/style.css"))
+           (catch 'done
+             (while t
+               (goto-char (point-min))
+               (unless (looking-at-p (rx (+? nonl) "\n"))
+                 (throw 'done t))
+               (while (search-forward-regexp (rx (* space) "\n" (* space)) nil t)
+                 (replace-match " "))))
+
+           (buffer-substring-no-properties (point-min) (point-max))
+           )
+
+         " </style>"
+         )`

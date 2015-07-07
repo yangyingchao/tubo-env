@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: cmake-utils_use
+# key: cuu
+# --
+$(cmake-utils_use ${1:use} ENABLE_${1:$(upcase yas-text)})

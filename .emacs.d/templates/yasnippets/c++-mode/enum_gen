@@ -1,0 +1,26 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: enum_gen
+# key: engen
+# --
+#define FOREACH_${1:NAME}(FUNC)\\$>
+FUNC(${4:VAR})\\$>
+FUNC(MAX)\\$>
+$0
+
+#define GEN_$1_ENUM(ENUM) ${2:PFX}${2:$(when (string-match (rx (+ alnum)) yas-text) "_##")}ENUM,$>
+
+enum class ${3:$1} {$>
+FOREACH_$1(GEN_$1_ENUM)$>
+} $3;$>
+
+const char* Get$3Desc($3 t);$>
+
+#define GEN_$1_DESC(ENUM) #ENUM,
+static const char* $3_Desc[] = {$>
+FOREACH_$1(GEN_$1_DESC)$>
+};$>
+
+const char* Get$3Desc($3 t)$>
+{$>
+return t < $2_MAX ?  $3_Desc[t] : "";$>
+}$>

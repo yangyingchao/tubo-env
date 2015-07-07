@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: binary_search
+# key: bs
+# --
+binary_search(${1:v}.begin(), $1.end()$0);

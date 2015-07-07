@@ -1,0 +1,3 @@
+# -*- mode: snippet -*-
+# --
+std::cout << $0 << std::endl;

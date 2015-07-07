@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: load_cache
+# --
+load_cache($0)

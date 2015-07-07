@@ -1,0 +1,7 @@
+#contributor: Xah Lee (XahLee.org)
+#name: message
+#key: message
+#key: msg
+# --
+(message "${1:%s}"${1:$(if (string-match "%" yas-text) " " "")
+}$2)

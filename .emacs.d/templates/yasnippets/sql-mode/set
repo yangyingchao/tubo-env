@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: SET
+# key: set
+# --
+SET ${1:VAR} = ${2:VAL};

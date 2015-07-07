@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# --
+#include <cppunit/ui/text/TestRunner.h>$>
+#include <cppunit/extensions/TestFactory.h>
+CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(${1:Name}, "$1" );$>
+int main(int argc, char **argv)$>
+{
+CppUnit::TextUi::TestRunner runner;$>
+CppUnit::TestFactoryRegistry &registry =$>
+CppUnit::TestFactoryRegistry::getRegistry("$1");$>
+runner.addTest(registry.makeTest());$>
+runner.run();$>
+return 0;$>
+}

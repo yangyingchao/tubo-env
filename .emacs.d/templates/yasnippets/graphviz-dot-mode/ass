@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Assciate
+# key: ass
+#关联(Association) : 对象之间一种引用关系，比如客户类与订单类之间的关系。这种关系通常使用类的属性表达。关联又分为一般关联、聚合关联与组合关联。后两种在后面分析。在类图使用带箭头的实线表示，箭头从使用类指向被关联的类。可以是单向和双向。
+# --
+${1:} -> ${2:} [arrowhead=vee arrowtail=vee style=solid dir=forward];

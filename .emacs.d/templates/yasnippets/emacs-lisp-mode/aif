@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: aif
+# key: aif
+# --
+(aif ${1:cond}
+$0)$>

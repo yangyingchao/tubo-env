@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: trans
+# key: trans
+# --
+transform(${1:InIter}.begin(), $1.end(), ${2:OutIter}, ${3:op});

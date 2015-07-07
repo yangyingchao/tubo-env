@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: push
+# key: psh
+# --
+push @${1:scalar}, ${2:var}$0;

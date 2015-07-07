@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+#contributor : Xah Lee
+# --
+(setq $0 (thing-at-point 'symbol))

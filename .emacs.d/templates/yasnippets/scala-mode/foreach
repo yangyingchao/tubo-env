@@ -1,0 +1,5 @@
+#Author : Jonas Bonèr <jonas@jonasboner.com>
+#name : foreach(x => ..)
+#key: foe
+# --
+foreach(${1:x} => ${2:body}) $0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: note_node
+# key: note
+# --
+node_${1:name}_note[label="${2:Label}"  shape=note color="#cd853f"];

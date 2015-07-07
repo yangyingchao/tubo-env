@@ -1,0 +1,83 @@
+* {
+    border: none;
+    border-radius: 0px;
+    font-family: "WenQuanYi Micro Hei", "Symbols Nerd Font";
+    font-size: 16px;
+    min-height: 0;
+}
+
+#window {
+   padding: 0px 10px;
+   background: transparent;
+   background: #E5EFF9;
+}
+
+window#waybar {
+  background: #E5EFF9;
+    color: #252525;
+}
+
+window > box {
+  border-bottom: 1px solid#252525;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+window#waybar.empty {
+    background: #E5EFF9;
+}
+window#waybar.solo {
+    background: #E5EFF9;
+}
+
+#workspaces button {
+    padding: 0px 3px;
+    background: #E5EFF9;
+    color: #252525;
+}
+
+#workspaces button.focused {
+    padding: 0px;
+    border-bottom: 2px solid #ffb52a;
+    background: #4E524F;
+}
+
+#workspaces button.urgent {
+    padding: 0px;
+    background-color: #eb4d4b;
+    border-bottom: 2px solid #DD77AA;
+}
+
+#mode {
+    background: #64727D;
+    border: 2px solid #252525;
+}
+
+#clock, #battery, #cpu, #memory, #temperature, #backlight, #network, #pulseaudio, #tray, #mode, #custom-ip {
+    padding: 0 10px;
+    color: #252525;
+}
+
+@keyframes blink {
+    to {
+        background-color: #252525;
+        color: #000000;
+    }
+}
+
+#battery.critical:not(.charging) {
+    background: #f53c3c;
+    color: #252525;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+label:focus {
+    background-color: #000000;
+}
+

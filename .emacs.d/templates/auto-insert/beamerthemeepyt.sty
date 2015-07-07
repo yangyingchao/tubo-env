@@ -1,0 +1,229 @@
+%% -*- coding: utf-8 -*-
+
+%% epyt: a simple and nice theme for beamer by zoho@bbs.ctex.org
+
+\ProvidesPackage{beamerthemeepyt}[2011/12/06 v0.2]
+
+\mode<presentation>
+
+
+%% these code are from lankton-keynote theme
+
+\usetheme{default}
+\useoutertheme{default}
+\definecolor{bottomcolour}{rgb}{0.32,0.3,0.38}
+\definecolor{middlecolour}{rgb}{0.08,0.08,0.16}
+\setbeamercolor{structure}{fg=gray}
+\setbeamertemplate{frametitle}[default]%[center]
+\setbeamercolor{normal text}{bg=black, fg=white}
+\setbeamertemplate{background canvas}[vertical shading]
+[bottom=bottomcolour, middle=middlecolour, top=black]
+\setbeamertemplate{navigation symbols}{} %no nav symbols
+
+
+%% these code are from progressbar theme
+
+\RequirePackage{tikz}
+\usetikzlibrary{arrows}
+
+% Processing options...
+
+\def\progressbar@headline{none}%
+\def\progressbar@frametitle{picture-section}%
+\def\progressbar@imagename{images/tree04}%
+\def\progressbar@titlepage{picture}%
+\define@key{progressbar}{headline}[none]{%
+  \def\progressbar@headline{#1}%
+}
+\define@key{progressbar}{frametitle}[picture]{%
+  \def\progressbar@frametitle{#1}%
+}
+\define@key{progressbar}{imagename}{%
+  \def\progressbar@imagename{#1}%
+  \pgfdeclareimage[width=0.12\textwidth,interpolate=true]{headlineimage}{\progressbar@imagename}
+}
+\define@key{progressbar}{titlepage}[picture]{%
+  \def\progressbar@titlepage{#1}%
+}
+
+\def\progressbaroptions#1{\setkeys{progressbar}{#1}}
+
+\def\insertintermediateframenumber{\inserttotalframenumber}
+
+% Some color definitions...
+
+\setbeamercolor{progressbar primary}{parent=palette primary}
+\setbeamercolor{progressbar secondary}{parent=palette secondary}
+\setbeamercolor{progressbar tertiary}{parent=palette tertiary}
+\setbeamercolor{progressbar quaternary}{parent=palette quaternary}
+
+% Some computations dedicated to the progressbar...
+
+\newdimen\progressbar@currentbarlength
+\newdimen\progressbar@framenumberrectangle
+\newdimen\progressbar@titlerectangle
+\newdimen\progressbar@leftbar
+\newdimen\progressbar@tmpresult
+\newdimen\progressbar@barlength
+
+\newdimen\progressbar@stepbar
+
+\newcount\progressbar@numer
+\newcount\progressbar@denom
+
+\progressbar@framenumberrectangle=\paperwidth
+\progressbar@titlerectangle=\paperwidth
+
+\progressbar@leftbar=0.15cm
+\progressbar@barlength=\paperwidth
+
+\newbox\progressbar@framenumberbox
+
+\newcount\progressbar@firstpb
+\progressbar@firstpb=0
+
+\def\insertprogressbar{
+  \ifnum\insertintermediateframenumber=1\else
+
+    \ifnum\progressbar@firstpb=0
+      \setbox\progressbar@framenumberbox=\hbox{\usebeamerfont{section in head/foot}\color{fg}\inserttotalframenumber~/~\inserttotalframenumber}
+      \newdimen\progressbar@framenumberboxwidth
+      \progressbar@framenumberboxwidth=\wd\progressbar@framenumberbox
+      
+      \global\advance\progressbar@framenumberrectangle by -0.15cm
+      \global\advance\progressbar@framenumberrectangle by -0.5\progressbar@framenumberboxwidth
+      \global\advance\progressbar@titlerectangle by -0.3cm
+      \global\advance\progressbar@titlerectangle by -\progressbar@framenumberboxwidth
+
+      \global\advance\progressbar@barlength by -\progressbar@framenumberboxwidth
+      \global\advance\progressbar@barlength by -0.45cm
+
+      \progressbar@numer=1
+      \progressbar@denom=\insertintermediateframenumber
+      \advance\progressbar@denom by -1
+      \progressbar@tmpresult=\progressbar@barlength
+      \multiply\progressbar@tmpresult by \progressbar@numer
+      \divide\progressbar@tmpresult by \progressbar@denom
+      \global\progressbar@stepbar=\progressbar@tmpresult
+
+      \global\progressbar@currentbarlength=-\progressbar@stepbar
+
+      \global\progressbar@firstpb=1
+    \fi
+
+  
+    \global\progressbar@currentbarlength=\insertframenumber\progressbar@stepbar
+    \global\advance\progressbar@currentbarlength by -\progressbar@stepbar
+    
+    \begin{tikzpicture}[thin]
+      \usebeamercolor{section in head/foot}
+      \useasboundingbox (0, 0) rectangle  (\paperwidth, 0.6cm);
+      \draw (\progressbar@framenumberrectangle, 0.21cm) node [anchor=mid] {\color{fg}\insertframenumber~/~\insertintermediateframenumber};
+      \draw (\progressbar@titlerectangle, 0.21cm) node [anchor=south east] {\color{fg}\insertshorttitle};
+      \draw[fg!30!bg, <->, >=serif cm] (\progressbar@leftbar, 0.21cm) -- (\progressbar@titlerectangle, 0.21cm);
+      \draw (\progressbar@currentbarlength, 0.21cm)
+      ++(\progressbar@leftbar, 0cm) node[anchor=north] {\color{fg!30!bg}$\blacktriangle$};
+    \end{tikzpicture}
+    \fi
+}
+
+% Definition of the customized templates...
+
+\newlength\progressbar@sectionboxwidth
+\newlength\progressbar@sectionboxheight
+\newbox\progressbar@sectionbox
+\newbox\progressbar@sectionboxbox
+
+\usesectionheadtemplate
+  {\hfill
+    \setbox\progressbar@sectionbox=\hbox{\insertsectionhead}%
+    \progressbar@sectionboxwidth=\wd\progressbar@sectionbox
+    \advance\progressbar@sectionboxwidth by 4pt
+    \setbox\progressbar@sectionbox=\hbox{\pgfinterruptpicture t \endpgfinterruptpicture}%
+    \progressbar@sectionboxheight=\ht\progressbar@sectionbox
+    \advance\progressbar@sectionboxheight by 4pt
+    \begin{tikzpicture}
+      \usebeamercolor{section in head/foot}
+      \useasboundingbox (-0.5\progressbar@sectionboxwidth, 0pt) rectangle (0.5\progressbar@sectionboxwidth, \progressbar@sectionboxheight);
+      \draw[anchor=base] (0pt, 2pt) node {\color{fg} \insertsectionhead};
+      \draw[rounded corners=3pt, draw=fg] (-0.5\progressbar@sectionboxwidth, 0pt) rectangle (0.5\progressbar@sectionboxwidth, \progressbar@sectionboxheight);
+    \end{tikzpicture}
+  }
+  {\hfill
+    \setbox\progressbar@sectionbox=\hbox{\pgfinterruptpicture\insertsectionhead\endpgfinterruptpicture}%
+    \progressbar@sectionboxwidth=\wd\progressbar@sectionbox
+    \advance\progressbar@sectionboxwidth by 4pt
+    \setbox\progressbar@sectionboxbox=\hbox{\pgfinterruptpicture t \endpgfinterruptpicture}%
+    \progressbar@sectionboxheight=\ht\progressbar@sectionboxbox
+    \advance\progressbar@sectionboxheight by 4pt
+    \begin{tikzpicture}
+      \usebeamercolor{section in head/foot}
+      \useasboundingbox (-0.5\progressbar@sectionboxwidth, 0pt) rectangle (0.5\progressbar@sectionboxwidth, \progressbar@sectionboxheight);
+      \draw[anchor=base] (0pt, 2pt) node {\color{fg} \insertsectionhead};
+    \end{tikzpicture}
+  }
+
+% Footline...
+
+\defbeamertemplate*{footline}{progressbar theme}{
+  \begin{beamercolorbox}[wd=\paperwidth,ht=0.6cm,dp=0ex]{structure.fg}%
+    \insertprogressbar
+  \end{beamercolorbox}%
+}
+
+
+%% disable block style for theorem
+
+\setbeamercolor{theoremname}{fg=yellow!60!gray}
+\setbeamertemplate{theorem begin}
+{%
+  \bfseries\upshape %\inserttheoremheadfont
+  {\usebeamercolor[fg]{theoremname}%\color{yellow!60!gray}% 
+  \inserttheoremname\inserttheoremnumber
+  \ifx\inserttheoremaddition\@empty\else\ (\inserttheoremaddition)\fi%
+  \inserttheorempunctuation}\quad
+  \normalfont
+}
+\setbeamertemplate{theorem end}{}
+
+\setbeamercolor{proofname}{fg=yellow!60!gray}
+\setbeamertemplate{proof begin}
+{%
+  \bfseries {\usebeamercolor[fg]{proofname}%\color{yellow!60!gray}%
+  \insertproofname}\quad
+  \normalfont
+}
+\setbeamertemplate{proof end}{}
+
+%% some setting for template
+
+\setbeamertemplate{section in toc}[sections numbered]
+
+\AtBeginSection[]{
+\begin{frame}
+  \begin{center}
+    \large
+    %\tableofcontents[sectionstyle=show/shaded,subsectionstyle=hide]
+    \tableofcontents[currentsection,hideallsubsections] % 相比上面方式显示结果更加紧凑 
+  \end{center}
+\end{frame}
+}
+
+\setbeamertemplate{frametitle}{\noindent\insertframetitle\par}
+
+\setbeamertemplate{itemize items}[default]
+\setbeamertemplate{enumerate items}[default]
+
+
+%% some setting for color and font
+
+\setbeamercolor{title}{fg=yellow!90!gray}
+\setbeamercolor{section in toc}{fg=yellow!80!gray}
+\setbeamercolor{frametitle}{fg=yellow!70!gray}
+
+\setbeamerfont{section in toc}{size=\large}
+\setbeamerfont{frametitle}{size=\large}
+
+\usefonttheme{professionalfonts} % 默认情形有些数学字符有问题
+
+\mode<all>

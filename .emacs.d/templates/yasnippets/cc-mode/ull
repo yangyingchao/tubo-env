@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: unsigned long long
+# key: ull
+# --
+unsigned long long

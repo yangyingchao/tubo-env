@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: label
+# key: lbl
+# --
+${1:key})$>
+  $0;;$>

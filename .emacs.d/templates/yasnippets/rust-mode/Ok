@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Ok
+# key: ok
+# --
+Ok(${1:arg}) => $0,

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# --
+\begin{lstlisting}
+${1:coding}$>
+\end{lstlisting}

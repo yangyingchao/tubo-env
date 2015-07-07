@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: AddToFunc
+# key: dfn
+# --
+DestroyFunc ${1:FUNC}
+AddToFunc   $1
++ I $0

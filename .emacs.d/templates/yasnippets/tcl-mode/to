@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: to
+# key: to
+# --
+timeout {
+$0$>
+}

@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: pub_struct
+# key: pst
+# --
+pub struct ${1:TypeName} {
+    $0
+}

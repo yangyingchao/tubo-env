@@ -1,0 +1,4 @@
+#name: mapconcat
+#key: mcc
+# --
+(mapconcat $0 ${1:SEQUENCE} ${2:SEP})

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: macro
+# --
+macro(${1:name} ${2:args})
+endmacro()

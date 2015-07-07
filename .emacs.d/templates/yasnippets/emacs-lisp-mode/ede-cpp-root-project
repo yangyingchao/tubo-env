@@ -1,0 +1,14 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: ede-cpp-root-project
+# key: cprj
+# --
+(ede-cpp-root-project$>
+:file "${1:file}"$>
+:include-path$>
+'($0)$>
+:spp-files$>
+'()$>
+:system-include-path$>
+'()$>
+:spp-table '(("__linux__" . ""))$>
+)$>

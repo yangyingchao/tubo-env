@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: clang-format-
+# key: clf
+# --
+// clang-format o${1:n}${1:$(if (string-match "f" yas-text) "f" "")}

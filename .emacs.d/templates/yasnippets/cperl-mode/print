@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: print
+# key: prn
+# --
+print "$0\n";

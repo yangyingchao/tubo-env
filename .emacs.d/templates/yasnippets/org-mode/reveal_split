@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: #+REVEAL: split
+# key: rsp
+# --
+#+REVEAL: split

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: appendChild
+# key: ac
+# key: apc
+# --
+${1:parent}.appendChild($0);

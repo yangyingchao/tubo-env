@@ -1,0 +1,4 @@
+--leak-check=full
+--undef-value-errors=no
+--log-fd=1
+--log-file=valgrind_%p.log

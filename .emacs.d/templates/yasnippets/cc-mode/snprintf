@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: snprintf
+# key: snp
+# --
+snprintf(${1:DEST}, ${2:LEFT}, "${3:%s}"${3:$(if (string-match "%" yas-text) ", " "\);")
+}$4${3:$(if (string-match "%" yas-text) "\);" "")}

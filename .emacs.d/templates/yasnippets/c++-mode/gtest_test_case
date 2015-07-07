@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: test case (google-test)
+# key: gtc
+# --
+TEST(${1:suite}, ${2:case})
+{
+$0$>
+}

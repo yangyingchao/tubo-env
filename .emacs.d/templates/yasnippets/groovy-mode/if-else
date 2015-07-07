@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# contributor: Peter Urbak <peter@dragonwasrobot.com>
+# key: ifel
+# name: if-else
+# --
+if ($1) {
+$2$>
+} else {
+$0$>
+}

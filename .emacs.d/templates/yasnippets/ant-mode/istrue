@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: istrue
+# key: istru
+# --
+<istrue value="\${${1:VAR}}" />

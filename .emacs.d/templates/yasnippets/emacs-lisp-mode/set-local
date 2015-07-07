@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: set-local
+# key: sm
+# --
+(set (make-local-variable '${1:SYMBOL}) $0)

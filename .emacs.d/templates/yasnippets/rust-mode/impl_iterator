@@ -1,0 +1,13 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: impl_iterator
+# key: imi
+# --
+impl Iterator for ${1:Type} {
+    type Item = ${2:ItemType};
+
+    fn next(&mut self) -> Option<Self::Item> {
+
+        // returns Some(Item) or None
+        None
+    }
+}

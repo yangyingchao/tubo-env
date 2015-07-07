@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: enum
+# key: enum
+# --
+typedef enum _${1:name} {
+$0$>
+} $1;

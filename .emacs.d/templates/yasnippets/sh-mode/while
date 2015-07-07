@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# key: while
+# --
+while [ ${1:condition} ]; do
+$0$>
+done$>

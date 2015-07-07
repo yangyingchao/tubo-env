@@ -1,0 +1,10 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: dfassert
+# key: dfas
+# --
+#define ASSERT(X, Y, ...)                       \
+do {                                        \\$>
+if (!(X)) {                             \\$>
+ABORT(Y, ## __VA_ARGS__);           \\$>
+}                                       \\$>
+} while(0)$>

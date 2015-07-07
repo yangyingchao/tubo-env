@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: bind
+# key: bind
+# --
+Lang.bind(${1:this}, ${2:func})

@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: exec_program
+# --
+exec_program($0)

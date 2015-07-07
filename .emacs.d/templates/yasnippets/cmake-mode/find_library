@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: find_library
+# --
+find_library($0)

@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: add_library
+# --
+add_library(${1:name} ${2:SH}${2:$(if(string-match "^SH" yas-text)
+"ARED"$>
+(if(string-match "^ST" yas-text)$>
+"ATIC"$>
+(if(string-match "^M" yas-text)$>
+"ODULE"$>
+""$>
+)))} ${3:sources})$>

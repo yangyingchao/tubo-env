@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# --
+BEGIN_EVENT_TABLE(${1:class}, ${2:parent})
+EVT_${3:NAME}(${4:id}, $1)
+END_EVENT_TABLE()

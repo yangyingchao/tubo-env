@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Option
+# key: opt
+# --
+Option<${1:type}>

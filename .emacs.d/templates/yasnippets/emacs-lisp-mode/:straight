@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: :straight
+# key: :stt
+# --
+:straight $0

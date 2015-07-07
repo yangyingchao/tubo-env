@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: demacro
+# key: dfm
+# --
+(defmacro ${1:function} (${2:})
+"${3:description}"$>
+(interactive)$>
+$0$>
+)

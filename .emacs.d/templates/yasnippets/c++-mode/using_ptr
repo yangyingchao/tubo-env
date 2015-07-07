@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: using XXXPtr=XXX
+# key: uptr
+# --
+using ${1:T}Ptr = ${2:std::shared_ptr}<$1>;

@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: expect_eq (google-test)
+# key: gee
+# --
+EXPECT_EQ($1, $2);

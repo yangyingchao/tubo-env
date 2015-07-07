@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: alias
+# key: ala
+# --
+using $1 = $0;

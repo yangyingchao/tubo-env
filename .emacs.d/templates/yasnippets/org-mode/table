@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: table
+# key: tbl
+# --
+#+CAPTION: ${1:caption}
+#+NAME: tbl-${2:data-table}${2:$(progn (kill-new (format "[[tbl-%s]]" yas-text))"")}
+`(org-table-create)`

@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# --
+\begin{figure}[htbp]
+\centering$>
+\includegraphics[angle=0,width=.90\textwidth]{images/${1:name}}$>
+\caption{$0}$>
+\label{fig:$1}$>
+\end{figure}

@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: awhen
+# key: awh
+# --
+(awhen ${1:COND}
+$0)

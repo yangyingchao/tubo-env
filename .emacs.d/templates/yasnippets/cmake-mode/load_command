@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: load_command
+# --
+load_command($0)

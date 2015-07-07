@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: define-or-set
+# key: dos
+# --
+(define-or-set ${1:var_name} ${nil} "${nil}")

@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: elseif
+# key: elif
+# --
+elseif (${1:CONDITION}) then (${2:VALUE1})
+ :${3:ACTIVITY};

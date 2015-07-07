@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: set_default_size
+# key: set_default_size
+# --
+set_default_size(${1:X}, ${2:Y});

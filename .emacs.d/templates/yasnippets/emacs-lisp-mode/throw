@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: throw
+# key: throw
+# --
+(throw '${1:TAG} ${2:VALUE})

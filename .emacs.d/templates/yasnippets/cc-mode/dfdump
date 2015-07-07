@@ -1,0 +1,44 @@
+# -*- mode: snippet -*-
+# name: dfdump
+# key: dfd
+# --
+void dump_line(const unsigned char* buf, int len_of_line, int line, char* out)$>
+{$>
+#define YYYGET(X)       ( X >= 32 && X <= 126) ? X : '.'$>
+int i = 0;$>
+out += sprintf(out, "%02x: %p: ", line, buf);$>
+for (; i < len_of_line; ++i)$>
+{$>
+out += sprintf(out, (i % 8 == 7) ? "%02x  " : "%02x ", *(buf+i));$>
+}$>
+if (len_of_line < 0x10)$>
+{$>
+for (i = 0; i < 0x10 - len_of_line; ++i)$>
+{$>
+out += sprintf(out, "   ");$>
+}$>
+out += sprintf(out, "  ");$>
+}$>
+out += sprintf (out, "|");$>
+for (i = 0; i < len_of_line; ++i)  out += sprintf (out, "%c", YYYGET(*(buf+i)));$>
+if (len_of_line < 0x10)$>
+for (i = 0; i < 0x10 - len_of_line; ++i) out += sprintf(out, " ");$>
+sprintf (out, "|\n");$>
+#undef YYYGET$>
+}$>
+$>
+void dump_buffer(const void* buf, size_t len)$>
+{$>
+#define LEN_OF_LINE()       (total_lines - line > 1 ? 0x10 : len - 0x10 * line)$>
+int total_lines = len / 0x10 + ((len % 0x10) ? 1 : 0);$>
+int line = 0;$>
+const unsigned char* ptr = buf;$>
+char out[128];$>
+while (line < total_lines) {$>
+int len_of_line = LEN_OF_LINE();$>
+memset(out, 0, 128);$>
+dump_line(ptr, len_of_line, line++, out);$>
+fprintf(stderr, "%s", out);$>
+ptr += len_of_line;$>
+}$>
+}$>

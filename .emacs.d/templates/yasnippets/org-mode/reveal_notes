@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: reveal_notes
+# key: rnt
+# --
+#+BEGIN_NOTES
+$0
+#+END_NOTES

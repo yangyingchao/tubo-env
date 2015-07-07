@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: find_file
+# --
+find_file($0)

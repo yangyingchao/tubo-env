@@ -1,0 +1,4 @@
+#name: mapcar
+#key: mpc
+# --
+(mapc${1:}${1:$(if (string-match "^a" yas-text) "r" "")} $0 ${2:SEQUENCE})

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: onevent
+# key: evt
+# --
+on${1:evt}="${2:handler}"

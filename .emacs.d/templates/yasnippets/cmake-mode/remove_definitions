@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: remove_definitions
+# --
+remove_definitions($0)

@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: defun
+# key: dfn
+# --
+(defun ${1:function} (${2:})
+"${3:Description.}"$>
+(interactive)$>
+$0$>
+)

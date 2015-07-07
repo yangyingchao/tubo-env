@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: if use
+# key: iu
+# --
+if use ${1:USE}; then
+$0
+fi

@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# --
+#include <cppunit/extensions/HelperMacros.h>
+class ${1:Name} : public CppUnit::TestFixture {
+CPPUNIT_TEST_SUITE($1);$>
+CPPUNIT_TEST(test_${2:func});$>
+CPPUNIT_TEST_SUITE_END();$>
+public:$>
+$1() {};$>
+virtual ~$1(){};$>
+void test_$2();$>
+private:$>
+int ret;$>
+};

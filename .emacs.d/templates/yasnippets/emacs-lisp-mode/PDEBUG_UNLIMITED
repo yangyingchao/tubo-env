@@ -1,0 +1,4 @@
+# key: ddu
+# --
+(let ((yc/debug-log-limit -1))
+(PDEBUG "${1}"$0))

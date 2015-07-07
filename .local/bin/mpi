@@ -1,0 +1,6 @@
+#!/bin/bash
+
+## use mpv as image viewer.
+
+
+mpv --profile=image --player-operation-mode=pseudo-gui -- $@

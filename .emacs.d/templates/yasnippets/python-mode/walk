@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: walk
+# key: wlk
+# --
+for root, dirs, files in os.walk(${1:TOP}):
+    $0

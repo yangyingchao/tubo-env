@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: BEGIN_EXPORT html
+# key: beh
+# --
+#+BEGIN_EXPORT html
+$0
+#+END_EXPORT

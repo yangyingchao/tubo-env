@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: getElementById
+# key: getElementById
+# --
+getElementById("${1:id}")

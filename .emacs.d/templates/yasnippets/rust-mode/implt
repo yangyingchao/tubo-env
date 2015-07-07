@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: impl Trait Template for Type { ... }
+# key: imt
+# --
+impl<${1:T}> ${2:Type}<${1:$  (mapconcat (lambda (x)
+                                           (s-trim (car (s-split ":" x t))))
+                                         (s-split "," yas-text t) ", ")}> {
+$0
+}

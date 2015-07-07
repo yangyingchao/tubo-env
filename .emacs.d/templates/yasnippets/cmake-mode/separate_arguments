@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: separate_arguments
+# --
+separate_arguments($0)

@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: assert_ne (google-test)
+# key: gan
+# --
+ASSERT_NE($1, $2);

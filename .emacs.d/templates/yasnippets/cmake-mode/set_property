@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: set_property
+# --
+set_property($0)

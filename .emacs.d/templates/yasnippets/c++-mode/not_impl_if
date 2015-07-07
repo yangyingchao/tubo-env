@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: not_impl_if
+# key: nii
+# --
+NOT_IMPL_IF($0);

@@ -1,0 +1,9 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: probe
+# key: prb
+# --
+probe ${1:name}
+{
+$0$>
+exit()$>
+}

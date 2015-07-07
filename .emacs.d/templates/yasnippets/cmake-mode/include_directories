@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: include_directories
+# --
+include_directories($0)

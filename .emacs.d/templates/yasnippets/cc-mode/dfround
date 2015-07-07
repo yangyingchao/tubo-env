@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: dfround
+# key: dfrn
+# --
+#define ROUND${1:n}(x) (((x)+${1:$(- (string-to-number yas-text) 1)})&~${1:$(- (string-to-number yas-text) 1)})

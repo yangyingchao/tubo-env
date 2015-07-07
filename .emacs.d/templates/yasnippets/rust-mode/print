@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: print!("{}", value);
+# key: prn
+# --
+print!("${1:fmt}"${1:$(if (string-match (rx "{" (* nonl) "}") yas-text) ", " "\)")
+}$0${1:$(if (string-match (rx "{" (* nonl) "}") yas-text) "\)" "")};

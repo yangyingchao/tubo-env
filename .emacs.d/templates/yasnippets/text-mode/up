@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# --
+[${1:}${1:$(let ((case-fold-search nil))
+              (cond
+
+               ((string-match "^B$" yas-text) "ug")
+               ((string-match "^F$"  yas-text) "eature")
+               ((string-match "^R$"  yas-text) "equest")
+               ((string-match "^D$"  yas-text) "efect")
+
+               ((string-match "^fi$" yas-text) "x")
+               ((string-match "^fe$" yas-text) "at")
+               ((string-match "^d$"  yas-text) "ocs")
+               ((string-match "^t$"  yas-text) "est")
+               ((string-match "^ch$"  yas-text) "ore")
+               (t ""))
+              )}] #${2:NUM}: ${3:subject}
+
+$0
