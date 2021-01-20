@@ -2,7 +2,6 @@
 # name: yc/eval-after-load
 # key: yeal
 # --
-(yc/eval-after-load
-"${1:FILE}"$>
+(yc/eval-after-load '"${1:PACKAGE}$>
 $0$>
 )$>

@@ -6,6 +6,7 @@
 ;; Wrapper of osx-dictionary or "sdcv", or youdao-dictionary...
 ;;; Code:
 (require 'popup)
+(require '02-functions)
 
 (defmacro aif (test-form then-form &rest else-forms)
   "Like `if' but set the result of TEST-FORM in a temprary variable called `it'.
@@ -64,7 +65,7 @@ THEN-FORM and ELSE-FORMS are then excuted just like in `if'."
         json)
     (PDEBUG "REQUEST: " url)
     (with-current-buffer
-        (url-retrieve-synchronously url  nil nil 1)
+        (url-retrieve-synchronously url  nil nil 5)
       (set-buffer-multibyte t)
       (goto-char (point-min))
       (PDEBUG "RES:" (buffer-string))
@@ -180,6 +181,33 @@ Otherwise return word around point."
                        (not default))
                    (read-string prompt nil nil default) default)))
     (tdict--view-result word)))
+
+
+(defun ace-tdict-search ()
+  "Jump to the currently visible CHAR at a word start.
+BEG and END narrow the scope where candidates are searched.
+When SYMBOL is non-nil, jump to symbol start instead of word start."
+  (interactive)
+  (unless (featurep 'avy)
+    (require 'avy))
+
+      (let* ((str (string (or current-prefix-arg (read-char "char: " t))))
+             (regex (cond ((string= str ".")
+                           "\\.")
+                          ((and avy-word-punc-regexp
+                                (string-match avy-word-punc-regexp str))
+                           (regexp-quote str))
+                          (t (concat (rx  bow ) str)))))
+        (avy-jump regex
+                  :window-flip nil
+                  :beg nil
+                  :end nil
+                  :action
+                  (lambda (pt)
+                    (interactive)
+                    (save-excursion
+                    (goto-char pt)
+                    (tdict-search))))))
 
 (provide 'tdict)
 

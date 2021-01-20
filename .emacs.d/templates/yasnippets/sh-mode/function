@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # key: dfn
 # --
-function ${1:name} ()
+${1:name} ()
 {
 $0$>
 }$>

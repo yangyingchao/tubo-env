@@ -1,7 +1,0 @@
-KERNEL=="sd*", ACTION=="add", ATTR{removable}=="1", \
-    RUN+="/home/arthas/.config/polybar/system-usb-udev.sh --update"
-KERNEL=="sd*", ACTION=="remove", \
-    RUN+="/home/arthas/.config/polybar/system-usb-udev.sh --update"
-
-
-###### Copy `95-usb.rules` to `/etc/udev/rules.d/95-usb.rules`

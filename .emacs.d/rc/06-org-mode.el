@@ -7,13 +7,31 @@
 ;;; Code:
 
 (use-package ox-plus
-  :commands (yc/ditaa-path yc/plantuml-path uml/parse-stringfied-nodes company-plantuml))
+  :commands (yc/ditaa-path yc/plantuml-path uml/parse-stringfied-nodes))
 
- ;; PlantUML,
+;; PlantUML,
 (use-package flycheck-plantuml
   :commands (flycheck-plantuml-setup))
 
 (use-package plantuml-mode
+  :preface
+  (defun company-plantuml--candidates (prefix)
+    "Return candiates for `PREFIX'."
+    (all-completions prefix plantuml-kwdList))
+
+  (defun company-plantuml (command &optional arg &rest ignored)
+    "`company-mode' completion backend for plantuml.
+plantuml is a cross-platform, open-source make system."
+    (interactive (list 'interactive))
+    (cl-case command
+      (interactive (company-begin-backend 'company-plantuml))
+      (init (unless (equal major-mode 'plantuml-mode)
+              (error "Major mode is not plantuml-mode")))
+      (prefix (and (not (company-in-string-or-comment))
+                   (company-grab-symbol)))
+      (candidates (company-plantuml--candidates arg))))
+
+
   :mode (rx "." (or "plantuml" "puml" "plu" "pu") eow)
   :hook ((plantuml-mode .
                         (lambda ()
@@ -31,7 +49,10 @@
   (plantuml-indent-level 4))
 
 (use-package ffap
-  :commands (ffap-url-p))
+  :commands (ffap-url-p)
+  :custom
+  (ffap-machine-p-known 'reject)
+  )
 
 (use-package org-download
   :preface
@@ -148,160 +169,56 @@ This will add proper attributes into org file so image won't be too large."
 Final image name looks like 'images/org_file_name/xxx.png'.
 This makes it easier to move org file (and associated images) to other directory."
     :override  #'org-download--dir-2
-    (file-name-base (buffer-file-name)))
-  )
+    (file-name-base (buffer-file-name))))
 
 
 
 
- ;; *************************** Org Mode ********************************
+;; *************************** Org Mode ********************************
 (use-package org-indent
   :commands (org-indent-mode))
-
-;; hide blocks marked as :hidden
-(defun individual-visibility-source-blocks ()
-  "Fold some blocks in the current buffer."
-  (interactive)
-  (org-show-block-all)
-  (org-block-map
-   (lambda ()
-     (let ((case-fold-search t))
-       (when (and
-              (save-excursion
-                (beginning-of-line 1)
-                (looking-at org-block-regexp))
-              (cl-assoc
-               ':hidden
-               (cl-third
-                (org-babel-get-src-block-info))))
-         (org-hide-block-toggle))))))
-
-
-;; Auto set CUSTOM_ID...
-(defun yc/org-custom-id-get (&optional pom create prefix)
-  "Get the CUSTOM_ID property of the entry at point-or-marker POM.
-   If POM is nil, refer to the entry at point. If the entry does
-   not have an CUSTOM_ID, the function returns nil. However, when
-   CREATE is non nil, create a CUSTOM_ID if none is present
-   already. PREFIX will be passed through to `org-id-new'. In any
-   case, the CUSTOM_ID of the entry is returned."
-  (interactive)
-  (org-with-point-at pom
-    (let ((id (org-entry-get nil "CUSTOM_ID")))
-      (cond
-       ((and id (stringp id))
-        (if (called-interactively-p)
-            (message "ORG-ID: %s" id))
-        id)
-       (create
-        (setq id (org-id-new (concat prefix "h")))
-        (org-entry-put pom "CUSTOM_ID" id)
-        (org-id-add-location id (buffer-file-name (buffer-base-buffer)))
-        (if (called-interactively-p)
-            (message "ORG-ID: %s" id))
-        id)))))
-
-(defun yc/org-add-ids-to-headlines-in-file ()
-  "Add CUSTOM_ID properties to all headlines in the current file which do not already have one."
-  (interactive)
-  (when (and buffer-file-name
-             (file-exists-p buffer-file-name)
-             (eq major-mode 'org-mode))
-    (delete-trailing-whitespace)
-
-    (unless (member (file-name-base buffer-file-name) '("elfeed" "gtd"))
-      (save-excursion
-      (org-map-entries (lambda () (yc/org-custom-id-get (point) 'create)) nil 'file)))))
-
-(add-hook 'before-save-hook 'yc/org-add-ids-to-headlines-in-file)
-
-(defun yc/org-mode-hook ()
-  "My hooks for org mode."
-  (interactive)
-
-  (if window-system
-      (org-display-inline-images))
-
-  (setq show-trailing-whitespace t)
-
-  (individual-visibility-source-blocks)
-
-  ;; modify syntax-entry, so electric-pair can work better.
-  (modify-syntax-entry ?$ "\$")
-  (modify-syntax-entry ?= "(="))
-
-(defun org-summary-todo (n-done n-not-done)
-  "Switch entry to DONE when all subentries are done, to TODO otherwise."
-  (let (org-log-done org-log-states)   ; turn off logging
-    (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
-
 
 (use-package ol
   :bind (("\C-cl" . org-store-link)))
 
 (use-package org-agenda
   :custom
-  (org-agenda-files (list (expand-file-name "~/Documents/Database/org/")))
+  (org-agenda-files (list (expand-file-name "~/Work/org/")))
   (org-agenda-dim-blocked-tasks (quote invisible))
   (org-agenda-skip-deadline-if-done t)
   (org-agenda-skip-scheduled-if-done t)
 
   :bind(("\C-ca" . org-agenda))
   :config
-    (dolist (item (directory-files org-directory t))
-      (unless (or (not (file-directory-p item))
-                  (member (file-name-base item) '(".git" "slides" "images" "assets" "references" "." "..")))
-        (add-to-list 'org-agenda-files item))))
-
+  (dolist (item (directory-files org-directory t))
+    (unless (or (not (file-directory-p item))
+                (member (file-name-base item) '(".git" "slides" "images" "assets" "references" "." "..")))
+      (add-to-list 'org-agenda-files item))))
 
 (use-package org-capture
-  :bind ((;; ,(kbd "<M-S-f10>")
-          [M-S-f10]. org-capture))
+  :bind (("<M-S-f10>" . org-capture))
+  :custom
+  (org-capture-templates
+   `(
+     ("p" "Protocol" entry (file+headline ,(concat org-directory "gtd.org") "Inbox")
+      "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")
+	   ("L" "Protocol Link" entry (file+headline ,(concat org-directory "gtd.org") "Inbox")
+      "* %? [[%:link][%:description]] \nCaptured On: %U")
+     ("t" "Todo" entry (file+headline ,(expand-file-name "gtd.org" org-directory)  "Tasks")
+      "\n* TODO %?\n  %i\n  %a")
+     ("P" "Project" entry (file+headline ,(expand-file-name "gtd.org" org-directory) "Project")
+      "\n** NOTE %?\n %i\n %a" )
+     ("n" "Note" entry (file+headline ,(expand-file-name "gtd.org" org-directory) "Note")
+      "* %?\nEntered on %U\n  %i\n  %a")
+     ("i" "Idea" entry (file+headline ,(expand-file-name "gtd.org" org-directory) "Idea")
+      "* %?\nEntered on %U\n  %i\n  %a")
+     ("m" "Mail" entry (file+headline ,(expand-file-name "~/tmp/mail.org") "Mail")
+      "* %?\nEntered on %U\n  %i\n  %a")
+     ))
   :config
   (require 'org-protocol)
-  (let ((capture-file (expand-file-name "gtd.org" org-directory)))
-    (setq org-capture-templates
-          `(
-            ("p" "Protocol" entry (file+headline ,(concat org-directory "gtd.org") "Inbox")
-             "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")
-	    ("L" "Protocol Link" entry (file+headline ,(concat org-directory "gtd.org") "Inbox")
-             "* %? [[%:link][%:description]] \nCaptured On: %U")
-            ("t" "Todo" entry (file+headline ,capture-file  "Tasks")
-             "\n* TODO %?\n  %i\n  %a")
-            ("P" "Project" entry (file+headline ,capture-file "Project")
-             "\n** NOTE %?\n %i\n %a" )
-            ("n" "Note" entry (file+headline ,capture-file "Note")
-             "* %?\nEntered on %U\n  %i\n  %a")
-            ("i" "Idea" entry (file+headline ,capture-file "Idea")
-             "* %?\nEntered on %U\n  %i\n  %a")
-            ("m" "Mail" entry (file+headline ,(expand-file-name "~/tmp/mail.org") "Mail")
-             "* %?\nEntered on %U\n  %i\n  %a")
-            ))))
+  )
 
-
-(defun yc/org-update-yank ()
-  "Update yanked text, removing or adding proper spaces."
-  (interactive)
-  (save-excursion
-    ;; 测试 AAA --> 测试 AAA
-    (goto-char (point-min))
-    (while (search-forward-regexp (rx (group (not ascii))  (* blank) (group  ascii)) nil t)
-      (replace-match "\\1 \\2" nil nil))
-
-    ;;  AAA测试 -->  AAA 测试
-    (goto-char (point-min))
-    (while (search-forward-regexp (rx  (group  ascii) (* blank) (group (not ascii))) nil t)
-      (replace-match "\\1 \\2" nil nil))
-
-    ;; remove leading space
-    (goto-char (point-min))
-    (while (search-forward-regexp (rx  bol (+ blank)) nil t)
-      (replace-match "")))
-
-  ;; remove trailing space
-  (delete-trailing-whitespace))
-
-
 (use-package org-superstar
   :hook ((org-mode . org-superstar-mode))
   :custom
@@ -333,9 +250,9 @@ menucolor={blue}}
 ORIG-FUNC is called with ARGS."
     :around #'org-latex-special-block
 
-      (if (string= (org-element-property :type (car args)) "NOTES")
-      (cadr args)
-    (apply orig-func args))))
+    (if (string= (org-element-property :type (car args)) "NOTES")
+        (cadr args)
+      (apply orig-func args))))
 
 (use-package ox-publish
   :commands (org-publish-needed-p)
@@ -346,7 +263,6 @@ ORIG-FUNC is called with ARGS."
     (save-excursion
       (apply orig-func args))))
 
-
 (use-package org
   :commands (org-load-modules-maybe)
   :preface
@@ -384,6 +300,100 @@ ORIG-FUNC is called with ARGS."
         (yc/auto-update-template "TEX_PREVIEW" "latexpreview")
       (yc/auto-update-template "TEX_PREVIEW" "")))
 
+  (defun yc/org-view-exported-file ()
+    "View exported file, either with eww, or browser."
+    (interactive)
+    (let ((file (concat (file-name-sans-extension (buffer-file-name))  ".html")))
+      (unless (file-exists-p file)
+        (error "File %s does nboit exist" file))
+
+      (if current-prefix-arg
+          (browse-url (concat "file://" file))
+        (eww (concat "file://" file)))))
+
+
+  ;; hide blocks marked as :hidden
+  (defun individual-visibility-source-blocks ()
+    "Fold some blocks in the current buffer."
+    (interactive)
+    (org-show-block-all)
+    (org-block-map
+     (lambda ()
+       (let ((case-fold-search t))
+         (when (and
+                (save-excursion
+                  (beginning-of-line 1)
+                  (looking-at org-block-regexp))
+                (cl-assoc
+                 ':hidden
+                 (cl-third
+                  (org-babel-get-src-block-info))))
+           (org-hide-block-toggle))))))
+
+
+  ;; Auto set CUSTOM_ID...
+  (defun yc/org-custom-id-get (&optional pom create prefix)
+    "Get the CUSTOM_ID property of the entry at point-or-marker POM.
+   If POM is nil, refer to the entry at point. If the entry does
+   not have an CUSTOM_ID, the function returns nil. However, when
+   CREATE is non nil, create a CUSTOM_ID if none is present
+   already. PREFIX will be passed through to `org-id-new'. In any
+   case, the CUSTOM_ID of the entry is returned."
+    (interactive)
+    (org-with-point-at pom
+      (let ((id (org-entry-get nil "CUSTOM_ID")))
+        (cond
+         ((and id (stringp id))
+          (if (called-interactively-p)
+              (message "ORG-ID: %s" id))
+          id)
+         (create
+          (setq id (org-id-new (concat prefix "h")))
+          (org-entry-put pom "CUSTOM_ID" id)
+          (org-id-add-location id (buffer-file-name (buffer-base-buffer)))
+          (if (called-interactively-p)
+              (message "ORG-ID: %s" id))
+          id)))))
+
+  (defun yc/org-add-ids-to-headlines-in-file ()
+    "Add CUSTOM_ID properties to all headlines in the current file which do not already have one."
+    (interactive)
+    (when (and buffer-file-name
+               (file-exists-p buffer-file-name)
+               (eq major-mode 'org-mode))
+      (delete-trailing-whitespace)
+
+      (unless (member (file-name-base buffer-file-name) '("elfeed" "gtd"))
+        (save-excursion
+          (org-map-entries (lambda () (yc/org-custom-id-get (point) 'create)) nil 'file)))))
+
+  (defun org-summary-todo (n-done n-not-done)
+    "Switch entry to DONE when all subentries are done, to TODO otherwise."
+    (let (org-log-done org-log-states)   ; turn off logging
+      (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+
+  (defun yc/org-update-yank ()
+    "Update yanked text, removing or adding proper spaces."
+    (interactive)
+    (save-excursion
+      ;; 测试 AAA --> 测试 AAA
+      (goto-char (point-min))
+      (while (search-forward-regexp (rx (group (not ascii))  (* blank) (group  ascii)) nil t)
+        (replace-match "\\1 \\2" nil nil))
+
+      ;;  AAA测试 -->  AAA 测试
+      (goto-char (point-min))
+      (while (search-forward-regexp (rx  (group  ascii) (* blank) (group (not ascii))) nil t)
+        (replace-match "\\1 \\2" nil nil))
+
+      ;; remove leading space
+      (goto-char (point-min))
+      (while (search-forward-regexp (rx  bol (+ blank)) nil t)
+        (replace-match "")))
+
+    ;; remove trailing space
+    (delete-trailing-whitespace))
+
   :custom
   (org-image-actual-width nil)
   (org-confirm-babel-evaluate nil)
@@ -404,6 +414,8 @@ ORIG-FUNC is called with ARGS."
   (org-startup-indented t)
   (org-use-property-inheritance t)
   (org-enforce-todo-checkbox-dependencies t)
+  (org-display-remote-inline-images 'download) ;; download and display remote images.
+
   ;; WAITING: Assigned to others, and waiting for their report.
   ;; PENDING: Pending for some reason, maybe scheduled but not started because task dependency.
   (org-todo-keywords (quote ((sequence "TODO(t)" "WAITING(w)" "DOING(g)"
@@ -415,12 +427,19 @@ ORIG-FUNC is called with ARGS."
 
   (org-return-follows-link t) ;; make RET follow links
   (org-html-inline-image-rules
-       '(("file" . "\\.\\(jpeg\\|jpg\\|png\\|gif\\|tiff\\|svg\\)\\'")
-         ("http" . "\\.\\(jpeg\\|jpg\\|png\\|gif\\|tiff\\|svg\\)\\'")
-         ("https" . "\\.\\(jpeg\\|jpg\\|png\\|gif\\|tiff\\|svg\\)\\'")))
+   '(("file" . "\\.\\(jpeg\\|jpg\\|png\\|gif\\|tiff\\|svg\\)\\'")
+     ("http" . "\\.\\(jpeg\\|jpg\\|png\\|gif\\|tiff\\|svg\\)\\'")
+     ("https" . "\\.\\(jpeg\\|jpg\\|png\\|gif\\|tiff\\|svg\\)\\'")))
 
   :hook ((org-after-todo-statistics . org-summary-todo)
-         (org-mode . yc/org-mode-hook))
+         (before-save . yc/org-add-ids-to-headlines-in-file)
+         (org-mode
+          .
+          (lambda ()
+            (if window-system
+                (org-display-inline-images))
+            (setq show-trailing-whitespace t)
+            (individual-visibility-source-blocks))))
 
   :config
   (progn
@@ -511,18 +530,14 @@ ORIG-FUNC is called with ARGS."
     )
 
   :bind (:map org-mode-map
-              (;; ,(kbd "")
-               [138]. org-meta-return)
-              (;; ,(kbd "C-c j")
-               "j". org-meta-return)
+              ("" . org-meta-return)
+              ("C-c j" . org-meta-return)
 
               (;;(kbd "M-m")
                [134217837] . yc/show-methods-dwim)
 
-              (;; (kbd "C-x ds")
-               "ds" . org-download-screenshot)
-              (;; (kbd "C-x du")
-               "du" . org-download-image))
+              ("C-x ds" . org-download-screenshot)
+              ("C-x du" . org-download-image))
 
   :bind (([C-f1] . yc/open-gtd))
   )
@@ -534,6 +549,32 @@ ORIG-FUNC is called with ARGS."
   :bind (:map ctl-x-map
               ("nn" . tnote)
               ("nf" . tnote/find-note)))
+
+(use-package org-roam
+  :custom
+  (org-roam-directory "~/Documents/Database/org")
+  :commands (org-roam-mode org-roam-find-file)
+  )
+
+(use-package org-roam-server
+  :preface
+  (defun yc/turn-on-org-roam ()
+    "Turn on org-roam-mode & org-roam-server mode."
+    (unless org-roam-server-mode
+      (org-roam-mode t)
+      (org-roam-server-mode t)))
+  :custom
+  (org-roam-server-host  "127.0.0.1")
+  (org-roam-server-port 9090)
+  (org-roam-server-export-inline-images t)
+  (org-roam-server-authenticate nil)
+  (org-roam-server-network-label-truncate t)
+  (org-roam-server-network-label-truncate-length 60)
+  (org-roam-server-network-label-wrap-length 20)
+  :commands (org-roam-server-mode)
+  :hook ((org-mode . yc/turn-on-org-roam))
+  )
+
 
 ;; Local Variables:
 ;; coding: utf-8

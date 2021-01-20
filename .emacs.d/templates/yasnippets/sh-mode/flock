@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: flock
+# key: flk
+# --
+(
+    flock 9 || exit 1
+    $0
+) 9>${1:lockfile}

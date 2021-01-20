@@ -7,8 +7,10 @@
 ;;; Code:
 
 (require 's)
+(require 'use-package)
 
 (require '02-functions)
+(require '03-fundamental-mode)
 
 (require 'ivy)
 (require 'ivy-rich)
@@ -21,26 +23,6 @@
   "Add marker M at the beginning of `yc/marker-stack'."
   (ring-insert yc/marker-stack (or m (point-marker))))
 
-(defun yc/move-snapshot ()
-  "Choose snapshot, rename it, and move into specified directory."
-  (interactive)
-  (let* ((flist (directory-files (expand-file-name "~/Desktop/")  t ".*.png"))
-         (in-file (ivy-read "Choose a file to copy: "
-                            flist))
-         (image-dir (concat  default-directory "/images"))
-         (target-dir (read-directory-name "Select target folder to add: "
-                                          (if (file-directory-p image-dir)
-                                              image-dir default-directory)
-                                          nil
-                                          t))
-         (target-name (ivy-read "Input new name: "
-                                (list (file-name-nondirectory in-file))))
-         (command (format  "mv \"%s\" \"%s/%s\"" in-file target-dir target-name)))
-    (PDEBUG "COMMAND: " command)
-    (shell-command command)
-    (kill-new target-name)
-    (message "%s moved as %s/%s" in-file target-dir target-name))
-  )
 
 (defun yc/expand-macro (beg end)
   "Expand macro (from BEG to END) and put to `kill-ring'."
@@ -52,49 +34,7 @@
       (kill-new (format "%S" (eval (eval-sexp-add-defvars (elisp--preceding-sexp))))))))
 
 
-(defun yc/kill-proc (SIG &optional app)
-  "Kill process (default APP) with `SIG', or 9 if SIG not provide."
-  (interactive "P")
-  (PDEBUG "SIG" SIG)
-
-  (unless SIG
-    (setq SIG 9))
-
-  (let (pid cmd)
-    (aif (executable-find "kill")
-        (push it cmd)
-      (error "Can't find killer"))
-
-    (push (format "-%d" SIG) cmd)
-
-    (let ((r-match-entry (rx
-                          (group (+ digit)) (+ space)
-                          (group (+? ascii)) (+ space)
-                          (+? ascii) eol))
-          (ps_cmd
-           (format "ps -u %s -o pid -o user -o command | grep -v 'ps\\|grep\\|PID'" user-login-name))
-          pid-list)
-
-      (with-temp-buffer
-        (insert (shell-command-to-string ps_cmd))
-        (goto-char (point-min))
-        (while (search-forward-regexp ".+?$" nil t)
-          (push (match-string 0) pid-list)))
-
-      (let ((choosen (ivy-read "Choose process: " pid-list :initial-input app)) )
-        (if (string-match r-match-entry choosen)
-            (setq pid (match-string 1 choosen))
-          (error "Failed to parse PID"))))
-
-    (unless pid
-      (error "Can't find a running process to kill"))
-    (push pid cmd)
-
-    (PDEBUG "CMD: " cmd)
-
-    (let ((shell-command (mapconcat 'identity (nreverse cmd) " ")) )
-      (PDEBUG "shell-command: " shell-command)
-      (message "KILLING %s -- %s" pid  (shell-command-to-string shell-command)))))
+(autoload 'yc/kill-proc "debug-utils" ".." t)
 
 (defmacro yc/declare-kill-command (cmd)
   "Marco to generate commmand to kill process name of CMD."
@@ -310,6 +250,7 @@
       (when (string-match (rx "Final Package:" (+ space) (group (+ nonl)) eol)
                           output)
         (setq pack-name (match-string 1 output)))
+      (PDEBUG "PROCESS:" process)
       (message "PACKENV: %s" output))
 
     (defun pack-sentinel (process event)
@@ -337,6 +278,7 @@
          (default-directory temporary-file-directory))
 
     (defun unpack-filter (process output)
+      (PDEBUG "PROCESS:" process)
       (message "UNPACKENV: %s" output))
 
     (defun install-sentinel (process event)
@@ -483,10 +425,16 @@ Uses `current-date-time-format' for the formatting the date/time."
   (interactive)
   (insert (buffer-file-name (current-buffer))))
 
-(defun yc/copy-current-buffername ()
+(defun yc/copy-file-name ()
   "Copy full path of current file."
   (interactive)
-  (kill-new (buffer-file-name (current-buffer))))
+  (let ((filename (if (equal major-mode 'dired-mode)
+                      default-directory
+                    (buffer-file-name))))
+    (when filename
+      (kill-new filename)
+      (message "Copied buffer file name '%s' to the clipboard." filename))))
+
 
 (defvar shift-indent-offset 4)
 
@@ -670,60 +618,78 @@ inserts comment at the end of the line."
 
 
 
-(defun yc/counsel-list-dir-transform (str)
+(defun yc/list-dir-transform (str)
   "Description."
   (if (file-directory-p str)
       (ivy-append-face str font-lock-doc-face)
     str))
 
+(defun yc/ivy-rich-file-last-modified-time-and-size (candidate)
+  (let* ((candidate (expand-file-name candidate ivy--directory))
+         (attrs (file-attributes candidate))
+         (size (file-attribute-size attrs)))
+    (if (file-remote-p candidate)
+        "?"
+      (concat (format-time-string "%Y-%m-%d %H:%M:%S"
+                                  (file-attribute-modification-time attrs))
+              ", "
+              (cond
+               ((> size 1000000) (format "%.1fM" (/ size 1000000.0)))
+               ((> size 1000) (format "%.1fk" (/ size 1000.0)))
+               (t (format "%d" size)))
+              "B"))))
+
 (yc/eval-after-load
   "ivy-rich"
-  (plist-put ivy-rich-display-transformers-list 'counsel-list-directory
+  (plist-put ivy-rich-display-transformers-list 'yc/list-directory
              '(:columns
-               ((yc/counsel-list-dir-transform)
-                )
-               ))
+               ((yc/list-dir-transform (:width 0.4))
+                (yc/ivy-rich-file-last-modified-time-and-size
+                 (:face font-lock-comment-face)))))
 
   (ivy-rich-mode -1)
   (ivy-rich-mode 1))
 
-(defun counsel-list-directory (dir &optional pattern action-func)
-  "List files in DIR with `counsel' that look like PATTERN."
-  (let ((default-directory dir) )
-  (ivy-set-actions
-   'counsel-list-directory
-   '(("g" (lambda (x)
-            (interactive)
-            (yc/counsel-grep))
-      "grep")
-     ))
+(ivy-set-actions  'yc/list-directory  yc/ivy-common-actions)
 
-  (ivy-read "Find file: "
-            (let ((dir (expand-file-name (concat dir "/")))
-                  dirs files
-                  cands)
 
-              (dolist (item (directory-files dir))
-                (let ((path (concat dir item)) )
-                  (cond
-                   ((string=  "." item) nil)
-                   ((file-directory-p path) (push path dirs))
-                   (t
-                    (when (or (not pattern)
-                              (string-match-p pattern item))
-                      (push path files))))))
+(defun yc/do-list-directory (dir &optional pattern name-only)
+  "INTERNAL: List files in DIR with `counsel' that look like PATTERN.
+If NAME-ONLY is t, returns full path of selected file, instead of opening it."
+  (let ((default-directory dir))
+    (ivy-read "Find file: "
+              (let (dirs files)
+                (dolist (item (directory-files dir))
+                  (let ((path (concat (file-name-as-directory dir) item)) )
+                    (PDEBUG "ITEM:" item
+                            "PATH:" path
+                            "DIR:" (file-directory-p path))
+                    (cond
+                     ((string=  "." item) nil)
+                     ((file-directory-p path) (push path dirs))
+                     (t
+                      (when (or (not pattern)
+                                (string-match-p pattern item))
+                        (push path files))))))
 
-              (append (sort dirs 'string-lessp) (sort files 'string-lessp)))
+                (append (sort dirs 'string-lessp) (sort files 'string-lessp)))
 
-            :action (lambda (cand)
-                      (interactive)
-                      (if (file-directory-p cand)
-                          (counsel-list-directory cand pattern)
-                        (if action-func
-                            (funcall action-func cand)
-                          (find-file cand))))
+              :action (lambda (cand)
+                        (interactive)
+                        (if (file-directory-p cand)
+                            (yc/do-list-directory cand pattern name-only)
+                          (if name-only
+                              (throw 'p-found cand)
+                            (find-file cand))))
 
-            :caller 'counsel-list-directory)))
+              :caller 'yc/list-directory)))
+
+(defun yc/list-directory (dir &optional pattern name-only)
+  "List files in DIR with `counsel' that look like PATTERN.
+If NAME-ONLY is t, returns full path of selected file, instead of opening it."
+  (catch 'p-found
+    (yc/do-list-directory dir pattern name-only)))
+
 
 (defun yc/choose-directory (&optional dir)
   "Choose directory (with DIR as default one)."
@@ -752,42 +718,38 @@ inserts comment at the end of the line."
 (defun edit-project ()
   "Edit project configurations."
   (interactive)
-  (counsel-list-directory "~/.emacs.d/rc" "^09[0-9]+.*?\.el"))
+  (yc/list-directory "~/.emacs.d/rc" "^09[0-9]+.*?\.el"))
 
 (defun edit-rcs ()
   "Edit rc files.."
   (interactive)
-  (counsel-list-directory "~/.emacs.d/rc" "^[0-9]+.*?\.el"))
+  (yc/list-directory "~/.emacs.d/rc" "^[0-9]+.*?\.el"))
 
 (defun edit-zsh ()
   "Edit rc files.."
   (interactive)
-  (counsel-list-directory "~/.config/zsh" "^[0-9]+.*?sh"))
+  (yc/list-directory "~/.zshrc.d" "^[0-9]+.*?sh"))
 
 (defun edit-sway ()
   "Edit rc files.."
   (interactive)
-  (counsel-list-directory "~/.config/sway"))
-
-(defun edit-configs ()
-  "Edit rc files.."
-  (interactive)
-  (counsel-list-directory "~/.config"))
-
-(defun edit-elpa ()
-  "Edit elpa files.."
-  (interactive)
-  (counsel-list-directory "~/.emacs.d/elpa" (rx (+? nonl) "-" (+ digit) "." (+ digit))))
+  (yc/list-directory "~/.config/sway"))
 
 (defun edit-template ()
   "Edit templates."
   (interactive)
-  (counsel-list-directory "~/.emacs.d/templates" (rx (or alnum "_"))))
+  (yc/list-directory "~/.emacs.d/templates" (rx (or alnum "_"))))
 
 (defun edit-snippets ()
   "Edit snippets."
   (interactive)
-  (counsel-list-directory (format "~/.emacs.d/templates/yasnippets/%s" major-mode)))
+  (yc/list-directory (format "~/.emacs.d/templates/yasnippets/%s"
+                             major-mode)))
+
+(defun edit-peda ()
+  "Edit peda.py."
+  (interactive)
+  (find-file (expand-file-name "~/.emacs.d/tools/peda/peda.py")))
 
 
 (defun yc/add-subdirs-to-load-path ()
@@ -840,7 +802,7 @@ inserts comment at the end of the line."
   "Description."
   (interactive)
   (let* ((input (or input
-                    (counsel-list-directory default-directory ".*\.xmind" 'identity)))
+                    (yc/list-directory default-directory ".*\.xmind" t)))
          (temp-dir (concat (temporary-file-directory) (make-temp-name "xmind_")))
          (default-directory temp-dir)
          (json-file (concat temp-dir "/content.json" )))
@@ -1174,6 +1136,7 @@ inserts comment at the end of the line."
 
   (ws-butler-global-mode 1)
 
+  (widen)
   ;; display original buffer.
   (layout-restore))
 
@@ -1244,19 +1207,75 @@ inserts comment at the end of the line."
                        (throw 'p-found item)))))))
 
     (if item
-        (let* ((files (cdr item))
+        (let* ((region (car item))
+               (files (cdr item))
                (file-A (car files))
-               (file-B (cdr files)))
+               (file-B (cdr files))
+
+               skip-A
+               skip-B)
+
+
+          (save-excursion
+            (narrow-to-region (car region) (cdr region))
+
+            ;; parse A
+            (goto-char (point-min))
+            (let ((start 0))
+              (while (search-forward-regexp
+                      (rx bol "***" (+ space)
+                          (group (+ digit)) "," (group (+ digit))
+                          (+ space) "***") nil t)
+                (let ((diff-start (match-string 1))
+                      (diff-end (match-string 2)))
+                  (push (cons start (string-to-number diff-start)) skip-A)
+                  (setq start (string-to-number diff-end))))
+              (push (cons start (point-max)) skip-A))
+
+
+            ;; parse B
+            (goto-char (point-min))
+            (let ((start 0))
+              (while (search-forward-regexp
+                      (rx bol "---" (+ space)
+                          (group (+ digit)) "," (group (+ digit))
+                          (+ space) "---") nil t)
+                (let ((diff-start (match-string 1))
+                      (diff-end (match-string 2)))
+                  (push (cons start (string-to-number diff-start)) skip-B)
+                  (setq start (string-to-number diff-end))))
+              (push (cons start (point-max)) skip-B))
+
+            (widen))
 
           ;; move cursor to next section if possible...
           (goto-char
            (if backward
                (1- (cdar item))
-               (1+ (caar item))))
-          ;; (layout-save-current)
+             (1+ (caar item))))
+
           (ws-butler-global-mode -1 )
           (add-hook 'ediff-quit-hook 'yc/ediff-cleanup-and-restore)
-          (ediff-files  file-B file-A))
+          (PDEBUG "skips:" skip-A skip-B)
+          (let ((buffer-A (find-file-noselect file-A))
+                (buffer-B (find-file-noselect file-B)))
+
+            ;; (with-current-buffer buffer-A
+            ;;   (goto-char (point-min))
+            ;;   (dolist (region skip-A)
+            ;;     (overlay-put (make-overlay (line-beginning-position (car region))
+            ;;                                (line-end-position (cdr region)))
+            ;;                  'invisible 'invs)))
+
+
+            ;; (with-current-buffer buffer-B
+            ;;   (goto-char (point-min))
+            ;;   (dolist (region skip-B)
+            ;;     (overlay-put (make-overlay (line-beginning-position (car region))
+            ;;                                (line-end-position (cdr region)))
+            ;;                  'invisible 'invs)))
+
+            (ediff-buffers  buffer-B buffer-A)))
 
       (error "Can't find proper files to compare at point: %d" (point)))))
 
@@ -1308,14 +1327,12 @@ inserts comment at the end of the line."
 (defun yc/touch-file ()
   "Execute touch command to selected file."
   (interactive)
-  (counsel-list-directory
+  (yc/list-directory
    default-directory nil
    (lambda (x)
      (interactive)
      (shell-command (format "touch \"%s\"" x))
      (message "File %s touched." x))))
-
-
 
 (defun yc/open-with-external-app (&optional file)
   "Open FILE with external app."
@@ -1336,20 +1353,7 @@ inserts comment at the end of the line."
           (PDEBUG "Open with cmd: " app fn)
           (start-process "xdg-open" nil app fn))
       (error "Can't find proper app to open file %s" file))))
-
-(defun yc/layout-save-current ()
-  "Save current layout."
-  (interactive)
 
-  (unless (featurep 'layout-restore)
-    (require 'layout-restore))
-
-  (walk-windows (lambda (w)
-                  (interactive)
-                  (PDEBUG "w:" w)
-                  (select-window w)
-                  (layout-save-current))))
-
 (autoload 'magit-git-string "magit-git")
 
 (defun yc/git-copy-file-path ()
@@ -1384,6 +1388,30 @@ inserts comment at the end of the line."
 
       (kill-new ret)
       ret)))
+
+(defun yc/git-copy-proj-url (&optional dir)
+  "Copy path of current visited file or input DIR."
+  (interactive)
+
+  (let* ((default-directory (or dir default-directory))
+         (url (magit-git-string "config" "remote.origin.url"))
+         (commit (magit-git-string "rev-parse" "--short" "--revs-only"  "HEAD" )))
+
+    (unless url (error "Not in a git repo"))
+
+    (when (string-match (rx "git@" (group (+? nonl))":" (group (+? nonl)) eol)
+                    url)
+      (let* ((host (match-string 1 url))
+             (proj (match-string 2 url))
+             (protol (if (s-starts-with-p "192.168." host) "http" "https")))
+
+        (setq url (concat protol "://" host "/" proj))))
+
+    (when (called-interactively-p '(interactive))
+      (kill-new commit)
+      (kill-new url))
+
+    (concat url "#commit=" commit)))
 
 (defun yc/command-output-to-string (&rest args)
   "Execute a command and return result as string.
@@ -1437,10 +1465,11 @@ args should be a list, but to make caller's life easier, it can accept one atom 
     (if ebuffer
         (progn
           (set-buffer ebuffer)
+          (goto-char (point-max))
           (insert "cd " dir)
           (eshell-send-input)
-          (goto-char (point-max))
-          (pop-to-buffer ebuffer))
+          (pop-to-buffer ebuffer)
+          (goto-char (point-max)))
       (eshell))))
 
 (defun yc/exec-command-via-eshell ()
@@ -1590,6 +1619,55 @@ If `current-prefix-arg' is given, search for all files under default-folder."
       (find-file it))
     )
   )
+
+(defun yc/start-http-server ()
+  "Start http server on directory."
+  (interactive)
+  (let ((default-directory (yc/choose-directory))
+        (port (or current-prefix-arg 8000)))
+
+    (start-process-shell-command "http-server"
+                                 (get-buffer-create "http-server")
+                                 (format "python -m SimpleHTTPServer %d" port)))
+  )
+
+(defun yc/clean-shared-memory ()
+  "Remove all shared memory owned by me."
+  (interactive)
+  (shell-command "ipcs -m | grep yyc | awk '{print $2}' | xargs ipcrm shm {} \;"))
+
+(defun yc/hex-to-dec (input)
+  "Prints the decimal value of a hexadecimal string under cursor.
+
+Samples of valid input:
+
+  ffff → 65535
+  0xffff → 65535
+  #xffff → 65535
+  FFFF → 65535
+  0xFFFF → 65535
+  #xFFFF → 65535
+
+more test cases
+  64*0xc8+#x12c 190*0x1f4+#x258
+  100 200 300   400 500 600
+
+URL `http://ergoemacs.org/emacs/elisp_converting_hex_decimal.html'
+Version 2020-02-17"
+  (let (tempStr)
+    (let ((case-fold-search nil))
+      (setq tempStr (replace-regexp-in-string "\\`0x" "" input )) ; C, Perl, …
+      (setq tempStr (replace-regexp-in-string "\\`#x" "" tempStr )) ; elisp …
+      (setq tempStr (replace-regexp-in-string "\\`#" "" tempStr )) ; CSS …
+      )
+    (string-to-number tempStr 16)))
+
+(defun auto-rename-buffer ()
+  "Rename current buffer."
+  (interactive)
+  (let ((newname (concat (buffer-name) "-" (format-time-string  "%H:%M:%S" (current-time)))))
+    (rename-buffer newname)))
+
 
 (provide 'yc-utils)
 

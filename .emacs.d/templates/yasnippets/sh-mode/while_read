@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: while_read
+# key: wrd
+# --
+while IFS= read -rd '' l; do
+    echo "$l"
+done < <(${1:cmd})

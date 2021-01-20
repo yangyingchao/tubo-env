@@ -78,8 +78,16 @@ ORIG-FUNC is called with ARGS."
       (if (region-active-p)
           (deactivate-mark)))))
 
+  (defadvice! yc/realgud:cmd-run-command-adv (orig-func &rest args)
+    "Restore to originally focused window after ORIG-FUNC is called with ARGS."
+    :around  #'realgud:cmd-run-command
+    (let ((window (current-word))
+          (buf (current-buffer)))
+      (apply orig-func args)
+      (pop-to-buffer-same-window buf)))
+
   (yc/set-company-backends 'realgud:gdb-track-mode 'company-gdb
-    'company-dabbrev-code 'company-dabbrev))
+    'company-dabbrev-code))
 
 (use-package realgud-lldb
   :commands (realgud--lldb))
@@ -87,7 +95,8 @@ ORIG-FUNC is called with ARGS."
 (use-package realgud-gdb
   :commands (realgud:gdb realgud:gdb-pid)
   :config
-  (require 'realgud))
+  (require 'realgud)
+  (setf (gethash "eval"     realgud:gdb-command-hash) "pprint %s"))
 
 (defalias 'realgud:lldb 'realgud--lldb)
 (defalias 'lldb 'realgud--lldb)
@@ -96,8 +105,12 @@ ORIG-FUNC is called with ARGS."
 ;; Function to debug process, either attaching to a running one, or start a new one.
 (use-package debug-utils
   :commands (;; attach-pg-idle attach-pg-wal attach-pg-main attach-pg-proc
-             debug-proc attach-proc attach-proc-su
-                        yc/kill-gdb-buffers company-gdb))
+             yc/uniq-stack
+             yc/debug-proc  yc/debug-core
+             yc/attach-proc yc/attach-proc-su
+             yc/kill-gdb-buffers company-gdb
+             yc/parse-backtrace yc/parse_segfault
+             ))
 
 
 (provide '054-prog-debug)

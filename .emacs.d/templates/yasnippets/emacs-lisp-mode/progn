@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+#name: progn
+#key: prg
+# --
+(progn
+$0
+)$>

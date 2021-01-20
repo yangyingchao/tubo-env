@@ -33,23 +33,24 @@
 (require '02-functions)
 (require 'hl-line)
 (require 'outline)
+(require 'transient)
 
-(defcustom logviewer-fold-long-lines nil
+(defcustom logviewer/fold-long-lines nil
   "Fold a line if it is too long."
   :type '(radio (const :tag "Show all lines." nil)
                 (integer :tag "Fold if longer than:" ))
-  :group 'logviewer
-  )
+  :group 'logviewer)
 
 ;; default mode map, really simple
 (cdsq logviewer-mode-map
   (let* ((map (make-sparse-keymap)))
-    (define-key map (kbd "C-x lr") 'logviewer-reload-file)
-    (define-key map (kbd "C-x lf") 'logviewer-set-filter)
-    (define-key map (kbd "C-x lc") 'logviewer-calibrate)
-    (define-key map (kbd "C-x lt") 'logviewer-toggle-long-lines)
-    (define-key map (kbd "C-x lq") 'logviewer-quit)
-    map)
+    (define-key map (kbd "r") 'logviewer/reload-file)
+    (define-key map (kbd "f") 'logviewer/filter-levels)
+    (define-key map (kbd "l") 'logviewer/toggle-long-lines)
+    (define-key map (kbd "q") 'logviewer/quit)
+    (define-key map (kbd "/") 'logviewer/filter-lines)
+    (define-key map (kbd "c") 'logviewer/undo)
+   map)
   "Keymap for logviewer mode.")
 
 
@@ -80,7 +81,7 @@
      (1 font-lock-builtin-face) (2 font-lock-variable-name-face))
 
     (,(rx bol (** 0 256 not-newline) symbol-start
-          (group (or "info" "INFO" "Info")) ":"
+          (group (or "info" "INFO" "Info" "LOG" "log")) ":"
           (group (+ (*? not-newline))))
      (1 font-lock-function-name-face))
     (,(rx bol (** 0 256 not-newline) symbol-start
@@ -88,151 +89,170 @@
                      "TRACE" "trace" "Trace")) ":"
           (group (+ (*? not-newline))))
      (1 font-lock-keyword-face) (2 font-lock-doc-face))
+
+
+    ;; prove...
+    (,(rx bol (group (or "Bail out!")) (group (** 0 256 not-newline)))
+     (1 font-lock-warning-face) (2 font-lock-comment-face))
+
+    (,(rx bol (group (or "ok") (+ space) (+ digit)) )
+     (1 font-lock-builtin-face))
+
     ))
 
-(defun logviewer-calibrate ()
-  "Calibrate data-time of logs."
+
+(defvar logviewer/filter-prefix ">>> ")
+(defconst logviewer/filter-result-sign
+  "------------------------------- filter result -------------------------------"
+  "Line indicate filter is started.")
+
+(defun logviewer/-filter-by-regex (regexp)
+  "Filter LogContent by REGEXP."
+  (unless (string-empty-p regexp)
+    (let ((inhibit-read-only t)
+          (start
+           (or (save-excursion
+                 (goto-char (point-min))
+                 (search-forward logviewer/filter-result-sign nil t))
+               (point-min))))
+
+      (PDEBUG "REGEXP:" regexp
+              "START:" start)
+
+      (if (string-prefix-p "!" regexp)
+          (flush-lines (substring regexp 1) start (point-max))
+        (keep-lines regexp start (point-max)))
+      (save-excursion
+        (goto-char (point-min))
+        (let ((item (propertize (format "[%s]" regexp) 'face 'ivy-current-match)))
+          (if (looking-at logviewer/filter-prefix)
+              (progn
+                (goto-char (line-end-position))
+                (insert item))
+            (insert logviewer/filter-prefix item "\n"
+                    logviewer/filter-result-sign "\n"))))
+      (set-buffer-modified-p nil))))
+
+(defconst logviewer-levels
+  '("FATAL" "ERROR" "WARNING" "INFO" "LOG" "DEBUG"))
+
+(defun logviewer/filter-levels ()
+  "Set and show result of filter level..."
   (interactive)
-  (let* ((fmt-tip "%s (format: h:m:s): ")
-         (src-time (completing-read (format fmt-tip "From") nil))
-         (dst-time (completing-read (format fmt-tip "To") nil))
-         (ts (float-time))
-         (r-match-date-time
-          (rx bol
-              (group (** 2 4 digit) "-" (** 1 2 digit) "-" (** 1 2 digit)
-                     (+ space)
-                     (** 1 2 digit) ":" (** 1 2 digit) ":" (** 1 2 digit))))
-         (r-match-time-only
-          (rx bol (* space)
-              (group (** 1 2 digit) ":" (** 1 2 digit) ":" (** 1 2 digit))))
-         (src (if (string-match r-match-time-only src-time)
-                  (float-time
-                   (date-to-time (concat "2001-01-01 " (match-string 1 src-time))))
-                ts))
-         (dst (if (string-match r-match-time-only dst-time)
-                  (float-time
-                   (date-to-time (concat "2001-01-01 " (match-string 1 dst-time))))
+  (let* ((target-level (completing-read "Filter Level: " logviewer-levels))
+         (valid-levels
+          (catch 'p-found
+            (let (levels)
+              (dolist (level logviewer-levels)
+                (push level levels)
+                (when (string= level target-level)
+                  (throw 'p-found levels)))
+              levels)))
+         (regexp (concat "\\(?:" (s-join "\\|" valid-levels )"\\)")))
 
-                ts))
-         (diff (- dst src)))
+    (logviewer/-filter-by-regex regexp)))
 
-    ;; calculate diff.
-    (if (= 0 diff)
-        (error "Invalid time: %s -- %s" src-time dst-time))
-    (save-excursion
-      (goto-char (point-min))
-      (while (re-search-forward r-match-date-time nil t)
-        (replace-match
-         (format-time-string "%Y-%m-%d %H:%M:%S"
-                             (seconds-to-time
-                              (+ diff (float-time (date-to-time (match-string 1)))))))))))
+(defun logviewer/filter-lines ()
+  "Filter log by lines."
+  (interactive)
+  (let ((regexp (read-regexp "Regexp(! for flush)")))
+    (logviewer/-filter-by-regex regexp)))
 
-(defun logviewer-reload-file ()
+(defun logviewer/undo ()
+  "Undo."
+    (interactive)
+    (let ((inhibit-read-only t))
+      (if (save-excursion
+            (goto-char (point-min))
+            (looking-at logviewer/filter-prefix))
+          (undo)
+        (user-error "Filter stack is empty"))))
+
+(defun logviewer/reload-file ()
   "Reload current file."
   (interactive)
     (save-excursion
       (find-file (buffer-file-name)))
       (message "Readload finished."))
 
-(defconst logviewer-levels
-  '("FATAL" "ERROR" "WARRNING" "INFO" "DEBUG"))
+(defvar-local logviewer--overlays nil "Folded overlays.")
 
-(defvar logviewer-filter-level 9 "nil")
 
-(defvar logviewer--overlays nil "Folded overlays.")
-
-(defun logviewer-get-filter (lvl)
-  "Get filter beyond LVL."
-  (if (string= lvl "FATAL")
-      (progn
-        (setq logviewer-filter-level 1)
-        (rx bow "FATAL:"))
-
-    (if (string= lvl "ERROR")
-      (progn
-        (setq logviewer-filter-level 3)
-        (rx bow (or "FATAL" "ERROR") ":"))
-      (if (string= lvl "WARRNING")
-          (progn
-            (setq logviewer-filter-level 7)
-            (rx bow (or "FATAL" "ERROR" "WARRNING") ":"))
-        (if (string= lvl "INFO")
-            (progn
-              (setq logviewer-filter-level 9)
-              (rx bow (or "FATAL" "ERROR" "WARRNING" "INFO") ":")  ))
-        )
-      )
-    )
-  )
-
-(defvar logviewer-filter-list '() "nil")
-
-(defun logviewer-iter (reg-str)
-  ""
-  (if (search-forward-regexp reg-str (point-max) t)
-      (progn
-        (let ((pos1)
-              (pos2))
-          (move-beginning-of-line 1)
-          (setq pos1 (point))
-          (move-end-of-line 1)
-          (setq pos2 (point))
-          (cons pos1 pos2)
-          (add-to-list 'logviewer-filter-list (cons pos1 pos2))
-          (logviewer-iter reg-str)
-          )
-        )
-    nil
-      )
-  )
-
-(defun logviewer-set-filter ()
-  "Set and show result of filter lvl."
-  (interactive)
-  (setq logviewer-filter-list nil)
-  (let ((lvl nil)
-        (cur-lvl   logviewer-filter-level ))
-    (setq lvl (completing-read "Filter Level: " logviewer-levels))
-    (if (string= lvl "DEBUG")
-        (outline-flag-region (point-min) (point-max) nil)
-      (progn
-        (let ((logviewer-filter (logviewer-get-filter lvl))
-              ;; (content (buffer-substring-no-properties
-              ;;           (point-min) (point-max)))
-              )
-          (if (< cur-lvl logviewer-filter-level)
-              (outline-flag-region (point-min) (point-max) nil)
-            )
-
-          (goto-char (point-min))
-          (logviewer-iter logviewer-filter)
-
-          (outline-flag-region (point-min) (point-max) t)
-          (if (> (length logviewer-filter-list) 0)
-              (let ((i 0)
-                    (len (length logviewer-filter-list))
-                    (frange))
-                (while (< i len)
-                  (setq frange (nth i logviewer-filter-list))
-                  (outline-flag-region (car frange) (1+ (cdr frange)) nil)
-                  (setq i (1+ i))))))))))
-
-(defvar-local logviewer--long-line-hidden nil "Nil.")
 (add-to-invisibility-spec '(invs . t))
 
-(defun logviewer-toggle-long-lines ()
+(defvar-local logviewer/-long-lines nil
+  "CAR: on or off, CDR: overlays.")
+
+(defun logviewer/-show-long-lines (&optional show)
+  "Description.
+If SHOW is t, always display invisible lines.
+If SHOW is nil, toggle lines based on current status."
+  (let* ((status (car logviewer/-long-lines) )
+         (overlays (cdr logviewer/-long-lines))
+         (prop (if (or show status status)  nil 'invs)))
+
+    (unless overlays
+      (error "No lines are folded"))
+
+    (mapc (lambda (ov)
+            (overlay-put ov 'invisible prop))
+          overlays)
+    (setf (car logviewer/-long-lines) (not status))))
+
+(defun logviewer/-hide-long-lines ()
+  "Hide long lines, if asked."
+  (unless (numberp logviewer/fold-long-lines)
+    (setq logviewer/fold-long-lines 120))
+
+  ;; fold full file path into its base name.
+  (let (overlays)
+
+    (dolist (regex (list
+                    (rx (+ space) (group "/" (+ nonl) "/")
+                        (+? (not space)) "." (or "c" "cpp")
+                        ":" (+ digit) (+ space) "--")
+
+                    ;; (rx (+ space) (group "CST" (+ space)))
+                     ))
+
+      (push (logviewer--hide-by-regex regex) overlays))
+
+    (let ((yc/debug-log-limit -1))
+    (PDEBUG "OVERLAYS: " overlays))
+
+    (setq logviewer/-long-lines (cons t (apply #'append overlays)))))
+
+
+(defun logviewer/toggle-long-lines ()
   "Hide or show long lines."
   (interactive)
-  (unless logviewer--overlays
-    (error "No lines are folded"))
-  (mapc (lambda (ov)
-          (overlay-put ov 'invisible
-                       (if logviewer--long-line-hidden
-                           nil 'invs)))
-        logviewer--overlays)
-  (setq logviewer--long-line-hidden (not logviewer--long-line-hidden)))
 
-(defun logviewer-quit ()
+  (when (and logviewer/-long-lines
+             (cdr logviewer/-long-lines)
+             current-prefix-arg)
+    (logviewer/-show-long-lines t)
+    (setq logviewer/-long-lines nil))
+
+  (if (not logviewer/-long-lines)
+      (logviewer/-hide-long-lines)
+    (logviewer/-show-long-lines)))
+
+
+(defun logviewer/-demangle-function-names ()
+  "Call c++filt to demangle function names."
+  (let ((exec (executable-find "c++filt"))
+        (pmax (point-max)))
+    (when exec
+      (save-excursion
+        (goto-char (point-max))
+        (call-process-region (point-min) pmax exec nil t))
+      (delete-region (point-min) pmax))))
+
+(cdsq logviewer/display-hook
+    '(logviewer/-demangle-function-names logviewer/-special-handling-csv)
+  "Hooks to run after log file is loaded.." )
+
+(defun logviewer/quit ()
   "Quit logviewer."
   (interactive)
   (kill-buffer))
@@ -240,56 +260,62 @@
 (defun logviewer--hide-by-regex (r)
   "Hide region matching regex R.
 R should contains one capture group."
-  (save-excursion
-    (goto-char (point-min))
-    (PDEBUG "PT" (point))
-    (while (search-forward-regexp r nil t)
-      (PDEBUG "POINT:" (point))
-      (let* ((ov (make-overlay (match-beginning 1) (match-end 1))))
-        (overlay-put ov 'invisible 'invs)
-        (push ov logviewer--overlays)))))
+  (let (overlays)
+    (save-excursion
+      (goto-char (point-min))
+      (PDEBUG "PT" (point))
+      (while (search-forward-regexp r nil t)
+        (PDEBUG "POINT:" (point))
+        (let* ((ov (make-overlay (match-beginning 1) (match-end 1))))
+          (overlay-put ov 'invisible 'invs)
+          (push ov overlays))))
+    overlays))
 
-(defun logviewer-special-handling-csv ()
+(defun logviewer/-special-handling-csv ()
   "Special handling for pg logs of CSV format."
   (interactive)
-  (set (make-local-variable 'logviewer--long-line-hidden) t)
-  (let ((old-value buffer-read-only)
-        (buffer-read-only nil))
+  (when (and buffer-file-name
+             (string-match-p
+              (rx buffer-start (+? nonl) "/" (+? nonl)"_log/" (+? nonl)
+                  "." (or "csv")) buffer-file-name))
+    (let ((old-value buffer-read-only)
+          (buffer-read-only nil))
 
-    (save-excursion
-      (goto-char (point-min))
-      (while (search-forward-regexp
-              (rx bol "./pg_log/postgresql-" (+? nonl) ".csv:" (+ digit) ":") nil
-              t)
+      (save-excursion
+        (goto-char (point-min))
+        (while (search-forward-regexp
+                (rx bol "./pg_log/postgresql-" (+? nonl) ".csv:" (+ digit) ":") nil
+                t)
 
-        (replace-match "PRI:  ")))
+          (replace-match "PRI:  ")))
 
-    (save-excursion
-      (goto-char (point-min))
-      (while (search-forward-regexp
-              (rx bol "./pg_log_" (+ digit) "/postgresql-" (+? nonl) ".csv:"
-                  (+ digit) ":") nil
-              t)
+      (save-excursion
+        (goto-char (point-min))
+        (while (search-forward-regexp
+                (rx bol "./pg_log_" (+ digit) "/postgresql-" (+? nonl) ".csv:"
+                    (+ digit) ":") nil
+                t)
 
-        (replace-match "SEC:  ")))
+          (replace-match "SEC:  ")))
 
-    (logviewer--hide-by-regex
-     (rx (group
-          "CST," (+? nonl) " CST," ;; session start timestamp
-          (*? nonl) "," ;; virtual transaction id
-          (*? nonl) "," ;; transaction id
-          )))
-    ;; state code
-    (logviewer--hide-by-regex
-     (rx (or "PANIC" "ERROR" "FATAL" "WARNING" "WARN" "LOG" "DEBUG")
-         ","
-         (group (+? nonl) ",")
-         "\""))
+      (logviewer--hide-by-regex
+       (rx (group
+            "CST," (+? nonl) " CST," ;; session start timestamp
+            (*? nonl) "," ;; virtual transaction id
+            (*? nonl) "," ;; transaction id
+            )))
+      ;; state code
+      (logviewer--hide-by-regex
+       (rx (or "PANIC" "ERROR" "FATAL" "WARNING" "WARN" "LOG" "DEBUG")
+           ","
+           (group (+? nonl) ",")
+           "\""))
 
-    (logviewer--hide-by-regex
-     (rx (group (+ ",")"\"\"") eol))
+      (logviewer--hide-by-regex
+       (rx (group (+ ",")"\"\"") eol))
 
-    (setq buffer-read-only old-value)))
+      (setq buffer-read-only old-value))))
+
 
 ;;;###autoload
 (define-derived-mode logviewer-mode fundamental-mode "Log-Viewer"
@@ -298,33 +324,26 @@ Key definitions:
 \\{logviewer-mode-map}"
    ; Setup font-lock mode.
   (set (make-local-variable 'font-lock-defaults) '(logviewer-font-lock-keywords))
-  ;; (set-syntax-table logviewer-mode-syntax-table)
-  (when logviewer-fold-long-lines
-    (make-local-variable 'logviewer--overlays)
-    (set (make-local-variable 'logviewer--long-line-hidden) t)
-    (unless (numberp logviewer-fold-long-lines)
-      (setq logviewer-fold-long-lines 1024))
 
-    (logviewer--hide-by-regex
-     (format ".\\{%s\\}\\(.+?\\)$" logviewer-fold-long-lines)
-     ;; (rx (repeat logviewer-fold-long-lines not-newline)
-     ;;     (group (+? not-newline)) eol)
+  ;; hide long file name...
+  (run-hooks 'logviewer/display-hook)
 
-     ))
+  (setq buffer-read-only t)
+  (set-buffer-modified-p nil)
 
-  ;; special handling for pg log (csv).
-  (when (and buffer-file-name
-             (string-match-p
-              (rx buffer-start (+? nonl) "/pg_log" (+? nonl)
-                  "." (or "log" "csv")) buffer-file-name))
-    (logviewer-special-handling-csv)
-    )
-
-
-  (setq buffer-read-only nil)
-  (auto-revert-mode 1)
   (run-hooks 'logviewer-mode-hook)
-  (hl-line-mode))
+  (hl-line-mode)
+
+  (if (member 'vlf-mode minor-mode-list)
+      (progn
+        (auto-revert-mode -1)
+        (local-set-key "n" #'vlf-next-batch)
+        (local-set-key "p" #'vlf-prev-batch)
+        (local-set-key "s" #'vlf-re-search-backward)
+        (local-set-key "[" 'vlf-beginning-of-file)
+        (local-set-key "]" 'vlf-end-of-file))
+    (auto-revert-mode 1)))
+
 
 (provide 'logviewer)
 

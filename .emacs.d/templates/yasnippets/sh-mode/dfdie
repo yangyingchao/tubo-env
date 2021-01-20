@@ -7,7 +7,15 @@ function die ()
     set +xe
     echo ""
     echo "================================ DIE ==============================="
-    echo "$@"
+
+    if [ $# -ne 0 ]; then
+        echo "$@"
+    else
+        while IFS= read -r l; do
+            echo "$l"
+        done
+    fi
+
     echo "Call stack:"
     local n=$((\${#BASH_LINENO[@]}-1))
     local i=0

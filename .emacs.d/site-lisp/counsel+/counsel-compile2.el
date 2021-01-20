@@ -145,26 +145,41 @@ If makefile is specified use it as path to Makefile"
 
 ;;;###autoload
 (defun counsel-compile-projectile ()
-  "Call `counsel-compile' for `projectile-project-root'."
+  "Call `counsel-compile' for `projectile-project-root'.
+If corresponding compile buffer already exists, recompile."
   (interactive)
   (require 'projectile)
-  (let* ((proj-root (projectile-project-root))
-         (dirs (directory-files proj-root t "build.*" t))
-         cands)
 
-    (dolist (dir (push proj-root dirs))
-      (if (file-exists-p (expand-file-name "Makefile" dir))
-          (push dir cands)))
+  (if (and
+       (not current-prefix-arg)
+       (get-buffer "*compilation*")
+       (with-current-buffer (get-buffer "*compilation*")
+         default-directory)
+       (s-starts-with? (projectile-project-root)
+                       (with-current-buffer (get-buffer "*compilation*")
+                         default-directory)))
+      (with-current-buffer (get-buffer "*compilation*")
+        (recompile))
 
-    (unless cands
-      (error "Could not find proper makefile"))
+    (let* ((proj-root (projectile-project-root))
+           (dirs (directory-files proj-root t "build.*" t))
+           cands)
 
-    (PDEBUG "CANDS: " cands)
-    (let ((dir (ivy-read "Choose Compile Root: " (sort cands 'string-lessp))))
-      (if dir
-          (let ((default-directory dir))
-            (counsel-make))
-        (error "Failed to get compile directory")))))
+      (dolist (dir (or dirs (list proj-root)))
+        (if (file-exists-p (expand-file-name "Makefile" dir))
+            (push dir cands)))
+
+      (unless cands
+        (error "Could not find proper makefile"))
+
+      (PDEBUG "CANDS: " cands)
+      (let ((dir (if (= (length cands) 1)
+                 (car cands)
+                 (ivy-read "Choose Compile Root: " (sort cands 'string-lessp)))))
+        (if dir
+            (let ((default-directory dir))
+              (counsel-make))
+          (error "Failed to get compile directory"))))))
 
 (provide 'counsel-compile2)
 

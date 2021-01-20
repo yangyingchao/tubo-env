@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: extern "C"
+# key: xtc
+# --
+extern "C"
+{
+$0
+}

@@ -1,5 +1,5 @@
 # -*- mode: snippet; require-final-newline: nil -*-
 # name: reveal_frag
-# key: rfr
+# key: rfg
 # --
-#+ATTR_REVEAL:frag appear
+#+ATTR_REVEAL: :frag appear

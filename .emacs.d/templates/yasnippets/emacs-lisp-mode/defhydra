@@ -1,0 +1,10 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: defhydra
+# key: dfh
+# --
+(defhydra hydra/${1:name} ()
+"${2:Description.}"$>
+($0)
+
+  ("q" nil "quit")
+)

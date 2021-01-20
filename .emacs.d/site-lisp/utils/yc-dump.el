@@ -30,12 +30,9 @@
     (set-process-sentinel process (lambda (proc event)
                                     (when (equal 'exit (process-status proc))
                                       (when (= 0 (process-exit-status proc))
-                                        (message "OK")
-                                        ))))
-
-
-    )
-  )
+                                        (PDEBUG "BUF:" buf
+                                                "EVT:" event)
+                                        (message "OK")))))))
 
 (defun yc/config-emacs ()
   "Configure emacs with current system-configuration-options."
@@ -45,6 +42,7 @@
                    (file-exists-p "autogen.sh"))
               default-directory
             (yc/choose-directory)))
+         (opt-level (if current-prefix-arg current-prefix-arg 2))
          cflags
          options)
 
@@ -60,22 +58,25 @@
           (setq cflags (string-split p2)
                 options (string-split p3))
 
-          (PDEBUG "P1:" p1 "P2" p2"p3" p3
+          (PDEBUG "P1:" p1 "P2" p2 "P3" p3
                   "FLAGS:"  cflags
-                  "OPTIONS: " options)
-          ;; (concat p1 " 'CFLAGS=" (mapconcat 'identity cflags " ") "' " p3)
-          )
+                  "OPTIONS: " options)))
 
-      (setq options (string-split system-configuration-options)))
-
+    ;; remove unsupported option.
+    (setq options (delete "--with-nativecomp" options))
 
     ;; check cflags
-    (dolist (flag '("-O2" "-g" "-pipe" "-march=native"))
+    (setq cflags (-remove (lambda (x) (s-starts-with-p "-O" x)) cflags))
+    (if (= opt-level 0 )
+        (push "-Og" cflags)
+      (push (format "-O%d" opt-level) cflags))
+
+    (dolist (flag '("-g" "-pipe" "-march=native"))
       (unless (member flag cflags)
         (push flag cflags)))
 
     ;; check customized options
-    (dolist (option '("--with-modules" "--with-json" "--with-nativecomp" "--without-pop"))
+    (dolist (option '("--with-modules" "--with-json" "--with-native-compilation" "--without-pop"))
       (unless (member option options)
         (push option options)))
 

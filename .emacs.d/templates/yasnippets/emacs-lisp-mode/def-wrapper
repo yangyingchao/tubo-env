@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: def-wrapper
+# key: dfw
+# --
+(yc/define-wrapper #'$0)

@@ -12,8 +12,42 @@
   :commands (helpful-callable helpful-variable)
   :bind (([remap describe-key] . 'helpful-key)))
 
- ;; ivy mode
+
 (use-package ivy
+  ;; ivy mode
+  :preface
+  (defvar ivy-occur-filter-prefix ">>> ")
+
+  (defun ivy-occur/filter-lines ()
+    (interactive)
+    (unless (string-prefix-p "ivy-occur" (symbol-name major-mode))
+      (user-error "Current buffer is not in ivy-occur mode"))
+
+    (let ((inhibit-read-only t)
+          (regexp (read-regexp "Regexp(! for flush)"))
+          (start (save-excursion
+                   (goto-char (point-min))
+                   (re-search-forward "[0-9]+ candidates:"))))
+      (if (string-prefix-p "!" regexp)
+          (flush-lines (substring regexp 1) start (point-max))
+        (keep-lines regexp start (point-max)))
+      (save-excursion
+        (goto-char (point-min))
+        (let ((item (propertize (format "[%s]" regexp) 'face 'ivy-current-match)))
+          (if (looking-at ivy-occur-filter-prefix)
+              (progn
+                (goto-char (line-end-position))
+                (insert item))
+            (insert ivy-occur-filter-prefix item "\n"))))))
+
+  (defun ivy-occur/undo ()
+    (interactive)
+    (let ((inhibit-read-only t))
+      (if (save-excursion
+            (goto-char (point-min))
+            (looking-at ivy-occur-filter-prefix))
+          (undo)
+        (user-error "Filter stack is empty"))))
   :ensure t
   :commands (ivy-read)
   :custom
@@ -33,6 +67,20 @@
 
          ([remap switch-to-buffer] . ivy-switch-buffer)
          )
+  :bind (:map ivy-occur-grep-mode-map
+              ("/" . ivy-occur/filter-lines)
+              ("c" . ivy-occur/undo))
+  :bind (:map ivy-occur-mode-map
+              ("/" . ivy-occur/filter-lines)
+              ("c" . ivy-occur/undo))
+
+  :bind (:map ivy-minibuffer-map
+              ("C-M-," . ivy-beginning-of-buffer)
+              ("C-M-." . ivy-end-of-buffer)
+              ("C-SPC" . ivy-mark)
+              ("C-@" . ivy-mark))
+
+
   :config
   (PDEBUG "LOADING ivy.." )
   (require 'ivy-rich)
@@ -136,14 +184,6 @@ ORIG-FUNC is called with CANDIDATE."
     'counsel-projectile-switch-to-buffer
     (plist-get ivy-rich-display-transformers-list 'ivy-switch-buffer)))
 
-(use-package counsel-utils
-  :commands (yc/counsel-grep counsel-find-file-as-user counsel-grep-in-dir yc/projectile-grep)
-  :bind (
-         (;; ,(kbd "C-c k")
-          "k"  . yc/counsel-grep)
-         ([remap project-find-regexp] . yc/projectile-grep )))
-
-
 (defvar yc/ivy-common-actions
   '(("u" counsel-find-file-as-user "Open as other user")
     ("g" counsel-grep-in-dir "Grep in current directory")
@@ -166,9 +206,8 @@ ORIG-FUNC is called with CANDIDATE."
   (counsel-find-file-ignore-regexp (rx (or (: buffer-start (or "#" "."))
                                            (: (or "#" "~")  buffer-end)
                                            (: buffer-start ".ccls-cache" buffer-end)
-                                           (: ".elc")
-                                           )))
-  (counsel-rg-base-command "rg --with-filename --no-heading --line-number --color never %s")
+                                           (: ".elc"))))
+
   (counsel-describe-function-function #'helpful-callable)
   (counsel-describe-variable-function #'helpful-variable)
 
@@ -195,16 +234,12 @@ ORIG-FUNC is called with CANDIDATE."
               ("\C-f" . counsel-find-file)
               ("\C-r" . counsel-recentf)
               ("F" . 'counsel-fzf)
-              ("gg" . 'counsel-git-grep))
+              )
   :config
   (defalias 'git-grep 'counsel-git-grep)
   (setq counsel-fzf-dir-function
         (lambda ()
           default-directory))
-
-  (if (executable-find "rg")
-      (setq counsel-grep-base-command
-            "rg -S --no-heading --line-number --color never %s %s"))
 
   (defadvice! yc/counsel-grep-or-swiper-adv (orig-func &rest args)
     "Call counsel-grep-or-swiper with symbol-at-point.
@@ -212,36 +247,36 @@ ORIG-FUNC is called with ARGS."
     :around #'counsel-grep-or-swiper
     (apply orig-func (or args (list (aif (symbol-at-point) (symbol-name it))))))
 
-  (defadvice! yc/counsel-git-grep-action-adv (x)
-    "ORIG-FUNC is called with ARGS."
-    :before-until #'counsel-git-grep-action
-    (when (string-match "\\`\\(.*?\\):\\([0-9]+\\):\\(.*\\)\\'" x)
-      (let* ((file-name (match-string-no-properties 1 x))
-             (line-number (match-string-no-properties 2 x))
-             (buffer (get-file-buffer (expand-file-name
-                                       file-name
-                                       (ivy-state-directory ivy-last)))))
-        (PDEBUG "BUF:" buffer
-                "FILE:" file-name
-                "LINE:" line-number)
-        (when buffer
-          (with-current-buffer buffer
-            (switch-to-buffer buffer );; (display-buffer buffer)
-            (goto-char (point-min))
-            (forward-line (1- (string-to-number line-number)))
+  ;; (defadvice! yc/counsel-git-grep-action-adv (x)
+  ;;   "ORIG-FUNC is called with ARGS."
+  ;;   :before-until #'counsel-git-grep-action
+  ;;   (when (string-match "\\`\\(.*?\\):\\([0-9]+\\):\\(.*\\)\\'" x)
+  ;;     (let* ((file-name (match-string-no-properties 1 x))
+  ;;            (line-number (match-string-no-properties 2 x))
+  ;;            (buffer (get-file-buffer (expand-file-name
+  ;;                                      file-name
+  ;;                                      (ivy-state-directory ivy-last)))))
+  ;;       (PDEBUG "BUF:" buffer
+  ;;               "FILE:" file-name
+  ;;               "LINE:" line-number)
+  ;;       (when buffer
+  ;;         (with-current-buffer buffer
+  ;;           (switch-to-buffer buffer );; (display-buffer buffer)
+  ;;           (goto-char (point-min))
+  ;;           (forward-line (1- (string-to-number line-number)))
 
-            (when (re-search-forward (ivy--regex ivy-text t) (line-end-position) t)
-              (when swiper-goto-start-of-match
-                (goto-char (match-beginning 0))))
+  ;;           (when (re-search-forward (ivy--regex ivy-text t) (line-end-position) t)
+  ;;             (when swiper-goto-start-of-match
+  ;;               (goto-char (match-beginning 0))))
 
-            (swiper--ensure-visible)
-            (recenter)
+  ;;           (swiper--ensure-visible)
+  ;;           (recenter)
 
-            (run-hooks 'counsel-grep-post-action-hook)
-            (unless (eq ivy-exit 'done)
-              (swiper--cleanup)
-              (swiper--add-overlays (ivy--regex ivy-text))))
-          t))))
+  ;;           (run-hooks 'counsel-grep-post-action-hook)
+  ;;           (unless (eq ivy-exit 'done)
+  ;;             (swiper--cleanup)
+  ;;             (swiper--add-overlays (ivy--regex ivy-text))))
+  ;;         t))))
 
   (ivy-add-actions 'counsel-find-file  yc/ivy-common-actions)
 
@@ -275,12 +310,29 @@ ORIG-FUNC is called with ARGS."
               (forward-line (1- line-no))))))))
 
   (defadvice! yc/counsel-git-grep-adv (orig-func &optional initial-input &rest args)
-    "Wrapper of ORIG-FUNC, provide proper INITIAL-INPUT value, and save original position."
+    "Wrapper of ORIG-FUNC, provide proper INITIAL-INPUT value, and save
+ original position. If not called with prefix-arg, use `yc/projectile-grep'
+ which is faster, but hidden files would be ignored."
     :around  #'counsel-git-grep
     (let ((m (point-marker)))
-      (push (or initial-input (aif (symbol-at-point) (symbol-name it))) args)
-      (apply orig-func args)
+
+      (if (or current-prefix-arg
+              (string= (projectile-project-root) (getenv "HOME")))
+          (progn
+            ;; reset current-prefix-arg to nil, so default git-grep cmd can be used.
+            (setq current-prefix-arg nil)
+            (push (or initial-input (aif (symbol-at-point) (symbol-name it))) args)
+            (apply orig-func args))
+        (yc/projectile-grep))
+
       (yc/push-stack m))))
+
+(use-package counsel-utils
+  :commands (yc/counsel-grep counsel-find-file-as-user counsel-grep-in-dir yc/projectile-grep)
+  :bind (
+         ("C-c k" . yc/counsel-grep)
+         ([remap project-find-regexp] . yc/projectile-grep )))
+
 
 (use-package bookmark
   :custom
@@ -299,7 +351,6 @@ ORIG-FUNC is called with ARGS."
   :custom
   (amx-history-length 20))
 
- ;; Projectile...
 (use-package projectile
   :preface
   (defun yc/kill-non-project-buffers (&optional kill-special)
@@ -328,17 +379,14 @@ With prefix argument (`C-u'), also kill the special buffers."
   (projectile-globally-ignored-files '(".DS_Store" "TAGS"))
   (projectile-globally-ignored-file-suffixes '(".elc" ".pyc" ".o"))
   (counsel-projectile-switch-project-action 'find-file)
-
-  :config
-  (cond
-   ;; If fd exists, use it for git and generic projects. fd is a rust program
-   ;; that is significantly faster than git ls-files or find, and it respects
-   ;; .gitignore. This is recommended in the projectile docs.
-   ((executable-find "fd")
-    (setq-default projectile-generic-command "fd . -0 --type f --color=never"))
-   ((executable-find "rg")
-    (setq projectile-generic-command "rg -0 --files --follow --color=never --hidden"))))
-
+  (projectile-generic-command
+   (cond
+    ;; If fd exists, use it for git and generic projects. fd is a rust program
+    ;; that is significantly faster than git ls-files or find, and it respects
+    ;; .gitignore. This is recommended in the projectile docs.
+    ((executable-find "fd") "fd . -0 --type f --color=never")
+    ((executable-find "rg") "rg -0 --files --follow --color=never --hidden")
+    (t "find . -type f -print0"))))
 
 (use-package counsel-projectile
   :ensure t
@@ -353,15 +401,7 @@ Call FUNC which is 'projectile-find-file with ARGS."
     (cond
      (current-prefix-arg
       (ivy-read "Find file: "
-
-                (let ((cmd (cond
-                             ((executable-find "fd")
-                              "fd . -0 --no-ignore --type f --color=never")
-                             ((executable-find "rg")
-                              "rg -0 --no-ignore  --files --follow  --color=never --hidden")
-                             (t (projectile-get-ext-command nil)))))
-                  (projectile-files-via-ext-command default-directory cmd))
-
+                (projectile-files-via-ext-command default-directory projectile-generic-command)
                 :matcher counsel-projectile-find-file-matcher
                 :require-match t
                 :sort counsel-projectile-sort-files
@@ -405,19 +445,12 @@ Call FUNC which is 'projectile-find-file with ARGS."
   :config
   (require 'smartparens-config)
   :bind (:map smartparens-mode-map
-              ;; (;; (kbd "C-M-n")
-              ;;  [134217742] . sp-forward-sexp)
+              ("C-M-k" . sp-kill-sexp)
+              ("C-M-w" . sp-copy-sexp)))
 
-              ;; (;; (kbd "C-M-p")
-              ;;  [134217744] . sp-backward-sexp)
 
-              (;; (kbd "C-M-k")
-               [134217739] . sp-kill-sexp)
-              (;; (kbd "C-M-w")
-               [134217751] . sp-copy-sexp)))
-
- ; VLF: view large file.
 (use-package vlf
+  ;; VLF: view large file.
   :commands (vlf)
   :custom
   (vlf-batch-size 2000000) ;; 2 MB.
@@ -430,34 +463,51 @@ Call FUNC which is 'projectile-find-file with ARGS."
   ;;Handle file-error and suggest to install missing packages...
   (advice-add 'set-auto-mode :around #'yc/install-package-on-error)
 
-  (defadvice! yc/find-file-noselect-adv (orig-func &rest args)
-    "Docs.
-ORIG-FUNC is called with ARGS."
-    :around #'find-file-noselect
-    (condition-case var
-        (apply orig-func args)
-      (error (progn
-               (PDEBUG "VAR: " var)
-               (if (string= (cadr var) "File already visited literally")
-                   (find-buffer-visiting (car args))
-                 (error "%s" (cadr var)))))))
+  ;;   (defadvice! yc/find-file-noselect-adv (orig-func &rest args)
+  ;;     "Docs.
+  ;; ORIG-FUNC is called with ARGS."
+  ;;     :around #'find-file-noselect
+  ;;     (condition-case var
+  ;;         (apply orig-func args)
+  ;;       (error (progn
+  ;;                (PDEBUG "VAR: " var)
+  ;;                (if (string= (cadr var) "File already visited literally")
+  ;;                    (find-buffer-visiting (car args))
+  ;;                  (error "%s" (cadr var)))))))
 
-  (defadvice! yc/abort-if-file-too-large-adv (size op-type filename  &optional OFFER-RAW)
+  (defadvice! yc/abort-if-file-too-large-adv (orig size op-type filename  &optional OFFER-RAW)
     "Advice for `abort-if-file-too-large'.
 If file SIZE larger than `large-file-warning-threshold', allow user to use
 `vlf' to view part of this file, or call original FUNC which is
 `abort-if-file-too-large' with OP-TYPE, FILENAME."
-    :before-until #'abort-if-file-too-large
+    :around #'abort-if-file-too-large
     (when (and (string= op-type "open")
+               (not (member (file-name-extension filename) '("pdf")))
                large-file-warning-threshold size
-               (> size (* 100 1024 1024))
-               (not (member (file-name-extension filename) '("pdf")))) ;; 100 MB
-      (if (y-or-n-p (format "File %s is large (%s), view with VLF mode? "
-                            (file-name-nondirectory filename)
-                            (file-size-human-readable size)))
-          (vlf filename)))))
+               (> size (* large-file-warning-threshold 2)))
 
-
+      (let* ((prompt (propertize (format "File %s is large (%s), open: \
+normally (o), literally (l), with vlf (v) or abort (a)"
+		                                     (file-name-nondirectory filename)
+		                                     (funcall byte-count-to-string-function size)
+		                                     op-type)
+                                 'face 'minibuffer-prompt))
+             char)
+
+        (while (not (memq (setq char (read-event prompt))
+                          '(?o ?O ?v ?V ?a ?A ?l ?L))))
+
+        (PDEBUG "CHAR:" char)
+
+        (cond
+         ((memq char '(?l ?L))
+          'raw)
+         ((memq char '(?v ?V))
+          (vlf filename)
+          (error ""))
+         ((memq char '(?a ?A))
+          (error "Aborted")))))))
+
 (use-package server
   :commands (server-start server-running-p)
   :hook ((emacs-startup .
@@ -465,7 +515,6 @@ If file SIZE larger than `large-file-warning-threshold', allow user to use
                           (unless (server-running-p)
                             (server-start))))))
 
- ;;; ABBREV-MODE;;;
 (use-package abbrev
 
   :custom
@@ -489,51 +538,34 @@ If file SIZE larger than `large-file-warning-threshold', allow user to use
      :header-mouse-map ibuffer-size-header-map)
     (file-size-human-readable (buffer-size)))
 
-  :bind ((;; ,(kbd "C-x C-b")
-          "". ibuffer))
+  :bind (("C-x C-b" . ibuffer))
   :bind (:map ibuffer-mode-map
-              (;; (kbd "C-x C-f")
-               "" . counsel-find-file)))
+              ("C-x C-f" . counsel-find-file)))
 
-
-(autoload 'switch-window "switch-window" ""  t)
-(defun yc/switch-window (&optional reverse)
-  "Switch window.
-With REVERSE is t, switch to previous window."
-  (interactive)
-  (if (> (length (window-list)) 3)
-      (switch-window)
-    (other-window (if reverse 2 1)))
-  (yc/update-term-title))
-
-(defun auto-rename-buffer ()
-  "Rename current buffer."
-  (interactive)
-  (let ((newname (concat (buffer-name) "-" (format-time-string  "%H:%M:%S" (current-time)))))
-    (rename-buffer newname)))
-
-(yc/set-keys
- (list
-  (cons (kbd "<C-f2>") 'rename-buffer)
-  (cons (kbd "<f2>") 'auto-rename-buffer)
-  (cons (kbd "C-x o") 'yc/switch-window)
-  (cons (kbd "C-x O") (lambda ()(interactive) (yc/switch-window t)))))
-
-;; string functions..
 (use-package s
+  ;; string functions..
   :commands (s-contains?
              s-ends-with? s-ends-with-p
              s-starts-with? s-blank? s-split))
 
 (use-package super-save
   :ensure t
-  :commands (super-save-mode)
+  :commands (super-save-mode super-save-command-advice)
   :hook ((emacs-startup . super-save-mode))
   :custom
   (super-save-auto-save-when-idle t)
   (auto-save-default nil))
 
-;; Tabs and spaces
+(use-package ace-window
+  :preface
+  (advice-add #'ace-window :before #'super-save-command-advice)
+  :ensure t
+  :bind (("C-x B" . ace-swap-window)
+         ("C-x o" . ace-window))
+  :custom
+  (aw-scope 'frame))
+
+;; Tabs and spaces
 (use-package ws-butler
   :ensure t
   :commands (ws-butler-mode)
@@ -544,24 +576,30 @@ With REVERSE is t, switch to previous window."
   (c-basic-offset 4)
   (indent-tabs-mode nil))
 
-
+(use-package dtrt-indent
+  :custom
+  ;; Enable dtrt-indent even in smie modes so that it can update `tab-width',
+  ;; `standard-indent' and `evil-shift-width' there as well.
+  (dtrt-indent-run-after-smie t)
+  ;; Reduced from the default of 5000 for slightly faster analysis
+  (dtrt-indent-max-lines 2000)
+  (dtrt-indent-hook-generic-mapping-list '((t tab-width) (evil-mode evil-shift-width)))
+  (dtrt-indent-verbosity 0)
+  :config
+  :hook ((emacs-startup . dtrt-indent-global-mode)))
+
 (use-package undo-tree
   :defer t
   :ensure t
   :commands (global-undo-tree-mode undo-tree-undo undo-tree-visualize undo-tree-redo)
   :bind (:map undo-tree-map
-              (;; (kbd "C-x U")
-               "U" . 'undo-tree-visualize)
-              (;; ,(kbd "\C-x u")
-               "u". 'undo-tree-undo)
-              (;; ,(kbd "\C-x M-u")
-               [24 134217845]. 'undo-tree-redo))
+              ("C-x U" . 'undo-tree-visualize)
+              ("\C-x u" . 'undo-tree-undo)
+              ("\C-x M-u" . 'undo-tree-redo))
   :bind ((;(kbd "C-x U")
           "U" . 'undo-tree-visualize)
-         (;; ,(kbd "\C-x u")
-          "u". 'undo-tree-undo)
-         (;; ,(kbd "\C-x M-u")
-          [24 134217845]. 'undo-tree-redo))
+         ("\C-x u" . 'undo-tree-undo)
+         ("\C-x M-u" . 'undo-tree-redo))
   :custom
   (undo-tree-visualizer-diff t)
   (undo-tree-visualizer-relative-timestamps t)
@@ -597,14 +635,14 @@ ORIG-FUNC is called with ARGS."
     (overlay-put preview-hl-overlay 'face 'swiper-line-face))
 
   :hook ((goto-line-preview-after . yc/remove-preview-overlay)))
-
 
 (use-package layout-restore
-  :commands (layout-save-current layout-restore))
+  :commands (layout-save-current
+             layout-restore
+             layout/capture-wincfg
+             layout/restore-wincfg))
 
-
 (use-package which-key
-  :ensure t
   :commands (which-key-mode)
   :custom
   (which-key-sort-order #'which-key-prefix-then-key-order)
@@ -615,13 +653,61 @@ ORIG-FUNC is called with ARGS."
   (which-key-add-column-padding 1)
   (which-key-max-display-columns nil)
   (which-key-min-display-lines 6)
-  (which-key-side-window-slot -10)
-  :hook ((after-init . which-key-mode)))
+  (which-key-side-window-slot -10))
 
-(use-package rime
+(use-package wgrep
+  :commands wgrep-change-to-wgrep-mode
   :custom
-  (default-input-method "rime")
-  (rime-user-data-dir "~/.config/rime"))
+  (wgrep-auto-save-buffer t)
+  (wgrep-change-readonly-file t)
+  )
+
+(use-package so-long
+  :hook (emacs-startup . global-so-long-mode)
+  :custom
+  (so-long-threshold 400) ; reduce false positives w/ larger threshold
+  :config
+  ;; Don't disable syntax highlighting and line numbers, or make the buffer
+  ;; read-only, in `so-long-minor-mode', so we can have a basic editing
+  ;; experience in them, at least. It will remain off in `so-long-mode',
+  ;; however, because long files have a far bigger impact on Emacs performance.
+  (delq! 'font-lock-mode so-long-minor-modes)
+  (delq! 'display-line-numbers-mode so-long-minor-modes)
+  (delq! 'buffer-read-only so-long-variable-overrides 'assq)
+  ;; ...but at least reduce the level of syntax highlighting
+  (add-to-list 'so-long-variable-overrides '(font-lock-maximum-decoration . 1))
+  ;; ...and insist that save-place not operate in large/long files
+  (add-to-list 'so-long-variable-overrides '(save-place-alist . nil))
+  ;; But disable everything else that may be unnecessary/expensive for large or
+  ;; wide buffers.
+  (appendq! so-long-minor-modes
+            '(flycheck-mode
+              flyspell-mode
+              spell-fu-mode
+              eldoc-mode
+              smartparens-mode
+              highlight-numbers-mode
+              better-jumper-local-mode
+              ws-butler-mode
+              auto-composition-mode
+              undo-tree-mode
+              highlight-indent-guides-mode
+              hl-fill-column-mode))
+  (defun doom-buffer-has-long-lines-p ()
+    (unless (bound-and-true-p visual-line-mode)
+      (let ((so-long-skip-leading-comments
+             ;; HACK Fix #2183: `so-long-detected-long-line-p' tries to parse
+             ;;      comment syntax, but comment state may not be initialized,
+             ;;      leading to a wrong-type-argument: stringp error.
+             (bound-and-true-p comment-use-syntax)))
+        (so-long-detected-long-line-p))))
+  (setq so-long-predicate #'doom-buffer-has-long-lines-p))
+
+(use-package avy
+  :ensure t
+  :bind (("C-<f4>" . avy-goto-line))
+  )
+
 
 
 ;; Local Variables:

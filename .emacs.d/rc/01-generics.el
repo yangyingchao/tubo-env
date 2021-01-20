@@ -10,11 +10,20 @@
 
  ;; Package Management...
 
+(defconst EMACS27+   (> emacs-major-version 26))
+(defconst EMACS28+   (> emacs-major-version 27))
+(defconst IS-MAC     (eq system-type 'darwin))
+(defconst IS-LINUX   (eq system-type 'gnu/linux))
+(defconst IS-WINDOWS (memq system-type '(cygwin windows-nt ms-dos)))
+(defconst IS-BSD     (or IS-MAC (eq system-type 'berkeley-unix)))
+
 (require 'package)
 
 (custom-set-variables
  '(package-archives
-   '(("melpa" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+   '(("melpa" . "https://melpa.org/packages/"
+      ;; "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/"
+      )
      ;; ("melpa-stable" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa-stable/")
      ("gnu"   . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
      ))
@@ -45,6 +54,9 @@
   (package-install 'use-package))
 
 (require 'use-package)
+
+(use-package hydra
+  :ensure t)
 
 (use-package quelpa-use-package
   :ensure t)
@@ -102,6 +114,16 @@
  ;;;; Garbage Collection
   garbage-collection-messages nil
   gc-cons-threshold 99999999
+
+  auto-mode-case-fold nil
+
+  cursor-in-non-selected-windows nil
+  highlight-nonselected-windows nil
+  fast-but-imprecise-scrolling t
+  redisplay-skip-fontification-on-input t
+
+  idle-update-delay 1.0
+  require-final-newline t
   )
 
 
@@ -111,7 +133,14 @@
    (unless (frame-focus-state)
      (garbage-collect))))
 
-(fset #'yes-or-no-p #'y-or-n-p); 用y/n替代yes/no
+
+(if EMACS28+
+    (progn
+      (setq use-short-answers t)
+      (custom-set-variables
+       '(package-native-compile t)))
+  (fset #'yes-or-no-p #'y-or-n-p); 用y/n替代yes/no
+  )
 
  ;; Extra mode line faces
 (make-face 'mode-line-read-only-face)
@@ -155,10 +184,10 @@
 
    "  "
    ;; Major mode
-   "%m"
+   mode-name
 
    ;; LSP status, if possible
-   "  " yc/modeline--lsp
+   "  " (:eval yc/modeline--lsp)
 
    ;; which function
    "  ["
@@ -212,7 +241,6 @@ Each ARG should be of form: '(FUNC ARG)"
 ;; Explicitly set the prefered coding systems to avoid annoying prompt
 ;; from emacs (especially on Microsoft Windows)
 (prefer-coding-system 'utf-8)
-
 (set-language-environment 'utf-8)
 (set-default-coding-systems 'utf-8)
 (set-buffer-file-coding-system 'utf-8)
@@ -224,10 +252,13 @@ Each ARG should be of form: '(FUNC ARG)"
 (modify-coding-system-alist 'process "*" 'utf-8)
 
 (setq locale-coding-system 'utf-8
-      default-process-coding-system '(utf-8 . utf-8))
+      buffer-file-coding-system 'utf-8
+      default-process-coding-system '(utf-8 . utf-8)
+      system-time-locale "C")
 
-(setq buffer-file-coding-system 'utf-8)
-(setq system-time-locale "C")
+;; Treat clipboard input as UTF-8 string first; compound text next, etc.
+(when (display-graphic-p)
+  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
 
 (setq kill-do-not-save-duplicates t)
 
@@ -245,10 +276,10 @@ Each ARG should be of form: '(FUNC ARG)"
   (expand-file-name "~/.emacs.d/tools/")
   "Tools directory.")
 
-(defun yc/make-cache-path (path &optional mkdir)
+(defun yc/make-cache-path (&optional path  mkdir)
   "Compose cache directory for PATH.
 If `MKDIR' is t, make directory named PATH."
-  (let ((path   (expand-file-name path yc/emacs-cache-dir )))
+  (let ((path   (expand-file-name (or path "") yc/emacs-cache-dir )))
     (when (and mkdir (not (file-exists-p path)))
       (make-directory path t))
     path))
@@ -287,6 +318,11 @@ Files stored in ~/Work/ are controlled by git or svn."
 
 
 (put 'narrow-to-region 'disabled nil)
+
+;; Remove command line options that aren't relevant to our current OS; means
+;; slightly less to process at startup.
+(unless IS-MAC   (setq command-line-ns-option-alist nil))
+(unless IS-LINUX (setq command-line-x-option-alist nil))
 
 (provide '01-generics)
 

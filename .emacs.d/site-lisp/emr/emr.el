@@ -43,6 +43,7 @@
 (require 'popup)
 (autoload 'beginning-of-thing "thingatpt")
 (autoload 'emr-el-initialize "emr-elisp")
+(require '02-functions)
 
 (defgroup emacs-refactor nil
   "Provides refactoring tools for Emacs."
@@ -348,13 +349,19 @@ Return a popup item for the refactoring menu if so."
 (defun emr-initialize ()
   "Activate language support for EMR."
   (unless emr-initialized
+
+
     (require 'emr-lsp)
-    (require 'emr-c)
-    (require 'emr-python)
+
+    (yc/eval-after-load 'cc-mode
+      (require 'emr-c))
+
+    (yc/eval-after-load  'python-mode
+      (require 'emr-python))
+
     (require 'emr-org)
     (require 'emr-iedit)
     (require 'emr-others)
-    (require 'emr-c)
 
   (setq emr-initialized t)))
 

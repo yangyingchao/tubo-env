@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: completing-read
+# key: cr
+# --
+(completing-read "${1:PROMPT}" $0)

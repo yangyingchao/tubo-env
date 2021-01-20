@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: GPIO.output
+# key: got
+# group: GPIO
+# --
+GPIO.output(${1:PIN}, ${2:$$(yas-choose-value '("True" "False"))})

@@ -26,14 +26,6 @@ function snd_msg ()
     if [ -n "$debug" ]; then
         dunstify -t 600 "$@"
     fi
-
-    # # Issue mouse click..
-    # screen_res=`xrandr | grep -e " connected.*\+" |sed "s/ /\n/g" | grep -e ".*x.*+.*+.*" | awk -F "+" '{print $1}'`
-    # xpos=`echo $screen_res | awk -F "x" '{print $1/2}'`
-    # ypos=`echo $screen_res | awk -F "x" '{print $2/2}'`
-
-    # xdotool mousemove $xpos $ypos
-    # xdotool click 1
 }
 
 declare -a wks # all available workspaces.

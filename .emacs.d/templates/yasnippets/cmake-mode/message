@@ -4,7 +4,7 @@
 # --
 message(${1:S}${1:$(cond
                    ((string-match-p "^S" yas-text) "TATUS")
-                   ((string-match-p "^W" yas-text) "WARNING")
+                   ((string-match-p "^W" yas-text) "ARNING")
                    ((string-match-p "^F" yas-text) "ATAL_ERROR")
                    ((string-match-p "^D" yas-text) "EBUG")
                    ((string-match-p "^T" yas-text) "RACE")

@@ -38,7 +38,9 @@ If INITIAL-INPUT is not nil, use it."
     (cond
      ;; use rga if specified...
      ((and current-prefix-arg (executable-find "rg"))
-      (let ((counsel-rg-base-command (concat counsel-rg-base-command " -uuu ")))
+      (let ((counsel-rg-base-command
+             (concat "rg -uuu " (s-join " " (cdr counsel-rg-base-command)))))
+        (PDEBUG "CMD: " counsel-rg-base-command)
         (counsel-rg init default-directory)))
 
      ;; ;; or, prefer to rg if possible..
@@ -77,9 +79,13 @@ If INITIAL-INPUT is not nil, use it."
 (defun counsel-grep-in-dir (x)
   "Grep in curtent dir X."
   (interactive)
-  (PDEBUG "X: " x)
-  (let ((default-directory (if (file-directory-p x) x
-                             (file-name-directory x))))
+  (PDEBUG "X: " x (file-exists-p x))
+
+  (let* ((x (if (file-name-absolute-p x)
+                x
+              (expand-file-name x)))
+         (default-directory (if (file-directory-p x) x
+                              default-directory)))
     (yc/counsel-grep)))
 
 (defun yc/projectile-grep ()

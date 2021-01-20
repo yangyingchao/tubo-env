@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=org-protocol
+# Exec=~/.local/bin/run-emacs %u
+Exec=emacsclient %u
+Type=Application
+Terminal=false
+Categories=System;
+MimeType=x-scheme-handler/org-protocol;
+
+#update-desktop-database ~/.local/share/applications/

@@ -145,7 +145,8 @@
      (yasnippet backquote-change)
      (yasnippet re-marker)))
   (warning-suppress-types
-   '((comp)
+   '((lsp-mode)
+     (comp)
      (yasnippet backquote-change)
      (yasnippet re-marker)))
   (yas-snippet-dirs '("~/.emacs.d/templates/yasnippets"
@@ -185,12 +186,11 @@ It will try complete via `company' and then switch to `hippie-expand' as fallbac
   :bind (([(meta ?/)] . yc/compelete))
   :bind (:map company-active-map
               ([tab] . company-complete)
-              (;; ,(kbd "TAB")
-               "	". company-complete))
+              ("TAB" . company-complete))
   :custom
-  (company-backends '((company-yasnippet company-capf) company-files))
+  (company-backends '((company-yasnippet company-capf :separate) company-files))
   (company-minimum-prefix-length 2)
-  (company-idle-delay 0.5)
+  ;; (company-idle-delay 0)
   (company-tooltip-limit 14)
   (company-tooltip-align-annotations t)
   (company-show-numbers  t)
@@ -204,7 +204,12 @@ It will try complete via `company' and then switch to `hippie-expand' as fallbac
                                              (: "*elfeed" (+ nonl))
                                              (: "magit" (+ nonl)))
                                          buffer-end))
-  (company-dabbrev-other-buffers 'all)
+
+  ;; Only search the current buffer for `company-dabbrev' (a backend that
+  ;; suggests text your open buffers). This prevents Company from causing
+  ;; lag once you have a lot of buffers open.
+  (company-dabbrev-other-buffers nil)
+
   ;; Make `company-dabbrev' fully case-sensitive, to improve UX with
   ;; domain-specific words with particular casing.
   (company-dabbrev-ignore-case nil)
@@ -212,6 +217,37 @@ It will try complete via `company' and then switch to `hippie-expand' as fallbac
 
   ;; disable auto-complete, or " " will trigger complete.
   (company-auto-complete nil)
+
+
+  (company-text-icons-mapping
+  '((array "a" font-lock-type-face)
+    (boolean "b" font-lock-builtin-face)
+    (class "c" font-lock-type-face)
+    (color "#" success)
+    (constant "c" font-lock-constant-face)
+    (enum-member "e" font-lock-builtin-face)
+    (enum "e" font-lock-builtin-face)
+    (field "f" font-lock-variable-name-face)
+    (file "" font-lock-string-face)
+    (folder "" font-lock-doc-face)
+    (interface "i" font-lock-type-face)
+    (keyword "k" font-lock-keyword-face)
+    (method "m" font-lock-function-name-face)
+    (function "" font-lock-function-name-face)
+    (module "{" font-lock-type-face)
+    (numeric "n" font-lock-builtin-face)
+    (operator "o" font-lock-comment-delimiter-face)
+    (parameter "p" font-lock-builtin-face)
+    (property "p" font-lock-variable-name-face)
+    (ruler "r" shadow)
+    (snippet "S" font-lock-string-face)
+    (string "s" font-lock-string-face)
+    (struct "s" font-lock-variable-name-face)
+    (text "w" shadow)
+    (value "V" font-lock-builtin-face)
+    (variable "v" font-lock-variable-name-face)
+    (reference "r" font-lock-variable-name-face)
+    (t "." shadow)))
 
   :hook ((after-init . global-company-mode)))
 
@@ -231,7 +267,6 @@ first backend."
                 (let ((backends (append ,(push 'list others) '(company-files))))
                   (push
                    (append
-                    ;; XXX: why (if ...) can't be evaluated ...
                     (if (listp ,first)
                         ,first
                       (list ,first))

@@ -23,6 +23,7 @@
 (require 'compile)
 (require 'projectile)
 (require '02-functions)
+(require 'yc-utils)
 
 (require 'cl-macs)
 
@@ -44,25 +45,7 @@ If ARG is true, build for release version, otherwise for debug version."
 (defun yc/cmake-generate-fake-project ()
   "Generate fake CMakeLists.txt for current project."
   (interactive)
-  (let* ((project-root-suggestion (projectile-project-root))
-         (choices (list
-                   (format "Import project root %s" project-root-suggestion)
-                   "Import project by selecting root directory interactively."))
-         (action-index (cl-position
-                        (completing-read (format "%s is not part of any project. Select action: "
-                                                 (buffer-name))
-                                         choices
-                                         nil
-                                         t)
-                        choices
-                        :test 'equal))
-         (project-root (cl-case action-index
-                         (0 project-root-suggestion)
-                         (1 (read-directory-name "Select workspace folder to add: "
-                                                 (or project-root-suggestion default-directory)
-                                                 nil
-                                                 t))
-                         (t nil))))
+  (let ((project-root (yc/choose-directory) (projectile-project-root)))
     (PDEBUG "project-root: " project-root)
     (unless project-root
       (error "Project root is not set"))
@@ -139,9 +122,6 @@ gen_compile_db
       (PDEBUG "COMMAND: " command)
         (set (make-local-variable 'executable-command) command)
         (compilation-start command t (lambda (_x) buffer-out)))))
-
-
-
 
 
 (defun do-compile ()

@@ -5,19 +5,40 @@
 ;;; Commentary:
 
 ;;; Code:
-
+
 (use-package highlight-parentheses
   :ensure t
   :commands (highlight-parentheses-mode)
   :hook ((prog-mode . highlight-parentheses-mode))
   :config
-  (setq hl-paren-colors '("red" "yellow" "cyan" "magenta" "green" "firebrick1"
-                          "IndianRed4")))
+  (setq highlight-parentheses-colors
+        '("red" "yellow" "cyan" "magenta" "green" "firebrick1" "IndianRed4")))
 
 (use-package highlight-indentation
   :commands (highlight-indentation-mode))
 
- ;; Info settings.
+(use-package ace-link
+  :preface
+  (defadvice! yc/ace-link--eww-action-adv (orig-func pt new-buffer)
+    "If called with prefix, open in new buffer, instead of external browser.
+ORIG-FUNC is called with ARGS."
+    :around  #'ace-link--eww-action
+    (when (number-or-marker-p pt)
+      (goto-char pt)
+      (if (or new-buffer current-prefix-arg)
+          (eww-open-in-new-buffer)
+        (eww-follow-link))))
+
+  (defadvice! yc/ace-link-adv (orig-func &rest args)
+    "Browse with eww.
+ORIG-FUNC is called with ARGS."
+    :around  #'ace-link
+    (let ((browse-url-browser-function 'eww-browse-url))
+      (apply orig-func args)))
+
+  :hook ((emacs-startup . ace-link-setup-default))
+  :bind (("M-o" . ace-link)))
+
 (use-package info
   :commands (info)
   :config
@@ -33,20 +54,13 @@
             Info-default-directory-list)))
 
 (use-package counsel-info
-
   :commands (counsel/info)
   :bind (([remap info] . counsel/info))
   )
 
-
- ;;; spell checker..
 (use-package ispell
   :bind (([M-S-f11] . ispell-buffer)
          ([S-f11]   . ispell-word))
-
-  :hook ((emacs-startup . (lambda ()
-                            (unless (executable-find "aspell")
-                              (warn "aspell not found, flyspell/ispell will not work.")))))
 
   :config
   (pushnew! ispell-skip-region-alist
@@ -88,90 +102,103 @@
   (substitute-key-definition
    'flyspell-auto-correct-word 'forward-page flyspell-mode-map))
 
-
- ;;; Dictionary.
 (use-package tdict
-  :bind ((;; (kbd "<C-f10>")
-          [C-f10]
-          . tdict-search)))
+  :bind (("<C-f10>" . tdict-search)
+         ("<S-f10>" . ace-tdict-search)))
 
 (use-package tabbr
-  :bind ((;; ,(kbd "<S-f10>")
-          [S-f10]. tabbr-search)
-         (;; ,(kbd "<C-S-f10>")
-          [C-S-f10]. tabbr-edit)))
+  :bind (("<S-f11>" . tabbr-search)
+         ("<C-S-f11>" . tabbr-edit)))
 
- ;; image-mode
 (use-package image-mode
   :bind (:map image-mode-map
-              (;; ,(kbd "C-c o")
-               "o". yc/open-with-external-app)))
-
- ;; Diff & Merge
-(defun yc/ediff-copy-file-name-A ()
-  "Description."
-  (interactive)
-  (yc/ediff-copy-file-name 'A))
-
-(defun yc/ediff-copy-file-name (id &optional absolute)
-  "Description."
-  (interactive)
-  (let* ((buf
-          (cond
-           ((eq id 'A) ediff-buffer-A)
-           ((eq id 'B) ediff-buffer-B)
-           (t (error "OOPS"))))
-         (name (buffer-file-name buf)))
-
-    (kill-new     (if absolute
-                     name
-                    (file-name-base name)))))
-
-(defun ediff-copy-both-to-C ()
-  "Copy both regions into C."
-  (interactive)
-  (ediff-copy-diff
-   ediff-current-difference nil 'C nil
-   (concat
-    (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
-    (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
-
-(defvar yc/flycheck-bufferes-to-restore nil
-  "List of buffers whose flycheck-mode is disabled temporarily.")
-
-(defun yc/ediff-prepare (&optional buffer)
-  "Prepare BUFFER for Ediff."
-  (with-current-buffer (or buffer (current-buffer))
-    (PDEBUG "YC/EDIFF-PREPARE: " buffer)
-
-    (ws-butler-mode -1)
-    (if (bound-and-true-p flycheck-mode)
-        (push (current-buffer) yc/flycheck-bufferes-to-restore))
-
-    (if (fboundp 'show-ifdefs)
-        (show-ifdefs))
-    (PDEBUG "YC/EDIFF-PREPARE END.")))
-
-(defun yc/ediff-cleanup ()
-  "Clean up for ediff modes."
-  (dolist (buffer yc/flycheck-bufferes-to-restore)
-    (with-current-buffer buffer
-      (flycheck-mode 1)))
-
-  (setq yc/flycheck-bufferes-to-restore nil))
-
-(defun yc/ediff-startup ()
-  "Description."
-  (dolist (buf '(ediff-buffer-A ediff-buffer-B  ediff-buffer-c))
-    (if buf
-        (yc/ediff-prepare buf))))
-
-
+              ("C-c o" . yc/open-with-external-app)))
 
 (use-package ediff
+  :preface
+  (defvar yc/ediff-bufferes-to-restore nil
+    "List of buffers whose flycheck-mode is disabled temporarily.")
+
+  (defun yc/ediff-prepare (&rest args)
+    "Prepare BUFFERS for Ediff."
+    (let ((buffers (-flatten (-filter #'bufferp args))))
+      (PDEBUG "YC/EDIFF-PREPARE: " buffers)
+      (dolist (buffer buffers)
+        (PDEBUG "BUF:" buffer)
+        (with-current-buffer buffer
+          (ws-butler-mode -1)
+          (if (bound-and-true-p flycheck-mode)
+              (push (current-buffer) yc/ediff-bufferes-to-restore))
+
+          (if (fboundp 'show-ifdefs)
+              (show-ifdefs))
+
+          (PDEBUG "YC/EDIFF-PREPARE END.")))))
+
+
+  (defun yc/ediff-copy-file-name-A ()
+    "Description."
+    (interactive)
+    (yc/ediff-copy-file-name 'A))
+
+  (defun yc/ediff-copy-file-name (id &optional absolute)
+    "Description."
+    (interactive)
+    (let* ((buf
+            (cond
+             ((eq id 'A) ediff-buffer-A)
+             ((eq id 'B) ediff-buffer-B)
+             (t (error "OOPS"))))
+           (name (buffer-file-name buf)))
+
+      (kill-new     (if absolute
+                        name
+                      (file-name-base name)))))
+
+  (defun ediff-copy-both-to-C ()
+    "Copy both regions into C."
+    (interactive)
+    (ediff-copy-diff
+     ediff-current-difference nil 'C nil
+     (concat
+      (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
+      (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
+
+  (defun yc/ediff-region ()
+    "Select a region to compare"
+    (interactive)
+
+    (when (use-region-p)  ; there is a region
+        (let (buf)
+        (setq buf (get-buffer-create "*Diff-regionA*"))
+        (save-current-buffer
+          (set-buffer buf)
+          (erase-buffer))
+        (append-to-buffer buf (region-beginning) (region-end)))
+      )
+
+    (deactivate-mark)
+    (message "Now select other region to compare and run `diff-region-now`"))
+
+  (defun yc/ediff-region-now ()
+    "Compare current region with region already selected by `diff-region`"
+    (interactive)
+    (when (use-region-p)
+      (let (bufa bufb)
+        (setq bufa (get-buffer-create "*Diff-regionA*"))
+        (setq bufb (get-buffer-create "*Diff-regionB*"))
+        (save-current-buffer
+          (set-buffer bufb)
+          (erase-buffer))
+        (append-to-buffer bufb (region-beginning) (region-end))
+        (deactivate-mark)
+        (ediff-buffers bufa bufb))))
+
   :commands (ediff-files)
-  :bind ((;; ,(kbd "<f12>")
-          [f12]. ediff-buffers))
+  :bind (("<f12>" . ediff-buffers)
+         ("M-<f12>" . yc/ediff-region)
+         ("M-S-<f12>" . yc/ediff-region-now))
+
   :custom
   (ediff-diff-options "") ;; turn off whitespace checking
   (ediff-split-window-function 'split-window-horizontally)
@@ -179,12 +206,24 @@
   (ediff-ignore-similar-regions nil)
 
   :config
-  (defadvice! yc/ediff-buffers-adv (buffer-A buffer-B &rest args)
-    "Run Ediff on a pair of buffers, BUFFER-A and BUFFER-B, with optional ARGS.
+  (advice-add 'ediff-prepare :before #'yc/ediff-prepare)
+
+  (defadvice! yc/ediff-quit-adv (&rest args)
+    "Docs
 ORIG-FUNC is called with ARGS."
-    :before #'ediff-buffers
-    (yc/ediff-prepare buffer-A)
-    (yc/ediff-prepare buffer-B))
+    :before  #'ediff-quit
+    (dolist (buffer yc/ediff-bufferes-to-restore)
+      (with-current-buffer buffer
+        (flycheck-mode 1)
+        (PDEBUG "BUF: " buffer
+                "Need-Save:" (and buffer-file-name
+                                  (buffer-modified-p)))
+        (when (and buffer-file-name
+                   (buffer-modified-p))
+          (save-buffer))))
+
+    (setq yc/ediff-bufferes-to-restore nil))
+
 
   (setq ediff-diff-ok-lines-regexp
         (concat
@@ -206,26 +245,24 @@ ORIG-FUNC is called with ARGS."
       (define-key 'ediff-mode-map "d" 'ediff-copy-both-to-C)
       (define-key 'ediff-mode-map "ff" 'yc/ediff-copy-file-name-A)))
 
-   (ediff--startup . yc/ediff-startup)
-   (ediff-quit . yc/ediff-cleanup)))
+   ;; (ediff-startup . yc/ediff-startup)
+   ;; (ediff-quit . yc/ediff-cleanup)
+   ))
 
 (use-package smerge-mode
-  :bind ((;; ,(kbd "<S-f12>")
-          [S-f12]. smerge-ediff))
+  :bind (("<S-f12>" . smerge-ediff))
   :config
     (advice-add 'smerge-ediff :before #'yc/ediff-prepare))
 
-
-
 (use-package yc-utils
   :commands (
              edit-elpa   edit-project   edit-rcs edit-zsh
-             edit-template edit-configs edit-sway
+             edit-template edit-peda edit-sway
              reload-file reload-all-files edit-emacs debug-on
              uniq-region
              xmind/convert-to-org
              yc/add-subdirs-to-load-path
-             yc/copy-current-buffername yc/reload-emacs
+             yc/copy-file-name yc/reload-emacs
              yc/decode-hex-color
              yc/encode-hex-color
              yc/http-save-page
@@ -253,26 +290,20 @@ ORIG-FUNC is called with ARGS."
           "J" . yc/eval-and-insert-comment)
          (;(kbd "C-x j")
           "j" . yc/eval-and-insert)
-         (;; (kbd "C-x M-e")
-          [24 134217829] . yc/eval-and-kill)
+         ("C-x M-e" . yc/eval-and-kill)
 
-         (;; (kbd "C-o")
-          "" . zl-newline)
-         (;; (kbd "C-S-o")
-          [33554447] . zl-newline-up)
-         (;; (kbd "")
-          [143] . zl-newline-up)
+         ("C-o" . zl-newline)
+         ("C-S-o" . zl-newline-up)
+         ("" . zl-newline-up)
 
          ([mouse-4] . down-slightly)
          ([mouse-5] . up-slightly)
 
-         (;; (kbd "<C-return>")
-          [C-return] . yc/insert-line-number)
+         ("<C-return>" . yc/insert-line-number)
          (;(kbd "<M-K>")
           [M-K] . kill-current-buffer)
 
-         (;; (kbd "<M-f11>")
-          [M-f11] . yc/fill-region)
+         ("<M-f11>" . yc/fill-region)
 
          ("\C-c>" . shift-region-right)
          ( "\C-c<" . shift-region-left)
@@ -289,46 +320,36 @@ ORIG-FUNC is called with ARGS."
          (;(kbd "M-W")
           [134217815] . yc/kill-file-ln)
 
-         (;; (kbd "C-x ^")
-          "^" . yc/enlarge-window)
-         (;; (kbd "C-x v")
-          "v" . yc/shrink-window)
+         ("C-x ^" . yc/enlarge-window)
+         ("C-x v" . yc/shrink-window)
 
          (;;(kbd "C-x >")
           ">" . yc/enlarge-window-horizontal)
-         (;; (kbd "C-x <")
-          "<" . yc/shrink-window-horizontal)
+         ("C-x <" . yc/shrink-window-horizontal)
 
          ([f5] . yc/open-eshell)
+         ([f2] . auto-rename-buffer)
+         ("C-<f2>" . rename-buffer)
          ([remap shell-command] . yc/exec-command-via-eshell))
 
-  :hook ((before-save . yc/make-file-writable))
-  )
+  :hook ((before-save . yc/make-file-writable)))
 
 (use-package yc-dump
   :commands (yc/dump-emacs yc/config-emacs))
 
-
- ;; diff-mode
-
 (use-package diff-mode
   :mode (rx (or ".rej"  "patch") eol)
   :bind (:map diff-mode-map
-              (;(kbd "C-c C-v")
-               "" . yc/view-with-ediff)
-              (;; (kbd "C-c M-v")
-
-               [3 134217846] . (lambda ()
+              ("C-c C-v" . yc/view-with-ediff)
+              ("C-c M-v" . (lambda ()
                                  (interactive)
                                  (yc/view-with-ediff nil t)))
-              (;; (kbd "C-c C-f")
-               "" . (lambda ()
+              ("C-c C-f" . (lambda ()
                           (interactive)
                           (kill-new (file-name-nondirectory buffer-file-name)))))
   :hook ((diff-mode . (lambda ()
                         (which-function-mode -1)))))
 
-;; ************************** highlight utils ****************************
 (use-package highlight-symbol
   :bind (([(control f3)]  . highlight-symbol-at-point)
          ( ;(kbd "M-[ 1 3 ^")
@@ -340,7 +361,6 @@ ORIG-FUNC is called with ARGS."
          ([(control meta f3)]  . highlight-symbol-query-replace)))
 
 
- ;; **************************** RFCs ******************************
 (use-package irfc
   :commands (irfc-visit irfc-follow)
   :config
@@ -350,13 +370,12 @@ ORIG-FUNC is called with ARGS."
    )
   :mode ("/rfc[0-9]+\\.txt\\(\\.gz\\)?\\'" . irfc-mode))
 
- ;; ********************* tramp *******************************
 (use-package tramp
   :custom
   (tramp-default-method
      (cond
-      ((and (eq system-type 'windows-nt) (executable-find "pscp")) "pscp")
-      ((and (eq system-type 'windows-nt) (executable-find "plink")) "plink")
+      ((and IS-WINDOWS  (executable-find "pscp")) "pscp")
+      ((and IS-WINDOWS  (executable-find "plink")) "plink")
       ;; There is an ssh installation.
       ((executable-find "scp") "scp")
       ;; Fallback.
@@ -364,7 +383,6 @@ ORIG-FUNC is called with ARGS."
   (tramp-completion-without-shell-p t)
   (tramp-auto-save-directory "~/.emacs.d/auto-save-list")
   (tramp-remote-path '("~/.local/bin/"
-                       "/opt/devtools/bin"
                        "/usr/local/bin"
                        "/usr/local/sbin"
                        "/opt/bin" "/opt/sbin" "/opt/local/bin"
@@ -380,13 +398,12 @@ ORIG-FUNC is called with ARGS."
                                    '((tramp-parse-sconfig "/etc/ssh_config")
                                      (tramp-parse-sconfig "~/.ssh/config"))))
 
- ;; ****************** eww ***************************
 (use-package browse-url
   :commands (browse-url-generic)
   :custom
-  (browse-url-generic-program (cond ((string= system-type "darwin")
+  (browse-url-generic-program (cond (IS-MAC
                                      "/usr/bin/open")
-                                    ((string= system-type "gnu/linux")
+                                    (IS-LINUX
                                      (or
                                       (executable-find "google-chrome-stable")
                                       (executable-find "google-chrome")
@@ -394,7 +411,8 @@ ORIG-FUNC is called with ARGS."
                                       (executable-find "firefox")
                                       (executable-find "firefox-bin")
                                       "/usr/bin/xdg-open"))
-                                    (t nil))))
+                                    (t nil)))
+  )
 
 (use-package shrface
   :commands (shrface-basic shrface-trial)
@@ -408,48 +426,205 @@ ORIG-FUNC is called with ARGS."
          (elfeed-show-mode  . shrface-mode)))
 
 (use-package shr
+  :preface
+  (defun eww-tag-pre (dom)
+    (let ((shr-folding-mode 'none)
+          (shr-current-font 'default))
+      (shr-ensure-newline)
+      (insert (eww-fontify-pre dom))
+      (shr-ensure-newline)))
+
+  (defun eww-fontify-pre (dom)
+    (with-temp-buffer
+      (shr-generic dom)
+      (let* ((class (dom-attr dom 'class))
+             (mode (cond
+                    ((or (not class) (s-contains? "src-text" class)) nil)
+                    (t (eww-buffer-auto-detect-mode)))))
+
+        (PDEBUG "CLASS:" class
+                "MODE:" mode)
+        (when mode
+          (eww-fontify-buffer mode)))
+      (buffer-string)))
+
+  (defun eww-fontify-buffer (mode)
+    (delay-mode-hooks (funcall mode))
+    (font-lock-default-function mode)
+    (font-lock-default-fontify-region (point-min)
+                                      (point-max)
+                                      nil))
+
+  (defun eww-buffer-auto-detect-mode ()
+    (unless (featurep 'language-detection)
+      (require 'language-detection))
+    (let* ((map '((ada ada-mode)
+                  (awk awk-mode)
+                  (c c-mode)
+                  (cpp c++-mode)
+                  (clojure clojure-mode lisp-mode)
+                  (csharp csharp-mode java-mode)
+                  (css css-mode)
+                  (dart dart-mode)
+                  (delphi delphi-mode)
+                  (emacslisp emacs-lisp-mode)
+                  (erlang erlang-mode)
+                  (fortran fortran-mode)
+                  (fsharp fsharp-mode)
+                  (go go-mode)
+                  (groovy groovy-mode)
+                  (haskell haskell-mode)
+                  (html html-mode)
+                  (java java-mode)
+                  (javascript javascript-mode)
+                  (json json-mode javascript-mode)
+                  (latex latex-mode)
+                  (lisp lisp-mode)
+                  (lua lua-mode)
+                  (matlab matlab-mode octave-mode)
+                  (objc objc-mode c-mode)
+                  (perl perl-mode)
+                  (php php-mode)
+                  (prolog prolog-mode)
+                  (python python-mode)
+                  (r r-mode)
+                  (ruby ruby-mode)
+                  (rust rust-mode)
+                  (scala scala-mode)
+                  (shell shell-script-mode)
+                  (smalltalk smalltalk-mode)
+                  (sql sql-mode)
+                  (swift swift-mode)
+                  (visualbasic visual-basic-mode)
+                  (xml sgml-mode)))
+           (language (language-detection-string
+                      (buffer-substring-no-properties (point-min) (point-max))))
+           (modes (cdr (assoc language map)))
+           (mode (cl-loop for mode in modes
+                          when (fboundp mode)
+                          return mode)))
+
+      (PDEBUG "Detected language:"language)
+      (when (fboundp mode)
+        mode)))
+
+  (setq shr-external-rendering-functions
+        '((pre . eww-tag-pre)))
+
+  (defadvice! yc/shr-colorize-region-adv (orig-func &rest args)
+    "Don't render region with color.
+ORIG-FUNC is called with ARGS."
+    :around  #'shr-colorize-region)
+
   :custom
   (shr-use-fonts nil)
   (shr-use-colors t)
-  (shr-color-visible-luminance-min 70)
   (shr-blocked-images
-      (rx
-       (or (: "https://www.postgresql.org"
-              (or
-               "/media/img/about/press/elephant.png"
-               "/media/img/atpostgresql.png"
-               "/media/img/git.png")))))
+   (rx
+    (or (: "https://www.postgresql.org"
+           (or
+            "/media/img/about/press/elephant.png"
+            "/media/img/atpostgresql.png"
+            "/media/img/git.png")))))
   :config
   (shrface-basic)
   (shrface-trial))
 
 (use-package eww
   :defer t
-  :hook ((eww-mode . yc/disable-trailling-spaces))
-  :custom
-  (eww-search-prefix "https://www.dogedoge.com/results?q=")
-  :bind (:map eww-mode-map
-              ("\C-co" . eww-browse-with-external-browser)
+  :preface
 
-              (;; ,(kbd "<M-left>")
-               [M-left]. eww-back-url)
-              (;; ,(kbd "<M-right>")
-               [M-right]. eww-forward-url)
+  (defun yc/ace-link-eww-new-buffer ()
+    "Use ace-link, but open in new buffer."
+    (interactive)
+    (let ((pt (avy-with ace-link-eww
+                (avy-process
+                 (mapcar #'cdr (ace-link--eww-collect))
+                 (avy--style-fn avy-style)))))
+      (ace-link--eww-action pt t)))
+
+  (defvar yc/eww-layout-cfg nil "Previous buffer before eww is called.")
+
+  (defun yc/kill-buffer-when-quit-window ()
+    "Kill buffer on quit-window."
+
+    (let ((mode major-mode))
+
+    (PDEBUG "CURRENT:" (current-buffer) major-mode
+            "EWW:" (eq mode 'eww-mode)
+            "BUF:" (car yc/eww-layout-cfg))
+      (when (member mode '(eww-mode Man-mode woman-mode Info-mode))
+        (kill-buffer (current-buffer)))
+
+      (when (and (eq mode 'eww-mode)
+                 yc/eww-layout-cfg)
+        (layout/restore-wincfg (pop yc/eww-layout-cfg)))))
+
+
+  :hook ((eww-mode . yc/disable-trailling-spaces)
+         (quit-window . yc/kill-buffer-when-quit-window))
+
+  :bind (:map eww-mode-map
+              ("C-c o" . eww-browse-with-external-browser)
+              ("<M-left>" . eww-back-url)
+              ("<M-right>" . eww-forward-url)
+              ("<M-O>" . yc/ace-link-eww-new-buffer)
               ;; URL copy: bind to "w"
-              ))
+              )
+  :custom
+  (eww-search-prefix "https://www.google.com/search?q=")
+
+  :config
+  (defadvice! yc/eww--dwim-expand-url-adv (url)
+    "Docs
+ORIG-FUNC is called with ARGS."
+    :override  #'eww--dwim-expand-url
+    (setq url (string-trim url))
+    (cond ((string-match-p "\\`file:/" url))
+	  ;; Don't mangle file: URLs at all.
+          ((string-match-p "\\`ftp://" url)
+           (user-error "FTP is not supported"))
+          (t
+	   ;; Anything that starts with something that vaguely looks
+	   ;; like a protocol designator is interpreted as a full URL.
+           (if (or (string-match "\\`[A-Za-z]+:/" url)
+		   ;; Also try to match "naked" URLs like
+		   ;; en.wikipedia.org/wiki/Free software
+		   (string-match "\\`[A-Za-z_]+\\.[A-Za-z._]+/" url)
+		   (and (= (length (split-string url)) 1)
+		        (or (and (not (string-match-p "\\`[\"'].*[\"']\\'" url))
+			         (> (length (split-string url "[.:]")) 1))
+			    (string-match eww-local-regex url))))
+               (when (string= (url-filename (url-generic-parse-url url)) "")
+                 (setq url (concat url "/")))
+             (setq url (concat eww-search-prefix
+                               (mapconcat
+                                #'url-hexify-string (split-string url) "+"))))))
+    url)
+
+
+  (defadvice! yc/eww-open-in-new-buffer-adv (&rest args)
+    "Docs
+ORIG-FUNC is called with ARGS."
+    :before  '(eww-open-in-new-buffer eww-follow-link)
+
+    (let* ((layoutcfg (layout/capture-wincfg))
+           (curbuf (car layoutcfg)))
+      (PDEBUG "ENTER")
+      (dolist (locfg yc/eww-layout-cfg)
+        (if (eq curbuf (car locfg))
+            (setq yc/eww-layout-cfg
+                  (delq locfg yc/eww-layout-cfg))))
+      (push layoutcfg yc/eww-layout-cfg))))
 
 (use-package my-net-utils
   :commands (yc/download-url yc/open-url)
-  :bind ((;; ,(kbd "C-x C-d")
-          "". yc/download-url)
-         (;;(kbd "C-x C-o")
-          "" . yc/open-url)))
+  :bind (("C-x C-d" . yc/download-url)
+         ("C-x C-o" . yc/open-url)))
 
- ;; nov, epub reader
 (use-package nov
   :mode ((rx ".epub") . nov-mode))
 
- ;; PDF
 (use-package pdf-tools
   :preface
 
@@ -506,15 +681,12 @@ For now, only scale pages."
     (message "Tool %s does not exist, compiling ..." pdf-info-epdfinfo-program)
     (pdf-tools-install)))
 
-
 (use-package stringtemplate-mode
   :mode "\\.st\\'")
 
-
 (use-package eshell
   :commands (eshell-command)
-  :bind ((;; ,(kbd "<C-f5>")
-          [C-f5]. eshell))
+  :bind (("<C-f5>" . eshell))
   :hook ((eshell-mode . (lambda ()
                           (setq eshell-path-env (getenv "PATH")))))
   :init
@@ -540,7 +712,10 @@ For now, only scale pages."
   (when (boundp 'eshell-output-filter-functions)
     (push 'eshell-truncate-buffer eshell-output-filter-functions))
 
-  (add-hook 'comint-output-filter-functions 'comint-truncate-buffer))
+  (add-hook 'comint-output-filter-functions 'comint-truncate-buffer)
+
+
+  (yc/set-company-backends 'eshell-mode     'company-files 'company-dabbrev))
 
 (use-package eshell+
   :commands (eshell/ldd eshell/restart_pg))
@@ -552,10 +727,6 @@ For now, only scale pages."
           "spark-shell" "sbt" "watch")))
 
 (use-package vterm
-  :commands (vterm vterm-mode)
-  :quelpa (vterm :fetcher github :repo "akermu/emacs-libvterm")
-  :init
-  (push (expand-file-name "vterm" quelpa-build-dir) load-path)
   :preface
   (defun yc/vterm-module-compile ()
     "Compile vterm module in quelpa-build directory, to avoid recompile it frequently."
@@ -575,30 +746,58 @@ For now, only scale pages."
           (let ((ret (call-process "sh" nil (current-buffer) t "-c"
                                    (concat
                                     "cd " (shell-quote-argument build-dir) "; \
-             mkdir -p build; \
-             cd build; \
-             cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Release ..; make;"))))
+                rm -rf build; \
+                cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+                -DCMAKE_BUILD_TYPE=Release -S . -B build; \
+                make -C build;"))))
 
             (compilation-mode)
             (if (zerop ret)
                 (message "Compilation of `emacs-libvterm' module succeeded")
               (error "Compilation of `emacs-libvterm' module failed!")))))
       (load-file vterm-module)))
-  (defun yc/open-vterm ()
+
+  (defun yc/open-vterm (&optional name)
     "Open or switch to vterm.
 If *vterm* buffer not exist, or called with current-prefix-arg,
 create new buffer."
     (interactive)
+
     (unless (featurep 'vterm-module)
       (yc/vterm-module-compile))
-    (if current-prefix-arg
-        (vterm)
-      (let* ((name "*vterm*")
-             (vbuffer (get-buffer name)))
-        (unless vbuffer
-          (with-current-buffer (setq vbuffer (get-buffer-create name))
-            (vterm-mode)))
-        (switch-to-buffer vbuffer))))
+
+    (unless (featurep 'vterm)
+      (require 'vterm))
+
+    (unless name
+      (setq name vterm-buffer-name))
+
+    (let* ((vbuffer (if current-prefix-arg
+                        (progn
+                          (with-current-buffer
+                              (generate-new-buffer
+                               name)
+                            (vterm-mode)
+                            (current-buffer)))
+                      (get-buffer name)))
+           (dir default-directory))
+
+      (unless vbuffer
+        (with-current-buffer (setq vbuffer (get-buffer-create name))
+          (vterm-mode)))
+
+      (pop-to-buffer-same-window vbuffer)
+
+      (unless (string= dir default-directory)
+        (vterm-send-string
+         (concat "cd " dir))
+        (vterm-send-return))
+      vbuffer))
+
+  :commands (vterm vterm-mode)
+  :quelpa (vterm :fetcher github :repo "akermu/emacs-libvterm")
+  :init
+  (push (expand-file-name "vterm" quelpa-build-dir) load-path)
   :bind (([S-f5] . yc/open-vterm))
   :custom
   (vterm-kill-buffer-on-exit t)
@@ -606,9 +805,10 @@ create new buffer."
   (defadvice! yc/vterm-module-compile-adv (&rest args)
     "Compile vterm module in quelpa-build directory, to avoid recompile it frequently."
     :override  #'vterm-module-compile
-    (yc/vterm-module-compile)))
+    (yc/vterm-module-compile))
 
- ;; comint hook
+  (add-to-list 'vterm-eval-cmds '("update-pwd" (lambda (path) (setq default-directory path)))))
+
 (use-package comint
   :defer t
   :init
@@ -630,7 +830,6 @@ create new buffer."
               text
             shortened-text))))))
 
-
 (use-package tabify
   :bind (("\C-xt" . untabify)
          ("\C-xT" . tabify)))
@@ -646,14 +845,11 @@ create new buffer."
         (yc/push-stack)
       ('error nil))))
 
-
 (use-package nhexl-mode
   :commands (nhexl-mode nhexl-hex-edit-mode))
 
-(use-package hexview-mode :bind ((;; ,(kbd "C-x M-F")
-                                  [24 134217798]. hexview-find-file)))
+(use-package hexview-mode :bind (("C-x M-F" . hexview-find-file)))
 
- ;; *********************** graphviz dot mode ***********
 (use-package graphviz-dot-mode
   :preface
   (defun yc/graphviz-dot-preview ()
@@ -704,10 +900,8 @@ create new buffer."
   :defer t
   :commands (graphviz-dot-mode graphviz-compile-command)
   :bind (:map graphviz-dot-mode-map
-              (;; ,(kbd "C-c C-c")
-               "". yc/graphviz-dot-preview)
-              (;; ,(kbd "C-c C-o")
-               "". yc/graphviz-dot-view-external))
+              ("C-c C-c" . yc/graphviz-dot-preview)
+              ("C-c C-o" . yc/graphviz-dot-view-external))
   :custom
   (graphviz-dot-indent-width 4)
   :config
@@ -720,7 +914,6 @@ create new buffer."
 (defalias 'dot-mode 'graphviz-dot-mode)
 (defalias 'org-babel-execute:graphviz-dot 'org-babel-execute:dot)
 
- ;; Dired
 (use-package dired
   :commands (dired)
   :custom
@@ -738,16 +931,10 @@ create new buffer."
   (dired-listing-switches "-alh")
   :hook ((dired-mode . (lambda () (setq fill-column 9999))))
   :bind (:map dired-mode-map
-              (;; (kbd "M-p")
-               [134217840]
-               . dired-up-directory)
-              (;; (kbd "<C-return>")
-               [C-return]
-               . dired-find-file-other-window)
-              (;; (kbd "<M-return>")
-               [M-return]
-               . yc/open-with-external-app))
-
+              ("M-p" . dired-up-directory)
+              ("<C-return>" . dired-find-file-other-window)
+              ("<M-return>" . yc/open-with-external-app))
+  :bind (("C-x C-j" . dired-jump))
   :config
   (defadvice! yc/dired-compress-adv (&rest args)
     "Compress file with 7z if possible.
@@ -776,18 +963,9 @@ ORIG-FUNC is called with ARGS."
               ("r" . wdired-change-to-wdired-mode)))
 
 (use-package dired-x
-  :commands (dired-jump)
-  :init
-  (define-key ctl-x-map "\C-j" 'dired-jump)
   :config
-  (load-library "ls-lisp")
   (add-to-list 'auto-mode-alist (cons "[^/]\\.dired$"
                                       'dired-virtual-mode)))
-
-(use-package fd-dired
-  :defer t
-  :init
-  (global-set-key [remap find-dired] #'fd-dired))
 
 (use-package hl-line
   :hook ((bookmark-bmenu-mode . hl-line-mode)
@@ -804,8 +982,6 @@ ORIG-FUNC is called with ARGS."
 
 (use-package charset-util :commands (yc/list-non-ascii))
 
-(use-package x86-help   :bind (("x" . x86-help))) ;;(kbd "C-h x")
-
 (use-package image-file
   :commands (auto-image-file-mode)
   :init
@@ -814,12 +990,9 @@ ORIG-FUNC is called with ARGS."
 
 (use-package t-report  :commands (yc/new-wp yc/new-mail))
 
- ;; edit-indirect mode.
 (use-package edit-indirect
-  :bind ((;; ,(kbd "C-c '")
-          "'". edit-indirect-region)))
+  :bind (("C-c '" . edit-indirect-region)))
 
- ;; fold
 (use-package vimish-fold
   :preface
   (defun yc/vimish-fold-toggle (beg end)
@@ -835,8 +1008,7 @@ ORIG-FUNC is called with ARGS."
           (vimish-fold beg end))
       (vimish-fold-toggle)))
   :commands (vimish-fold vimish-fold-toggle vimish-fold-delete)
-  :bind ((;; ,(kbd "C-c hr")
-          "hr". yc/vimish-fold-toggle)))
+  :bind (("C-c hr" . yc/vimish-fold-toggle)))
 
 (use-package mediawiki
   :commands (mediawiki-open mediawiki-site))
@@ -847,14 +1019,7 @@ ORIG-FUNC is called with ARGS."
   (progn
     (setq desktop-path (list (yc/make-cache-path "desktop" t))
           desktop-dirname (yc/make-cache-path "desktop" t))))
-
-;; ****************************** HTTP Code *****************************
-;; Explain the meaning of an HTTP status code. Copy httpcode.el to your
-;; load-path and add to your .emacs:
 
-(autoload 'hc "httpcode" "http status code" t)
-
- ;; ****************************** HTML Mode ******************************
 (use-package sgml-mode
   :preface
   (defun yc/html-mode-hook ()
@@ -866,7 +1031,6 @@ ORIG-FUNC is called with ARGS."
   :commands (html-autoview-mode)
   :hook ((html-mode . yc/html-mode-hook)))
 
- ;; css & scss & sass
 (use-package css-mode
   :defer t
   :mode (rx "." (or "scss" "css" "rasi") eow)
@@ -876,7 +1040,6 @@ ORIG-FUNC is called with ARGS."
   (css-indent-offset 2)
 )
 
- ;; *************************** nxml mode for XML *******************
 (use-package nxml-mode
   :mode (rx "." (or "xml" "xsd" "sch" "rng" "xslt" "svg" "rss" "rdf" "plist") eol)
   :custom
@@ -896,35 +1059,6 @@ ORIG-FUNC is called with ARGS."
   :config
   (yc/add-company-backends 'nxml-mode 'company-nxml))
 
- ;; **************************** Text Mode ***************************
-
-(defvar yc/ditaa-package nil "Path of ditaa package.")
-(defun yc/load-ditaa ()
-  "Load ditaa command and package path."
-  (unless (featurep 's)
-    (require 's))
-
-  (unless yc/ditaa-package
-    (setq yc/ditaa-package
-          (cond
-           ((executable-find "ditaa")
-            (progn
-              (let ((content (shell-command-to-string (format "cat %s" (executable-find "ditaa")))))
-                (PDEBUG "CONTENT: " content)
-
-                (catch 'p-found
-                  (dolist (item (s-split " " content))
-                    (PDEBUG "ITEM: " item)
-                    (PDEBUG "MATCH: " (string-match (rx "ditaa" (+? nonl) ".jar") item))
-
-                    (when (string-match (rx "ditaa" (+? nonl) ".jar") item)
-                      (throw 'p-found item)))
-                  nil))))
-           (t
-            (warn "yc/ditaa-package not setup")
-            nil))))
-  yc/ditaa-package)
-
 (use-package text-mode
   :preface
   (defun yc/txt-to-png ()
@@ -933,21 +1067,16 @@ ORIG-FUNC is called with ARGS."
     (unless (executable-find "java")
       (error "Function `txt-to-png' requires java"))
 
-    (unless yc/ditaa-package
-      (yc/load-ditaa))
-
     (let* ((infile (buffer-file-name))
-           (txt2png-buf-name "*txt2png*"))
+           (txt2png-buf-name "*txt2png*")
+           (cmd (list "java" "-jar" (yc/ditaa-path t) infile "--overwrite")))
       (get-buffer-create txt2png-buf-name)
       (pop-to-buffer txt2png-buf-name)
       (erase-buffer)
-      (insert "\nInvoking command: java -jar"
-              yc/ditaa-package
-              infile "--overwrite")
+      (insert "\nInvoking command: "
+              (s-join " " cmd))
       (set-process-sentinel
-       (start-process "txt-to-png" txt2png-buf-name "java" "-jar"
-                      yc/ditaa-package
-                      infile "--overwrite")
+       (apply #'start-process (append (list "txt-to-png" txt2png-buf-name) cmd))
        (lambda (process state)
          (when (and (string-match "finished" state)
                     (yes-or-no-p "Open generated file?"))
@@ -975,16 +1104,13 @@ ORIG-FUNC is called with ARGS."
 (use-package artist
   :bind (:map artist-mode-map
               ("\C-c\C-e" . yc/txt-to-png))
-  :bind ((;; ,(kbd "<C-S-f2>")
-          [C-S-f2]. artist-mode)))
+  :bind (("<C-S-f2>" . artist-mode)))
 
- ;; ************************** ChangeLog *****************************
 (use-package add-log
   :bind (:map change-log-mode-map
               (;;(kbd "<C-return>")
                [C-return] . add-change-log-entry-other-window)))
 
- ;; markdown
 (use-package org-table
   :commands (orgtbl-mode))
 
@@ -1025,8 +1151,6 @@ ORIG-FUNC is called with ARGS."
   :mode (((rx (or (: bow "README" eow)
                   ) eol) . markdown-mode)))
 
-
- ;; ****************************** Edit Server for Chrome ***************************
 (use-package edit-server
   :commands (edit-server-start)
   :config
@@ -1045,14 +1169,8 @@ ORIG-FUNC is called with ARGS."
             'html-mode)
       (cons (rx (+? nonl) "/mediawiki/" (+? nonl) eow)
             'mediawiki-mode))))
-  :hook ((after-init .
-                     (lambda ()
-                       (when (or (not (equal system-type 'gnu/linux))
-                                 (> (string-to-number (s-trim (shell-command-to-string "uname -r | awk -F \".\" '{print $1}' ")))
-                                       4))
-                         (edit-server-start))))))
+  :hook ((after-init . edit-server-start)))
 
-
 (use-package logviewer
   :commands (logviewer-special-handling-csv)
   :mode (((rx (or (: bow "messages" eow)
@@ -1061,23 +1179,14 @@ ORIG-FUNC is called with ARGS."
                   (: "." (or "log" "LOG" "Log"))
                   (: (or "log" "LOG" "Log") ".txt")) eol) . logviewer-mode)))
 
- ;; Htmlize mode
 (use-package htmlize
   :commands (htmlize-buffer htmlize-region)
   :config
   (custom-set-variables
    '(htmlize-output-type 'inline-css)))
 
-
 ;; Kconfig-mode
 (use-package kconfig-mode  :mode "Kconfig")
-
-
- ;; Blog and jekyll
-;; (use-package jekyll-modes
-;;   :mode (((rx "github.io/" (+ nonl) ".md" eol) . jekyll-markdown-mode)
-;;          ((rx "github.io/" (+ nonl) "." (or "html" "htm") eol) . jekyll-html-mode)))
-
 (use-package tblog :commands (tblog/new-post tblog/export tblog/find-file))
 
 (use-package conf-mode
@@ -1102,7 +1211,7 @@ ORIG-FUNC is called with ARGS."
   :commands (thrift-mode)
   :mode (((rx ".thrift" eol) . thrift-mode)))
 
- ;; latex
+;; latex
 (yc/add-compile-unit 'latex 10
  (when (or (equal ext "tex")
            (equal ext "TEX"))
@@ -1110,14 +1219,8 @@ ORIG-FUNC is called with ARGS."
      (format "xelatex %s" file))))
 
 (use-package tex-mode
-  :mode (((rx buffer-start "." (or "tex" "latex") buffer-end) . LaTex-mode))
-  )
+  :mode (((rx buffer-start "." (or "tex" "latex") buffer-end) . LaTex-mode)))
 
-
- ;; All others..
-(require 'generic-x)
-
-
 (use-package counsel-nerd-fonts
   :commands (counsel-nerd-fonts))
 
@@ -1127,7 +1230,6 @@ ORIG-FUNC is called with ARGS."
 (use-package elfeed-org
   :commands (elfeed-org))
 
-;; not used, yet.
 (use-package elfeed
   :commands (elfeed)
   :preface
@@ -1146,30 +1248,54 @@ ORIG-FUNC is called with ARGS."
         (elfeed-show-visit))))
 
   (defun +rss/delete-pane ()
-  "Delete the *elfeed-entry* split pane."
-  (interactive)
-  (let* ((buf (get-buffer "*elfeed-entry*"))
-         (window (get-buffer-window buf)))
-    (delete-window window)
-    (when (buffer-live-p buf)
-      (kill-buffer buf))))
+    "Delete the *elfeed-entry* split pane."
+    (interactive)
+    (let* ((buf (get-buffer "*elfeed-entry*"))
+           (window (get-buffer-window buf)))
+      (delete-window window)
+      (when (buffer-live-p buf)
+        (kill-buffer buf))))
 
   (defun yc/elfeed-show-entry-buffer (buff)
     "Customized function to show entry buffer (BUFF)."
     (pop-to-buffer buff)
-    (with-current-buffer buff
-      (let* ((width (window-width))
-             (target (* (/ (catch 'd-width
-                             (dolist (monitor (display-monitor-attributes-list))
-                               (let ((frames (alist-get 'frames monitor)) )
-                                 (PDEBUG "monitors" monitor)
-                                 (when (member (selected-frame) frames)
-                                   (throw 'd-width (nth 2 (alist-get 'geometry monitor)))))))
-                           (frame-char-width)) 0.55))
-             (delta (truncate (- target width))))
-        (window-resize (selected-window) delta t)
-        (elfeed-show-refresh))))
+    (PDEBUG "BUF:" buff)
+    (yc/enlarge-window-horizontal))
 
+
+  (defun ace-link-elfeed-search ()
+    "Open a visible link in a `help-mode' buffer."
+    (interactive)
+    (let ((pt (avy-with ace-link-elfeed-search
+                (avy-process
+                 (mapcar #'cdr (ace-link--elfeed-search-collect))
+                 (avy--style-fn avy-style)))))
+      (ace-link--elfeed-search-action pt)))
+
+  (defun ace-link--elfeed-search-action (pt)
+    (PDEBUG "PT" pt)
+    (when (numberp pt)
+      (goto-char (1+ pt))
+      (call-interactively #'elfeed-search-show-entry)))
+
+  (defun ace-link--elfeed-search-collect ()
+    "Collect the positions of visible links in the current `help-mode' buffer."
+    (save-excursion
+      (save-restriction
+        (narrow-to-region
+         (window-start)
+         (window-end))
+
+        (goto-char (point-min))
+
+        (let (beg end candidates )
+          (while (looking-at ".+\n")
+            (setq beg (match-beginning 0)
+                  end (match-end 0))
+            (push (cons (buffer-substring-no-properties beg end) beg)
+                  candidates)
+            (goto-char end))
+          (nreverse candidates)))))
 
   :custom
   (elfeed-db-directory (yc/make-cache-path "elfeed/db/"))
@@ -1179,6 +1305,7 @@ ORIG-FUNC is called with ARGS."
   (elfeed-show-entry-switch #'yc/elfeed-show-entry-buffer)
   (elfeed-show-entry-delete #'+rss/delete-pane)
   (elfeed-use-curl t)
+  (elfeed-search-remain-on-entry t)
   ;; (elfeed-curl-extra-arguments '("-x" "127.0.0.1:7890"))
 
   (shr-max-image-proportion 0.8)
@@ -1188,7 +1315,7 @@ ORIG-FUNC is called with ARGS."
 
   ;; Some variables after package loaded..
   (setq elfeed-curl-program-name
-        (if (eq system-type 'darwin)
+        (if IS-MAC
             (s-trim (shell-command-to-string "brew list curl | grep bin | grep -v config"))
           "curl"))
 
@@ -1197,15 +1324,53 @@ ORIG-FUNC is called with ARGS."
     :after  #'elfeed
     (elfeed-update))
 
+
+  (defadvice! yc/ace-link-adv-elfeed-search (&rest args)
+    "Docs
+ORIG-FUNC is called with ARGS."
+    :before-until  #'ace-link
+    (cond
+     ((eq major-mode 'elfeed-search-mode)
+      (ace-link-elfeed-search))
+     ((memq major-mode '(elfeed-show-mode))
+      (ace-link-eww))
+     (t nil)))
+
   :bind
   (:map elfeed-show-mode-map
         ("e" . yc/elfeed-show-eww))
-  (:map elfeed-search-mode-map
-        ("e" . yc/elfeed-search-eww))
-  :bind ((;; (kbd "<C-f12>")
-          [C-f12] . elfeed)))
+  :bind (("<C-f12>" . elfeed)))
 
-
+(use-package counsel-tramp-docker
+  :commands (counsel-docker counsel-tramp))
+
+(use-package rime
+  :custom
+  (default-input-method "rime")
+  (rime-user-data-dir "~/.config/rime")
+  :config
+  (setq rime-librime-root
+        (catch 'p-found
+          (dolist (dir '("~/.local/" "/usr/local" "/usr"))
+            (if (yc/file-exists-p (expand-file-name "include/rime_api.h" dir))
+                (throw 'p-found (expand-file-name dir))))))
+
+  (defadvice! yc/rime-compile-module-adv (&rest args)
+    "Compile librime, with ARGS."
+    :before-until  #'rime-compile-module
+    (let* ((librime-source-dir (expand-file-name "~/Work/librime/src"))
+           (librime-build-dir (expand-file-name "~/Work/librime/build/"))
+           (base-command "gcc -shared lib.c -fPIC -O2 -Wall -o librime-emacs.so")
+           (cflags (format " -I%s/ -I%s/src/rime" librime-source-dir librime-build-dir))
+           (ldflags (format " -L %s/lib/ -Wl,-rpath %s/lib/ -lrime"
+                            librime-build-dir librime-build-dir)))
+      (awhen (yc/file-exists-p (expand-file-name "lib/librime.so"
+                                                 librime-build-dir))
+        (PDEBUG "CMD:" (concat  base-command cflags ldflags))
+        (if (zerop (shell-command (concat  base-command cflags ldflags)))
+            (message "Compile succeed!")
+          (error "Compile Rime dynamic module failed"))))))
+
 (provide '07-other-modes)
 
 ;; Local Variables:

@@ -29,38 +29,6 @@
 (autoload 'yc/remove-empty-lines "prog-utils")
 (require '02-functions)
 
-(defvar yc/c-file-mode-mapping
-  (list (cons (rx (or "linux-" "kernel" "driver" "samba")) "kernel")
-        (cons (rx (or "curl" "emacs" "gnome")) "gnu")
-        (cons (rx (or "mysql") (*? nonl) "/") "mysql")
-        (cons (rx (or "postgresql" "postgres" "gpdb") (*? nonl) "/") "postgres")
-        (cons (rx "/" (or "llvm" "clang")  "/") "llvm.org")
-        )
-  "List of possible coding styles.")
-
-
-(defun yc/get-c-style (&optional filename)
-  "Guess c-style based on input FILENAME."
-  (interactive)
-
-  (let* ((dirpath (cond
-                   (filename (file-name-directory filename))
-                   (buffer-file-name (file-name-directory buffer-file-name))
-                   (t default-directory)))
-
-         (style (catch 'p-found
-                  (dolist (kv yc/c-file-mode-mapping)
-                    (when (string-match (car kv) dirpath)
-                      (PDEBUG "MATCH: " kv)
-                      (throw 'p-found (cdr kv))))
-                  "tubo")))
-
-    ;; Print style if called interactively.
-    (when (called-interactively-p 'interactive)
-      (message "Style is %s" style))
-    style))
-
-
 (use-package clang-format
   :commands (clang-format-buffer))
 
@@ -136,82 +104,20 @@ for example *.hpp <--> *.cpp."
 variable.")))))
 
 (defun yc/switch-h-cpp ()
-  "Switch between headers and source files."
+  "Switch between headers and source files.
+If called with prefix-arg, use projectile."
   (interactive)
-      (condition-case error
+  (if current-prefix-arg
+      (projectile-find-other-file)
+
+    (condition-case error
         (eassist-switch-h-cpp)
-      (error (projectile-find-other-file))))
+      (error (projectile-find-other-file)))))
 
 ;; ================================== CPP-H switch end =========================
 
-(defun yc/enable-disable-c-block (start end)
-  "Enable or disable c blocks(START ~ END) using #if 0/#endif macro."
-  (interactive "rp")
 
-  (let* ((if-0-start (concat "#if 0 "
-                             (comment-padright comment-start comment-add)
-                             "TODO: Remove this if 0!"
-                             (comment-padleft comment-end comment-add)
-                             "\n"))
-
-         (if-0-end   (concat "#endif "
-                             (comment-padright comment-start comment-add)
-                             "End of #if 0"
-                             (comment-padleft comment-end comment-add)
-                             ))
-
-         )
-    (save-excursion
-      (save-restriction
-        (narrow-to-region start end)
-
-        (goto-char (point-min))
-
-        (if (search-forward-regexp
-             (rx bol "#if " (+? nonl) "\n"
-                 (group (+? anything) "\n")
-                 bol "#endif" (+? nonl) eol)
-             end t)
-            (replace-match "\\1")
-
-          (goto-char end)
-          (unless (looking-back "\n" nil)
-            (insert "\n"))
-          (insert if-0-end "\n")
-
-          (goto-char start)
-          (insert if-0-start)))
-
-      (indent-region start end))))
-
-(defun yc/insert-empty-template ()
-  "Make header based on srecode."
-  (interactive)
-  (save-excursion
-    (srecode-load-tables-for-mode major-mode)
-    (srecode-insert "file:empty")
-    (delete-trailing-whitespace)))
-
-(defun yc/header-make ()
-  "Make header based on srecode."
-  (interactive)
-  (progn;save-excursion
-    (goto-char (point-min))
-    (while (looking-at (or comment-start-skip comment-start))
-      (forward-line))
-    (condition-case err
-        (progn
-          (srecode-load-tables-for-mode major-mode)
-          (yc/remove-empty-lines (point-min))
-
-          (srecode-insert "file:fileheader")
-          (yc/remove-empty-lines (point-max))
-          (goto-char (point-max))
-          (srecode-insert "file:fileheader_end"))
-      (error (srecode-insert "file:filecomment")))
-    )
-  (delete-trailing-whitespace))
-
+(autoload 'ccls-file-info "ccls")
 
 (defun yc/preprocess-file ()
   "Pre-process current file.."
@@ -250,22 +156,45 @@ variable.")))))
         (delay-mode-hooks (funcall mode))
         (setq buffer-read-only t)))))
 
+(defun yc/compile-current-file ()
+  "Pre-process current file.."
+  (interactive)
+  (lsp--cur-workspace-check)
+  (PDEBUG "default-directory:" default-directory)
+  (-when-let* ((mode major-mode)
+               (ccls-info (ccls-file-info))
+               (args (seq-into (gethash "args" ccls-info) 'vector))
+               (working-directory default-directory)
+               (new-args (let ((i 0) ret)
+                           (while (< i (length args))
+                             (let ((arg (elt args i)))
+                               (cond
+                                ((string-match-p "\\`--driver-mode=.+" arg) (cl-incf i))
+                                ((string-match "\\`-working-directory=\\(.+\\)" arg)
+                                 (setq working-directory (match-string 1 arg)))
+                                (t (push arg ret))))
+                             (cl-incf i))
+                           (nreverse ret))))
+
+    (PDEBUG "DIR:" (shell-command-to-string "pwd")
+            "CMD:" new-args)
+
+    (compile (s-join " " new-args))))
+
 
 ;;;###autoload
-(defun c++filt-buffer ()
+(defun yc/cpp-demangle-buffer ()
   "Call c++filt for current buffer."
   (interactive)
   (let ((exec (executable-find "c++filt"))
-        (pmax (point-max))
-        )
+        (pmax (point-max)))
     (unless exec
       (error "Can't find c++filt"))
 
     (save-excursion
       (goto-char (point-max))
-      (call-process-region (point-min) pmax exec nil t))
-    (delete-region (point-min) pmax)))
-
+      (call-process-region (point-min) pmax exec nil t)
+      (delete-region (point-min) pmax))))
 
 
 (defun yc/cc-c-c++-objc-mode ()

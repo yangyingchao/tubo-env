@@ -1,0 +1,33 @@
+{
+    "include": [
+        "lib"
+    ],
+
+    "exclude": [
+        "**/node_modules",
+        "**/__pycache__",
+        "src/experimental",
+        "src/typestubs"
+    ],
+
+    "ignore": [
+        "src/oldstuff"
+    ],
+
+    "reportMissingImports": true,
+    "reportMissingTypeStubs": false,
+
+    "pythonVersion": "3.6",
+    "pythonPlatform": "Linux",
+
+    "executionEnvironments": [
+        {
+            "root": ".",
+            "pythonVersion": "3.5",
+            "pythonPlatform": "Windows",
+            "extraPaths": [
+                "lib"
+            ]
+        }
+    ]
+}

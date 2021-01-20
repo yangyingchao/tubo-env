@@ -1,6 +1,6 @@
 # -*- mode: snippet; require-final-newline: nil -*-
 # name: local-variables
-# key: lcv
+# key: lv
 # --
 `(yas-with-comment "Local Variables:"
 "key: val"

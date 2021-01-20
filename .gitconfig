@@ -108,5 +108,7 @@
 	newNormal = green bold
 	newHighlight = green bold 22
 [user]
-	email = you@example.com
-	name = Your Name
+	email = yangyingchao@icloud.com
+	name = yangyingchao
+#[url "https://github.com.cnpmjs.org/"]
+    #nsteadof = https://github.com/

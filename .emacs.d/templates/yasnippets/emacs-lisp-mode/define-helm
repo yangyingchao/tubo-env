@@ -1,6 +1,5 @@
 # -*- mode: snippet; require-final-newline: nil -*-
 # name: define-helm
-# key: dfh
 # --
 (defun ${1:FUNC} ()
   ""

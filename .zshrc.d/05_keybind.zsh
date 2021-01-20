@@ -54,11 +54,17 @@ stty -ixon -ixoff
 
 
 # special handling to load completion & keybinding for fzf
-which fzf >/dev/null 2>&1
+
+fzf_path=`which fzf 2>&1`
 if [ $? -eq 0 ]; then
-    FZF_SHELL=$(dirname $(dirname `which fzf`))/share/fzf/shell
+    FZF_ROOT=$(dirname $(dirname `realpath ${fzf_path}`))
+    FZF_SHELL=${FZF_ROOT}/share/fzf/shell
+    [ -d ${FZF_SHELL} ] || FZF_SHELL=${FZF_ROOT}/shell
+    [ -d ${FZF_SHELL} ] || FZF_SHELL=${FZF_ROOT}/usr/share/fzf
+    [ -d ${FZF_SHELL} ] || FZF_SHELL=${FZF_ROOT}/usr/local/opt/fzf/shell
     [ -d ${FZF_SHELL} ] || FZF_SHELL=/usr/share/fzf
     [ -d ${FZF_SHELL} ] || FZF_SHELL=/usr/local/opt/fzf/shell
+
     if [ -d ${FZF_SHELL} ]; then
         for fn in ${FZF_SHELL}/*.zsh; do
             source $fn

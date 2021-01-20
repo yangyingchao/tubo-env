@@ -1,0 +1,14 @@
+patch:
+  style:
+    horizontal: true
+    color_scheme: native
+    font_point: 18
+    text_color: 0x424242  #高亮选中词颜色
+    font_face: "PingFangSC-Regular,HanaMinB"  #候选词字体
+    # font_face: 'Lucida Grande'
+    #label_font_face: 'Lucida Grande'
+    label_font_point: 18
+    label_font_face: "STHeitiSC-Light"   #候选词编号字体
+    #comment_font_face: 'Lucida Grande'
+    comment_font_point: 18
+

@@ -2,6 +2,6 @@
 # name: here document.
 # key: <<
 # --
-cat <<-EOF
+<<-EOF
 $0
 EOF

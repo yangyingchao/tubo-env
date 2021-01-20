@@ -329,3 +329,8 @@ flycheck_*
 /utils/code-stat/git_repo/
 /.cpan/
 peda-session*
+/.terminfo/
+native-lisp/
+/.gdbinit_priv
+/.config/waybar/color.css
+/.emacs.d/org-roam.db

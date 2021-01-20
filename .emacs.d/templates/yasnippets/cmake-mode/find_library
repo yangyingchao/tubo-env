@@ -1,4 +1,5 @@
 # -*- mode: snippet -*-
 # name: find_library
+# key: flb
 # --
-find_library($0)
+find_library(${1:$(upcase yas-text)}_LIBRARY ${1:name})

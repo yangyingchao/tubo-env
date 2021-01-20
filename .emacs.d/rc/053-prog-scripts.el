@@ -4,12 +4,29 @@
 ;;; Code:
 
  ;; *************************** Python Settings ****************************
-(use-package lsp-pyright
+;; (use-package lsp-pyright
+;;   :preface
+;;   (defun pyright-create-config-file ()
+;;     "Create configuration file for lsp-pyright."
+;;     (interactive)
+;;     (with-current-buffer (find-file "pyrightconfig.json")
+;;       (save-excursion
+;;         (goto-char (point-max))
+;;         (insert-file-contents-literally "~/.emacs.d/templates/auto-insert/pyrightconfig.json"))))
+;;   :hook (python-mode . (lambda ()
+;;                          (yc/lsp--setup
+;;                           "pyright-langserver"
+;;                           "npm i -g pyright")))
+;;   :ensure nil
+;;   :custom
+;;   (lsp-pyright-python-executable-cmd "python3"))
+
+(use-package lsp-pylsp
   :hook (python-mode . (lambda ()
                          (yc/lsp--setup
-                          "pyright-langserver"
-                          "npm i -g pyright")))
-  :ensure t)
+                          "pylsp"
+                          "pip install python-lsp-server")))
+  :ensure nil)
 
 (use-package py-autopep8
   :commands (py-autopep8-buffer)
@@ -19,8 +36,7 @@
 
 (use-package pydoc
   :bind (:map python-mode-map
-              (;; ,(kbd "<S-f1>")
-               [S-f1]. pydoc-at-point)))
+              ("<S-f1>" . pydoc-at-point)))
 
 (use-package python
   :preface
@@ -28,12 +44,11 @@
     "Load python-specific configurations of LSP, for workspace rooted at ROOT-FILE.."
     (PDEBUG "ENTER, ROOT:" root-file)
     (unless (featurep 'lsp-pyright)
-      (require 'lsp-pyright)))
+      (require 'lsp-pyright nil t)))
 
   (defvar yc/missing-autoflake-reported nil)
 
-  (defun python-remove-unused-imports()
-    "Removes unused imports and unused variables with autoflake."
+  (defun yc/python-remove-unused-import ()
     (interactive)
     (if (executable-find "autoflake")
         (progn (shell-command
@@ -43,14 +58,6 @@
       (unless yc/missing-autoflake-reported
         (setq yc/missing-autoflake-reported t)
         (warn "python-mode: Cannot find autoflake executable.\nExecute: pip install autoflake to install it"))))
-
-  (defun yc/python-remove-unused-import ()
-    "Hook to call `python-remove-unused-imports' after saving python file."
-    (when (and buffer-file-name
-               (equal major-mode 'python-mode))
-      (python-remove-unused-imports)))
-
-  :hook ((after-save . yc/python-remove-unused-import))
 
   :custom
   (python-shell-interpreter "python")
@@ -68,11 +75,14 @@
               buffer-end)
           . sh-mode))
   :custom
+  (sh-shell-file "bash")
   (sh-builtins
    (quote
     (
      (shell "cd" "echo" "eval" "set" "shift" "umask" "unset" "wait" "die"
-            "edebug" "elog" "einfo" "ewarn" "ebegin" "eend" "PDEBUG")
+            "edebug" "elog" "einfo" "ewarn" "ebegin" "eend" "PDEBUG"
+            "msg" "debug" "msg2" "ask" "warning" "plain" "plainerr" "error"
+            )
 
      (bash sh-append shell "." "alias" "bg" "bind" "builtin" "caller" "compgen" "complete"
            "declare" "dirs" "disown" "enable" "fc" "fg" "help" "history" "jobs" "kill"

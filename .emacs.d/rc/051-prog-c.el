@@ -32,10 +32,7 @@
     :override  #'hif-set-var
     (let ((pair (cons key val)))
       (unless (member pair hide-ifdef-env)
-        (setq hide-ifdef-env (cons pair hide-ifdef-env)))))
-
-
-  (define-key hide-ifdef-mode-map "\C-c@t" 'hide-ifdef-toggle-shadowing))
+        (setq hide-ifdef-env (cons pair hide-ifdef-env))))))
 
 
 (use-package clang-format
@@ -45,56 +42,128 @@
   :hook ((c-mode-common . cwarn-mode)))
 
 (use-package c-utils
-  :commands (yc/get-c-style yc/format-files yc/switch-h-cpp yc/enable-disable-c-block
-             yc/preprocess-file yc/insert-empty-template yc/header-make
-             c++filt-buffer yc/cc-c-c++-objc-mode))
+  :commands (yc/get-c-style yc/format-files yc/switch-h-cpp
+             yc/preprocess-file yc/compile-current-file
+             yc/insert-empty-template yc/header-make
+             yc/cpp-demangle-buffer yc/cc-c-c++-objc-mode))
+
+(use-package emr-c
+  :bind (:map c-mode-base-map
+              ("M-:" . yc/enable-disable-c-block)
+              ("C-M-:" . yc/add-clang-format-control)))
 
 (use-package ccls
+  :preface
+  (defvar-local ccls--skipped-ranges-overlays-hidden t "Nil.")
+
+  (defun yc/hide-ccls-skipped-ranges ()
+    "Description."
+
+    (defun --simplify-string (content)
+      ""
+      ;; strip comments...
+      (let ((pos 0) )
+        (while (string-match (rx (group (+? nonl))
+                                 "/*" (+? nonl) "*/"
+                                 (group (* nonl)))
+                             content pos)
+          (setq content (concat (match-string 1 content) (match-string 2 content))
+                pos (1+ pos))))
+
+
+      (when (string-match (rx (group (+? nonl))  (or "//" "/*"))content)
+        ;; (PDEBUG "P" (match-end 1))
+        (setq content (match-string 1 content)))
+
+      (if (> (length content) 32)
+          (setq content (substring content 0 32)))
+
+      (s-trim-right content))
+
+    (dolist (ov ccls--skipped-ranges-overlays)
+      (overlay-put ov 'display
+                   (concat
+                    (save-excursion
+                      (goto-char (overlay-start ov))
+                      (--simplify-string (buffer-substring-no-properties (point-at-bol) (point-at-eol))))
+                    " ...\n"
+
+                    (save-excursion
+                      (goto-char (1- (overlay-end ov)))
+                      (--simplify-string (buffer-substring-no-properties (point-at-bol) (point-at-eol))))
+                    "\n"))))
+
+  (defun yc/toggle-ccls-skipped-ranges ()
+    "Clean up overlays."
+    (interactive)
+    (if ccls--skipped-ranges-overlays-hidden
+        (dolist (ov ccls--skipped-ranges-overlays)
+          (overlay-put ov 'display nil))
+      (yc/hide-ccls-skipped-ranges))
+
+    (setq ccls--skipped-ranges-overlays-hidden (not
+                                                ccls--skipped-ranges-overlays-hidden)))
+
   :custom
   (ccls-executable (or (executable-find "ccls.sh") "ccls"))
   ;; (ccls-sem-highlight-method 'font-lock)
   :config
   (defadvice! yc/ccls--suggest-project-root-adv (&rest args)
-      "Only enable ccls for some modes.
+    "Only enable ccls for some modes.
 ORIG-FUNC is called with ARGS."
-      :before-while #'ccls--suggest-project-root
-      (memq major-mode '(c-mode c++-mode cuda-mode objc-mode)))
+    :before-while #'ccls--suggest-project-root
+    (memq major-mode '(c-mode c++-mode cuda-mode objc-mode)))
 
-    (lsp-register-client
-     (make-lsp-client
-      :new-connection (lsp-tramp-connection (lambda () (cons ccls-executable ccls-args)))
-      :major-modes '(c-mode c++-mode cuda-mode objc-mode)
-      :server-id 'ccls-remote
-      :multi-root nil
-      :remote? t
-      :notification-handlers
-      (lsp-ht ("$ccls/publishSkippedRanges" #'ccls--publish-skipped-ranges)
-              ("$ccls/publishSemanticHighlight" #'ccls--publish-semantic-highlight))
-      :initialization-options (lambda () ccls-initialization-options)
-      :library-folders-fn nil)))
+  (defadvice! yc/ccls--publish-skipped-ranges-adv (&rest args)
+    "Docs
+ORIG-FUNC is called with ARGS."
+    :after  #'ccls--publish-skipped-ranges
+    (if ccls--skipped-ranges-overlays-hidden
+        (yc/hide-ccls-skipped-ranges)))
+
+
+  (lsp-register-client
+   (make-lsp-client
+    :new-connection (lsp-tramp-connection (lambda () (cons ccls-executable ccls-args)))
+    :major-modes '(c-mode c++-mode cuda-mode objc-mode)
+    :server-id 'ccls-remote
+    :multi-root nil
+    :remote? t
+    :notification-handlers
+    (lsp-ht ("$ccls/publishSkippedRanges" #'ccls--publish-skipped-ranges)
+            ("$ccls/publishSemanticHighlight" #'ccls--publish-semantic-highlight))
+    :initialization-options (lambda () ccls-initialization-options)
+    :library-folders-fn nil)))
 
 (defun yc/c-mode-common-hook ()
   "My hooks to run for c-mode-common-hook."
   (c-setup-doc-comment-style)
 
-  (yc/lsp--setup "ccls" "by your own" (lambda ()
-                                           (unless (featurep 'ccls)
-                                             (load "ccls"))))
-  (yc/run-with-idle-timer
-   0.5 nil
-   (lambda ()
-     (let ((style (yc/get-c-style (buffer-file-name))) )
-       (c-set-style style)
-       (when (string= style "kernel-coding")
-         (add-to-list
-          'hide-ifdef-define-alist
-          '(kernel __KERNEL__ CONFIG_SMP CONFIG_PCI CONFIG_MMU))
-         (hide-ifdef-use-define-alist 'kernel)))
-
-     (when (bound-and-true-p lsp-mode)
-       (ccls-code-lens-mode)))))
+  (yc/lsp--setup "ccls" "by your own"
+                 (lambda ()
+                   (unless (featurep 'ccls)
+                     (load "ccls")))))
 
 (use-package cc-mode
+  :preface
+  (autoload 'transient-define-prefix "transient")
+
+  (transient-define-prefix yc/c-utils ()
+  "Invoke a c mode related command from a list of available commands."
+  ;; ["Arguments"
+  ;;  ("-c" "execute for cluster" ("-c" "--cluster"))
+  ;;  ("-f" "Force"            ("-f" "--force"))
+  ;;  ]
+
+  ["Actions"
+   [("c" "Compile current file"     yc/compile-current-file)
+    ("p" "Preprocess current file"  yc/preprocess-file)
+    (";" "enable/disable block"     yc/enable-disable-c-block)
+    (":" "surround clang-format"    yc/add-clang-format-control)
+    ("t" "toggle ccls skipped ranage" yc/toggle-ccls-skipped-ranges)]
+   ])
+
+
   :commands (c++-mode objc-mode c-mode)
   :mode (((rx "." (or "H" "cc" "hh" "moc" "ipp") (? ".in") buffer-end) . c++-mode)
          ((rx "." (or "C" "c" "ic") buffer-end) . c-mode)
@@ -102,15 +171,17 @@ ORIG-FUNC is called with ARGS."
   :mode ((rx  "." (or "h" ) (? ".in") buffer-end) . yc/cc-c-c++-objc-mode)
   :bind (:map c-mode-base-map
               ("\C-c\C-h" . yc/switch-h-cpp)
-              ( ;(kbd "M-:")
-               [134217786] . yc/enable-disable-c-block)
+              ("C-c C-c" . yc/c-utils)
+              ("\C-c@t" . yc/toggle-ccls-skipped-ranges)
+
               (;(kbd "C-c s M-d")
                [3 115 134217828] .
                (lambda ()
                  (interactive)
                  (let ((uml/extract-type 'fields))
-                   (uml/struct-to-puml (region-beginning) (region-end)))))
-              )
+                   (uml/struct-to-puml (region-beginning) (region-end))))))
+
+  :bind (([remap c-toggle-auto-newline] . 'yc/wip-comment))
 
   :hook ((c-mode-common . yc/c-mode-common-hook))
 
@@ -169,133 +240,6 @@ ORIG-FUNC is called with ARGS."
       (* (max steps 1)
          c-basic-offset)))
 
-  (c-add-style
-   "kernel"
-   `("linux"
-     (tab-width . 8)
-     (indent-tabs-mode . t)
-     (c-offsets-alist
-      (arglist-cont-nonempty
-       c-lineup-gcc-asm-reg
-       c-lineup-arglist-tabs-only))))
-
-  (c-add-style "llvm.org"
-               '("gnu"
-                 (fill-column . 80)
-                 (c++-indent-level . 2)
-                 (c-basic-offset . 2)
-                 (indent-tabs-mode . nil)
-                 (c-offsets-alist . ((arglist-intro . ++)
-                                     (innamespace . 0)
-                                     (member-init-intro . ++)))))
-
-  ;; "Based on Google C/C++ Programming Style"
-  (c-add-style
-   "tubo"
-   `("bsd"
-     (c-recognize-knr-p . nil)
-     (c-basic-offset . 4)
-     (tab-width . 4)
-     (indent-tabs-mode . nil)
-     (comment-column . 40)
-     (c-hanging-braces-alist . ((defun-open after)
-                                (defun-close before after)
-                                (class-open after)
-                                (class-close before after)
-                                (namespace-open after)
-                                (inline-open after)
-                                (inline-close before after)
-                                (block-open after)
-                                (block-close . c-snug-do-while)
-                                (extern-lang-open after)
-                                (extern-lang-close after)
-                                (statement-case-open after)
-                                (substatement-open after)))
-     (c-hanging-colons-alist . ((case-label)
-                                (label after)
-                                (access-label after)
-                                (member-init-intro before)
-                                (inher-intro)))
-     (c-hanging-semi&comma-criteria
-      . (c-semi&comma-no-newlines-for-oneline-inliners
-         c-semi&comma-inside-parenlist
-         c-semi&comma-no-newlines-before-nonblanks))
-     (c-indent-comments-syntactically-p . nil)
-     (c-cleanup-list . (brace-else-brace
-                        brace-elseif-brace
-                        brace-catch-brace
-                        empty-defun-braces
-                        defun-close-semi
-                        list-close-comma
-                        scope-operator))
-     (c-offsets-alist . ((func-decl-cont . ++)
-                         (member-init-intro . +)
-                         (member-init-cont  . c-lineup-multi-inher)
-                         (inher-intro . ++)
-                         (comment-intro . 0)
-                         (arglist-close . c-lineup-arglist)
-                         (topmost-intro . 0)
-                         (block-open . 0)
-                         (inline-open . 0)
-                         (substatement-open . 0)
-                         (statement-cont
-                          . c-lineup-assignments)
-                         (label . /)
-                         (case-label . 0)
-                         (statement-case-open . 0)
-                         (statement-case-intro . +) ; case w/o {
-                         (access-label . -)
-                         (inextern-lang . 0)
-                         (innamespace . 0)))
-     (c-doc-comment-style . ((c-mode . tbdoc)
-                             (c++-mode . tbdoc)
-                             (objc-mode . tbdoc)
-                             (java-mode . tbdoc)
-                             (awk-mode . autodoc)
-                             (other . tbdoc)))))
-
-  ;; Coding style for MySql
-  (c-add-style
-   "mysql"
-   '("tubo"
-     (c-basic-offset . 2)
-     (indent-tabs-mode . nil)
-     (c-comment-only-line-offset . 0)
-     (tab-width . 2)
-     (c-offsets-alist . ((statement-block-intro . +)
-                         (knr-argdecl-intro . 0)
-                         (substatement-open . 0)
-                         (label . -)
-                         (statement-cont . +)
-                         (arglist-intro . c-lineup-arglist-intro-after-paren)
-                         (arglist-close . c-lineup-arglist)
-                         (innamespace . 0)
-                         (inline-open . 0)
-                         (statement-case-open . +)))))
-
-  (c-add-style
-   "postgres"
-   '("tubo"
-     (c-basic-offset . 4)
-     (c-auto-align-backslashes . nil)
-     (indent-tabs-mode . t)
-     (c-comment-only-line-offset . 0)
-     (tab-width . 4)
-     (fill-column . 78)
-     (c-offsets-alist . ((statement-block-intro . +)
-                         (knr-argdecl-intro . 0)
-                         (substatement-open . 0)
-                         (case-label . +)
-                         (label . -)
-                         (statement-cont . +)
-                         (arglist-intro . c-lineup-arglist-intro-after-paren)
-                         (arglist-close . c-lineup-arglist)
-                         (innamespace . 0)
-                         (inline-open . 0)
-                         (statement-case-open . 0)))))
-
-
-
   (custom-set-variables
    '(c-doc-comment-style
      (quote ((c-mode . tbdoc)
@@ -319,8 +263,7 @@ ORIG-FUNC is called with ARGS."
                     )) eow)
       (1 font-lock-keyword-face))
      (,(rx bow (group (+ (or upper "_" digit))) (* blank) "(")
-      (1 font-lock-builtin-face))
-     ))
+      (1 font-lock-builtin-face))))
 
   (font-lock-add-keywords
    'c-mode
@@ -336,7 +279,7 @@ ORIG-FUNC is called with ARGS."
       (when (or (equal ext "cc")
                 (equal ext "cpp"))
         (lambda ()
-          (format "%s %s %s -std=gnu++11 -g -o %s"
+          (format "%s %s %s -std=c++17 -g -o %s"
                   (yc/get-env "CXX" 'executable-find
                               "clang++" "g++" "mingw-g++")
                   (or (getenv "CPPFLAGS")"-Wall  ")
@@ -357,8 +300,7 @@ ORIG-FUNC is called with ARGS."
                 file)))))
 
 (defvar project-ccls-black-list nil
-  "List of files to be added into blacklist.
-Should be set by .lsp-conf.")
+  "List of files to be added into blacklist. Should be set by .lsp-conf.")
 
 (defun yc/lsp-load-project-configuration-cc-mode (root-file)
   "Advice for 'ccls--suggest-project-root'.
@@ -433,11 +375,6 @@ Call FUNC which is 'ccls--suggest-project-root with ARGS."
   :hook ((c++-mode . (lambda () (local-set-key "\C-cm" #'expand-member-functions))))
   :custom
   (mf--insert-commentary nil))
-
-(use-package prog-utils
-  :commands (
-             yc/asm-post-process
-             uniq-stack gcrash-analyze-buffer))
 
 
 (provide '051-prog-c)

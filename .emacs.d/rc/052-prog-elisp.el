@@ -8,7 +8,7 @@
 
 (use-package  elisp-mode
   :preface
-  (defun yc/insert-key-sequence-kbd ()
+  (defun yc/insert-key-sequence-with-kbd ()
     "Insert key sequence (with kbd function)."
     (interactive)
     (let ((key (read-key-sequence "Stoke:")) )
@@ -17,31 +17,8 @@
   (defun yc/insert-key-sequence ()
     "Insert key sequence."
     (interactive)
-    (yc/insert-key-sequence-kbd)
-    (yc/eval-and-insert-comment))
-
-  (defun yc/clean-native-compiled-file (file)
-    "Clean up previous native-compiled FILE."
-    (let* ((tgt-dir (expand-file-name "~/.emacs.d/eln-cache"))
-           (bname (file-name-base file))
-           (yc/debug-log-limit -1)
-           deleted-files)
-
-      ;; clean up previously compiled files.
-      (when (file-exists-p tgt-dir)
-        (let ((subdirs (directory-files tgt-dir t "x86.*")))
-          (if (> (length subdirs) 1)
-              (progn
-                (delete-directory tgt-dir t)
-                (warn "don't know which version to load, simply clear all subdirectories."))
-
-            (setq tgt-dir (car subdirs))
-            (PDEBUG "Cleaning in: " tgt-dir " for file: " file ", base name: " bname)
-            (dolist (fn (directory-files tgt-dir t (concat bname  "-.*\\.eln")))
-              (push fn deleted-files)
-              (delete-file fn))
-            (PDEBUG "Deleted " (length deleted-files) " files:\n"
-                    (mapconcat 'identity deleted-files "\n\t")))))))
+    (let ((key (read-key-sequence "Stoke:")) )
+      (insert (format "\"%s\"" (key-description key)))))
 
   (defun yc/byte-compile-current-elisp ()
     "Byte compile Lisp file."
@@ -55,7 +32,6 @@
           (PDEBUG "Byte compile ignored for file: " buffer-file-name)
         (byte-compile-file buffer-file-name)
         (when (fboundp 'native-compile-async)
-          (yc/clean-native-compiled-file buffer-file-name)
           (native-compile-async buffer-file-name)))))
 
   (defun my-lisp-hook ()
@@ -71,10 +47,8 @@
 
   :mode (((rx "." (or "el" "sexp") eol) . emacs-lisp-mode))
   :bind (:map emacs-lisp-mode-map
-              (;; (kbd "C-c M-k")
-               [3 134217835] . yc/insert-key-sequence-kbd)
-              (;; (kbd "C-c M-K")
-               [3 134217803] . yc/insert-key-sequence))
+              ("C-c M-K" . yc/insert-key-sequence-with-kbd)
+              ("C-c M-k" . yc/insert-key-sequence))
 
   :hook ((emacs-lisp-mode . my-lisp-hook)
          (after-save .  yc/byte-compile-current-elisp))
@@ -94,59 +68,55 @@
               (group (* (or alnum "-" "_" "'" "/" "\"")))))
       (1 font-lock-keyword-face)
       (2 font-lock-constant-face nil t))))
-  (yc/add-company-backends 'emacs-lisp-mode 'company-elisp 'company-dabbrev-code)
+  ;; (yc/add-company-backends 'emacs-lisp-mode 'company-elisp 'company-dabbrev-code)
   (yc/add-auto-delete-spaces 'emacs-lisp-mode))
 
 
- ;; native compile..
-(when (featurep 'nativecomp)
-  (setq comp-deferred-compilation t)
+;; native compile..
+(setq comp-deferred-compilation t)
+(add-hook 'emacs-startup-hook
+  (lambda ()
+    (let ((current-eln-cache (file-name-directory (comp-el-to-eln-filename (expand-file-name "~/.emacs")))))
+      (dolist (dir (directory-files "~/.emacs.d/eln-cache" t (rx (= 2 (+ digit) ".") (+ digit) "-" (+ alnum))))
+        (unless (string= current-eln-cache (file-name-as-directory dir))
+          (message "Delete old eln-cache: %s -- %s" dir current-eln-cache)
+          (delete-directory dir t))))))
 
-  (defadvice! yc/package-unpack-adv (pkg-desc &rest args)
-    "Native compile files in this PKG-DESC."
-    :after  #'package-unpack
-    (let* ((name (package-desc-name pkg-desc))
-           (dirname (package-desc-full-name pkg-desc))
-           (src-dir (expand-file-name dirname package-user-dir)))
+(defun yc/native-compile-file ()
+  "Native compile selected file."
+  (interactive)
+  (native-compile-async
+   (yc/list-directory default-directory)
+   nil))
 
-      ;; clean up previously compiled files.
-      (mapc 'yc/clean-native-compiled-file (directory-files src-dir nil ".*\.el"))
-
-      ;; now starts compile.
-      (native-compile-async src-dir t)))
-
-  (defun yc/native-compile-file ()
-    "Native compile selected file."
-    (interactive)
-    (native-compile-async
-     (counsel-list-directory default-directory)
-     nil))
-
-  (defun yc/native-compile-dir (&optional dir)
-    "Native compile selected DIR."
-    (interactive)
-    (unless dir
-      (setq dir (let* ((suggestion default-directory)
-                       (choices (list
-                                 (format "    Choose src-dir %s" suggestion)
-                                 "    Choose by selecting src-dir interactively."))
-                       (action-index (cl-position
-                                      (completing-read "Select directory: "
-                                                       choices
-                                                       nil
-                                                       t)
-                                      choices
-                                      :test 'equal))
-                       (project-root (cl-case action-index
-                                       (0 suggestion)
-                                       (1 (read-directory-name "Select workspace folder to add: "
-                                                               (or suggestion default-directory)
-                                                               nil
-                                                               t))
-                                       (t nil))))
-                  project-root)))
-    (PDEBUG "Native compile: " dir)
-    (native-compile-async (expand-file-name dir) t)))
+(defun yc/native-compile-dir (&optional dir)
+  "Native compile selected DIR."
+  (interactive)
+  (unless dir
+    (setq dir (let* ((suggestion default-directory)
+                     (choices (list
+                               (format "    Choose src-dir %s" suggestion)
+                               "    Choose by selecting src-dir interactively."))
+                     (action-index (cl-position
+                                    (completing-read "Select directory: "
+                                                     choices
+                                                     nil
+                                                     t)
+                                    choices
+                                    :test 'equal))
+                     (project-root (cl-case action-index
+                                     (0 suggestion)
+                                     (1 (read-directory-name "Select workspace folder to add: "
+                                                             (or suggestion default-directory)
+                                                             nil
+                                                             t))
+                                     (t nil))))
+                project-root)))
+  (PDEBUG "Native compile: " dir)
+  (native-compile-async (expand-file-name dir) t nil
+                        (lambda (x)
+                          (not (string-match-p ".*?\.emacs.d/rc/.*\.el"
+                                               x)))))
 
 (provide '052-prog-elisp)
 

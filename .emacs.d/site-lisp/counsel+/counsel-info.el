@@ -16,7 +16,7 @@
 If `REINIT' is not nil, re-initialize info-node-list."
   (interactive "P")
 
-  (when (or reinit (not counsel/info-node-list))
+  (when (or reinit (not counsel/info-node-list) current-prefix-arg)
     (setq counsel/info-node-list (list nil))
     (let ((r-match-info-node (rx (group (+? nonl)) ".info" (*? nonl)))
           (r-match-info-dir
@@ -37,14 +37,8 @@ If `REINIT' is not nil, re-initialize info-node-list."
                 (let* (
                        (node (match-string 1 item) )
                        (fnode (if prefix (concat prefix "/" node) node)))
-
-                  (PDEBUG "ITEM: " dir " --> " fnode)
-
                   (unless (member fnode counsel/info-node-list)
                     (push fnode counsel/info-node-list))))))))))
-
-  (PDEBUG "REINIT: " reinit
-    "\nLIST:" counsel/info-node-list)
 
   (ivy-read "Info: " (reverse counsel/info-node-list)
             :action (lambda (x)

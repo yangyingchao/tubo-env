@@ -48,24 +48,18 @@ if [ -d "/usr/local/texlive/2020/bin/x86_64-darwin" ]; then
 fi
 
 # Utilities.
-alias ll="ls -lah"
-# alias rm="rm -i"
-# alias cp="cp -i"
-alias l="ls -ail"
-alias cl="clear"
+llo()
+{
+    ls --color -lh $@ | \
+        awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/) *2^(8-i));if(k)printf("%0o ",k);print}'
+}
 
 which dircolors >> /dev/null && alias ls="ls --color" || alias ls="ls -G"
-alias gst="git status"
-alias gpush="git push"
-alias gpull="git pull"
-alias gco="git checkout"
 alias gcm="git commit -a -m \"auto\""
-alias gcmp="git commit -a -m \"auto\" && git push"
-alias gcs="git commit -a -m \"updated submodules\""
-alias gcus="git commit -a -m \"Updated submodules \""
 
 alias kxcode="killall -9 Xcode"
 alias reboot="shutdown -r now"
+alias ll=llo
 
 # do a du -hs on each dir on current path
 alias lsdir="for dir in *;do;if [ -d \$dir ];then;du -hsL \$dir;fi;done"
@@ -73,8 +67,7 @@ alias lsdir="for dir in *;do;if [ -d \$dir ];then;du -hsL \$dir;fi;done"
 alias rcp="rsync -a -P --exclude='.ccls-cache' --exclude='.ccls_cached/'  --exclude='cmake_build_*'"
 which dcfldd > /dev/null 2>&1 && alias dd="dcfldd"
 
-alias tma="tmux attach || tmux"
-alias ttop="top -u $UID"
+alias ttop="htop -u ${USER}"
 
 # make alias if source file exists (source > target)
 function alias_if_exists ()
@@ -90,7 +83,6 @@ function alias_if_exists ()
     which $1 >/dev/null 2>&1 && eval alias $target=\"$*\"
 }
 
-alias_if_exists top htop
 alias_if_exists ping prettyping --nolegend
 alias_if_exists vi vim
 
@@ -108,3 +100,16 @@ alias brew_clean_all="[ -e Brewfile ] && rm Brewfile; brew bundle dump && brew b
 
 export RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup
 export ASAN_OPTIONS="detect_leaks=0:detect_odr_violation=0"
+
+### setup TERM before starting emacs, if necessary
+# http://skybert.net/emacs/colourful-tty-emacs/
+# https://www.gnu.org/software/emacs/manual/html_node/efaq/Colors-on-a-TTY.html
+
+if ! [ "$TERM" = "dumb" ] && ! [[ $TERM =~ direct ]] ; then
+    if ! [ -f ~/.terminfo/x/xterm-24bits ] && ! [ -f ~/.terminfo/78/xterm-24bits ]; then
+        echo "Generating terminfo for xterm-24bits..."
+        tic -x -o ~/.terminfo ~/.local/share/terminfo/xterm-24bit.src
+    fi
+
+    export TERM=xterm-24bits
+fi

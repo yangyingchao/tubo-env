@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: pragma_once
+# key: pnc
+# --
+#pragma once

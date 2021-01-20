@@ -9,7 +9,7 @@
 ** emacs                                                             :emacs:
 *** [[https://emacs-china.org/latest.rss][Emacs China]]
 *** [[http://feeds.feedburner.com/sachac][sacha chua]]
-*** [[https://nullprogram.com/tags/emacs/feed/][Null Program]]
+*** [[https://nullprogram.com/feed/][Null Program]]
 *** [[http://www.reddit.com/r/emacs/.rss][Reddit]]
 ** Video                                                             :video:
 *** [[http://feeds.feedburner.com/tedtalks_video][TED Talks]]
@@ -27,6 +27,7 @@
 *** [[http://coolshell.cn/feed/][酷 壳 – CoolShell]]
 *** [[https://hack.org/mc/blog/index.xml][mc]]
 *** [[https://cjting.me/index.xml][cjting]]
+*** [[https://manateelazycat.github.io/feed.xml][懒猫]]
 
 ** 技术与人文
 *** [[http://www.ruanyifeng.com/blog/atom.xml][阮一峰的网络日志]]

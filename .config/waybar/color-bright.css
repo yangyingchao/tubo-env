@@ -1,0 +1,15 @@
+@define-color bg #E5EFF9;
+@define-color bg_focused #4E524F;
+@define-color bg_warn #fc6d24;
+@define-color bg_critical #fb0120;
+@define-color bg_mode #a1c659;
+@define-color bg_urgent #be643c;
+
+@define-color fg #252525;
+
+@define-color label_tip #fda331;
+
+
+
+/* To use */
+/* color: @base04; */

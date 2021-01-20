@@ -29,14 +29,14 @@ mount_device()
     counter=0
 
     echo "$devices" | jq -r '.blockdevices[] | select(.type == "part") | select(.rm == true) | select(.mountpoint == null) | .name'
-    echo "$devices"
-    for unmounted in $(echo "$devices" | jq -r '.blockdevices[] | select(.type == "part") | select(.rm == true) | select(.mountpoint == null) | .name'); do
-        echo "${unmounted}"
-        unmounted=$(echo "$unmounted" | tr -d "[:digit:]")
+
+    for dev in $(echo "$devices" | jq -r '.blockdevices[] | select(.type == "part") | select(.rm == true) | select(.mountpoint == null) | .name'); do
+        # echo "A: ${dev}"
+        unmounted=$(echo "$dev" | tr -d "[:digit:]")
         unmounted=$(echo "$devices" | jq -r '.blockdevices[] | select(.name == "'"$unmounted"'") | .vendor')
         unmounted=$(echo "$unmounted" | tr -d ' ')
 
-        echo "${unmounted}"
+        # echo "B: ${unmounted}"
 
         if [ $counter -eq 0 ]; then
             space=""
@@ -45,14 +45,20 @@ mount_device()
         fi
         counter=$((counter + 1))
 
-        output="$output$space#1 $unmounted"
+        output="$output$space#1 ${dev} $unmounted"
     done
 
-    rofi_cmd="rofi -dmenu -p \"Device '$2 $1' detected. Select the action\" -lines $n_devices"
+    if [ ${counter} -gt 0 ]; then
+        selected_row=$(echo ${output}| ${BEMENU} -p "Select the device to mount" -lines $counter)
+        device=$(echo "$selected_row" | awk '{print $2}')
+        echo "M: $device"
 
-    echo "O: $output"
-
-    # udiskctl mountxxx
+        if [ -n "${device}" ]; then
+            udisksctl mount -b ${device}
+        fi
+    else
+        ${scriptdir}/swaynagmode -t warning -m 'No disk to mount'
+    fi
 }
 
 export DISPLAY=:0

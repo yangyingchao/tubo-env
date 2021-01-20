@@ -86,10 +86,10 @@ This function accept file name as argument, and return t if file is merged autom
               ("gf" . magit-find-file-other-window)
               ("gb" . magit-blame-addition)
               ("ga" . 'yc/git-add-current-file)
-              )
+              ("gg" . 'counsel-git-grep)
+              ("gF" . magit-pull))
 
-  :bind ((;; (kbd "C-x M-g")
-               [24 134217831] . magit-dispatch))
+  :bind (("C-x M-g" . magit-dispatch))
   :hook ((magit-process-mode . goto-address-mode))
   :custom
   (magit-diff-refine-hunk t)  ;; show granular diffs in selected hunk
@@ -111,6 +111,8 @@ This function accept file name as argument, and return t if file is merged autom
     ("--strategy=recursive" "--strategy-option=ignore-space-change")))
   (magit-visit-ref-behavior
    (quote (focus-on-ref create-branch checkout-any check-branch)))
+
+  (magit-tramp-process-environment '("PATH=${HOME}/.local/bin:/usr/local/bin:${PATH}"))
 
   (magit-status-sections-hook
    (quote
@@ -140,7 +142,6 @@ This function accept file name as argument, and return t if file is merged autom
             (setq buffer-read-only t))))
   :config
   (magit-auto-revert-mode 1))
-
 
 (defadvice! yc/with-editor-locate-emacsclient-adv (&rest args)
   "Find proper emacsclient for with-editor."

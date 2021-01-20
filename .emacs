@@ -3,7 +3,7 @@
 ;;; Code:
 
  ;; Load all configuration and packages.
-(let ((ts-init (current-time))
+(let (
       ;; 加载的时候临时增大`gc-cons-threshold'以加速启动速度。
       (gc-cons-threshold most-positive-fixnum)
       (gc-cons-threshold most-positive-fixnum)
@@ -16,10 +16,11 @@
 
   ;; Add customized paths to the front of load-path
   (dolist (path '("~/.emacs.d/site-lisp/"
-                  ;; "~/.emacs.d/straight/build"
+                  "/usr/share/emacs/site-lisp"
                   ))
-    (let ((default-directory path))
-      (normal-top-level-add-subdirs-to-load-path)))
+    (when (file-exists-p path)
+      (let ((default-directory path))
+      (normal-top-level-add-subdirs-to-load-path))))
 
   ;; Never load the `central-custome-file'.
   (setq custom-file "~/.emacs.d/rc/10-emacs-custome.el")
@@ -36,7 +37,6 @@
   (if (fboundp 'yc/setup-display)
       (yc/setup-display))
 
-  (message "\nFinished startup in %.2f seconds.\n"
-           (float-time (time-since ts-init))))
+  (message "\nFinished startup in %s.\n" (emacs-init-time)))
 
 ;;; .emacs ends here

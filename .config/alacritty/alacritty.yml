@@ -92,13 +92,13 @@ scrolling:
 # Font configuration
 font:
   normal:
-    family: Monego # Nerd Font
+    family: Monaco Nerd Font Mono # Nerd Font
     style: Regular
   bold:
-    family: Monego # Nerd Font
+    family: Monaco Nerd Font # Nerd Font
     style: Bold
   italic:
-    family: Monego # Nerd Font
+    family: Monaco Nerd Font # Nerd Font
     style: Italic
 
   # Point size
@@ -330,7 +330,7 @@ mouse:
   # If this is `true`, the cursor is temporarily hidden when typing.
   hide_when_typing: true
 
-  url:
+  hints:
     # URL launcher
     #
     # This program is executed when clicking on a text which is recognized as a URL.
@@ -705,11 +705,13 @@ key_bindings:
 
   - { key: Comma,     mods: Control,   chars: "\x1b[1;5l"                   }
   - { key: 52,    mods: Control,   chars: "\x1b[1;5n"                   }
-  - { key: 51,     mods: Control|Shift,   chars: "\x1b[1;6l"                   }
+  - { key: 51,    mods: Control|Shift,   chars: "\x1b[1;6l"                   }
   - { key: 52,    mods: Control|Shift,   chars: "\x1b[1;6n"                   }
   - { key: Period,    mods: Control,   chars: "\x1b[1;5n"                   }
   - { key: Comma,     mods: Control|Shift,   chars: "\x1b[1;6l"                   }
   - { key: Period,    mods: Control|Shift,   chars: "\x1b[1;6n"                   }
+  - { key: Comma,     mods: Control|Alt,   chars: "\x1b[1;6l"                   }
+  - { key: Period,    mods: Control|Alt,   chars: "\x1b[1;6n"                   }
 
 
   - { key: Slash,    mods: Alt|Shift,  chars: "\x1b?"                      } #Alt + ?

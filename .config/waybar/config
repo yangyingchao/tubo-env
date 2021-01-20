@@ -5,8 +5,7 @@
     "height": 25,
     "modules-left": ["sway/workspaces",  "sway/mode"],
     "modules-center": ["sway/window"],
-    "modules-right": ["custom/mpv",
-                      "tray", "pulseaudio", "cpu", "memory", "temperature",
+    "modules-right": ["tray", "pulseaudio", "cpu", "memory", "temperature",
                       "network#wireless",   "network#ethernet",
                       "battery","idle_inhibitor", "clock"],
 
@@ -37,7 +36,11 @@
     },
     "cpu": {
         "format": " {usage:2}%",
-        "tooltip": false
+        "tooltip": false,
+        "states": {
+            "warning": 70,
+            "critical": 90
+        }
     },
     "memory": {
         "format": " {}%",
@@ -61,7 +64,7 @@
             "critical": 15
         },
         "format": "{capacity}% {icon}",
-        "format-charging": "",
+        "format-charging": "",
         "format-plugged": "",
         "format-icons": [
             "",
@@ -70,7 +73,7 @@
 			"",
 			""
         ],
-        "on-click":"~/.config/polybar/upower.sh -n",
+        "on-click":"~/.config/sway/scripts/upower.sh -n",
         "tooltip": false
     },
 
@@ -81,7 +84,7 @@
         "format-linked": "睊",
         "format-disconnected": "睊",
         "format-alt": "{ifname}: {ipaddr}/{cidr}",
-        "on-click-middle": "foot 'sudo nmtui'",
+        "on-click-middle": "foot sudo nmtui",
         "tooltip": false
     },
     "network#ethernet": {
@@ -111,9 +114,9 @@
             "default": ["", "", ""]
         },
         "scroll-step" : 5,
-		"on-click": "pavucontrol",
+		"on-click": "pavucontrol-qt",
         "on-click-middle": "amixer -D pulse sset Master toggle",
-        "on-click-right": "blueman-manager"
+        "on-click-right": "blueman-applet"
     },
 
     "idle_inhibitor": {
@@ -152,16 +155,5 @@
          "on-click-right" : "mpc next",
          "on-click-middle" : "ario",
          "tooltip" : false
-    },
-
-    "custom/mpv": {
-        "tooltip" : false,
-        "format": " {} ",
-        "exec": "~/.config/waybar/player-mpv-tail.py -t 42",
-        "on-click": "~/.config/waybar/player-mpv-tail.py -p pause",
-        "on-click-middle":  "~/.config/waybar/player-mpv-tail.py -p playlist-pos -1",
-        "on-click-right":  "~/.config/waybar/player-mpv-tail.py -p playlist-pos +1",
-        "on-scroll-up":  "~/.config/waybar/player-mpv-tail.py -p time-pos -10",
-        "on-scroll-down":  "~/.config/waybar/player-mpv-tail.py -p time-pos +10",
     }
 }

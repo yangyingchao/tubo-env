@@ -50,9 +50,7 @@
   :commands (cmake-mode cmake-help cmake-help-list-commands)
   :mode (rx (or "CMakeList.txt" "CMakeLists.txt" (: ".cmake" buffer-end)))
   :bind (:map cmake-mode-map
-              (;; (kbd "C-c h")
-               "h"
-               . cmake-help)
+              ("C-c h" . cmake-help)
               ("\C-cl" . cmake-help-list-commands)
               ("\C-cu" .  unscreamify-cmake-buffer))
   :custom
@@ -120,12 +118,8 @@ ORIG-FUNC is called with ARGS."
 
 (use-package counsel-compile2
   :commands (counsel-compile2 counsel-compile-projectile counsel-make)
-  :bind ((;; ,(kbd "<M-f6>")
-          [M-f6]. counsel-compile2)
-         ;; (kbd "ESC <f6>")
-         ([27 f6] . counsel-compile2)
-         (;; ,(kbd "<M-S-f6>")
-          [M-S-f6]. counsel-compile-projectile)))
+  :bind (("<M-f6>" . counsel-compile2)
+         ("<M-S-f6>" . counsel-compile-projectile)))
 
 (use-package ninja-mode
   :init

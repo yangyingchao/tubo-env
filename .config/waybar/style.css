@@ -1,75 +1,94 @@
+@import "color.css";
+
 * {
     border: none;
     border-radius: 0px;
     font-family: "WenQuanYi Micro Hei", "Symbols Nerd Font";
     font-size: 16px;
     min-height: 0;
+    /* background: @bg; */
+    /* color: @fg; */
 }
 
 #window {
-   padding: 0px 10px;
-   background: transparent;
-   background: #E5EFF9;
-}
-
-window#waybar {
-  background: #E5EFF9;
-    color: #252525;
+    padding: 0px 10px;
+    background: transparent;
+    background: @bg;
+    color: @fg;
 }
 
 window > box {
-  border-bottom: 1px solid#252525;
+    border-bottom: 0px solid @fg;
 }
 
-window#waybar.hidden {
-    opacity: 0.2;
+window#waybar {
+  background: @bg;
+  color: @fg;
 }
 
-window#waybar.empty {
-    background: #E5EFF9;
-}
-window#waybar.solo {
-    background: #E5EFF9;
-}
+/* window#waybar.hidden { */
+/*     opacity: 0.2; */
+/* } */
+
+/* window#waybar.empty { */
+/*     background: @bg; */
+/* } */
+/* window#waybar.solo { */
+/*     background: @bg; */
+/* } */
 
 #workspaces button {
     padding: 0px 3px;
-    background: #E5EFF9;
-    color: #252525;
+    color: @fg;
 }
 
 #workspaces button.focused {
     padding: 0px;
-    border-bottom: 2px solid #ffb52a;
-    background: #4E524F;
+    border-bottom: 2px solid @label_tip;
+    background: @bg_focused;
+    color: @bg;
 }
 
 #workspaces button.urgent {
     padding: 0px;
-    background-color: #eb4d4b;
-    border-bottom: 2px solid #DD77AA;
+    background-color: @bg_critical;
+    border-bottom: 2px solid @bg_urgent;
 }
 
 #mode {
-    background: #64727D;
-    border: 2px solid #252525;
+    background: @bg_mode;
+    border: 2px solid @fg;
 }
 
 #clock, #battery, #cpu, #memory, #temperature, #backlight, #network, #pulseaudio, #tray, #mode, #custom-ip {
     padding: 0 10px;
-    color: #252525;
+    color: @fg;
+    border-bottom-color: #0c6d1a;
 }
 
-@keyframes blink {
-    to {
-        background-color: #252525;
-        color: #000000;
-    }
+#cpu.warning {
+    background-color: @bg_warn;
 }
+
+#cpu.critical {
+    background-color: @bg_critical;
+}
+
+#tray {
+    /* border-bottom-color: #991121; */
+    margin-right: 2px;
+}
+
+/* @keyframes blink { */
+/*     to { */
+/*         background-color: @fg; */
+/*         color: #000000; */
+/*     } */
+/* } */
 
 #battery.critical:not(.charging) {
-    background: #f53c3c;
-    color: #252525;
+    background: @bg_urgent;
+    color: @fg;
     animation-name: blink;
     animation-duration: 0.5s;
     animation-timing-function: linear;
@@ -77,7 +96,22 @@ window#waybar.solo {
     animation-direction: alternate;
 }
 
-label:focus {
-    background-color: #000000;
+#battery.discharging.critical {
+    background-color: @bg_urgent;
+    color: #ffffff;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
 }
 
+#battery.discharging.warning {
+    background-color: @bg_warn;
+    color: #ffffff;
+}
+
+label:focus {
+    color: @fg;
+    background-color: @bg;
+}

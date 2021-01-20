@@ -1,6 +1,5 @@
-;;; layout-restore.el -*- lexical-binding: t; -*-
-;; --- keep window configuration as layout and restore it simply.
-
+;;; layout-restore.el --- keep window configuration as layout and restore it simply. -*- lexical-binding: t; -*-
+;;
 ;; Copyleft (C) Vektor
 
 ;; Emacs Lisp Archive Entry
@@ -12,10 +11,11 @@
 ;; Description:   keep window configuration as layout and restore it.
 ;; Compatibility: Emacs21.3 Emacs-CVS-21.3.50
 ;; URL:           http://www.emacswiki.org/cgi-bin/wiki/LayoutRestore
-
-(defconst layout-restore-version "0.4"
-  "LayoutRestore version number. The latest version is available from
-http://www.emacswiki.org/cgi-bin/wiki/LayoutRestore")
+;;
+;;
+;; This file is not part of GNU Emacs.
+;;
+;;; Commentary:
 
 ;; NOTE: Read the commentary below for how to use this package.
 
@@ -154,8 +154,6 @@ http://www.emacswiki.org/cgi-bin/wiki/LayoutRestore")
 
 ;;; Code:
 
-
-
 
 (require 'advice)
 
@@ -171,9 +169,6 @@ of this layout', '(buffer . buffer-name) cons of this layout'.")
 the same name in case we could find the original buffer. Useful when we want
 to keep a layout after close one of its buffer and reopen it.")
 
-(defvar layout-verbose t
-  "Print verbose message.")
-
 (defvar layout-restore-old-window-point nil
   "Restore the window point at the old place where layout recorded it.")
 
@@ -188,96 +183,103 @@ to keep a layout after close one of its buffer and reopen it.")
 by C-x o.")
 
 
-(defun layout-save-current ()
-  "Save the current layout, add a list of current layout to
-layout-configuration-alist."
-  (interactive)
-  (let ((curbuf (current-buffer))
-        (curwincfg (current-window-configuration))
-        layoutcfg)
-    (setq layoutcfg (list curbuf curwincfg))
+(defun layout/capture-wincfg ()
+  "Capture and return current laytout."
+  (let* ((curbuf (current-buffer))
+         (curwincfg (current-window-configuration))
+        (layoutcfg (list curbuf curwincfg)))
+
     (dolist (window (window-list nil 0))
       ;; (window-list) maybe contain a minibuffer, append (nil 0) to avoid
       (setq layoutcfg
             (append layoutcfg
                     (list (cons (window-buffer window)
                                 (buffer-name (window-buffer window)))))))
+    layoutcfg))
+
+(defun layout-save-current ()
+  "Save the current layout, add a list of current layout to
+layout-configuration-alist."
+  (interactive)
+  (let* ((layoutcfg (layout/capture-wincfg))
+         (curbuf (car layoutcfg)))
+
     (dolist (locfg layout-configuration-alist)
       (if (eq curbuf (car locfg))
           (setq layout-configuration-alist
                 (delq locfg layout-configuration-alist))))
-    (setq layout-configuration-alist
-          (cons layoutcfg layout-configuration-alist)))
-  (if layout-verbose (message "Current layout saved.")))
-  
+    (push layoutcfg layout-configuration-alist))
+  (message "Current layout saved."))
+
+
+(defun layout/restore-wincfg (wincfg)
+  "Restore specified WINCFG."
+  (let ((wincfg (cadr wincfg))
+        (buflist (cddr wincfg))
+        (new-point (not layout-restore-old-window-point))
+        (restorep t)
+        new-point-list
+        buffer-changed-p
+        bufname-changed-p
+        new-buffer-cons-list)
+
+    (dolist (bufcons buflist)
+      (if (buffer-live-p (car bufcons))
+          (if (not (string= (buffer-name (car bufcons))
+                            (cdr bufcons)))
+
+              (setq bufname-changed-p t
+                    new-buffer-cons-list
+                    (append new-buffer-cons-list
+                            (list (cons (car bufcons)
+                                        (buffer-name (car bufcons)))))
+                    new-point-list (append new-point-list
+                                           (list (with-current-buffer (car bufcons)
+                                                   (point) ))))
+            (setq new-buffer-cons-list (append new-buffer-cons-list (list bufcons))
+                  new-point-list (append new-point-list
+                                         (list (with-current-buffer (car bufcons)
+                                                 (point))))))
+        (if (not layout-accept-buffer-by-name)
+            (setq buffer-changed-p t
+                  restorep nil)
+          ;; accept reopened buffer by name, if any
+          (progn
+            (setq buffer-changed-p t)
+            (let ((rebuf (get-buffer (cdr bufcons)) ))
+              (if (not rebuf)
+                  (setq restorep nil)
+                (setq new-buffer-cons-list
+                      (append new-buffer-cons-list
+                              (list (cons rebuf (cdr bufcons))))
+                      new-point-list
+                      (append new-point-list
+                              (list
+                               (with-current-buffer rebuf
+                                 (point)))))))))))
+    (when restorep
+      (set-window-configuration wincfg)
+      (dolist (window (window-list nil 0))
+        (set-window-buffer window (caar new-buffer-cons-list))
+        (setq new-buffer-cons-list (cdr new-buffer-cons-list))
+        (when new-point
+          (set-window-point window (car new-point-list))
+          (setq new-point-list (cdr new-point-list))))
+      (if (or bufname-changed-p buffer-changed-p)
+          (layout-save-current)))))
+
 
 (defun layout-restore (&optional BUFFER)
   "Restore the layout related to the buffer BUFFER, if there is such a layout
 saved in `layout-configuration-alist', and update the layout if necessary."
   (interactive)
   (if (not BUFFER) (setq BUFFER (current-buffer)))
-  (let (wincfg
-        buflist
-        (new-point (not layout-restore-old-window-point))
-        new-point-list
-        buffer-changed-p
-        bufname-changed-p
-        new-buffer-cons-list
-        (restorep t))
-    (dolist (locfg layout-configuration-alist)
-      (when (eq BUFFER (car locfg))
-        (setq wincfg (cadr locfg))
-        (setq buflist (cddr locfg))))
-    (when wincfg
-      (dolist (bufcons buflist)
-        (if (buffer-live-p (car bufcons))
-            (if (not (string= (buffer-name (car bufcons))
-                              (cdr bufcons)))
-                
-                (setq bufname-changed-p t
-                      new-buffer-cons-list
-                      (append new-buffer-cons-list
-                              (list (cons (car bufcons)
-                                          (buffer-name (car bufcons)))))
-                      new-point-list (append new-point-list
-                                             (list (save-excursion
-                                                     (set-buffer (car bufcons))
-                                                     (point)))))
-              (setq new-buffer-cons-list (append new-buffer-cons-list (list bufcons))
-                    new-point-list (append new-point-list
-                                           (list (save-excursion
-                                                   (set-buffer (car bufcons))
-                                                   (point))))))
-          (if (not layout-accept-buffer-by-name)
-              (setq buffer-changed-p t
-                    restorep nil)
-            ;; accept reopened buffer by name, if any
-            (progn
-              (setq buffer-changed-p t)
-              (let ((rebuf (get-buffer (cdr bufcons))
-                           ))
-                (if (not rebuf)
-                    (setq restorep nil)
-                  (setq new-buffer-cons-list
-                        (append new-buffer-cons-list
-                                (list (cons rebuf (cdr bufcons))))
-                        new-point-list
-                        (append new-point-list
-                                (list (save-excursion
-                                        (set-buffer rebuf)
-                                        (point)))))))))))
-      (when restorep
-        (set-window-configuration wincfg)
-        (dolist (window (window-list nil 0))
-          (set-window-buffer window (caar new-buffer-cons-list))
-          (setq new-buffer-cons-list (cdr new-buffer-cons-list))
-          (when new-point
-            (set-window-point window (car new-point-list))
-            (setq new-point-list (cdr new-point-list))))
-        (if (or bufname-changed-p buffer-changed-p)
-            (layout-save-current))
-        (if layout-verbose (message "Previous saved layout restored.")))
-      )))
+
+  (dolist (locfg layout-configuration-alist)
+    (when (eq BUFFER (car locfg))
+      (layout/restore-wincfg locfg)))
+
+  (message "Previous saved layout restored."))
 
 (defun layout-delete-current (&optional BUFFER)
   "Delete the layout information from `layout-configuration-alist'
@@ -288,44 +290,20 @@ if there is an element list related to BUFFER."
     (when (eq BUFFER (car locfg))
       (setq layout-configuration-alist
             (delq locfg layout-configuration-alist))
-      (if layout-verbose (message "Layout about this buffer deleted.")))
-    ))
+      (message "Layout about this buffer deleted.")
+      )))
 
 (defun layout-unique-point-in-same-buffer-windows (&optional BUFFER)
   "Make identical opint in all windows of a same buffer."
   (if (not BUFFER) (setq BUFFER (current-buffer)))
   (dolist (locfg layout-configuration-alist)
     (when (eq BUFFER (car locfg))
-      (save-excursion
-        (set-buffer BUFFER)
+      (with-current-buffer BUFFER
         (let ((wlist (get-buffer-window-list BUFFER 0)))
           (dolist (window wlist)
             (set-window-point window (point))))))))
 
 
-;; (defadvice switch-to-buffer (around layout-restore-after-switch-buffer (BUFFER))
-;;   "Unique window point before `switch-to-buffer', and restore possible layout
-;; after `switch-to-buffer'."
-;;   (layout-unique-point-in-same-buffer-windows)
-;;   ad-do-it
-;;   (if layout-restore-after-switchbuffer
-;;       (layout-restore)))
-
-;; (defadvice kill-buffer (after layout-restore-after-kill-buffer (BUFFER))
-;;   "Restore possible layout after `kill-buffer' funcall."
-;;   (if layout-restore-after-killbuffer
-;;       (layout-restore)))
-
-;; (defadvice other-window (after layout-restore-after-other-window (ARG))
-;;   "Restore possible layout after `other-window' funcall."
-;;   (if layout-restore-after-otherwindow
-;;       (layout-restore)))
-
-;; (ad-activate 'switch-to-buffer)
-;; (ad-activate 'kill-buffer)
-;; (ad-activate 'other-window)
-
-
 (provide 'layout-restore)
 
-;;; layout-restore.el ends here.
+;;; layout-restore.el ends here

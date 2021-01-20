@@ -555,6 +555,24 @@ Possible choices:
   (message "Finished, node copied to killing-ring."))
 
 
+(defun uml/parse-stringfied-nodes (&optional silent)
+  "Parse all stringfied nodes.
+If `silent' is nil, print collected nodes before exit."
+  (interactive)
+  (setq uml/stringified-nodes nil)
+  (save-excursion
+    (goto-char (point-min))
+    (while (search-forward-regexp
+            (rx bol (* space)
+                (or "enum" "class" "interface")
+                (+ space)
+                (group (+? nonl))
+                (* space)
+                "{" eol) nil t)
+      (add-to-list 'uml/stringified-nodes (match-string-no-properties 1))))
+  (unless silent
+    (message "Stringfied notes: %s" (s-join ", " uml/stringified-nodes))))
+
 
 (provide 'semantic-uml)
 

@@ -63,6 +63,13 @@ Call ORIG-FUNC which is 'flycheck-next-error with ARGS."
                     (PDEBUG "Wrap to first error...")
                     (flycheck-first-error))))
     )
+
+  (defadvice! yc/lsp-adv-flycheck (&rest args)
+    "Docs
+ORIG-FUNC is called with ARGS."
+    :after  #'lsp
+    (flycheck-mode 1))
+
 )
 
 (use-package flycheck-popup-tip
@@ -105,7 +112,7 @@ LIMIT is the limit of search."
     (re-search-forward
      (rx (group (or "@" bow)
                     (or "bug" "fixme" "note" "todo" "todolist" "xxx" "yyc"
-                        "deprecated"  "obsolete"
+                        "deprecated"  "obsolete" "wip"
                         )
                     ":"))
      limit 'no-error)))
@@ -124,10 +131,7 @@ LIMIT is the limit of search."
 
 ;; Semantic mode.
 (use-package semantic
-  :commands (semantic-mode)
-  :hook (;; (prog-mode . semantic-mode)
-         (semantic-init . (lambda ()
-                            (condition-case nil (imenu-add-to-menubar "TAGS") (error nil)))))
+  :commands (semantic-mode semantic-force-refresh)
   :init
   (custom-set-variables
    '(semantic-default-submodes nil
@@ -143,7 +147,13 @@ LIMIT is the limit of search."
    '(pulse-flag 'never)
    '(semanticdb-default-save-directory (yc/make-cache-path "semanticdb"))
    '(srecode-map-save-file (yc/make-cache-path "srecode-map.el")))
-  )
+  :config
+  (defadvice! yc/semantic-fetch-tags-adv (&rest args)
+    "Enable semantic mode, if not enabled yet.
+ORIG-FUNC is called with ARGS."
+    :before  #'semantic-fetch-tags
+    (unless semantic-mode
+      (semantic-mode 1))))
 
 (use-package semantic/decorate/mode
   :defer t
@@ -165,7 +175,12 @@ LIMIT is the limit of search."
 
 (use-package srecode/mode
   :commands (srecode-minor-mode)
-  :hook ((prog-mode . srecode-minor-mode))
+  ;; :hook ((prog-mode . srecode-minor-mode)) ;; disabled for now, not used...
+  :bind (:map prog-mode-map
+              ("\C-cdc" . srecode-document-insert-comment)
+              ("\C-cdf" . srecode-document-insert-function-comment)
+              ("\C-cdv" . srecode-document-insert-variable-one-line-comment))
+
   :custom
   (srecode-insert-ask-variable-method 'field)
   :config
@@ -184,8 +199,39 @@ LIMIT is the limit of search."
   :ensure
   :commands (ivy-xref-show-xrefs)
   :config
-  (progn
-    (advice-add 'ivy-xref-show-xrefs :after #'yc/ivy-xref-show-xrefs-adv)))
+  (autoload 'yc/ivy-xref-show-xrefs-adv "prog-utils")
+  (advice-add 'ivy-xref-show-xrefs :after #'yc/ivy-xref-show-xrefs-adv)
+
+  (defadvice! yc/ivy-xref-make-collection-adv (orig-func xrefs)
+    "Transform XREFS into a collection for display via `ivy-read', using
+    relative file name. ORIG-FUNC is ignored.."
+    :around  #'ivy-xref-make-collection
+    (let ((collection nil)
+          (root (projectile-project-root)))
+
+      (dolist (xref xrefs)
+        (with-slots (summary location) xref
+          (let* ((line (xref-location-line location))
+                 (file (xref-location-group location))
+                 (candidate
+                  (concat
+                   (propertize
+                    (concat
+                     (if (and root
+                              (string-prefix-p root file))
+                         ;; TODO: hide some part of file name if it is too long...
+                         (substring file (length root))
+                       file)
+                     (if (integerp line)
+                         (format ":%d: " line)
+                       ": "))
+                    'face 'compilation-info)
+                   (progn
+                     (when ivy-xref-remove-text-properties
+                       (set-text-properties 0 (length summary) nil summary))
+                     summary))))
+            (push `(,candidate . ,location) collection))))
+      (nreverse collection))))
 
 (use-package xref
   :commands (xref-backend-identifier-at-point  xref-find-backend)
@@ -201,8 +247,7 @@ LIMIT is the limit of search."
   :bind (:map prog-mode-map
               ("\C-csD" . uml/struct-to-dot)
               ("\C-csd" . uml/struct-to-puml)
-              (;; (kbd "C-c s M-d")
-               [3 115 134217828] . uml/struct-to-puml-fields-only)))
+              ("C-c s M-d" . uml/struct-to-puml-fields-only)))
 
  ;; lsp
 (defvar yc/lsp-warned-mode-list nil "List of modes already been warn for disabling LSP.")
@@ -240,18 +285,38 @@ If PREPARE-FUNC is given, evaluate before starting lsp."
 
 (use-package lsp-mode
   :preface
+  (autoload 'lsp-headerline--build-symbol-string "lsp-headerline")
+
+    (defun yc/lsp-which-function ()
+    "Returns current function symbol with support of LSP."
+    (awhen (and
+            buffer-file-name
+            (bound-and-true-p lsp-mode)
+            (lsp-feature? "textDocument/documentSymbol")
+            (s-trim (lsp-headerline--build-symbol-string)))
+      (if (> (length it) 0)
+          (s-replace-regexp " *> *" "::" it))))
+
+  (yc/eval-after-load 'which-func
+    (pushnew! which-func-functions #'yc/lsp-which-function))
+
   (defun yc/modeline-update-lsp ()
     "Update `lsp-mode' status."
     (setq-local yc/modeline--lsp
                 (if (bound-and-true-p lsp-mode)
-                    (concat " "
-                            (if-let (workspaces (lsp-workspaces))
+                    (let ((symbol-face 'font-lock-keyword-face)
+                          (server-name "--"))
+                      (if-let (workspaces (lsp-workspaces))
+                          (setq server-name
                                 (string-join
                                  (--map
-                                  (format "[%s]"
-                                          (-> it lsp--workspace-client lsp--client-server-id symbol-name (propertize 'face 'bold-italic)))
+                                  (format "%s"
+                                          (-> it lsp--workspace-client lsp--client-server-id symbol-name))
                                   workspaces))
-                              (propertize "[]" 'face 'warning))))))
+                                symbol-face 'bold-italic))
+                      (concat " " (propertize "" 'face symbol-face)
+                              "[" (propertize server-name   'face 'italic)
+                              "]")))))
 
   (defun yc/lsp-format-adv (func &rest args)
     "Advice for 'lsp-format-buffer'.
@@ -310,36 +375,45 @@ Call FUNC which is 'lsp-format-buffer with ARGS."
   :commands (lsp lsp-workspaces lsp--workspace-print lsp-format-region
                  lsp-format-buffer)
   :custom
-  (lsp-diagnostic-package :auto)
-  (lsp-restart 'interactive)
+  (lsp-diagnostics-provider :flycheck)
+  (lsp-diagnostics-flycheck-default-level 'warn)
+
+  (lsp-restart 'ignore)
+
+  (lsp-auto-configure t)
+
   (lsp-enable-imenu nil)
   (lsp-enable-symbol-highlighting nil)
   (lsp-enable-links t)
   (lsp-enable-snippet t)
-  (lsp-auto-configure t)
   (lsp-log-io nil)
-  (lsp-flycheck-live-reporting nil)
-  (lsp-flycheck-default-level 'warn)
+
   (lsp-keep-workspace-alive t)
-  (lsp-completion-provider :capf)
+
   (lsp-completion-enable t)
-  (read-process-output-max (* 1024 1024))
+  (lsp-completion-provider :capf)
+
+  (read-process-output-max (* 16 1024 1024))
 
   ;; Disable features that have great potential to be slow.
   (lsp-enable-file-watchers nil)
   (lsp-enable-folding nil)
   (lsp-enable-text-document-color nil)
-  (lsp-enable-semantic-highlighting nil)
+  (lsp-semantic-tokens-enable nil)
 
   ;; Don't modify our code without our permission
   (lsp-enable-indentation nil)
   (lsp-enable-on-type-formatting nil)
 
+  (lsp-keymap-prefix nil)
+
   (lsp-headerline-breadcrumb-enable nil)
   (lsp-modeline-code-actions-enable nil)
   (lsp-modeline-diagnostics-enable nil)
   (lsp-modeline-workspace-status-enable nil)
+
   (lsp-lens-enable nil)
+  (lsp-headerline-breadcrumb-icons-enable nil)
 
   :hook
   ((lsp-after-open . (lambda ()
@@ -352,23 +426,30 @@ Call FUNC which is 'lsp-format-buffer with ARGS."
 
 
   :config
-  (defadvice! yc/lsp-adv (orig-func  &rest args)
+
+  (defadvice! yc/lsp-adv (&rest args)
     "Advice for 'lsp'.
 Call ORIG-FUNC which is 'lsp with ARGS.
 Loading project specific settings before starting LSP."
-    :around #'lsp
+    :before-while #'lsp
     ;; Load project-specific settings...
-    (condition-case err
-        (when (yc/lsp-load-project-configuration)
-          ;; Calls lsp...
-          (apply orig-func args)
-          (flycheck-mode 1))
-      (error nil))
+    (aif (condition-case err
+             (yc/lsp-load-project-configuration)
+           (user-error
+            (progn
+              (PDEBUG "LSP is disabled:" (cdr err))
+              nil))
+           (error (progn
+                    (PDEBUG "LSP error: %s" (cdr err))
+                    nil)))
+        it
 
-    (unless (bound-and-true-p lsp-mode)
+      ;;  should not load lsp, use semantic-mode
       (semantic-mode 1)
       (when (buffer-file-name)
-        (semantic-force-refresh))))
+        (semantic-force-refresh))
+      (yc/push-find-func #'semantic-ia-fast-jump)
+      nil))
 
   (advice-add 'lsp-format-buffer :around #'yc/lsp-format-adv)
   (advice-add 'lsp-format-region :around #'yc/lsp-format-adv)
@@ -404,7 +485,6 @@ ORIG-FUNC is called with ARGS."
       (pop company-backends))))
 
 
-
 (defvar-local yc/cached-symbols nil "last cached index.")
 (defvar-local yc/document-symbols-tick -1 "last tick of modification.")
 (add-to-list 'auto-mode-alist (cons ".lsp-conf" 'emacs-lisp-mode))
@@ -427,12 +507,14 @@ ORIG-FUNC is called with ARGS."
               (aif (locate-dominating-file default-directory item)
                   (throw 'p-found (concat (expand-file-name it) item)))))))
 
+    (PDEBUG "FOUNT: " root-file)
+
     (if (and root-file
              (string= (normallize-file (getenv "HOME"))
                       (normallize-file (file-name-directory root-file))))
         (setq root-file nil))
 
-    (if (called-interactively-p)
+    (if (called-interactively-p 'interactive)
         (message "Root file: %s." root-file))
     root-file))
 
@@ -508,9 +590,10 @@ ORIG-FUNC is called with ARGS."
 
 ;;;; Common Program settings
 (use-package prog-utils
-  :commands (yc/insert-single-comment yc/show-methods-dwim yc/open-header yc/push-stack)
-  ;; :bind ((;; (kbd "M-m")
-  ;;         [134217837] . yc/show-methods-dwim))
+  :commands (yc/insert-single-comment
+             yc/show-methods-dwim  yc/push-stack
+             yc/push-find-func
+             yc/asm-post-process)
   :bind (:map esc-map
               ("." . yc/find-definitions)
               ("?" . yc/find-references)
@@ -518,33 +601,21 @@ ORIG-FUNC is called with ARGS."
               ("r" . yc/return-reflist)
               ("i" . yc/find-implementation)
               ("m" . yc/show-methods-dwim))
-  :bind (([remap rectangle-mark-mode] . yc/store-current-location)))
+  :bind (([remap rectangle-mark-mode] . yc/store-current-location))
+  :bind (:map prog-mode-map
+              ("C-c o" . yc/open-header)
+              ("C-c d h" . yc/header-make)
+              ("C-c d e" . yc/insert-empty-template)
+              ("C-c d s" . yc/insert-single-comment)
+              ("C-c C-a" . yc/wip-comment)
+              )
 
-;; (yc/set-keys `(,(cons (kbd "M-m") 'yc/show-methods-dwim)) nil)
-
-(defun yc/show-doc-at-point ()
-  "Show document."
-  (interactive)
-  (if (bound-and-true-p lsp-mode)
-      (lsp-ui-doc-glance)
-    (yc/doc-at-point)))
+  :hook ((asm-mode . yc/asm-post-process)))
 
 (defun setup-prog-keybindings()
   "Common program-keybindings."
   (interactive)
-  (local-set-key (kbd "M-|") 'align)
-  (local-set-key "\C-co"    'yc/open-header)
-  (local-set-key "\C-cp" 'semantic-ia-show-doc)
-  (local-set-key "\C-cdp" 'yc/show-doc-at-point)
-  (local-set-key "\C-cdP" 'yc/doc-at-point)
-
-  ;;;; Keybindings for srecode
-  (local-set-key "\C-cdc" 'srecode-document-insert-comment)
-  (local-set-key "\C-cdf" 'srecode-document-insert-function-comment)
-  (local-set-key "\C-cdh" 'yc/header-make)
-  (local-set-key "\C-cde" 'yc/insert-empty-template)
-  (local-set-key "\C-cds" 'yc/insert-single-comment)
-  (local-set-key "\C-cdv" 'srecode-document-insert-variable-one-line-comment))
+  (local-set-key (kbd "M-|") 'align))
 
 (defun yc/common-program-hook ()
   "My program hooks."
@@ -643,7 +714,7 @@ This function returns a string as compile command, or nil if it can't handle
   :config
   (setq dash-docs-docsets-path
         (let ((original-dash-path (expand-file-name "~/Library/Application Support/Dash/DocSets")))
-          (if (and (string-equal system-type 'darwin)
+          (if (and IS-MAC
                    (file-directory-p original-dash-path))
               original-dash-path
             (expand-file-name "~/Documents/dash-docsets")))
@@ -652,8 +723,7 @@ This function returns a string as compile command, or nil if it can't handle
 
 (use-package counsel-dash
   :commands (counsel-dash counsel-dash-at-point counsel-dash-install-docset)
-  :bind ((;; (kbd "<M-f1>")
-          [M-f1] . counsel-dash-at-point))
+  :bind (("<M-f1>" . counsel-dash-at-point))
   )
 
 

@@ -176,8 +176,7 @@
                              company-sql-update-candidates
                              eshell/restart_pg sql/remove-costs)
   :bind (:map sql-mode-map
-              (;; (kbd "C-c C-x")
-               "" . sql/eval-sql)))
+              ("C-c C-x" . sql/eval-sql)))
 
 (defun yc/sql-mode-hook ()
   "My hook to run for sql mode."
@@ -327,7 +326,6 @@
 
   :mode ((rx ".rs" buffer-end)))
 
-
 (use-package lua-mode
   :commands (lua-mode)
   :mode (rx "." (or "lua") eow)
@@ -344,6 +342,37 @@
 (use-package groovy-mode
   :mode (rx "." (or "grovvy" "gradle") buffer-end)
   )
+
+(use-package meson-mode
+  :init
+  (yc/add-compile-unit 'meson 10
+    (when (or (locate-dominating-file default-directory "meson.build")
+              (equal major-mode 'meson-mode))
+
+      (lambda ()
+        (interactive)
+        (unless (executable-find "meson")
+          (error "Can't find executable: meson"))
+
+        (unless (locate-dominating-file default-directory "meson.build")
+          (error "Can't find meson.build in directory: %s" default-directory))
+
+        (let* ((build-type (if current-prefix-arg "release" "debug"))
+               (build-dir (expand-file-name (concat "build_" build-type))))
+
+          (if (file-exists-p build-dir)
+              (progn
+                (unless (file-directory-p build-dir)
+                  (error "File %s exists, but it is not a directory" build-dir))
+
+                (if (file-exists-p (expand-file-name "build.ninja" build-dir))
+                    (format "cd %s && meson --reconfigure " build-dir)
+                  (format "cd %s && meson .. " build-dir)))
+
+            (make-directory build-dir)
+            (format "cd %s && meson .. " build-dir))))))
+
+  :mode "/meson\\(\\.build\\|_options\\.txt\\)\\'")
 
 
 (provide '056-prog-others)

@@ -49,4 +49,3 @@ function executable-find ()
 
     return $r
 }
-

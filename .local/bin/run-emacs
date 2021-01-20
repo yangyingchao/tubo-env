@@ -15,17 +15,12 @@
 ###   -n		Don't wait for the server to return
 ###   -t 		Open a new Emacs frame on the current terminal
 ###   -c    	Create a new frame instead of trying to use the current Emacs frame
+###   -e        Evaluate the FILE arguments as ELisp expressions
 
 source ~/.local/bin/common.sh
 
-export LC_CTYPE=zh_CN.UTF-8
-export LC_ALL=
-
-# if [ -f /opt/rh/devtoolset-9/enable ]; then
-#     TOOLSET=/opt/rh/devtoolset-9/root/usr
-#     source /opt/rh/devtoolset-9/enable
-#     export LD_LIBRARY_PATH=${TOOLSET}/lib:${TOOLSET}/lib64:${LD_LIBRARY_PATH}
-# fi
+# export LC_CTYPE="C"
+# export LC_ALL=
 
 ARCH=`uname`
 
@@ -52,12 +47,6 @@ function die ()
 
 function help() {
     sed -rn 's/^### ?//;T;p' "$0"
-}
-
-# find emacs client, based on EMACS
-function find-emacsclient ()
-{
-    echo "OK"
 }
 
 # check if emacs is available.
@@ -89,25 +78,14 @@ function prepare-executable ()
     done
 
     if [ $ARCH = 'Darwin' ] && [ -f /Applications/Emacs.app/Contents/MacOS/Emacs ] ; then
+        PDEBUG "macOS ..."
         EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs
         EMACSCLIENT=/Applications/Emacs.app/Contents/MacOS/bin/emacsclient
     fi
 
-    PDEBUG "EMACS: ${EMACS}, CLIENT: ${EMACSCLIENT}"
+    [ -z "$EMACS" ] && die "Failed to find proper emacs executable..."
 
-    [ -z "$EMACS" ] &&  die "Failed to find proper emacs executable."
-
-    ### setup TERM before starting emacs, if necessary
-    # http://skybert.net/emacs/colourful-tty-emacs/
-    # https://www.gnu.org/software/emacs/manual/html_node/efaq/Colors-on-a-TTY.html
-
-    if ! [ "$TERM" = "dumb" ] && ! [[ $TERM =~ direct ]] &&  ! [[ $TERM =~ 24bits ]]; then
-        echo "Generating terminfo for xterm-24bits..."
-        sudo tic -x -o /usr/share/terminfo ~/.local/share/terminfo/xterm-24bit.src
-        export TERM=xterm-24bits
-        grep -q "xterm-24bits" ~/.zshrc.d/10-priv.zsh || \
-            echo "[[ \"$TERM\" == \"dumb\" ]] || export TERM=xterm-24bits" >> ~/.zshrc.d/10-priv.zsh
-    fi
+    return 0
 }
 
 _is_emacs_daemon_started () {
@@ -138,6 +116,10 @@ function ensure_emacs_started ()
 {
     _is_emacs_daemon_started && return 0
     if [ $? -ne 0 ] ; then
+
+        # generate core, if emacs crashes..
+        cd ~
+        ulimit -c unlimited
         $EMACS --daemon || die "Failed to start emacs"
     fi
 
@@ -194,7 +176,7 @@ args=()
 
 NEW_INSTANCE=
 # Get arguments passed to emacsclient.
-while getopts NhDtnc var; do
+while getopts NhDtnce: var; do
     case $var in
         h)
             help
@@ -211,6 +193,10 @@ while getopts NhDtnc var; do
             args+=("-n");;
         c)
             args+=("-c");;
+        e)
+            args+=("-e")
+            args+=("$OPTARG")
+            ;;
         *)
             echo "??? $var"
             help
@@ -220,7 +206,8 @@ while getopts NhDtnc var; do
 done
 shift $(($OPTIND - 1))
 
-prepare-executable
+prepare-executable || die "Failed to find proper emacs executable."
+PDEBUG "EMACS: ${EMACS}, CLIENT: ${EMACSCLIENT}"
 
 parse_files $@
 
@@ -243,11 +230,11 @@ else
     fi
 
     gui_mode=
-    [[ "$args" =~ -t ]] || gui_mode=1
+    [[ "$args[@]" =~ -t ]] || gui_mode=1
 
 
-    if [[ ! "$args" =~ -t ]]; then
-        _is_emacs_window_exist || args="$args -c"
+    if [[ ! "$args[@]" =~ -t ]]; then
+        _is_emacs_window_exist || args+=("-c")
     fi
 
     PDEBUG "Args to ${EMACSCLIENT}: ${args[@]} ${files[@]}"

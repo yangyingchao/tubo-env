@@ -164,13 +164,56 @@ This macro accepts, in order:
                    (nreverse forms)
                  forms))))))
 
-(defmacro pushnew! (place &rest values)
+(yc/defmacro pushnew! (place &rest values)
   "Push VALUES sequentially into PLACE, if they aren't already present.
 This is a variadic `cl-pushnew'."
   (let ((var (make-symbol "result")))
     `(dolist (,var (list ,@values) (with-no-warnings ,place))
        (cl-pushnew ,var ,place :test #'equal))))
 
+(yc/defmacro appendq! (sym &rest lists)
+  "Append LISTS to SYM in place."
+  `(setq ,sym (append ,sym ,@lists)))
+
+(yc/defmacro setq! (&rest settings)
+  "A stripped-down `customize-set-variable' with the syntax of `setq'.
+
+This can be used as a drop-in replacement for `setq'. Particularly when you know
+a variable has a custom setter (a :set property in its `defcustom' declaration).
+This triggers setters. `setq' does not."
+  (macroexp-progn
+   (cl-loop for (var val) on settings by 'cddr
+            collect `(funcall (or (get ',var 'custom-set) #'set)
+                              ',var ,val))))
+
+(yc/defmacro delq! (elt list &optional fetcher)
+  "`delq' ELT from LIST in-place.
+
+If FETCHER is a function, ELT is used as the key in LIST (an alist)."
+  `(setq ,list
+         (delq ,(if fetcher
+                    `(funcall ,fetcher ,elt ,list)
+                  elt)
+               ,list)))
+
+
+(defun yc/function-wrapper (orig-func &rest args)
+  "Function wrapper for ORIG-FUNC is called with ARGS.
+It write FUNCTION-NAME, INPUT and OUTPUT into YC-DEBUG buffer."
+  :around  #'lsp-completion--exit-fn
+  (let ((yc/debug-log-limit -1)
+        (res (apply orig-func args)))
+    (PDEBUG
+     "FUNC:" orig-func
+     "INPUT:" args
+     "OUTPUT:" res)
+    res))
+
+(defmacro yc/define-wrapper (func)
+  "Define wrapper for FUNC."
+  `(advice-add ,func :around #'yc/function-wrapper))
+
+
 (defmacro yc/add-safe-local-var (&rest vars)
   "Add VARS as `safe-local-variable-values'."
   `(setq safe-local-variable-values (append ,(push 'list vars) safe-local-variable-values)))
@@ -241,7 +284,8 @@ Don't output logs when QUIET is t."
         (custom-set-variables
          '(debug-on-error t)
          '(debug-on-quit nil)
-         '(use-package-verbose t)
+         '(use-package-verbose 'debug)
+         '(use-package-minimum-reported-time 0)
          '(yas-verbosity 4))
         (advice-add 'run-hooks :around #'yc/run-hooks-est-time))
 
@@ -290,6 +334,12 @@ Don't output logs when QUIET is t."
      (let ((func ,(or (when (fboundp 'which-function) (which-function)) "unkown")) )
        (funcall 'yc/debug-log func ,@args))))
 
+(autoload 'backtrace-to-string "backtrace")
+(defmacro PTRACE (&rest args)
+  "Similar to PDEBUG, but print with backtrace."
+  `(when YC-DEBUG
+     (let ((func ,(or (when (fboundp 'which-function) (which-function)) "unkown")) )
+       (funcall 'yc/debug-log func (append (list "Call Stack:"(backtrace-to-string))),@args))))
 
 
 (defcustom available-width '(78 82 86 92 98)
@@ -319,26 +369,13 @@ Don't output logs when QUIET is t."
         78)))
 
 
-(defun yc/setup-column()
-  "setup column width, fill-column can be overwriten by 100-private.el"
-  (let ((x-width (x-display-pixel-width)))
-    (when x-width
-      (setq-default fill-column (yc/calc-column-width x-width)))))
-
-
-(defun pprintfonts (fonts)
-  (dolist (f fonts)
-    (message "%s" f))
-  fonts)
-
 (defun yc/search-fonts (&optional font)
   (interactive)
   (let* ((target (or font (completing-read "Fonty Name: " nil)))
-         (answer (pprintfonts
-                  (cl-remove-if
+         (answer (cl-remove-if
                    (lambda (x)
                      (not (string-match-p (concat ".*" target ".*") x)))
-                   (font-family-list)))))
+                   (font-family-list))))
 
     (if (called-interactively-p 'interactive)
         (message "Target: %s, fond: %s" target answer))
@@ -349,6 +386,7 @@ Don't output logs when QUIET is t."
 ;; keyboard shortcut is C-u C-x =
 
 (defun yc/set-font (font points)
+  "Search and set up FONT with size POINTS."
   (awhen (car (yc/search-fonts font))
     (let ((font it)
           (height (* points 10)))
@@ -391,48 +429,48 @@ Don't output logs when QUIET is t."
   "Setup font."
   (when window-system
     (let ((font (catch 'p-found
-                  (dolist (p `(("Monego" .
-                                ,(cl-case system-type
-                                   ('darwin 13)
-                                   ('gnu/linux (if (> (yc/get-currnet-monitor-width) 1920)
-                                                   11 ;; hidpi...
-                                                 10))
+                  (dolist (p `( (,(if IS-MAC
+                                      "Monaco Nerd Font Mono"
+                                    "Monego")
+                                 .
+                                 ,(cond
+                                   (IS-MAC 13)
+                                   (IS-LINUX (if (> (yc/get-currnet-monitor-width) 1920)
+                                                 11 ;; hidpi...
+                                               10))
                                    (t 11)))
-                               ("Monaco" .
-                                ,(cl-case system-type
-                                   ('darwin 13)
-                                   ('gnu/linux (if (> (yc/get-currnet-monitor-width) 1920)
-                                                   11 ;; hidpi...
-                                                 10))
-                                   (t 11)))
-                               ("Cascadia Mono" . 11)
-                               ("Inconsolata" . 14 )))
+
+                                ("Cascadia Mono" . 11)
+                                ("Inconsolata" . 14 )))
 
                     (aif (yc/set-font (car p) (cdr p))
-                        (throw 'p-found it)))))
+                        (throw 'p-found it)))
+                  '("NIL" . -1)))
           (cjk-font (catch 'p-found
                       (dolist (p '(( "Hiragino Sans GB"    . 15 )
                                    ( "WenQuanYi Micro Hei" . 15 )
                                    ( "Microsoft YaHei"     . 15 )))
 
                         (aif (yc/set-cjk-font (car p) (cdr p))
-                            (throw 'p-found it))))))
+                            (throw 'p-found it)))
+                      '("NIL" . -1))))
       (message "Font set to: %s - %d, CJK-Font: %s - %d"
                (car font) (cdr font) (car cjk-font) (cdr cjk-font)))))
-
-(yc/set-font "Monaco" 15)
 
 (defun yc/setup-display (&optional frame)
   "Setup display, including: font, colortheme, and fill-column."
   (interactive)
   (if window-system
-    (condition-case error
-        (progn
-          (yc/setup-font)
-          (yc/setup-column)
-          (setq-default header-line-format nil)
-          )
-      (error (message "set display failed.")))
+      (condition-case error
+          (progn
+            (yc/setup-font)
+
+            (let ((x-width (x-display-pixel-width)))
+              (when x-width
+                (setq-default fill-column (yc/calc-column-width x-width))))
+
+            (setq-default header-line-format nil))
+        (error (message "set display failed.")))
 
     ;; set header-line, if connect from home.
     (setq-default header-line-format
@@ -476,17 +514,28 @@ Call FUNC with ARGS."
  (list
   (cons (kbd "C-,") 'backward-page)
   (cons (kbd "C-.") 'forward-page)
-  (cons (kbd "C->") 'end-of-buffer)
+
   (cons (kbd "C-<") 'beginning-of-buffer)
+  (cons (kbd "C->") 'end-of-buffer)
+
+  (cons (kbd "C-M-,") 'beginning-of-buffer)
+  (cons (kbd "C-M-.") 'end-of-buffer)
+
   (cons (kbd "C-w") 'kill-region)
   (cons [f4] 'goto-line)
   (cons (kbd "C-x C") 'kill-emacs)
 
-  ;; special mappings for iTerm2...
+  ;; special mappings for alacritty...
+
+  ;; For Control Sequence Introducer, or CSI, commands consists of:
+  ;;        ESC [
+  ;;        any number (including none) of "parameter bytes" in the range 0x30–0x3F (ASCII 0–9:;<=>?)
+  ;;        any number of "intermediate bytes" in the range 0x20–0x2F (ASCII space and !"#$%&'()*+,-./)
+  ;;        finally by a single "final byte" in the range 0x40–0x7E (ASCII @A–Z[\]^_`a–z{|}~)
+
   (cons (kbd "M-[ 1 ; 5 l") 'backward-page)
   (cons (kbd "M-[ 1 ; 5 n") 'forward-page)
   (cons (kbd "M-[ 1 ; 6 l") 'beginning-of-buffer)
-  (cons (kbd "M-[ 1 ; 6 n") 'end-of-buffer)
   (cons (kbd "M-[ 1 ; 6 n") 'end-of-buffer)
 
   ;; narrow-to-xxx
@@ -534,7 +583,6 @@ Amode.
                      (message "%s -- %s" (car var) (cdr var))
                      (pop pkgs)))))))))
 
-(autoload 'backtrace-to-string "backtrace")
 (defun yc/install-package-on-error (func &rest args)
   "Apply FUNC with ARGS.
 And install necessary packages if there are errors while executing FUNC."
@@ -599,7 +647,7 @@ And install necessary packages if there are errors while executing FUNC."
   "Don't show trailing white spaces."
   (interactive)
   (setq show-trailing-whitespace nil))
-
+
 (defun yc/update-exec-path ()
   "Description."
   (interactive)
@@ -661,7 +709,9 @@ And install necessary packages if there are errors while executing FUNC."
 
 (add-hook 'emacs-startup-hook (lambda ()
                                 (yc/setup-display)
-                                (yc/load-shell-env)))
+                                (yc/load-shell-env)
+                                (unless (executable-find "aspell")
+                                  (warn "aspell not found, flyspell/ispell will not work."))))
 
 (defun yc/file-directory-p (x)
   "Similar to `file-directory-p', but return X unchanged if x is a directory."
@@ -672,9 +722,12 @@ And install necessary packages if there are errors while executing FUNC."
       (PDEBUG "File does not exist:" x)
       nil)))
 
-(defun yc/file-exists-p (x)
-  "Similar to `file-exist-p', but return X unchanged if x is a directory."
-  (let ((path (expand-file-name x)))
+(defun yc/file-exists-p (x &optional no-expand)
+  "Similar to `file-exist-p', but return X unchanged if x exists.
+If NO-EXPAND is t, don't expand file name."
+  (let ((path (if no-expand
+                  x
+                (expand-file-name x))))
     (PDEBUG "CHECKING: " x)
     (if (file-exists-p path)
         path
@@ -721,7 +774,9 @@ This does not change the title in the corresponding icon."
 (defvar term-screen-dcs-encapsulation
   (not (null (or (getenv "STY")
                  (save-match-data
-                   (string-match "^screen\\(\\|-.*\\)$" (getenv "TERM")))))))
+                   (string-match "^screen\\(\\|-.*\\)$"
+                                 (or (getenv "TERM") "dumb")))))))
+
 (defun term-send-escape-sequence (string)
   "Send STRING to term."
   (cond ((and term-screen-dcs-encapsulation
@@ -756,6 +811,12 @@ This does not change the title in the corresponding icon."
 ;; (add-hook 'buffer-list-update-hook 'yc/update-term-title)
 (add-hook 'after-change-major-mode-hook 'yc/update-term-title)
 (add-function :after after-focus-change-function #'yc/update-term-title)
+
+(defun try-require (symbol)
+  "Similar to require, but returns nil when fail.."
+  (condition-case var
+      (require symbol)
+    (error nil)))
 
  
 ;; Local Variables:
