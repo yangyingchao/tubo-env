@@ -545,24 +545,27 @@ ORIG-FUNC is called with ARGS."
 
   (defvar yc/eww-layout-cfg nil "Previous buffer before eww is called.")
 
-  (defun yc/kill-buffer-when-quit-window ()
-    "Kill buffer on quit-window."
-
+  (defadvice! yc/quit-window-adv (orig-func &rest args)
+    "Kill buffer on quit-window.
+ORIG-FUNC is called with ARGS."
+    :around  #'quit-window
     (let ((mode major-mode))
 
-    (PDEBUG "CURRENT:" (current-buffer) major-mode
-            "EWW:" (eq mode 'eww-mode)
-            "BUF:" (car yc/eww-layout-cfg))
-      (when (member mode '(eww-mode Man-mode woman-mode Info-mode))
-        (kill-buffer (current-buffer)))
+      (PDEBUG "CURRENT:" (current-buffer) major-mode
+              "EWW:" (eq mode 'eww-mode)
+              "BUF:" (car yc/eww-layout-cfg))
 
-      (when (and (eq mode 'eww-mode)
-                 yc/eww-layout-cfg)
-        (layout/restore-wincfg (pop yc/eww-layout-cfg)))))
+      (if (member mode '(eww-mode Man-mode woman-mode Info-mode))
+          (progn
+            (kill-buffer (current-buffer))
 
+            (when (and (eq mode 'eww-mode)
+                       yc/eww-layout-cfg)
+              (PDEBUG "Restory: " (car yc/eww-layout-cfg))
+              (layout/restore-wincfg (pop yc/eww-layout-cfg))))
+        (apply orig-func args))))
 
-  :hook ((eww-mode . yc/disable-trailling-spaces)
-         (quit-window . yc/kill-buffer-when-quit-window))
+  :hook ((eww-mode . yc/disable-trailling-spaces))
 
   :bind (:map eww-mode-map
               ("C-c o" . eww-browse-with-external-browser)

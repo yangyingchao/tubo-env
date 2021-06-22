@@ -257,6 +257,7 @@ layout-configuration-alist."
                               (list
                                (with-current-buffer rebuf
                                  (point)))))))))))
+    (PDEBUG "Will restore: " restorep wincfg)
     (when restorep
       (set-window-configuration wincfg)
       (dolist (window (window-list nil 0))
