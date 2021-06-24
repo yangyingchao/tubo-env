@@ -168,10 +168,16 @@ If called with prefix-arg, use projectile."
                (new-args (let ((i 0) ret)
                            (while (< i (length args))
                              (let ((arg (elt args i)))
+                               (PDEBUG "ARG:" arg)
                                (cond
                                 ((string-match-p "\\`--driver-mode=.+" arg) (cl-incf i))
                                 ((string-match "\\`-working-directory=\\(.+\\)" arg)
                                  (setq working-directory (match-string 1 arg)))
+                                ;; replace -o xxx.o to: -o /dev/null to drop output.
+                                ((string= "-o" arg)
+                                 (push arg ret)
+                                 (push "/dev/null" ret)
+                                 (cl-incf i))
                                 (t (push arg ret))))
                              (cl-incf i))
                            (nreverse ret))))
