@@ -141,7 +141,43 @@ This function accept file name as argument, and return t if file is merged autom
             (recode-region (point-min) (point-max) 'undecided 'utf-8)
             (setq buffer-read-only t))))
   :config
-  (magit-auto-revert-mode 1))
+  (magit-auto-revert-mode 1)
+
+  (defadvice! yc/magit-insert-staged-changes-adv (&rest args)
+    "Don't show staged commits if there are more than 128 commits, or it will  be very slow...."
+    :before-until  #'magit-insert-staged-changes
+    (let ((stats (magit-git-string "diff" "--shortstat"  "--cached" "--no-prefix" "--" )))
+      (when (and stats
+                 (string-match (rx  (* space) (group (+ digit)) (+ space) "file") stats))
+        (let ((staged-files (match-string 1 stats)))
+          (PDEBUG "FILES:" staged-files)
+          (when (> (string-to-number staged-files) 128)
+            (magit-insert-heading "Staged changes:" )
+            (insert "  skipped due to too many files: " staged-files "\n\n")
+            t)))))
+
+  (defadvice! yc/magit-insert-merge-log-adv (&rest args)
+    "Don't show detailed commits if there are more than 128 commits, or it will be very slow...."
+  :before-until  #'magit-insert-merge-log
+  (when (magit-merge-in-progress-p)
+    (PDEBUG "A")
+    (let* ((heads (mapcar #'magit-get-shortname
+                          (magit-file-lines (magit-git-dir "MERGE_HEAD"))))
+           (range (magit--merge-range (car heads)))
+           (total-logs (yc/command-output-to-string
+                        "bash" "-c"
+                        (format "git log --pretty=oneline %s  -- | wc -l " range))))
+
+      (PDEBUG "R" total-logs)
+
+      (when (> (string-to-number total-logs) 128)
+        (magit-insert-heading
+          (format "Merging %s:" (mapconcat #'identity heads ", ")))
+        (insert "  skipped due to too many commits: "
+                total-logs "\n\n")
+        t))))
+
+  )
 
 (defadvice! yc/with-editor-locate-emacsclient-adv (&rest args)
   "Find proper emacsclient for with-editor."
