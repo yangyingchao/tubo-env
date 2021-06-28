@@ -78,8 +78,14 @@
       (switch-to-buffer cur-buffer)
       (message "All buffer reloaded..."))))
 
-(defalias 'rlf 'reload-all-files)
-
+(defun yc/kill-ghost-buffers ()
+  "Kill buffers not backed by files.."
+  (interactive)
+  (dolist (buffer (buffer-list))
+    (when (and (not (buffer-modified-p buffer))
+               (buffer-file-name buffer)
+               (not (file-exists-p (buffer-file-name buffer))))
+      (kill-buffer buffer))))
 
 ;; *********** Fuctions for edit special rc-files quickly ************
 
@@ -714,11 +720,6 @@ If NAME-ONLY is t, returns full path of selected file, instead of opening it."
                                                   t))
                           (t nil))))
     project-root))
-
-(defun edit-project ()
-  "Edit project configurations."
-  (interactive)
-  (yc/list-directory "~/.emacs.d/rc" "^09[0-9]+.*?\.el"))
 
 (defun edit-rcs ()
   "Edit rc files.."
@@ -1626,10 +1627,11 @@ If `current-prefix-arg' is given, search for all files under default-folder."
   (let ((default-directory (yc/choose-directory))
         (port (or current-prefix-arg 8000)))
 
-    (start-process-shell-command "http-server"
-                                 (get-buffer-create "http-server")
-                                 (format "python -m SimpleHTTPServer %d" port)))
-  )
+    (start-process-shell-command
+     "http-server"
+     (get-buffer-create "http-server")
+     (concat (format "python -m SimpleHTTPServer %d" port)" || python3 -m http.server")
+     )))
 
 (defun yc/clean-shared-memory ()
   "Remove all shared memory owned by me."

@@ -92,15 +92,16 @@
        it
      (error "Can't find %s" proc))))
 
-(defun yc/choose-pids (&optional init ps_cmd)
-  "Choose and return PIDs, as list."
+(defun yc/choose-pids (&optional name no-filter reverse)
+  "Choose and return PIDs, as list.
+If NAME is true, consider applications only when its name matches `NAME'.
+If NO-FILTER is true, all pids are returned without filtering.
+If REVERSE if t, pid list should be sorted in reversed order."
   (let ((r-match-entry (rx
                         bol (* space)
                         (group (+ digit)) (+ space)
                         (+? nonl) eol))
-        (init
-         (or init
-             (s-join "\\|"
+        (init (s-join "\\|"
                      (remove nil
                              (mapcar
                               (lambda (x)
@@ -108,24 +109,35 @@
                                   (when (> v 100)
                                     ;; User's pid is larger than 100 in most cases..
                                     (number-to-string v))))
-                              (string-split (buffer-substring-no-properties (point-at-bol) (point-at-eol)) nil t))))))
+                              (string-split (buffer-substring-no-properties (point-at-bol) (point-at-eol)) nil t)))))
+
+        (ps-cmds (list (concat "ps -u " user-login-name " -o pid -o user -o start_time -o command"))
+                 )
         pid-list choosen final)
 
+    (when name
+      (push (format "grep \"%s\" " name) ps-cmds))
+    (push "grep -v 'ps\\|grep'"  ps-cmds )
+
+    (when reverse
+      (push "sort -r" ps-cmds))
+
     (with-temp-buffer
-      (insert (shell-command-to-string
-               (or ps_cmd
-                   (format "ps %s -o pid -o user -o start_time -o command | grep -v 'ps\\|grep'"
-                           (format "-u %s" user-login-name)))))
+      (insert (shell-command-to-string (s-join " | " (nreverse ps-cmds))))
       (goto-char (point-min))
       (PDEBUG "PIDS:" (buffer-substring-no-properties (point-min) (point-max)))
       (while (search-forward-regexp ".+?$" nil t)
         (push (match-string 0)  pid-list)))
 
-    (ivy-read "Choose process: " (nreverse pid-list)
-              :initial-input init
-              :action (lambda (x)
-                        (interactive)
-                        (push x choosen)))
+    (if no-filter
+        (setq choosen pid-list)
+
+      (ivy-read "Choose process: " (nreverse pid-list)
+                :initial-input init
+                :action (lambda (x)
+                          (interactive)
+                          (push x choosen)))
+      )
 
     (PDEBUG "CHOOSEN:" choosen)
 
@@ -136,13 +148,15 @@
 
     final))
 
-(defun yc/choose-pid (&optional init ps_cmd)
-  "Choose and return single pid."
-  (let ((pids (yc/choose-pids init ps_cmd)))
+(defun yc/choose-pid (&optional name reverse)
+  "Choose and return single pid.
+If NAME is true, consider applications only when its name matches `NAME'.
+If REVERSE if t, pid list should be sorted in reversed order."
+  (let ((pids (yc/choose-pids name nil reverse)))
     (PDEBUG "PIDS:" pids
             "LENGTH: " (length pids))
     (unless (= (length pids) 1)
-      (error "NOT ONE process is choosen"))
+      (error "More than on process are chosen"))
 
     (car pids)))
 
@@ -158,7 +172,7 @@
    (cond
     ((and proc (numberp proc)) (number-to-string proc))
     ((and proc (> (string-to-number proc) 0)) proc)
-    (t (number-to-string (yc/choose-pid))))))
+    (t (number-to-string (yc/choose-pid proc))))))
 
 (defun yc/kill-gdb-buffers ()
   "Kill all buffers used by dead gdb."
@@ -209,7 +223,7 @@
            res)))
     (candidates (company-gdb--candidates arg))))
 
-(defun yc/kill-proc (SIG &optional app)
+(defun yc/kill-proc (SIG &optional app no-confrim)
   "Kill process (default APP) with `SIG', or 9 if SIG not provide."
   (interactive "P")
   (PDEBUG "SIG" SIG)

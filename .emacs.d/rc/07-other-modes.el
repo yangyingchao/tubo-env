@@ -256,8 +256,7 @@ ORIG-FUNC is called with ARGS."
 
 (use-package yc-utils
   :commands (
-             edit-elpa   edit-project   edit-rcs edit-zsh
-             edit-template edit-peda edit-sway
+             edit-rcs edit-template edit-peda edit-sway
              reload-file reload-all-files edit-emacs debug-on
              uniq-region
              xmind/convert-to-org
@@ -284,6 +283,7 @@ ORIG-FUNC is called with ARGS."
              yc/new-snippet
              yc/dired-compress-file
              yc/list-attentions
+             yc/kill-ghost-buffers
              )
 
   :bind ((;(kbd "C-x J")
