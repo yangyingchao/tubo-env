@@ -146,7 +146,8 @@ This function accept file name as argument, and return t if file is merged autom
   (defadvice! yc/magit-insert-staged-changes-adv (&rest args)
     "Don't show staged commits if there are more than 128 commits, or it will  be very slow...."
     :before-until  #'magit-insert-staged-changes
-    (let ((stats (magit-git-string "diff" "--shortstat"  "--cached" "--no-prefix" "--" )))
+    (unless (magit-bare-repo-p)
+      (let ((stats (magit-git-string "diff" "--shortstat"  "--cached" "--no-prefix" "--" )))
       (when (and stats
                  (string-match (rx  (* space) (group (+ digit)) (+ space) "file") stats))
         (let ((staged-files (match-string 1 stats)))
@@ -154,7 +155,7 @@ This function accept file name as argument, and return t if file is merged autom
           (when (> (string-to-number staged-files) 128)
             (magit-insert-heading "Staged changes:" )
             (insert "  skipped due to too many files: " staged-files "\n\n")
-            t)))))
+            t))))))
 
   (defadvice! yc/magit-insert-merge-log-adv (&rest args)
     "Don't show detailed commits if there are more than 128 commits, or it will be very slow...."
@@ -170,7 +171,7 @@ This function accept file name as argument, and return t if file is merged autom
 
       (PDEBUG "R" total-logs)
 
-      (when (> (string-to-number total-logs) 128)
+      (when (> (string-to-number total-logs) 16)
         (magit-insert-heading
           (format "Merging %s:" (mapconcat #'identity heads ", ")))
         (insert "  skipped due to too many commits: "

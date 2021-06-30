@@ -88,7 +88,7 @@
           (group (or "DEBUG" "debug" "Debug"
                      "TRACE" "trace" "Trace")) ":"
           (group (+ (*? not-newline))))
-     (1 font-lock-keyword-face) (2 font-lock-doc-face))
+     (1 font-lock-constant-face) (2 font-lock-doc-face))
 
 
     ;; prove...

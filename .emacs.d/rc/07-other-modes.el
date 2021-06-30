@@ -291,6 +291,7 @@ ORIG-FUNC is called with ARGS."
          (;(kbd "C-x j")
           "j" . yc/eval-and-insert)
          ("C-x M-e" . yc/eval-and-kill)
+         ("C-x M-k" . yc/kill-ghost-buffers)
 
          ("C-o" . zl-newline)
          ("C-S-o" . zl-newline-up)

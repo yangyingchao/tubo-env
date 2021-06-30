@@ -370,7 +370,7 @@ With prefix argument (`C-u'), also kill the special buffers."
                 (message "Killing buffer %s" buf-name)
                 (kill-buffer buf))))))))
   :commands (projectile-project-root projectile-find-other-file)
-  :bind (("C-x M-k" . projectile-kill-buffers)
+  :bind (;; ("C-x M-k" . projectile-kill-buffers)
          ("C-x M-j" . projectile-dired)
          ("C-x M-s" . projectile-save-project-buffers))
 

@@ -81,11 +81,17 @@
 (defun yc/kill-ghost-buffers ()
   "Kill buffers not backed by files.."
   (interactive)
-  (dolist (buffer (buffer-list))
-    (when (and (not (buffer-modified-p buffer))
-               (buffer-file-name buffer)
-               (not (file-exists-p (buffer-file-name buffer))))
-      (kill-buffer buffer))))
+  (let ((buffers))
+    (dolist (buffer (buffer-list))
+      (when (and (not (buffer-modified-p buffer))
+                 (buffer-file-name buffer)
+                 (not (file-exists-p (buffer-file-name buffer))))
+        (push (buffer-name buffer) buffers)
+        (kill-buffer buffer)))
+
+    (if buffers
+        (message "Killed %d buffers: %s." (length  buffers)  (s-join ", " buffers))
+      (message "No buffer is killed."))))
 
 ;; *********** Fuctions for edit special rc-files quickly ************
 

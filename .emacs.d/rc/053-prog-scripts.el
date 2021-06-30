@@ -4,39 +4,35 @@
 ;;; Code:
 
  ;; *************************** Python Settings ****************************
-;; (use-package lsp-pyright
-;;   :preface
-;;   (defun pyright-create-config-file ()
-;;     "Create configuration file for lsp-pyright."
-;;     (interactive)
-;;     (with-current-buffer (find-file "pyrightconfig.json")
-;;       (save-excursion
-;;         (goto-char (point-max))
-;;         (insert-file-contents-literally "~/.emacs.d/templates/auto-insert/pyrightconfig.json"))))
-;;   :hook (python-mode . (lambda ()
-;;                          (yc/lsp--setup
-;;                           "pyright-langserver"
-;;                           "npm i -g pyright")))
-;;   :ensure nil
-;;   :custom
-;;   (lsp-pyright-python-executable-cmd "python3"))
-
-(use-package lsp-pylsp
+(use-package lsp-pyright
+  :preface
+  (defun pyright-create-config-file ()
+    "Create configuration file for lsp-pyright."
+    (interactive)
+    (with-current-buffer (find-file "pyrightconfig.json")
+      (save-excursion
+        (goto-char (point-max))
+        (insert-file-contents-literally "~/.emacs.d/templates/auto-insert/pyrightconfig.json"))))
   :hook (python-mode . (lambda ()
                          (yc/lsp--setup
-                          "pylsp"
-                          "pip install python-lsp-server")))
-  :ensure nil)
+                          "pyright-langserver"
+                          "npm i -g pyright")))
+  :ensure nil
+  :custom
+  (lsp-pyright-python-executable-cmd "python3"))
+
+;; (use-package lsp-pylsp
+;;   :hook (python-mode . (lambda ()
+;;                          (yc/lsp--setup
+;;                           "pylsp"
+;;                           "pip install python-lsp-server")))
+;;   :ensure nil)
 
 (use-package py-autopep8
   :commands (py-autopep8-buffer)
   :config
   (progn
     (setq py-autopep8-options '("--max-line-length=120"))))
-
-(use-package pydoc
-  :bind (:map python-mode-map
-              ("<S-f1>" . pydoc-at-point)))
 
 (use-package python
   :preface
