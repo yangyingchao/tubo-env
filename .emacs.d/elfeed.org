@@ -16,7 +16,8 @@
 ** 媒体
 *** [[http://sspai.me/feed][少数派]]
 *** [[http://feed.williamlong.info][月光博客]]
-** 技术
+*** [[http://weiwuhui.com/feed][扯氮集]]
+* 技术
 *** [[http://www.allthingsdistributed.com/atom.xml][All Things Distributed]]
 *** [[http://feeds.feedburner.com/tualatrix][I'm TualatriX]]
 *** [[http://www.udpwork.com/feed][IT牛人博客聚合网站]]
@@ -28,6 +29,7 @@
 *** [[https://hack.org/mc/blog/index.xml][mc]]
 *** [[https://cjting.me/index.xml][cjting]]
 *** [[https://manateelazycat.github.io/feed.xml][懒猫]]
+*** [[https://www.ideawu.net/blog/feed][ideawu]]
 
 ** 技术与人文
 *** [[http://www.ruanyifeng.com/blog/atom.xml][阮一峰的网络日志]]
