@@ -55,6 +55,7 @@ plantuml is a cross-platform, open-source make system."
   )
 
 (use-package org-download
+  :after org
   :preface
   (defun yc/org-download-annotate-func (link)
     "Annotate LINK with the time of download."
@@ -80,8 +81,6 @@ plantuml is a cross-platform, open-source make system."
       (insert-image-file filename)
       (car (image-size
             (image-get-display-property) t))))
-
-  :commands (org-download-image org-download-screenshot)
   :custom
   (org-download-method 'directory)
   (org-download-image-dir "images")
@@ -94,8 +93,9 @@ plantuml is a cross-platform, open-source make system."
   (setq-default
     org-download-screenshot-method
     (cond
-     ((executable-find "screencapture") "screencapture -i %s")
-     ((executable-find "scrot") "scrot -s %s")
+     ((executable-find "grim") "grim -g \"$(slurp)\" %s") ;; wayland
+     ((executable-find "screencapture") "screencapture -i %s") ;; mac
+     ((executable-find "scrot") "scrot -s %s") ;; linux, X-windows
      ((executable-find "gnome-screenshot") "gnome-screenshot -a -f %s")
      (t "")))
   (setq org-download-annotate-function 'yc/org-download-annotate-func
@@ -133,6 +133,9 @@ This will add proper attributes into org file so image won't be too large."
   (defadvice! yc/org-download--image/url-retrieve-adv (link filename)
     "Retrieve LINK and save as FILENAME."
     :override #'org-download--image/url-retrieve
+    (when (file-exists-p filename)
+      (delete-file filename t))
+
     (url-retrieve
      link
      (lambda (status filename buffer)
@@ -169,9 +172,10 @@ This will add proper attributes into org file so image won't be too large."
 Final image name looks like 'images/org_file_name/xxx.png'.
 This makes it easier to move org file (and associated images) to other directory."
     :override  #'org-download--dir-2
-    (file-name-base (buffer-file-name))))
-
-
+    (file-name-base (buffer-file-name)))
+  :bind (:map org-mode-map
+              ("C-c ds" . org-download-screenshot)
+              ("C-c du" . org-download-image)))
 
 
 ;; *************************** Org Mode ********************************
@@ -510,12 +514,6 @@ ORIG-FUNC is called with ARGS."
           (apply orig-func args)
         (error nil)))
 
-    (defadvice! yc/org-publish-file-adv (filename &rest args)
-      "Don't publish it if this is gtd file.
-ORIG-FUNC is called with ARGS."
-      :before-while #'org-publish-file
-      (string-match "gtd.org" filename))
-
     (substitute-key-definition
      'org-cycle-agenda-files  'backward-page org-mode-map)
 
@@ -535,9 +533,7 @@ ORIG-FUNC is called with ARGS."
 
               (;;(kbd "M-m")
                [134217837] . yc/show-methods-dwim)
-
-              ("C-x ds" . org-download-screenshot)
-              ("C-x du" . org-download-image))
+              )
 
   :bind (([C-f1] . yc/open-gtd))
   )

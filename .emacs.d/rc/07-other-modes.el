@@ -1375,6 +1375,17 @@ ORIG-FUNC is called with ARGS."
             (message "Compile succeed!")
           (error "Compile Rime dynamic module failed"))))))
 
+
+(use-package w3m
+  :custom
+  (w3m-default-display-inline-images t)
+  (w3m-pixels-per-character 8)
+  (w3m-pixels-per-line 16)
+  (w3m-resize-image-scale 60)
+  (w3m-resize-images t)
+  (w3m-toggle-inline-images-permanently nil)
+  (w3m-treat-image-size t))
+
 (provide '07-other-modes)
 
 ;; Local Variables:
