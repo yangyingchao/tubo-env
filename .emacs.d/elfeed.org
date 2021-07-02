@@ -11,6 +11,7 @@
 *** [[http://feeds.feedburner.com/sachac][sacha chua]]
 *** [[https://nullprogram.com/feed/][Null Program]]
 *** [[http://www.reddit.com/r/emacs/.rss][Reddit]]
+*** [[https://emacsair.me/feed.xml][emacs-air]]
 ** Video                                                             :video:
 *** [[http://feeds.feedburner.com/tedtalks_video][TED Talks]]
 ** 媒体

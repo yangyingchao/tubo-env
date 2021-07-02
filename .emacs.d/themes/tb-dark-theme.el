@@ -294,6 +294,7 @@
    '(mouse ((t (:background "OrangeRed"))))
    '(next-error ((t (:background "blue3"))))
    '(nobreak-space ((t (:foreground "cyan" :underline t))))
+
    '(org-agenda-date ((t (:foreground "LightSkyBlue"))))
    '(org-agenda-date-weekend ((t (:bold t :foreground "LightSkyBlue" :weight bold))))
    '(org-agenda-restriction-lock ((t (:background "skyblue4"))))
@@ -332,6 +333,7 @@
    '(org-upcoming-deadline ((t (:foreground "chocolate1"))))
    '(org-verbatim ((t (:foreground "grey70" :underline t))))
    '(org-warning ((t (:bold t :weight bold :foreground "Pink"))))
+
    '(outline-1 ((t (:foreground "LightSkyBlue"))))
    '(outline-2 ((t (:foreground "LightGoldenrod"))))
    '(outline-3 ((t (:foreground "Cyan1"))))
