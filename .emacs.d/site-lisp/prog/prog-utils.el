@@ -756,12 +756,10 @@ Return t if succeeded, or nil otherwise.")
           (PDEBUG "POPS: " pops)
           (cl-case (overlay-get overlay 'category)
             ('default-button
-              (let* ((action (overlay-get overlay 'action))
-                     (res (funcall action overlay)))
-                (PDEBUG "ACTION: " action
-                  "RES:  " res)
-                (if res
-                    (throw 'p-found t)))))))
+              (let* ((action (overlay-get overlay 'action)))
+                (PDEBUG "ACTION: " action)
+                (funcall action overlay)
+                (throw 'p-found t))))))
       nil)))
 
 

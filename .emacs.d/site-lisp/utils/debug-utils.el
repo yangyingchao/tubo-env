@@ -202,7 +202,7 @@ If REVERSE if t, pid list should be sorted in reversed order."
 (defun company-gdb (command &optional arg &rest ignored)
   "Comapny backend for gdb."
   (interactive (list 'interactive))
-
+  (PDEBUG "CMD:" command)
   (unless gdb-kwlist
     (setq gdb-kwlist '("bt" "up" "down"))
     (let ((output (shell-command-to-string "gdb --batch -ex \"help all\"")))

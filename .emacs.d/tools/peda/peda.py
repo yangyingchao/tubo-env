@@ -4210,7 +4210,7 @@ class PEDACmd(object):
 
             return uniquify_stacks_gdb(limit)
 
-        if opt == 'info':
+        if opt in gen_strings('info'):
             return self.__print_threads(gdb.inferiors()[0].threads(), gdb.selected_thread ().num)
 
 
@@ -4220,10 +4220,10 @@ class PEDACmd(object):
             return
 
         expr = ' '.join(args)
-        if opt == 'apply':
+        if opt in gen_strings('apply'):
             return peda.execute('thread apply {}'.format(expr))
 
-        if opt == 'find':
+        if opt in gen_strings('find'):
             if len(args) == 1:
                 # find name, forward to gdb directly
                 return peda.execute('thread find {}'.format(args[0]))
@@ -4628,6 +4628,7 @@ Alias("hd", "hexdump")
 Alias("rc", "raise_continue")
 Alias("disas", "pdisass")
 Alias("thr", "peda pthread")
+Alias("t", "peda pthread")
 
 # misc gdb settings
 peda.execute("set confirm off")
