@@ -546,30 +546,30 @@ ORIG-FUNC is called with ARGS."
               ("nn" . tnote)
               ("nf" . tnote/find-note)))
 
-(use-package org-roam
-  :custom
-  (org-roam-directory "~/Documents/Database/org")
-  :commands (org-roam-mode org-roam-find-file)
-  )
+;; (use-package org-roam
+;;   :custom
+;;   (org-roam-directory "~/Documents/Database/org")
+;;   :commands (org-roam-mode org-roam-find-file)
+;;   )
 
-(use-package org-roam-server
-  :preface
-  (defun yc/turn-on-org-roam ()
-    "Turn on org-roam-mode & org-roam-server mode."
-    (unless org-roam-server-mode
-      (org-roam-mode t)
-      (org-roam-server-mode t)))
-  :custom
-  (org-roam-server-host  "127.0.0.1")
-  (org-roam-server-port 9090)
-  (org-roam-server-export-inline-images t)
-  (org-roam-server-authenticate nil)
-  (org-roam-server-network-label-truncate t)
-  (org-roam-server-network-label-truncate-length 60)
-  (org-roam-server-network-label-wrap-length 20)
-  :commands (org-roam-server-mode)
-  :hook ((org-mode . yc/turn-on-org-roam))
-  )
+;; (use-package org-roam-server
+;;   :preface
+;;   (defun yc/turn-on-org-roam ()
+;;     "Turn on org-roam-mode & org-roam-server mode."
+;;     (unless org-roam-server-mode
+;;       (org-roam-mode t)
+;;       (org-roam-server-mode t)))
+;;   :custom
+;;   (org-roam-server-host  "127.0.0.1")
+;;   (org-roam-server-port 9090)
+;;   (org-roam-server-export-inline-images t)
+;;   (org-roam-server-authenticate nil)
+;;   (org-roam-server-network-label-truncate t)
+;;   (org-roam-server-network-label-truncate-length 60)
+;;   (org-roam-server-network-label-wrap-length 20)
+;;   :commands (org-roam-server-mode)
+;;   :hook ((org-mode . yc/turn-on-org-roam))
+;;   )
 
 
 ;; Local Variables:

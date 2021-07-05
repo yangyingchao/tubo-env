@@ -84,22 +84,22 @@ function pick_wallpapers ()
 # returns 0 if dark-theme should be used, or 1 if bright theme should be used.
 update-theme ()
 {
-    local value=60
+    local value=0
     local active_paper=$1
 
-    PDEBUG "FILE: ${active_paper}"
+    # PDEBUG "FILE: ${active_paper}"
 
-    which convert >/dev/null 2>&1
-    if [ $? -eq 0 ]; then
-        # calculate theme for waybar
+    # which convert >/dev/null 2>&1
+    # if [ $? -eq 0 ]; then
+    #     # calculate theme for waybar
 
 
-        local width=`identify $1 | awk  '{print $3}'`
+    #     local width=`identify $1 | awk  '{print $3}'`
 
-        value=$(convert "${active_paper}"  -crop ${width}x100+0+0 +repage -colorspace hsb -resize 1x1 txt:- | awk -F '[%$]' 'NR==2{gsub(",",""); printf "%.0f\n", $(NF-1)}');
-    fi
+    #     value=$(convert "${active_paper}"  -crop ${width}x100+0+0 +repage -colorspace hsb -resize 1x1 txt:- | awk -F '[%$]' 'NR==2{gsub(",",""); printf "%.0f\n", $(NF-1)}');
+    # fi
 
-    PDEBUG "FILE: ${active_paper}, WIDTH: ${width}, VALUE: ${value}"
+    # PDEBUG "FILE: ${active_paper}, WIDTH: ${width}, VALUE: ${value}"
 
     if [ $value -le 50 ]; then
         touch /tmp/dark-theme
