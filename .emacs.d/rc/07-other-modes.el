@@ -1364,7 +1364,7 @@ ORIG-FUNC is called with ARGS."
     :before-until  #'rime-compile-module
     (let* ((librime-source-dir (expand-file-name "~/Work/librime/src"))
            (librime-build-dir (expand-file-name "~/Work/librime/build/"))
-           (base-command "gcc -shared lib.c -fPIC -O2 -Wall -o librime-emacs.so")
+           (base-command "gcc -std=c99 -shared lib.c -fPIC -O2 -Wall -o librime-emacs.so")
            (cflags (format " -I%s/ -I%s/src/rime" librime-source-dir librime-build-dir))
            (ldflags (format " -L %s/lib/ -Wl,-rpath %s/lib/ -lrime"
                             librime-build-dir librime-build-dir)))
