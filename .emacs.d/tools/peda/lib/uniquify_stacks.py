@@ -51,7 +51,7 @@ class StackTrace(object):
                 return (None, None)
             return (sal.symtab.filename, sal.line)
 
-        def __init__(self, gdb_frame, position, show_source, current_pc):
+        def __init__(self, gdb_frame, position, show_source, current_pc=None):
             self.position = position
             self.pc = gdb_frame.pc()
             self.name = gdb_frame.name()
@@ -126,7 +126,7 @@ class StackTrace(object):
             frame_limit = -frame_limit
 
             while frame and i < frame_limit:
-                frames.insert(0, StackTrace.Frame(frame, n-i, show_source))
+                frames.insert(0, StackTrace.Frame(frame, n-i, show_source, current_pc))
 
                 frame = frame.newer()
                 i += 1

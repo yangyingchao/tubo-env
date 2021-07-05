@@ -811,7 +811,9 @@ create new buffer."
     :override  #'vterm-module-compile
     (yc/vterm-module-compile))
 
-  (add-to-list 'vterm-eval-cmds '("update-pwd" (lambda (path) (setq default-directory path)))))
+  (add-to-list 'vterm-eval-cmds '("update-pwd"
+                                  (lambda (path)
+                                    (setq default-directory path)))))
 
 (use-package comint
   :defer t
@@ -1385,6 +1387,66 @@ ORIG-FUNC is called with ARGS."
   (w3m-resize-images t)
   (w3m-toggle-inline-images-permanently nil)
   (w3m-treat-image-size t))
+
+(use-package docker
+  :commands (docker)
+  :config
+  (defun docker-container-vterm (container)
+    "Open `eshell' in CONTAINER."
+    (interactive (list (docker-container-read-name)))
+    (let* ((container-address (format "docker:%s:/" container))
+           (file-prefix (let ((prefix (file-remote-p default-directory)))
+                          (if prefix
+                              (format "%s|" (s-chop-suffix ":" prefix))
+                            "/")))
+           (default-directory (format "%s%s" file-prefix container-address))
+           (vterm-bash-file (expand-file-name "emacs-vterm-bash.sh" (format "/docker:%s:~" container))))
+
+      (vterm)
+
+      (let* ((vbuffer (progn
+                        (with-current-buffer
+                            (generate-new-buffer
+                             (concat "vterm-" container))
+                          (vterm-mode)
+                          (current-buffer))))
+             (dir default-directory))
+
+        (unless vbuffer
+          (with-current-buffer (setq vbuffer (get-buffer-create name))
+            (vterm-mode)))
+
+        (pop-to-buffer-same-window vbuffer)
+
+        (vterm-send-string
+         (concat "docker exec -it " container " /bin/bash"))
+        (vterm-send-return)
+
+        (PDEBUG "BASH_FILE:" vterm-bash-file
+                "D" default-directory
+                "C" container
+                "B"(format "docker:%s:~" container))
+
+        (unless (file-exists-p vterm-bash-file)
+          (with-temp-file vterm-bash-file
+            (insert "vterm_set_directory() {\n"
+                    "\tvterm_cmd update-pwd \"/" container-address "$PWD/\"\n"
+                    "}\n\n")
+            (insert-file-contents "~/.emacs.d/quelpa/build/vterm/etc/emacs-vterm-bash.sh")
+            (goto-char (point-max))
+            (insert "\n")
+
+            (insert "PROMPT_COMMAND=\"$PROMPT_COMMAND;vterm_set_directory\"\n")))
+
+        (vterm-send-string
+         "source ~/emacs-vterm-bash.sh")
+        (vterm-send-return)
+        vbuffer)))
+
+  (transient-insert-suffix 'docker-container-shells "b"
+    '("v" "Vterm" docker-container-vterm))
+  )
+
 
 (provide '07-other-modes)
 
