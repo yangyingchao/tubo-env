@@ -233,22 +233,59 @@ You can connect your server with tramp"
   :group 'counsel-tramp
   )
 
+(defun yc/deploy-my-utilies (remote-address)
+  "Deploy my utilities to `SERVER'."
+  (interactive)
+
+  (let* ((remote-home (concat remote-address "~"))
+         (gdb-init-file (concat remote-home "/.gdbinit"))
+         (vterm-bash-file (concat remote-home "/emacs-vterm-bash.sh"))
+         (bash-rc-file (concat remote-home "/.bashrc")))
+
+    ;; gdb & peda
+    (unless (file-exists-p gdb-init-file)
+      ;; copy .gdbinit & peda...
+      (copy-file "~/.gdbinit" gdb-init-file)
+      (copy-file "~/.emacs.d/tools/peda" (concat remote-home "/.emacs.d/tools/peda")))
+
+    ;; emacs-vterm-bash
+    (unless (file-exists-p vterm-bash-file)
+      (with-temp-file vterm-bash-file
+        (insert "vterm_set_directory() {\n"
+                "\tvterm_cmd update-pwd \"" remote-address "$PWD/\"\n"
+                "}\n\n")
+        (insert-file-contents "~/.emacs.d/quelpa/build/vterm/etc/emacs-vterm-bash.sh")
+        (goto-char (point-max))
+        (insert "\n")
+
+        (insert "PROMPT_COMMAND=\"$PROMPT_COMMAND;vterm_set_directory\"\n")))
+
+    ;; update .bashrc
+    (with-temp-file bash-rc-file
+      (when (file-exists-p bash-rc-file)
+        (insert-file-contents bash-rc-file)
+        (goto-char (point-max)))
+
+      (goto-char (point-min))
+      (unless (search-forward "emacs-vterm-bash.sh" nil t)
+        (insert "source ~/emacs-vterm-bash.sh\n")))))
+
 (defun counsel-docker ()
   "Open your ~/.ssh/config with counsel interface.
 You can connect your server with tramp"
   (interactive)
-  (let* ((r-match-host (rx "/" (or "scp" "sudo") ":" (group (+? nonl)) ":"))
-         (r-match-container (rx (* space) (group (+? alnum)) (+ space) (group (+? nonl)) eol))
+  (let* ((r-match-container (rx (* space) (group (+? alnum)) (+ space) (group (+? nonl)) eol))
          (host (ivy-read "Docker on host: "
                          (-filter
                           (lambda (x)
                             (if (string-match-p "docker-tmp" x)
                                 nil
                               x))
-                          (mapcar (lambda (x)
-                                    (when (string-match r-match-host x)
+
+                          (remove nil (mapcar (lambda (x)
+                                    (when (string-match (rx "/" (or "scp" "sudo") ":" (group (+? nonl)) ":") x)
                                       (match-string 1 x)))
-                                  (counsel-tramp--candidates)))))
+                                  (counsel-tramp--candidates))))))
          (zzz (shell-command-to-string
                (format "scp %s root@%s:/tmp/"
                        (expand-file-name "tools/get-containers.sh" user-emacs-directory)
@@ -286,6 +323,10 @@ You can connect your server with tramp"
               )
 
             (goto-char (point-max))
+
+            (while (looking-back (rx (or "\n" space)))
+              (delete-char -1))
+
             (insert (format "\nHost docker-tmp\n  Hostname %s\n  User %s\n  ProxyCommand ssh -l root -W %%h:%%p %s\n"
                             container-address counsel-docker/user-name host))
             (save-buffer))
@@ -297,12 +338,8 @@ You can connect your server with tramp"
               (tramp-cleanup-this-connection)))
 
           (find-file  "/scp:docker-tmp:")
-          (PDEBUG "A")
 
-          ;; copy .gdbinit & peda...
-          (copy-file "~/.gdbinit" (concat tramp-buffer-name "/.gdbinit"))
-          (PDEBUG "B")
-          (copy-file "~/.emacs.d/tools/peda" (concat tramp-buffer-name "/.emacs.d/tools/peda"))
+          (yc/deploy-my-utilies "/scp:docker-tmp:")
 
           ;; also, open vterm, and ssh to it
           (awhen (get-buffer vterm-buffer-name)

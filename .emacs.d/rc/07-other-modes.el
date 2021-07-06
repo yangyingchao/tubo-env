@@ -1327,9 +1327,6 @@ ORIG-FUNC is called with ARGS."
         ("e" . yc/elfeed-show-eww))
   :bind (("<C-f12>" . elfeed)))
 
-(use-package counsel-tramp-docker
-  :commands (counsel-docker counsel-tramp))
-
 (use-package rime
   :custom
   (default-input-method "rime")
@@ -1367,6 +1364,10 @@ ORIG-FUNC is called with ARGS."
   (w3m-resize-images t)
   (w3m-toggle-inline-images-permanently nil)
   (w3m-treat-image-size t))
+
+
+(use-package counsel-tramp-docker
+  :commands (counsel-docker counsel-tramp yc/deploy-my-utilies))
 
 (use-package docker
   :commands (docker)
@@ -1407,16 +1408,18 @@ ORIG-FUNC is called with ARGS."
                 "C" container
                 "B"(format "docker:%s:~" container))
 
-        (unless (file-exists-p vterm-bash-file)
-          (with-temp-file vterm-bash-file
-            (insert "vterm_set_directory() {\n"
-                    "\tvterm_cmd update-pwd \"/" container-address "$PWD/\"\n"
-                    "}\n\n")
-            (insert-file-contents "~/.emacs.d/quelpa/build/vterm/etc/emacs-vterm-bash.sh")
-            (goto-char (point-max))
-            (insert "\n")
+        (yc/deploy-my-utilies (format "/docker:%s:" container))
 
-            (insert "PROMPT_COMMAND=\"$PROMPT_COMMAND;vterm_set_directory\"\n")))
+        ;; (unless (file-exists-p vterm-bash-file)
+        ;;   (with-temp-file vterm-bash-file
+        ;;     (insert "vterm_set_directory() {\n"
+        ;;             "\tvterm_cmd update-pwd \"/" container-address "$PWD/\"\n"
+        ;;             "}\n\n")
+        ;;     (insert-file-contents "~/.emacs.d/quelpa/build/vterm/etc/emacs-vterm-bash.sh")
+        ;;     (goto-char (point-max))
+        ;;     (insert "\n")
+
+        ;;     (insert "PROMPT_COMMAND=\"$PROMPT_COMMAND;vterm_set_directory\"\n")))
 
         (vterm-send-string
          "source ~/emacs-vterm-bash.sh")

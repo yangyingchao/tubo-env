@@ -4381,12 +4381,16 @@ class PEDACmd(object):
         Usage:
             MYNAME STYPE
         """
-        (name,) = normalize_argv(arg, 1)
+        (name, target_field) = normalize_argv(arg, 2)
         stype = gdb.lookup_type('struct %s' % name)
 
         out = '%s {\n' % name
         for field in stype.fields():
-            out += '    [0x%x] %s\n' % (field.bitpos//8, field.name)
+            if target_field and target_field == field.name:
+                item = green(' => [0x%x] %s\n' % (field.bitpos//8, field.name))
+            else:
+                item = '    [0x%x] %s\n' % (field.bitpos//8, field.name)
+            out += item
         out += '}'
         msg(out)
 
