@@ -653,34 +653,14 @@ Useful to run after `pdf-tools' updates."
   :custom
   (pdf-info-epdfinfo-program (expand-file-name "~/.local/bin/epdfinfo"))
   (pdf-view-display-size 'fit-width)
+  (pdf-view-use-scaling t)
+  (pdf-view-use-imagemagick t)
 
   :bind (:map pdf-view-mode-map
               ("l" . pdf-history-backward)
               ("r" . pdf-history-forward)
               ("i" . tnote))
   :config
-  ;; Enable hiDPI support, but at the cost of memory! See politza/pdf-tools#51
-  (when t
-    (setq pdf-view-use-scaling t
-          pdf-view-use-imagemagick nil)
-
-    (defadvice! yc/pdf-info-renderpage-adv (orig-func page width &rest args)
-      "Docs
-ORIG-FUNC is called with ARGS."
-      :around  #'pdf-info-renderpage
-      (unless (member page yc/pdf-scaled-pages)
-        (push page yc/pdf-scaled-pages)
-        (setq width (* width 2)))
-      (PDEBUG "ENTER: PAGE- " page "WIDTH-" width)
-      (apply orig-func (append (list page width) args))
-      )
-
-    (defun yc/pdf-clear-caches ()
-      "Clear pdf caches.
-For now, only scale pages."
-      (interactive)
-      (setq-local yc/pdf-scaled-pages nil)))
-
   (unless (file-executable-p pdf-info-epdfinfo-program)
     (message "Tool %s does not exist, compiling ..." pdf-info-epdfinfo-program)
     (pdf-tools-install)))

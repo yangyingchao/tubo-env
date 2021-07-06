@@ -6,6 +6,9 @@
 *** [[http://www.phoronix.com/rss.php][Phoronix]]
 *** [[http://www.linuxjournal.com/node/feed][Linux Journal]]
 *** [[http://linuxperf.com/?feed=rss2][Linux Performance]]
+*** [[http://kroah.com/log/index.rss][Linux Kernel Monkey Log]]
+*** [[http://www.kroah.com/log/index.rss][Linux Kernel Monkey Log]]
+
 ** emacs                                                             :emacs:
 *** [[https://emacs-china.org/latest.rss][Emacs China]]
 *** [[http://feeds.feedburner.com/sachac][sacha chua]]
@@ -18,7 +21,8 @@
 *** [[http://sspai.me/feed][少数派]]
 *** [[http://feed.williamlong.info][月光博客]]
 *** [[http://weiwuhui.com/feed][扯氮集]]
-* 技术
+*** [[http://www.ruanyifeng.com/blog/atom.xml][阮一峰的网络日志]]
+** 技术
 *** [[http://www.allthingsdistributed.com/atom.xml][All Things Distributed]]
 *** [[http://feeds.feedburner.com/tualatrix][I'm TualatriX]]
 *** [[http://www.udpwork.com/feed][IT牛人博客聚合网站]]
@@ -32,10 +36,93 @@
 *** [[https://manateelazycat.github.io/feed.xml][懒猫]]
 *** [[https://www.ideawu.net/blog/feed][ideawu]]
 
-** 技术与人文
-*** [[http://www.ruanyifeng.com/blog/atom.xml][阮一峰的网络日志]]
 ** Database                                                       :database:
 *** [[http://mysql.taobao.org/monthly/feed.xml][数据库内核月报]]
+
+** software
+*** [[http://blog.ezyang.com/feed/][ezyang’s blog]]
+*** [[http://research.swtch.com/feed.atom][research!rsc]]
+*** [[http://wcook.blogspot.com/feeds/posts/default?alt=rss][William Cook's Fusings]]
+*** [[https://benjamincongdon.me/blog/feed.xml][Ben Congdon]]
+*** [[https://blog.feabhas.com/feed/][Sticky Bits – Powered by Feabhas]]
+*** [[https://blog.petdance.com/feed.xml][Andy Lester’s blog]]
+*** [[https://ctian.livejournal.com/data/rss][Chun Tian (binghe)]]
+*** [[https://devblogs.microsoft.com/oldnewthing/author/oldnewthing/feed][Raymond Chen – The Old New Thing]]
+*** [[https://dr-knz.net/feeds/all.rss.xml][dr knz @ work]]
+*** [[https://drewdevault.com/blog/index.xml][Drew DeVault's blog]]
+*** [[https://eliasdaler.github.io/feed.xml][Elias Daler's blog]]
+*** [[https://hpjansson.org/blag/feed/][Et tu, Cthulhu]]
+*** [[https://linuxreviews.org/feed.rss][LinuxReviews News (RSS/English)]]
+*** [[https://lucumr.pocoo.org/feed.atom][Armin Ronacher's Thoughts and Writings]]
+*** [[https://lucumr.pocoo.org/feed.atom][Armin Ronacher's Thoughts and Writings]]
+*** [[https://martinfowler.com/feed.atom][Martin Fowler]]
+*** [[https://matklad.github.io/feed.xml][matklad]]
+*** [[https://matt.might.net/articles/feed.rss][Matt Might's blog]]
+*** [[https://michaelnielsen.org/blog/feed/][Michael Nielsen]]
+*** [[https://netcan.github.io/atom.xml][Netcan on Programming]]
+*** [[https://nullprogram.com/feed/][null program]]
+*** [[https://raphlinus.github.io/feed.xml][Raph Levien’s blog]]
+*** [[https://rosenzweig.io/feed.xml][On Life and Lisp]]
+*** [[https://unixism.net/feed/][Unixism]]
+*** [[https://utcc.utoronto.ca/~cks/space/blog/?atom][Chris's Wiki :: blog]]
+*** [[https://www.internalpointers.com/rss][Internal Pointers]]
+*** [[https://dthompson.us/feed.xml][dthompson]]
+** python
+*** [[http://feeds.feedburner.com/PythonInsider][Python Insider]]
+
+
+** friends
+*** [[http://www.greghendershott.com/feeds/all.atom.xml][Posts tagged "all"]]
+*** [[https://asaba.sakuragawa.moe/feed/][櫻川家::浅羽]]
+*** [[https://blog.codingnow.com/atom.xml][云风的 BLOG]]
+*** [[https://blog.lilydjwg.me/feed][依云's Blog]]
+*** [[https://blog.sgorava.xyz/index.xml][My land]]
+*** [[https://farseerfc.me/feeds/atom.xml][Farseerfc的小窩]]
+*** [[https://i.nebula.moe/rss.xml][奇想斋]]
+*** [[https://pockies.github.io/feed.xml][Pockies]]
+*** [[https://ridiculousfish.com/blog/atom.xml][ridiculous_fish]]
+*** [[https://sh.alynx.one/atom.xml][喵's StackHarbor]]
+*** [[https://www.alanshawn.com/atom.xml][Alan Xiang's Blog]]
+*** [[https://www.csslayer.info/wordpress/feed/][CS Slayer]]
+*** [[https://www.nayuki.io/rss20.xml][Project Nayuki]]
+** eval
+*** [[http://www.invece.org/rss][<antirez>]]
+
+** tool-update
+*** [[https://blog.jabref.org/feed.xml][JabRef | Blog]]
+*** [[https://www.lyx.org/misc/rss/lyx_news_feed.xml][LyX news feed]]
+** https://cdn.jwz.org/blog/feed/
+
+** c++
+*** [[https://feeds.feedburner.com/abseilio][Abseil Blog & Tips]]
+*** [[https://iscinumpy.gitlab.io/index.xml][ISciNumPy]]
+*** [[https://isocpp.org/blog/rss][Standard C++]]
+*** [[https://oleksandrkvl.github.io/feed.xml][Oleksandr Koval’s blog]]
+*** [[https://preshing.com/feed][Preshing on Programming]]
+*** [[https://www.cppstories.com/index.xml][C++ Stories]]
+*** [[https://herbsutter.com/feed/][Sutter’s Mill]]
+** UnixPeople/BSD
+*** [[https://unixsheikh.com/feed.rss][unixsheikh.com]]
+*** [[https://vermaden.wordpress.com/feed/][𝚟𝚎𝚛𝚖𝚊𝚍𝚎𝚗]]
+** tcl
+*** [[https://www.magicsplat.com/blog/rss.xml][Blog | Magicsplat]]
+** golang
+*** [[https://dave.cheney.net/feed/atom][The acme of foolishness]]
+** ocaml
+*** [[https://blog.shaynefletcher.org/feeds/posts/default][Shayne Fletcher]]
+** c
+*** [[https://c-for-dummies.com/blog/?feed=rss2][C For Dummies Blog]]
+
+** lisp
+*** [[http://funcall.blogspot.com/feeds/posts/default?alt=rss][Abstract Heresies]]
+*** [[http://p-cos.blogspot.com/feeds/posts/default?alt=rss][p-cos blog]]
+*** [[http://jakob.space/feed.xml][Jakob's Personal Webpage]]
+*** [[http://planet.lisp.org/rss20.xml][Planet Lisp]]
+*** [[https://tymoon.eu/api/reader/atom][妖怪世捨て人]]
+*** [[https://fare.livejournal.com/data/rss][Cybernethics / Cybernéthique]]
+
+** gnu
+*** [[http://www.pixelbeat.org/feed/rss2.xml][www.pixelbeat.org]]
 
 * Function to help find out dead feeds
 

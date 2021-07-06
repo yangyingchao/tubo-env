@@ -113,9 +113,18 @@ update-theme ()
     killall -SIGUSR2 waybar || waybar &
 }
 
+# pass the property as the first argument
+mpv_communicate() {
+  printf '{ "command": ["get_property", "%s"] }\n' "$1" | socat - "/tmp/mpvsocket" | jq -r ".data"
+}
+
 background_from_mpv ()
 {
-    local file=`echo '{ "command": ["get_property", "path"] }' | socat - /tmp/mpvsocket 2>/dev/null | jq '.data' | sed 's/"//g'`
+    local file=$(mpv_communicate "path")
+
+    if [ ! -f ${file} ]; then
+        file=$(mpv_communicate "working-directory")/${file}
+    fi
 
     [ $file ] || return 1
 
