@@ -630,8 +630,9 @@ ORIG-FUNC is called with ARGS."
   :mode ((rx ".epub") . nov-mode))
 
 (use-package pdf-tools
+  :mode ("\\.pdf\\'" . pdf-view-mode)
+  :magic ("%PDF" . pdf-view-mode)
   :preface
-
   (defun yc/pdf-tools-re-install ()
     "Re-install `epdfinfo' even if it is installed.
 The re-installation is forced by deleting the existing `epdfinfo'
@@ -652,9 +653,9 @@ Useful to run after `pdf-tools' updates."
   :hook ((pdf-view-mode . pdf-tools-enable-minor-modes))
   :custom
   (pdf-info-epdfinfo-program (expand-file-name "~/.local/bin/epdfinfo"))
-  (pdf-view-display-size 'fit-width)
+  (pdf-view-display-size 'fit-page)
   (pdf-view-use-scaling t)
-  (pdf-view-use-imagemagick t)
+  (pdf-view-use-imagemagick nil)
 
   :bind (:map pdf-view-mode-map
               ("l" . pdf-history-backward)
@@ -663,7 +664,8 @@ Useful to run after `pdf-tools' updates."
   :config
   (unless (file-executable-p pdf-info-epdfinfo-program)
     (message "Tool %s does not exist, compiling ..." pdf-info-epdfinfo-program)
-    (pdf-tools-install)))
+    (pdf-tools-install))
+  )
 
 (use-package stringtemplate-mode
   :mode "\\.st\\'")
