@@ -4172,7 +4172,7 @@ class PEDACmd(object):
 
     def pthread(self, *arg):
         """
-        Print thread-information.
+        Manipulate threads
         Usage:
             MYNAME --- show current thread info
             MYNAME num --- switch to specified thread
@@ -4411,8 +4411,9 @@ class PEDACmd(object):
 
     def bt(self, *arg):
         """
-        Print backtraces. If you want to call original backtrace command
-        shipped with gdb, use 'backtrace' command, not bt.
+        Print backtraces.
+
+        If you want to call original backtrace command shipped with gdb, use 'backtrace' command, not bt.
 
         Usage:
             MYNAME [limit] [full]
@@ -4611,6 +4612,7 @@ for cmd in shellcmds:
 Alias("phelp", "peda help")
 Alias("pset", "peda set")
 Alias("pshow", "peda show")
+Alias("pdebug", "peda set option debug")
 
 Alias("stack", "peda telescope $sp")
 Alias("viewmem", "peda telescope")
