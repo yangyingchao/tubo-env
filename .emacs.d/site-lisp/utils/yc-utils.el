@@ -84,8 +84,19 @@
   (let ((buffers))
     (dolist (buffer (buffer-list))
       (when (and (not (buffer-modified-p buffer))
-                 (buffer-file-name buffer)
-                 (not (file-exists-p (buffer-file-name buffer))))
+
+                 (or
+
+                  ;; local files.
+                  (and
+                   (buffer-file-name buffer)
+                   (not (file-exists-p (buffer-file-name buffer))))
+
+                  (awhen (and current-prefix-arg
+                              (with-current-buffer buffer
+                                (or
+                                 (buffer-file-name) dired-directory)))
+                    (file-remote-p it))))
         (push (buffer-name buffer) buffers)
         (kill-buffer buffer)))
 
@@ -94,7 +105,6 @@
       (message "No buffer is killed."))))
 
 ;; *********** Fuctions for edit special rc-files quickly ************
-
 (defun edit-emacs ()
   "Edit Emacs configuration."
   (interactive)

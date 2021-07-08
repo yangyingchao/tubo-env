@@ -174,7 +174,6 @@
 
    ;; is remote or local?
    (:eval (if buffer-file-name mode-line-remote ""))
-   (:eval (if buffer-file-name " " ""))
 
    ;; Position, including warning for 80 columns
    "  " mode-line-position
