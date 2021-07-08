@@ -1294,7 +1294,7 @@ ORIG-FUNC is called with ARGS."
   (elfeed-show-entry-delete #'+rss/delete-pane)
   (elfeed-use-curl t)
   (elfeed-search-remain-on-entry t)
-  ;; (elfeed-curl-extra-arguments '("-x" "127.0.0.1:7890"))
+  (elfeed-curl-extra-arguments '("-x" "127.0.0.1:7890"))
 
   (shr-max-image-proportion 0.8)
 

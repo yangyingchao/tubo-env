@@ -738,7 +738,7 @@ If NAME-ONLY is t, returns full path of selected file, instead of opening it."
   (yc/list-directory "~/.zshrc.d" "^[0-9]+.*?sh"))
 
 (defun edit-sway ()
-  "Edit rc files.."
+  "Edit sway configuration files.."
   (interactive)
   (yc/list-directory "~/.config/sway"))
 
