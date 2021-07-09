@@ -235,12 +235,11 @@ You can connect your server with tramp"
 
 (defun yc/deploy-my-utilies (remote-address)
   "Deploy my utilities to `SERVER'."
-  (interactive)
-
   (let* ((remote-home (concat remote-address "~"))
          (gdb-init-file (concat remote-home "/.gdbinit"))
          (vterm-bash-file (concat remote-home "/emacs-vterm-bash.sh"))
-         (bash-rc-file (concat remote-home "/.bashrc")))
+         (bash-rc-file (concat remote-home "/.bashrc"))
+         (ssh-config-file (concat remote-home "/.ssh/authorized_keys")))
 
     ;; gdb & peda
     (unless (file-exists-p gdb-init-file)
@@ -268,7 +267,13 @@ You can connect your server with tramp"
 
       (goto-char (point-min))
       (unless (search-forward "emacs-vterm-bash.sh" nil t)
-        (insert "source ~/emacs-vterm-bash.sh\n")))))
+        (insert "source ~/emacs-vterm-bash.sh\n")))
+
+    ;; deploy ssh key.
+    (with-temp-file ssh-config-file
+      (insert-file-contents ssh-config-file)
+      (goto-char (point-max))
+      (insert-file-contents (expand-file-name "~/.ssh/id_rsa.pub")))))
 
 (defun counsel-docker ()
   "Open your ~/.ssh/config with counsel interface.
@@ -333,7 +338,7 @@ You can connect your server with tramp"
 
           ;; open via tramp,
           ;; make sure previous connection is clean up.
-          (awhen (get-buffer tramp-buffer-name)
+          (when (get-buffer tramp-buffer-name)
             (with-current-buffer tramp-buffer-name
               (tramp-cleanup-this-connection)))
 
