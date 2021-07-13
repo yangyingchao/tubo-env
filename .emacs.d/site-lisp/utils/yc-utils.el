@@ -1134,6 +1134,11 @@ If NAME-ONLY is t, returns full path of selected file, instead of opening it."
 
 (defvar-local diff-file-regions nil)
 (defvar yc/current-diff-buffer nil "Nil.")
+(defvar yc/view-with-prepare-func nil
+  "Function to be called to prepare files before ediff is called.
+This function should accept two arguments: input files, and return two buffers
+which should be compared via ediff.")
+
 
 (defun yc/ediff-cleanup-and-restore ()
   "Clean up buffers and restory layout..."
@@ -1157,8 +1162,9 @@ If NAME-ONLY is t, returns full path of selected file, instead of opening it."
   ;; display original buffer.
   (layout-restore))
 
-(defun yc/view-with-ediff (&optional clear &rest backward)
-  "Description."
+(defun yc/view-with-ediff (&optional clear)
+  "View section of diff/patch files with ediff.
+If called with `prefix-arg', or CLEAR is t, clear diff-file-regions and reparse."
   (interactive "P")
 
   (if clear
@@ -1224,75 +1230,22 @@ If NAME-ONLY is t, returns full path of selected file, instead of opening it."
                        (throw 'p-found item)))))))
 
     (if item
-        (let* ((region (car item))
-               (files (cdr item))
+        (let* ((files (cdr item))
                (file-A (car files))
-               (file-B (cdr files))
-
-               skip-A
-               skip-B)
-
-
-          (save-excursion
-            (narrow-to-region (car region) (cdr region))
-
-            ;; parse A
-            (goto-char (point-min))
-            (let ((start 0))
-              (while (search-forward-regexp
-                      (rx bol "***" (+ space)
-                          (group (+ digit)) "," (group (+ digit))
-                          (+ space) "***") nil t)
-                (let ((diff-start (match-string 1))
-                      (diff-end (match-string 2)))
-                  (push (cons start (string-to-number diff-start)) skip-A)
-                  (setq start (string-to-number diff-end))))
-              (push (cons start (point-max)) skip-A))
-
-
-            ;; parse B
-            (goto-char (point-min))
-            (let ((start 0))
-              (while (search-forward-regexp
-                      (rx bol "---" (+ space)
-                          (group (+ digit)) "," (group (+ digit))
-                          (+ space) "---") nil t)
-                (let ((diff-start (match-string 1))
-                      (diff-end (match-string 2)))
-                  (push (cons start (string-to-number diff-start)) skip-B)
-                  (setq start (string-to-number diff-end))))
-              (push (cons start (point-max)) skip-B))
-
-            (widen))
+               (file-B (cdr files)))
 
           ;; move cursor to next section if possible...
-          (goto-char
-           (if backward
-               (1- (cdar item))
-             (1+ (caar item))))
-
+          (goto-char (1+ (caar item)))
           (ws-butler-global-mode -1 )
           (add-hook 'ediff-quit-hook 'yc/ediff-cleanup-and-restore)
-          (PDEBUG "skips:" skip-A skip-B)
-          (let ((buffer-A (find-file-noselect file-A))
-                (buffer-B (find-file-noselect file-B)))
 
-            ;; (with-current-buffer buffer-A
-            ;;   (goto-char (point-min))
-            ;;   (dolist (region skip-A)
-            ;;     (overlay-put (make-overlay (line-beginning-position (car region))
-            ;;                                (line-end-position (cdr region)))
-            ;;                  'invisible 'invs)))
-
-
-            ;; (with-current-buffer buffer-B
-            ;;   (goto-char (point-min))
-            ;;   (dolist (region skip-B)
-            ;;     (overlay-put (make-overlay (line-beginning-position (car region))
-            ;;                                (line-end-position (cdr region)))
-            ;;                  'invisible 'invs)))
-
-            (ediff-buffers  buffer-B buffer-A)))
+          (if yc/view-with-prepare-func
+              (apply #'ediff (funcall yc/view-with-prepare-func file-A
+                                      file-B))
+            (let ((buffer-A (find-file-noselect file-A))
+                  (buffer-B (find-file-noselect file-B)))
+              (ediff-buffers  buffer-B buffer-A))
+            ))
 
       (error "Can't find proper files to compare at point: %d" (point)))))
 

@@ -557,13 +557,21 @@ normally (o), literally (l), with vlf (v) or abort (a)"
   (auto-save-default nil))
 
 (use-package ace-window
-  :preface
-  (advice-add #'ace-window :before #'super-save-command-advice)
   :ensure t
   :bind (("C-x B" . ace-swap-window)
          ("C-x o" . ace-window))
   :custom
-  (aw-scope 'frame))
+  (aw-scope 'frame)
+  :config
+  (defadvice! yc/ace-window-adv (&rest args)
+    "Docs
+ORIG-FUNC is called with ARGS."
+    :before-until  #'ace-window
+    (super-save-command)
+
+    (when (<= (length (window-list)) 3)
+      (other-window 1)
+      t)))
 
 ;; Tabs and spaces
 (use-package ws-butler
