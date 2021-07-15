@@ -46,3 +46,4 @@ srecode-map.el
 tools/post-pack_emacs_env.sh
 /templates/srecode/private/
 /tools/peda/private-print.txt
+.*

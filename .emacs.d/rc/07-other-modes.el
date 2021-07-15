@@ -1506,67 +1506,48 @@ ORIG-FUNC is called with ARGS."
   :custom
   (mail-user-agent 'mu4e-user-agent)
 
+  ;; folders.
+  (mu4e-drafts-folder "/Drafts")
+  (mu4e-sent-folder "/Sent Messages")
+  (mu4e-trash-folder "/Deleted Messages")
+  (mu4e-attachment-dir  "~/Downloads")
+
+
+  (mu4e-get-mail-command "mbsync -a")
+  (mu4e-update-interval 300)
+
   ;; 回复邮件插入邮件引用信息
   (message-citation-line-function 'message-insert-formatted-citation-line)
   (message-citation-line-format "On %a, %b %d %Y, %f wrote:\n")
 
-  (mu4e-get-mail-command "mbsync -a")
-  (mu4e-update-interval 300)
-  (mu4e-headers-auto-update t)
-  (mu4e-compose-signature-auto-include nil)
   ;; 启用 inline iamge 显示并定义显示图片最大宽度
   (mu4e-view-show-images t)
   (mu4e-view-image-max-width 800)
+
   (mu4e-html2text-command #'shr-render-current-buffer)
-  ;; 自动包含邮件签名
+
+  ;; (mu4e-compose-reply-to-address "yingchao.yang@iclould.com")
   (mu4e-compose-signature-auto-include t)
-
-  ;; 禁止回复给自己
+  (message-signature-file "~/.emacs.d/.signature")
+  (mu4e-compose-format-flowed nil)
+  (mu4e-completing-read-function 'ivy-completing-read)
   (mu4e-compose-dont-reply-to-self t)
-
-  ;; This enables unicode chars to be used for things like flags in the message index screens.
-  ;; I've disabled it because the font I am using doesn't support this very well. With this
-  ;; disabled, regular ascii characters are used instead.
-  ;;(setq mu4e-use-fancy-chars t)
 
   ;; This enabled the thread like viewing of email similar to gmail's UI.
   (mu4e-headers-include-related t)
+  (mu4e-sent-messages-behavior 'sent)
 
-  ;; This prevents saving the email to the Sent folder.
-  (mu4e-sent-messages-behavior 'delete)
-
-  ;; This allows me to use 'helm' to select mailboxes
-  (mu4e-completing-read-function 'completing-read)
-
-  ;; Why would I want to leave my message open after I've sent it?
   (message-kill-buffer-on-exit t)
-
-  ;; Don't ask to quit...
   (mu4e-confirm-quit nil)
 
-  ;; mu4e sets up visual-line-mode and also fill (M-q) to do the right thing
-  ;; each paragraph is a single long line; at sending, emacs will add the
-  ;; special line continuation characters.
-  (mu4e-compose-format-flowed t)
-
-  ;; every new email composition gets its own frame! (window)
-  (mu4e-compose-in-new-frame nil)
-
   ;; give me ISO(ish) format date-time stamps in the header list
-  ;;(setq mu4e-headers-date-format "%Y-%m-%d %H:%M")
+  (mu4e-headers-date-format "%Y-%m-%d %H:%M")
 
-  ;; show full addresses in view message (instead of just names)
-  ;; toggle per name with M-RET
   (mu4e-view-show-addresses t)
 
-  (mu4e-drafts-folder "/Drafts")
-  (mu4e-sent-folder "/Sent Messages")
-  (mu4e-trash-folder "/Deleted Messages")
-
-  ;; (mu4e-compose-reply-to-address "yingchao.yang@iclould.com")
-  ;; message-signature-file "~/.emacs.d/.signature"
-
   (mu4e-query-rewrite-function #'mu4e-goodies~break-cjk-query)
+  (mu4e-change-filenames-when-moving t)
+
   :config
   (require 'shr)
 
@@ -1597,8 +1578,10 @@ ORIG-FUNC is called with ARGS."
 
   ;; Spell checking ftw.
   :hook ((mu4e-compose-mode . flyspell-mode))
-  :bind (("C-<f9>" . mu4e))
-  )
+  :bind (:map mu4e-main-mode-map
+              ("g" . mu4e-update-mail-and-index)
+              ("G" . mu4e-update-mail-and-index))
+  :bind (("C-<f11>" . mu4e)))
 
 (provide '07-other-modes)
 
