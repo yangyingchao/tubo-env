@@ -1535,7 +1535,7 @@ ORIG-FUNC is called with ARGS."
 
   ;; This enabled the thread like viewing of email similar to gmail's UI.
   (mu4e-headers-include-related t)
-  (mu4e-sent-messages-behavior 'sent)
+  (mu4e-sent-messages-behavior 'delete)
 
   (message-kill-buffer-on-exit t)
   (mu4e-confirm-quit nil)
@@ -1575,11 +1575,9 @@ ORIG-FUNC is called with ARGS."
 
   (add-hook 'org-ctrl-c-ctrl-c-hook 'htmlize-and-send t)
 
-
   ;; Spell checking ftw.
-  :hook ((mu4e-compose-mode . flyspell-mode))
+  :hook ((mu4e-compose-mode . (lambda () (flyspell-mode 1)(auto-save-mode -1))))
   :bind (:map mu4e-main-mode-map
-              ("g" . mu4e-update-mail-and-index)
               ("G" . mu4e-update-mail-and-index))
   :bind (("C-<f11>" . mu4e)))
 

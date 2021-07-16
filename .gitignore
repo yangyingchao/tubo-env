@@ -333,5 +333,4 @@ peda-session*
 native-lisp/
 /.gdbinit_priv
 /.config/waybar/color.css
-/.emacs.d/org-roam.db
 .dir-locals-2.el

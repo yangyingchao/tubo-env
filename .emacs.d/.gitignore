@@ -32,11 +32,7 @@ emacs.pdmp
 /projectile-bookmarks.eld
 /rc/11-priv-sb.el
 /recentf
-/templates/yasnippets-private/c++-mode/
-/templates/yasnippets-private/cc-mode/
-/templates/yasnippets-private/sql-interactive-mode/
-/templates/yasnippets-private/sql-mode/
-/templates/yasnippets-private/text-mode/
+/templates/yasnippets-private/
 /url/
 
 10-emacs-custome.el
@@ -47,3 +43,5 @@ tools/post-pack_emacs_env.sh
 /templates/srecode/private/
 /tools/peda/private-print.txt
 .*
+/org-roam.db
+/request/
